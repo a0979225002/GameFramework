@@ -1,0 +1,32 @@
+{
+  "name": "game84",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "jest": "^26.6.3",
+    "tern": "^0.24.3",
+    "ts": "^0.2.2",
+    "ts-jest": "^26.5.4",
+    "ts-loader": "^8.2.0",
+    "typescript": "^4.2.3",
+    "webpack": "^5.35.1",
+    "webpack-cli": "^4.6.0"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a0979225002/game84.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a0979225002/game84/issues"
+  },
+  "homepage": "https://github.com/a0979225002/game84#readme",
+  "description": ""
+}
