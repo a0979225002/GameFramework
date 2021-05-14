@@ -1,4 +1,5 @@
 import ConfigManager from '../Config/ConfigManager'
+import {IConfigManager} from "../Config/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import {GameEventType} from '../Listener/Enum/gameEventType'
@@ -10,6 +11,7 @@ import SceneStyleHandler from './SceneStyleHandler'
 
 export default class SceneManager implements ISceneManager {
 
+    private configManager: IConfigManager;
     private static _instance: SceneManager;
     private style: SceneStyle | Function;
     private _designWidth: number;
@@ -20,8 +22,8 @@ export default class SceneManager implements ISceneManager {
     private _sceneDirection: SceneDirection;
 
 
-    private constructor() {
-
+    private constructor(configManager: IConfigManager) {
+        this.configManager = configManager;
         this._designWidth = 1280;                                       //初始預設寬度
         this._designHeight = 720;                                       //初始預設高度
         this._mainGameSceneName = ConfigManager.instance.mainScene;     //獲取當初config設定的主畫面名稱
@@ -31,14 +33,19 @@ export default class SceneManager implements ISceneManager {
         this._sceneDirection = SceneDirection.LANDSCAPE
     }
 
+    //單例
+    public static setInstance(configManager: IConfigManager) {
+        if (!this._instance) {
+            this._instance = new SceneManager(configManager);
+        }
+    }
 
     //單例
     public static get instance(): SceneManager {
 
         if (!this._instance) {
-
-            this._instance = new SceneManager();
-
+            ErrorManager.instance.executeError(ErrorType.SceneFW, "該類尚未實例化");
+            return;
         }
 
         return this._instance;

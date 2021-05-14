@@ -1,5 +1,5 @@
 import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import {SceneDirection} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
 
@@ -28,7 +28,7 @@ class MainGameController extends cc.Component {
 
     public sceneDirectionListener() {
         SceneManager.instance.sceneDirectionEventListener((type) => {
-            if (GameManager.instance.gameState != GameState.FREEING) return;
+            if (SlotGameManager.instance.gameState != GameState.FREEING) return;
             switch (type) {
                 case SceneDirection.PORTRAIT:
                     this.freeBGV.active = true;

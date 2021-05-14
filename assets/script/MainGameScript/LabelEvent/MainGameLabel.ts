@@ -3,7 +3,7 @@ import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
@@ -75,15 +75,15 @@ class MainGameLabel extends AGenericTemplate {
 
         //初始更新user 金額,接收tableInfo參數時,尚未實例化該類,因此初始更新USER TOTAL BET 失效
         this.userTotalBetLabelH.string =
-            String(this.tableInfo.LineTotalBet[GameManager.instance.userBetPoint.LineBet]);
+            String(this.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet]);
 
         //初始化 userConfig設定的初始user下注金額
         this.userTotalBetLabelV.string =
-            String(this.tableInfo.LineTotalBet[GameManager.instance.userBetPoint.LineBet]);
+            String(this.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet]);
 
         //初始更新user 金額,接收tableInfo參數時,尚未實例化該類,因此初始更新USER MONEY 失效
         //需手動更新
-        let numberFormat = new Intl.NumberFormat().format(GameManager.instance.userMoney);
+        let numberFormat = new Intl.NumberFormat().format(SlotGameManager.instance.userMoney);
         this.userMoneyLabelV.string = String(numberFormat);
         this.userMoneyLabelH.string = String(numberFormat);
 
@@ -130,7 +130,7 @@ class MainGameLabel extends AGenericTemplate {
 
     private updateUserTotalBetLabelListener() {
 
-        GameManager.instance.userTotalBetEventListener((beforeIndex, afterIndex) => {
+        SlotGameManager.instance.userTotalBetEventListener((beforeIndex, afterIndex) => {
 
             this.userTotalBetLabelAnimation(this.userTotalBetLabelV.node);
             this.userTotalBetLabelAnimation(this.userTotalBetLabelH.node);
@@ -156,7 +156,7 @@ class MainGameLabel extends AGenericTemplate {
      */
     private updateWinPointLabelListener() {
 
-        GameManager.instance.userWinPointEventListener((winPoint: number, level: number) => {
+        SlotGameManager.instance.userWinPointEventListener((winPoint: number, level: number) => {
 
             let numberFormat = new Intl.NumberFormat().format(winPoint);
 
@@ -164,7 +164,7 @@ class MainGameLabel extends AGenericTemplate {
             this.winPointLabelH.string = String(numberFormat);
 
 
-            if (GameManager.instance.gameState == GameState.FREEING) {
+            if (SlotGameManager.instance.gameState == GameState.FREEING) {
 
                 winPoint = WebResponseManager.instance.freeResult.TotalWinPoint;
 
@@ -194,7 +194,7 @@ class MainGameLabel extends AGenericTemplate {
 
     private updateUserMoneyListener() {
 
-        GameManager.instance.userMoneyEventListener((money) => {
+        SlotGameManager.instance.userMoneyEventListener((money) => {
 
             let numberFormat = new Intl.NumberFormat().format(money);
 

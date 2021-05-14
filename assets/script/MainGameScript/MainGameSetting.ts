@@ -2,14 +2,14 @@ import AudioManager from '../Framework/Audio/AudioManager'
 import {AudioStateType} from "../Framework/Audio/Enum/AudioStateType";
 import LoadResManager from '../Framework/LoadResources/LoadResManager'
 import {GameType} from '../Framework/Procedure/Enum/GameState'
-import GameManager from '../Framework/Procedure/GameManager'
-import GameProcess from '../Framework/Procedure/GameProcess'
+import SlotGameProcess from '../Framework/Procedure/Procress/SlotGameProcess'
+import SlotGameManager from '../Framework/Procedure/SlotGameManager'
 import {SceneDirection} from '../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../Framework/Scene/SceneManager'
 import AMainGameSettingTemplate from '../Framework/Template/Setting/AMainGameSettingTemplate'
 import SocketSetting from "../Socket/SocketSetting";
-import MainGameNormalProcessTest from "../Test/GameProcess/MainGameNormalProcess.test";
 import MainGameFreeProcess from './GameProcess/MainGameFreeProcess'
+import MainGameNormalProcess from "./GameProcess/MainGameNormalProcess";
 
 const {ccclass, property} = cc._decorator;
 
@@ -29,7 +29,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
     @property(cc.Node)
     public loadingDialog: cc.Node = null;
 
-
     prefabIndex: object = {
         "LookAt_Node": 3,
         "WinPointAnimation": 0,
@@ -40,7 +39,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
     /**
      * 初始,重新更新 scene適配
      */
-    public onCreate() {
+    protected onCreate() {
 
         this.sceneDirectionListener();//監聽 User 是否更換遊戲方向
         SceneManager.instance.updateSize();//重新更新mainScene的長寬是配
@@ -51,7 +50,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
     /**
      * 建立詳情頁面
      */
-    public setHistoryDetail() {
+    protected setHistoryDetail() {
         // 建立詳情頁面
         cc["plug"].Record.createMainElem();
         // 初始化title語系
@@ -74,7 +73,8 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
     }
 
     //更新遊戲當前執事還是橫式
-    updateSceneDirection(sceneType: SceneDirection) {
+    private updateSceneDirection(sceneType: SceneDirection) {
+
         if (sceneType == SceneDirection.LANDSCAPE) {
 
             this.labelInformationH.active = true;
@@ -99,7 +99,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
     /**
      * 直橫向監聽器
      */
-    sceneDirectionListener() {
+    private sceneDirectionListener() {
 
         SceneManager.instance.sceneDirectionEventListener((type) => {
 
@@ -115,7 +115,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * 可否疊加播放:否
      * 可否循環:否
      */
-    public audioSetting() {
+    protected audioSetting() {
 
         AudioManager.instance
             .settingMusic("NBS", 0.6, true)
@@ -127,43 +127,42 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
 
     /**
      * 綁定要使用的流程Class
-     * 使用方式:需自行繼承 抽象類 AMainGameFlowTemplate();
+     * 使用方式:需自行繼承 抽象類 ExecutionContainer;
      */
-    public gameProcedureSetting() {
+    protected gameProcedureSetting() {
 
         let freeContainer = new MainGameFreeProcess();
-        let freeProcess = new GameProcess(freeContainer);
+        let freeProcess = new SlotGameProcess(freeContainer);
 
-        // let normalContainer = new MainGameNormalProcess();
-        // let normalProcess = new GameProcess(normalContainer);
-
-        // 測試用
-        let normalContainerTest = new MainGameNormalProcessTest();
-        let normalProcess = new GameProcess(normalContainerTest);
+        let normalContainer = new MainGameNormalProcess();
+        let normalProcess = new SlotGameProcess(normalContainer);
 
         const freeP = freeProcess
             .onCustomizeStart()
             .onSineInGrid()
-            .onRunGrid()
+            .onRunning()
             .onShowAnswer()
-            .onCustomizeEnd();
+            .onCustomizeEnd()
+            .onChangeStatus();
 
         const normalP = normalProcess
             .onCustomizeStart()
             .onSineInGrid()
-            .onRunGrid()
+            .onRunning()
             .onShowAnswer()
-            .onCustomizeEnd();
+            .onCustomizeEnd()
+            .onChangeStatus();
 
-        GameManager.instance.setProcess(GameType.FREE, freeP);
-        GameManager.instance.setProcess(GameType.NORMAL, normalP);
-
+        SlotGameManager.instance
+            .setProcess(GameType.FREE, freeP)
+            .setProcess(GameType.NORMAL, normalP)
+            .setInitialProcess(normalP);
     }
 
     /**
      * 實例化所有動態加載的prefab
      */
-    public prefabInstantiate() {
+    protected prefabInstantiate() {
 
         let progress = LoadResManager.instance.secondaryLoadState.get("prefab");
         if (progress != 1) {
@@ -177,6 +176,10 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         }
     }
 
+    /**
+     * 實例化Prefab Method
+     * @private
+     */
     private makePrefabInstantiate() {
         for (let key of Object.keys(this.prefabIndex)) {
             let prefab = cc.instantiate(LoadResManager.instance.prefabRes.get(key))

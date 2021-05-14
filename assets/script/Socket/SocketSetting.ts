@@ -62,7 +62,6 @@ export default class SocketSetting {
 
     //初始加載數據
     static firstLoad(language: string) {
-        cc.log(language);
         data = window.language_Mode[language];
     }
 

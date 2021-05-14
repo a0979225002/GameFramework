@@ -1,6 +1,6 @@
 import {GameEventType} from '../Listener/Enum/gameEventType'
 import EventManager from '../Listener/EventManager'
-import GameManager from '../Procedure/GameManager'
+import SlotGameManager from '../Procedure/SlotGameManager'
 import {StyleData} from './SlotStyleManager'
 
 export default abstract class ASlot implements ISlot {
@@ -30,7 +30,7 @@ export default abstract class ASlot implements ISlot {
 
     protected constructor(styleData: StyleData) {
 
-        this.isSpeedUp = GameManager.instance.isSpeedUp;
+        this.isSpeedUp = SlotGameManager.instance.isSpeedUp;
         this.styleData = styleData
         this.speed = 1;
         this.immediateStopEventListener();

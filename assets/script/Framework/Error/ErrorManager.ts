@@ -1,3 +1,4 @@
+import {IConfigManager} from "../Config/IConfigManager";
 import WebRequestManager from "../WebRequest/WebRequestManager";
 import {ErrorType} from "./Enum/ErrorManagerEnum";
 import ErrorHandler from "./ErrorHandler";
@@ -6,10 +7,11 @@ import IErrorManager from "./IErrorManager";
 
 export default class ErrorManager implements IErrorManager {
 
+    private configManager: IConfigManager;
+    private static _instance: IErrorManager;
     private handler: IErrorHandler;
     private static _errorState: boolean;
     private static _warningState: boolean;
-    private static _instance: IErrorManager;
     private _errorDelayTime: number;
     private _errorLabel: cc.Label;
     private _errorNode: cc.Node;
@@ -20,9 +22,9 @@ export default class ErrorManager implements IErrorManager {
     public errorButtonLabel: cc.Label
     private _warningDelayTime: number;
 
-    private constructor() {
-
+    private constructor(configManager: IConfigManager) {
         this.handler = new ErrorHandler();
+        this.configManager = configManager;
         this._errorNode = null;
         this._errorLabel = null;
         this._errorDelayTime = 2000;                                            //錯誤訊息顯示時間 : 2秒
@@ -33,6 +35,12 @@ export default class ErrorManager implements IErrorManager {
 
     }
 
+    //單例
+    public static setInstance(configManager: IConfigManager) {
+        if (!this._instance) {
+            this._instance = new ErrorManager(configManager);
+        }
+    }
 
     /**
      * 單例模式 : 一個遊戲只能有個 ErrorManager
@@ -40,10 +48,8 @@ export default class ErrorManager implements IErrorManager {
     public static get instance(): IErrorManager {
 
         if (!this._instance) {
-
-            this._instance = new ErrorManager();
+            throw new Error(`ErrorManager類錯誤 :  該類尚未實例化`)
         }
-
         return this._instance;
     }
 

@@ -3,10 +3,9 @@ import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
-import AMainGameFlowTemplate from '../../Framework/Template/Process/AMainGameFlowTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from '../ButtonEvent/MainGameButton'
@@ -17,13 +16,9 @@ import SlotController from '../Controller/SlotController'
 import WinLevelController from '../Controller/WinLevelController'
 import MainGameLabel from '../LabelEvent/MainGameLabel'
 
-export default class MainGameFreeProcess extends AMainGameFlowTemplate {
+export default class MainGameFreeProcess implements ISlotProcedureExecutionContainer{
 
     private slotStyle: NoLineSlot;
-
-    constructor() {
-        super();
-    }
 
     private onCreate() {
         if (!this.slotStyle) {
@@ -133,14 +128,19 @@ export default class MainGameFreeProcess extends AMainGameFlowTemplate {
                 MainGameLabel.closeFreeTitle();
                 //打開一般模式所有按鈕
                 MainGameButton.switchButton(true);
-                GameManager.instance.gameState = GameState.STANDBY;
+                SlotGameManager.instance.gameState = GameState.STANDBY;
                 //如果是自動狀態是free結束,將在結束時關閉auto狀態
-                if (GameManager.instance.autoCount == AutoType.freeEnd && GameManager.instance.isAutoState) {
+                if (SlotGameManager.instance.autoType == AutoType.freeEnd && SlotGameManager.instance.isAutoState) {
                     EventManager.instance.setEvent(EventManager.gameTarget, GameEventType.AUTO);
                 }
             }
             resolve();
         });
+    }
+
+    onChangeStatus() {
+
+
     }
 
     private checkWinPoint(spinWin: number, level?: number): Promise<void> {
@@ -180,8 +180,8 @@ export default class MainGameFreeProcess extends AMainGameFlowTemplate {
         });
     }
 
-    public onSineOutGrid(): Promise<void> {
-        return Promise.resolve(undefined);
-    }
 
+    public onSineOutGrid(): Promise<void> {
+        return undefined;
+    }
 }

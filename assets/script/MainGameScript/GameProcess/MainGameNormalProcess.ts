@@ -2,23 +2,18 @@ import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
-import AMainGameFlowTemplate from '../../Framework/Template/Process/AMainGameFlowTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import SlotController from '../Controller/SlotController'
 import WinLevelController from '../Controller/WinLevelController'
 import MainGameLabel from '../LabelEvent/MainGameLabel'
 
-export default class MainGameNormalProcess extends AMainGameFlowTemplate {
+export default class MainGameNormalProcess implements ISlotProcedureExecutionContainer{
 
     private slotStyle: NoLineSlot;
-
-    constructor() {
-        super();
-    }
 
     private onCreate() {
         if (!this.slotStyle) {
@@ -40,7 +35,7 @@ export default class MainGameNormalProcess extends AMainGameFlowTemplate {
 
     public onSineInGrid(): Promise<void> {
         return new Promise(async (resolve, reject) => {
-            socketJS.SFSToServer("Bet", GameManager.instance.userBetPoint);
+            socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
             await this.slotStyle.sineInSlot();
             resolve();
         });
@@ -74,11 +69,35 @@ export default class MainGameNormalProcess extends AMainGameFlowTemplate {
         return new Promise(async (resolve, reject) => {
 
             if (WebResponseManager.instance.result.FreeSpinCount != 0) {
-                GameManager.instance.gameState = GameState.FREEING;
+                SlotGameManager.instance.gameState = GameState.FREEING;
             }
 
             resolve();
         });
+    }
+
+    onChangeStatus() {
+
+        // private async checkNowState() {
+        //     if (WebResponseManager.instance.result.FreeSpinCount > 0) {
+        //         this.gameState = GameState.FREEING;
+        //         await this._freeProcess.start();
+        //
+        //     } else if (WebResponseManager.instance.freeResult.FreeToFree > 0) {
+        //
+        //         this.gameState = GameState.FREEING;
+        //         await this._freeProcess.start();
+        //
+        //     } else if (WebResponseManager.instance.freeResult.Count > 0) {
+        //
+        //         this.gameState = GameState.FREEING;
+        //         await this._freeProcess.start();
+        //
+        //     } else {
+        //         this.gameState = GameState.PLAYING;
+        //         await this._normalProcess.start();
+        //     }
+        // }
     }
 
     private checkWinPoint(): Promise<void> {

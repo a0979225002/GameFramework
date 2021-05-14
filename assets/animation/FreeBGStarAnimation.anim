@@ -1,0 +1,147 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "FreeBGStarAnimation",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 4.466666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "star1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.9666666666666666,
+              "value": -360
+            },
+            {
+              "frame": 2.4833333333333334,
+              "value": -720
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 255
+            },
+            {
+              "frame": 0.8,
+              "value": 0
+            },
+            {
+              "frame": 2.4833333333333334,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "star3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.8666666666666667,
+              "value": -360
+            },
+            {
+              "frame": 3.1333333333333333,
+              "value": -720
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 255
+            },
+            {
+              "frame": 1.8333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 3.1333333333333333,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "star2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 1.7833333333333334,
+              "value": 0
+            },
+            {
+              "frame": 3.65,
+              "value": -360
+            },
+            {
+              "frame": 4.466666666666667,
+              "value": -720
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0.5333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 1.7833333333333334,
+              "value": 255
+            },
+            {
+              "frame": 3.033333333333333,
+              "value": 0
+            },
+            {
+              "frame": 4.466666666666667,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "star4": {
+        "props": {
+          "angle": [
+            {
+              "frame": 1.0166666666666666,
+              "value": 0
+            },
+            {
+              "frame": 2.816666666666667,
+              "value": -360
+            },
+            {
+              "frame": 3.9166666666666665,
+              "value": -720
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 1.0166666666666666,
+              "value": 255
+            },
+            {
+              "frame": 3.4833333333333334,
+              "value": 0
+            },
+            {
+              "frame": 3.9166666666666665,
+              "value": 255
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

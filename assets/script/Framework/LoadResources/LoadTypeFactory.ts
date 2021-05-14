@@ -35,7 +35,7 @@ export default class LoadTypeFactory implements ILoadFactory {
                 this.isLoadBundle = true;
                 cc.assetManager.loadBundle("secondaryRes", (error, bundle) => {
                     if (error) {
-                        ErrorManager.instance.executeError(ErrorType.loadErrorFW, error)
+                        ErrorManager.instance.executeError(ErrorType.LoadErrorFW, error)
                     }
                     this.assetBundle = bundle;
                     resolve();
@@ -102,7 +102,7 @@ export default class LoadTypeFactory implements ILoadFactory {
                 new TextLoad(dataName, cc.TextAsset, url, folder).loadResources();
                 break;
             default :
-                ErrorManager.instance.executeError(ErrorType.typeFW, "LoadType 無法偵測");
+                ErrorManager.instance.executeError(ErrorType.TypeFW, "LoadType 無法偵測");
         }
 
     }
@@ -124,7 +124,7 @@ export default class LoadTypeFactory implements ILoadFactory {
                 new ScriptLoad(name, "text/javascript", url).loadScript();
                 break
             default:
-                ErrorManager.instance.executeError(ErrorType.typeFW, "LoadType 無法偵測");
+                ErrorManager.instance.executeError(ErrorType.TypeFW, "LoadType 無法偵測");
         }
     }
 }

@@ -12,7 +12,7 @@ import ALoadingDialogTemplate from "../../Framework/Template/LoadingDialog/ALoad
 export default class LoadingDialogController extends ALoadingDialogTemplate {
 
     @property(cc.Node)
-    protected loadingDialogNode: cc.Node;
+    protected loadingDialogNode: cc.Node = null;
     @property(cc.ProgressBar)
     protected progressBar: cc.ProgressBar = null;
     @property(cc.Label)

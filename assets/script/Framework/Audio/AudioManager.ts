@@ -1,4 +1,4 @@
-import ConfigManager from '../Config/ConfigManager'
+import {IConfigManager} from "../Config/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import AudioFactory from './AudioFactory'
@@ -13,16 +13,18 @@ import IAudioManager from "./IAudio/IAudioManager";
  */
 export default class AudioManager implements IAudioManager {
 
+    private configManager : IConfigManager;
     private static _instance: IAudioManager;
     private factory: AudioFactory;              //音樂工廠
     private _musicOnMute: boolean;              //當前是否靜音
     private _effectOnMute: boolean;             //當前是否靜音
 
-    private constructor() {
+    private constructor(configManager : IConfigManager) {
 
+        this.configManager = configManager;
         this.factory = new AudioFactory();
-        this._effectOnMute = ConfigManager.instance.isEffectOnMute;
-        this._musicOnMute = ConfigManager.instance.isMusicOnMute;
+        this._effectOnMute = this.configManager.isEffectOnMute;
+        this._musicOnMute = this.configManager.isMusicOnMute;
 
     }
 
@@ -30,9 +32,20 @@ export default class AudioManager implements IAudioManager {
      *  懶漢加載
      *  初始化,只讓一個專案只有一次產生此class
      */
-    public static get instance() {
+    public static setInstance(configManager: IConfigManager) {
         if (!this._instance) {
-            this._instance = new AudioManager();
+            this._instance = new AudioManager(configManager);
+        }
+    }
+
+    /**
+     *  懶漢加載
+     *  初始化,只讓一個專案只有一次產生此class
+     */
+    public static get instance() :IAudioManager{
+        if(!this._instance){
+            ErrorManager.instance.executeError(ErrorType.MusicFW,"該類尚未實例化");
+            return;
         }
         return this._instance;
     }

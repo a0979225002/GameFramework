@@ -2,7 +2,7 @@ import AudioManager from '../Audio/AudioManager'
 import ErrorManager from '../Error/ErrorManager'
 import EventManager from '../Listener/EventManager'
 import LoadResManager from '../LoadResources/LoadResManager'
-import GameManager from '../Procedure/GameManager'
+import SlotGameManager from '../Procedure/SlotGameManager'
 import SceneManager from '../Scene/SceneManager'
 import SlotStyleManager from '../Slot/SlotStyleManager'
 import WebRequestManager from '../WebRequest/WebRequestManager'
@@ -123,7 +123,7 @@ export default class ConfigManager implements IConfigManager {
     private _resultType: ResultType
 
     /**
-     * server回傳的ResultType類型,做綁定 model用
+     * server回傳的FreeResultType類型,做綁定 model用
      * @type {FreeResultType}
      * @private
      */
@@ -163,7 +163,6 @@ export default class ConfigManager implements IConfigManager {
     public static get instance(): IConfigManager {
 
         if (!this._instance) {
-
             this._instance = new ConfigManager();
         }
 
@@ -194,7 +193,7 @@ export default class ConfigManager implements IConfigManager {
     }
 
     /**
-     * 設置初始默認音量
+     * 設置初始預設音量
      * @param {number} number : 音量 0~1
      * @returns {this}
      */
@@ -205,7 +204,7 @@ export default class ConfigManager implements IConfigManager {
     }
 
     /**
-     * 設置初始默認效果音量
+     * 設置初始預設效果音量
      * @param {number} number : 音量 0~1
      * @returns {this}
      */
@@ -234,27 +233,21 @@ export default class ConfigManager implements IConfigManager {
     }
 
     /**
-     * 初始遊戲Auto狀態
-     * @param type
+     * 初始遊戲最初的auto次數
+     * @param {AutoType} type
+     * @returns {this}
      */
     setAutoCont(type: AutoType) {
         this._autoCount = type;
         return this;
     }
 
-    /**
-     * 開始Debug模式
-     * @param use
-     */
-    setFrameWorkDebug(use: boolean) {
-
-        this._isFrameworkDebug = use;
-        return this;
-    }
 
     /**
      * 初始要從外部拿取資源的URL
-     * @param url
+     * 注意:此URL為開發中生效
+     * @param {string} url : 獲取外部資源的URL
+     * @returns {this}
      */
     setExternallyLoadURL(url: string): this {
         this._externallyLoadURL = url;
@@ -266,7 +259,9 @@ export default class ConfigManager implements IConfigManager {
 
     /**
      * 貫穿整個遊戲,到destroy前遊戲語系
-     * @param languageType
+     * 注意:當前使用無效
+     * @param {LanguageType} languageType : 語系
+     * @returns {this}
      */
     setLanguage(languageType: LanguageType): this {
 
@@ -281,8 +276,9 @@ export default class ConfigManager implements IConfigManager {
     }
 
     /**
-     * 初始遊戲開始時Auto狀態
-     * @param isAuto
+     * 初始進入遊戲時Auto狀態
+     * @param {boolean} isAuto : 是否在遊戲進入後開啟auto狀態
+     * @returns {this}
      */
     setAutoState(isAuto: boolean): this {
         this._isAuto = isAuto;
@@ -290,8 +286,9 @@ export default class ConfigManager implements IConfigManager {
     }
 
     /**
-     * 初始遊戲開始時加速狀態
-     * @param isSpeedUp
+     * 是否在遊戲進入後是加速的狀態
+     * @param {boolean} isSpeedUp
+     * @returns {this}
      */
     setSpeedState(isSpeedUp: boolean): this {
 
@@ -301,21 +298,9 @@ export default class ConfigManager implements IConfigManager {
     }
 
     /**
-     * 初始是否關閉效果音樂
-     * @return {this}
-     * @param OnMute
-     */
-    setEffectOnMute(OnMute: boolean): this {
-
-        this._isEffectOnMute = OnMute;
-
-        return this;
-    }
-
-    /**
-     * 初始是否關閉背景音樂
-     * @return {this}
-     * @param OnMute
+     * 初始將背景音樂靜音
+     * @param {boolean} OnMute : 是否靜音
+     * @returns {this}
      */
     setMusicOnMute(OnMute: boolean): this {
 
@@ -324,42 +309,72 @@ export default class ConfigManager implements IConfigManager {
         return this;
     }
 
-    public setTableInfo(tableInfoType: TableInfoType): this {
+    /**
+     * 初始是否將效果音效靜音
+     * @param {boolean} OnMute : 是否靜音
+     * @returns {this}
+     */
+    public setEffectOnMute(OnMute: boolean): this {
 
-        WebResponseManager.instance.handler.setTableInfo(tableInfoType);
-
-        return this
-    }
-
-    public setBetResult(resultType: ResultType): this {
-
-        WebResponseManager.instance.handler.setResultModel(resultType);
+        this._isEffectOnMute = OnMute;
 
         return this;
     }
 
-    public setFreeResult(freeType: FreeResultType): this {
-
-        WebResponseManager.instance.handler.setFreeResultModel(freeType);
-
+    /**
+     * server回傳的TableInfoType類型,做綁定 model用
+     * @param {TableInfoType} tableInfoType
+     * @returns {this}
+     */
+    public setTableInfo(tableInfoType: TableInfoType): this {
+        this._tableInfoType = tableInfoType;
         return this
     }
 
     /**
-     * 初始所有manager();
+     * server回傳的ResultType類型,做綁定 model用
+     * @param {ResultType} resultType
+     * @returns {this}
+     */
+    public setBetResult(resultType: ResultType): this {
+        this._resultType = resultType;
+        return this;
+    }
+
+    /**
+     * server回傳的FreeResultType類型,做綁定 model用
+     * @param {FreeResultType} freeType
+     * @returns {this}
+     */
+    public setFreeResult(freeType: FreeResultType): this {
+        this._freeResultType = freeType;
+        return this
+    }
+
+    /**
+     * 是否要開啟Framework Debug模式
+     * 注意:遊戲正式上線須關閉
+     * @param {boolean} use
+     * @returns {this}
+     */
+    setFrameWorkDebug(use: boolean) {
+        this._isFrameworkDebug = use;
+        return this;
+    }
+
+    /**
+     * 實例化所有Manager class;
      */
     public builder() {
-
-        AudioManager.instance;
-        ErrorManager.instance;
-        EventManager.instance;
-        LoadResManager.instance;
-        GameManager.instance;
-        SceneManager.instance;
-        SlotStyleManager.instance;
-        WebResponseManager.instance;
-        WebRequestManager.instance;
-
+        AudioManager.setInstance(this);
+        ErrorManager.setInstance(this);
+        EventManager.setInstance(this);
+        LoadResManager.setInstance(this);
+        SlotGameManager.setInstance(this);
+        SceneManager.setInstance(this);
+        SlotStyleManager.setInstance(this);
+        WebResponseManager.setInstance(this);
+        WebRequestManager.setInstance(this);
     }
 
 // get -----------------------------------------------------------------

@@ -7,7 +7,7 @@ import {GameEventType} from '../../Listener/Enum/gameEventType'
 import {ServerEventType} from '../../Listener/Enum/ServerEventType'
 import EventManager from '../../Listener/EventManager'
 import {GameState} from '../../Procedure/Enum/GameState'
-import GameManager from '../../Procedure/GameManager'
+import SlotGameManager from '../../Procedure/SlotGameManager'
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 
 const {ccclass} = cc._decorator;
@@ -119,7 +119,7 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
         this.unschedule(this.longTouchTimer);//清除計時器事件
 
         //如果該遊戲正在自動模式,將先取消自動狀態
-        if (GameManager.instance.isAutoState) {
+        if (SlotGameManager.instance.isAutoState) {
 
             EventManager
                 .instance
@@ -134,10 +134,10 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
     //長壓計時器事件,如果當前非auto狀態,將會開啟auto 並開始遊戲
     private async longTouchTimer() {
 
-        GameManager.instance.updateAuto();
-        this.autoEvent(GameManager.instance.isAutoState, GameManager.instance.autoCount);
+        SlotGameManager.instance.updateAuto();
+        this.autoEvent(SlotGameManager.instance.isAutoState, SlotGameManager.instance.autoType);
 
-        if (GameManager.instance.isAutoState) {
+        if (SlotGameManager.instance.isAutoState) {
             await this.startButtonEvent();
         }
 
@@ -194,26 +194,26 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
                 return;
             }
             //如果遊戲為執行中狀態,將可以即停操作
-            if (GameManager.instance.gameState != GameState.STANDBY && GameManager.instance.gameState != GameState.FREEING) {
+            if (SlotGameManager.instance.gameState != GameState.STANDBY && SlotGameManager.instance.gameState != GameState.FREEING) {
                 EventManager
                     .instance.setEvent(EventManager.gameTarget, GameEventType.IMMEDIATE_STOP);
                 return;
             }
             //判斷當前是金額足夠
-            let nowUserBetIndex = GameManager.instance.userBetPoint.LineBet;
+            let nowUserBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
             let userBet = WebResponseManager.instance.tableInfo.LineTotalBet[nowUserBetIndex];
 
             //如果用戶金額不足的情況
-            if (GameManager.instance.userMoney - userBet < 0) {
+            if (SlotGameManager.instance.userMoney - userBet < 0) {
                 ErrorManager.instance.serverError(false, SocketSetting.t("S_9003"));
                 return;
             }
 
             this.startEvent();
-            await GameManager.instance.play();
+            await SlotGameManager.instance.play();
             this.endEvent();
 
-        } while (GameManager.instance.isAutoState || GameManager.instance.gameState === GameState.FREEING);
+        } while (SlotGameManager.instance.isAutoState || SlotGameManager.instance.gameState === GameState.FREEING);
 
     }
 
@@ -246,7 +246,7 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
      */
     private autoEventListener() {
 
-        GameManager.instance.autoStateEventListener(async (isAutomaticState, beforeAutoCount, afterAutoCount) => {
+        SlotGameManager.instance.autoStateEventListener(async (isAutomaticState, beforeAutoCount, afterAutoCount) => {
 
             this.autoEvent(isAutomaticState, afterAutoCount);
 
@@ -263,12 +263,12 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
      */
     private speedUpButtonEventListener() {
 
-        GameManager.instance.updateSpeed();
+        SlotGameManager.instance.updateSpeed();
 
         EventManager.instance.setEvent(
-            EventManager.gameTarget, GameEventType.SPEED_UP, GameManager.instance.isSpeedUp);
+            EventManager.gameTarget, GameEventType.SPEED_UP, SlotGameManager.instance.isSpeedUp);
 
-        this.speedUpEvent(GameManager.instance.isSpeedUp);
+        this.speedUpEvent(SlotGameManager.instance.isSpeedUp);
 
     }
 
@@ -278,7 +278,7 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
      */
     private totalBetFrameTouchEventListener() {
 
-        if (GameManager.instance.gameState != GameState.STANDBY) {
+        if (SlotGameManager.instance.gameState != GameState.STANDBY) {
             this.warningEvent();
             return;
         }
@@ -294,7 +294,7 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
      */
     private menuButtonEventListener() {
 
-        if (GameManager.instance.gameState != GameState.STANDBY) {
+        if (SlotGameManager.instance.gameState != GameState.STANDBY) {
             this.warningEvent();
             return;
         }
@@ -320,7 +320,7 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
                 }
             }
 
-            GameManager.instance.isResultOk = true;
+            SlotGameManager.instance.isResultOk = true;
 
         }, false);
     }
@@ -343,7 +343,7 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
                 }
             }
 
-            GameManager.instance.isResultOk = true;
+            SlotGameManager.instance.isResultOk = true;
 
         }, false);
     }

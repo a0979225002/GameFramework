@@ -110,7 +110,7 @@ export default abstract class ALoadingDialogTemplate extends cc.Component {
         cc.log(LoadResManager.instance.secondaryLoadState.has(resName),LoadResManager.instance.secondaryLoadState.get(resName))
 
         if (!LoadResManager.instance.secondaryLoadState.has(resName)) {
-            ErrorManager.instance.executeError(ErrorType.undefinedFW, `${resName}該無該資源`);
+            ErrorManager.instance.executeError(ErrorType.UndefinedFW, `${resName}該無該資源`);
             this.loadingDialogNode.active = false;
             resolve();
             return false;

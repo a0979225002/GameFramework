@@ -1,7 +1,5 @@
-enum FreeResultType {
+export enum FreeResultType {
 
     NoLine,
 
 }
-
-export {FreeResultType};

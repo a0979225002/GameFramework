@@ -3,7 +3,7 @@ import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
 
@@ -68,7 +68,7 @@ class WinLevelController extends cc.Component {
 
         self.resolve = null;
         //當前獲獎分數
-        self.userNowBet = WebResponseManager.instance.tableInfo.LineTotalBet[GameManager.instance.userBetPoint.LineBet];
+        self.userNowBet = WebResponseManager.instance.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet];
         self.startNum = 0;                  //當前開始跑分的初始分數
         self.pointSplitIndex = 0;           //當前尋訪第幾個Level
         self.isNumberRun = false;           //當前是否能開始跑分
@@ -240,7 +240,7 @@ class WinLevelController extends cc.Component {
             WebResponseManager.instance.result.BaseLevelWin
         );
 
-        if (GameManager.instance.gameState != GameState.FREEING) {
+        if (SlotGameManager.instance.gameState != GameState.FREEING) {
             EventManager.instance.setEvent(
                 EventManager.serverTarget,
                 ServerEventType.UPDATE_POINTS,
@@ -271,7 +271,7 @@ class WinLevelController extends cc.Component {
 
             self.node.active = false;
 
-            if (GameManager.instance.gameState == GameState.FREEING) {
+            if (SlotGameManager.instance.gameState == GameState.FREEING) {
 
                 AudioManager.instance.musicPlay("FBS");
 

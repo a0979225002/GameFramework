@@ -2,6 +2,7 @@ import ConfigManager from "../../Config/ConfigManager";
 import {ErrorType} from "../Enum/ErrorManagerEnum";
 import UnknownError from "./UnknownError";
 
+
 export default class FrameWorkError {
 
     private unknownError: UnknownError;
@@ -17,18 +18,16 @@ export default class FrameWorkError {
         if (ConfigManager.instance.isFrameworkDebug) {
 
             switch (message) {
-                case ErrorType.isRunningFW:
-                    throw new Error(`${ErrorType.isRunningFW} ${obj}`);
-                case ErrorType.loadingFW:
-                    throw new Error(`${ErrorType.loadingFW} ${obj}`);
-                case ErrorType.undefinedFW:
-                    throw new Error(`${ErrorType.undefinedFW} ${obj}`);
-                case ErrorType.typeFW:
-                    throw new Error(`${ErrorType.typeFW} ${obj}`);
+                case ErrorType.IsRunningFW:
+                    throw new Error(`${ErrorType.IsRunningFW} ${obj}`);
+                case ErrorType.UndefinedFW:
+                    throw new Error(`${ErrorType.UndefinedFW} ${obj}`);
+                case ErrorType.TypeFW:
+                    throw new Error(`${ErrorType.TypeFW} ${obj}`);
                 case ErrorType.AnimationErrorFW:
                     throw new Error(`${ErrorType.AnimationErrorFW} ${obj}`);
-                case ErrorType.loadErrorFW:
-                    throw new Error(`${ErrorType.loadErrorFW} ${obj}`);
+                case ErrorType.LoadErrorFW:
+                    throw new Error(`${ErrorType.LoadErrorFW} ${obj}`);
                 case ErrorType.WebRequestErrorFW:
                     throw new Error(`${ErrorType.WebRequestErrorFW} ${obj}`);
                 case ErrorType.PrefabFW:
@@ -39,8 +38,14 @@ export default class FrameWorkError {
                     throw new Error(`${ErrorType.WebResponseErrorFW} ${obj}`);
                 case ErrorType.SceneFW:
                     throw new Error(`${ErrorType.SceneFW} ${obj}`);
-                case ErrorType.Procedure:
-                    throw new Error(`${ErrorType.Procedure} ${obj}`);
+                case ErrorType.ProcedureFW:
+                    throw new Error(`${ErrorType.ProcedureFW} ${obj}`);
+                case ErrorType.ListenerFW:
+                    throw new Error(`${ErrorType.ListenerFW} ${obj}`);
+                case ErrorType.GameProcedureFW:
+                    throw new Error(`${ErrorType.GameProcedureFW} ${obj}`);
+                case ErrorType.SlotStyleFW:
+                    throw new Error(`${ErrorType.SlotStyleFW} ${obj}`);
                 default :
                     this.unknownError.checkErrorType(message);
             }

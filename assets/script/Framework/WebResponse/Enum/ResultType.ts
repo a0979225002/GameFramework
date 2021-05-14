@@ -1,6 +1,5 @@
-enum ResultType {
+export  enum ResultType {
     
     NoLine,
     
 }
-export {ResultType}

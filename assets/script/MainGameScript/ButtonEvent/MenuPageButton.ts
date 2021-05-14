@@ -1,7 +1,7 @@
 import AudioManager, {Effect, Music} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import ButtonMethod from "../../Framework/GlobalMethod/ButtonMethod";
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import {SceneDirection} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
 import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/AMenuDoubleButtonTemplate'
@@ -244,7 +244,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         //拿取初始的押住index
-        let betIndex = GameManager.instance.userBetPoint.LineBet;
+        let betIndex = SlotGameManager.instance.userBetPoint.LineBet;
 
         //更新當前押注倍率
         this.lineBetLabelH.string =

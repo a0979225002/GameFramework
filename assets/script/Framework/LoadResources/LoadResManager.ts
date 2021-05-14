@@ -1,3 +1,4 @@
+import {IConfigManager} from "../Config/IConfigManager";
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
 import Util from "../GlobalMethod/Util";
@@ -7,6 +8,9 @@ import ILoadResManager from "./ILoad/ILoadResManager";
 import LoadTypeHandler from "./LoadTypeHandler";
 
 export default class LoadResManager implements ILoadResManager {
+
+    private configManager: IConfigManager;
+    private static _instance: ILoadResManager;
 
     /**
      * 初始加載物件進度
@@ -54,8 +58,8 @@ export default class LoadResManager implements ILoadResManager {
     private beforeProgress: number;
     private allProgressEndCount: number;
 
-    private constructor() {
-
+    private constructor(configManager: IConfigManager) {
+        this.configManager = configManager;
         this.loadTypeHandler = new LoadTypeHandler();                       //配發要用哪個class執行載入動作
         this._initialLoadState = new Map<string, number>();                 //主加載狀態
         this._secondaryLoadState = new Map<string, number>();               //次加載狀態
@@ -73,13 +77,20 @@ export default class LoadResManager implements ILoadResManager {
         this.allProgressEndCount = 0;                                       //因精準度問題,額外判斷是否所有資源都加載完畢
     }
 
-    private static _instance: LoadResManager;
+
+    //單例
+    public static setInstance(configManager: IConfigManager) {
+        if (!this._instance) {
+            this._instance = new LoadResManager(configManager);
+        }
+    }
+
 
     //初始化,只讓一個專案只有一次產生此class
-    public static get instance() {
-
+    public static get instance(): ILoadResManager {
         if (!this._instance) {
-            this._instance = new LoadResManager();
+            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "該類尚未實例化");
+            return;
         }
         return this._instance;
     }
@@ -211,7 +222,7 @@ export default class LoadResManager implements ILoadResManager {
 
         if (resName) {
             if (this.callFun.has(resName)) {
-                ErrorManager.instance.executeError(ErrorType.loadErrorFW, "如果拿取該資源進度,請勿重複callback");
+                ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "如果拿取該資源進度,請勿重複callback");
                 return;
             }
 
@@ -219,7 +230,7 @@ export default class LoadResManager implements ILoadResManager {
             return this;
         } else {
             if (this.callFun.has(null)) {
-                ErrorManager.instance.executeError(ErrorType.loadErrorFW, "如果拿取總進度,請勿在之前資源尚未加載完前,重複callback");
+                ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "如果拿取總進度,請勿在之前資源尚未加載完前,重複callback");
                 return;
             }
             this.callFun.set(null, callFun);

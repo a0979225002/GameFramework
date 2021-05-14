@@ -1,19 +1,14 @@
 import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
-import AMainGameFlowTemplate from '../../Framework/Template/Process/AMainGameFlowTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import FreeOpenController from "../../MainGameScript/Controller/FreeOpenController";
 import {socketJS} from '../../Socket/Socket'
 
-export default class MainGameNormalProcessTest extends AMainGameFlowTemplate {
+export default class MainGameNormalProcessTest implements ISlotProcedureExecutionContainer{
 
     private slotStyle: NoLineSlot;
-
-    constructor() {
-        super();
-    }
 
     private onCreate() {
         if (!this.slotStyle) {
@@ -24,7 +19,7 @@ export default class MainGameNormalProcessTest extends AMainGameFlowTemplate {
     public onCustomizeEnd(): Promise<void> {
 
         if (WebResponseManager.instance.result.FreeSpinCount != 0) {
-            GameManager.instance.gameState = GameState.FREEING;
+            SlotGameManager.instance.gameState = GameState.FREEING;
         }
 
         return Promise.resolve(undefined);
@@ -35,7 +30,7 @@ export default class MainGameNormalProcessTest extends AMainGameFlowTemplate {
         return new Promise(async (resolve) => {
             this.onCreate();
 
-            socketJS.SFSToServer("Bet", GameManager.instance.userBetPoint);
+            socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
             //測試BigWin
             //WinLevelController.showWinAboveState(1580,resolve);
 
@@ -48,7 +43,7 @@ export default class MainGameNormalProcessTest extends AMainGameFlowTemplate {
 
             let a = setInterval(() => {
 
-                if (GameManager.instance.isResultOk) {
+                if (SlotGameManager.instance.isResultOk) {
 
                     clearInterval(a);
                     resolve();
@@ -72,6 +67,9 @@ export default class MainGameNormalProcessTest extends AMainGameFlowTemplate {
 
     public onSineInGrid(): Promise<void> {
         return Promise.resolve(undefined);
+    }
+
+    onChangeStatus() {
     }
 
 

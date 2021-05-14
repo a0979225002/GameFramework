@@ -1,6 +1,6 @@
 import {Music, Effect} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
@@ -38,7 +38,7 @@ class FreeOpenController extends AGenericTemplate {
     @Effect("GetWin")
     private freeCountAnimation() {
 
-        if (GameManager.instance.isAutoState && GameManager.instance.autoCount != AutoType.freeEnd) {
+        if (SlotGameManager.instance.isAutoState && SlotGameManager.instance.autoType != AutoType.freeEnd) {
             self.timer = 3;
         } else {
             self.timer = 10;

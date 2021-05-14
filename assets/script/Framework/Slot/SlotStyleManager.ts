@@ -1,3 +1,4 @@
+import {IConfigManager} from "../Config/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import ASlot from './ASlot'
@@ -20,11 +21,15 @@ export interface StyleData {
 
 export default class SlotStyleManager implements ISlotStyleManager {
 
+    private static _instance: ISlotStyleManager;
+    private configManager: IConfigManager;
     public readonly style: StyleData;
-    private static _instance: SlotStyleManager;
     private _slot: ASlot;
 
-    private constructor() {
+    private constructor(configManager: IConfigManager) {
+
+        this.configManager = configManager;
+
         this.style = {
 
             slotTemplate: null,
@@ -42,14 +47,18 @@ export default class SlotStyleManager implements ISlotStyleManager {
 
         };
     }
+    //單例
+    public static setInstance(configManager: IConfigManager) {
+        if (!this._instance) {
+            this._instance = new SlotStyleManager(configManager);
+        }
+    }
 
     //單例
-    public static get instance(): SlotStyleManager {
-
+    public static get instance(): ISlotStyleManager {
         if (!this._instance) {
-
-            this._instance = new this();
-
+            ErrorManager.instance.executeError(ErrorType.SlotStyleFW, "該類尚未實例化");
+            return;
         }
         return this._instance;
     }
@@ -203,7 +212,7 @@ export default class SlotStyleManager implements ISlotStyleManager {
      */
     build() {
         if (!this.style.slotTemplate) {
-            ErrorManager.instance.executeError(ErrorType.undefinedFW, "Slot Template 未賦予,需幫定或實做一個SlotTemplate")
+            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "Slot Template 未賦予,需幫定或實做一個SlotTemplate")
             return;
         }
         this._slot = new this.style.slotTemplate(this.style);

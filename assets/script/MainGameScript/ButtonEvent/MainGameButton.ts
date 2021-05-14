@@ -5,7 +5,7 @@ import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
 import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
 import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import AMainGameDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/AMainGameDoubleButtonTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
@@ -89,7 +89,7 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
 
         self = this;
         this.buttonDisable();
-        this.autoCount = GameManager.instance.autoCount;
+        this.autoCount = SlotGameManager.instance.autoType;
         this.buttonSpriteFrame = {
             SPEED_ON: this.buttonSpriteAtlas.getSpriteFrame("FastOn"),
             SPEED_OFF: this.buttonSpriteAtlas.getSpriteFrame("FastOff"),
@@ -149,7 +149,7 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
             this.startAutoNodeH.active = false;
             this.startAutoNodeV.active = false;
 
-            if (GameManager.instance.gameState == GameState.PLAYING) {
+            if (SlotGameManager.instance.gameState == GameState.PLAYING) {
                 this.startButtonImgH.spriteFrame = this.buttonSpriteFrame.PLAYING;
                 this.startButtonImgV.spriteFrame = this.buttonSpriteFrame.PLAYING;
             }
@@ -256,16 +256,16 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
         cc.Tween.stopAllByTarget(this.startButtonImgV.node);
         cc.Tween.stopAllByTarget(this.startButtonImgH.node);
 
-        if (!GameManager.instance.isAutoState) {
+        if (!SlotGameManager.instance.isAutoState) {
             this.startButtonImgH.spriteFrame = this.buttonSpriteFrame.PLAYING;
             this.startButtonImgV.spriteFrame = this.buttonSpriteFrame.PLAYING;
             AudioManager.instance.effectPlay("BtnClick");
             return;
         }
 
-        if (GameManager.instance.isAutoState &&
-            GameManager.instance.autoCount != AutoType.auto &&
-            GameManager.instance.autoCount != AutoType.freeEnd
+        if (SlotGameManager.instance.isAutoState &&
+            SlotGameManager.instance.autoType != AutoType.auto &&
+            SlotGameManager.instance.autoType != AutoType.freeEnd
         ) {
 
             this.autoCount--;
@@ -280,10 +280,10 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
      * @protected
      */
     protected endEvent() {
-        if (GameManager.instance.isAutoState && this.autoCount == 0) {
+        if (SlotGameManager.instance.isAutoState && this.autoCount == 0) {
             EventManager.instance.setEvent(EventManager.gameTarget, GameEventType.AUTO);
         }
-        if (!GameManager.instance.isAutoState) {
+        if (!SlotGameManager.instance.isAutoState) {
             this.buttonStanByAnimation(this.startButtonImgV.node);
             this.buttonStanByAnimation(this.startButtonImgH.node);
         }
@@ -340,7 +340,7 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
             );
         }
 
-        let nowBetIndex = GameManager.instance.userBetPoint.LineBet;
+        let nowBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
         let initialBetImg = this.betButtonToArray[nowBetIndex].getComponent(cc.Button);
 
         initialBetImg.normalColor = this.color.YELLOW;
@@ -369,7 +369,7 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
      * @private
      */
     private userTotalBetEventListener() {
-        GameManager.instance.userTotalBetEventListener((beforeIndex, afterIndex) => {
+        SlotGameManager.instance.userTotalBetEventListener((beforeIndex, afterIndex) => {
             this.updateTotalBetEvent(beforeIndex, afterIndex);
         })
     }

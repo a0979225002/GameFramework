@@ -2,7 +2,7 @@ import AudioManager from '../../Audio/AudioManager'
 import {GameEventType} from '../../Listener/Enum/gameEventType'
 import EventManager from '../../Listener/EventManager'
 import {GameState} from '../../Procedure/Enum/GameState'
-import GameManager from '../../Procedure/GameManager'
+import SlotGameManager from '../../Procedure/SlotGameManager'
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 import ASlot from '../ASlot'
 import {StyleData} from '../SlotStyleManager'
@@ -175,7 +175,7 @@ export default class NoLineSlot extends ASlot {
                 this.updateGridPosition(this.gridNodeToMap.get(index), index);
 
                 //如果server有回傳答案,將可進入停軸判斷
-                if (GameManager.instance.isResultOk) {
+                if (SlotGameManager.instance.isResultOk) {
 
                     numberOfTimes++;
 
@@ -319,7 +319,7 @@ export default class NoLineSlot extends ASlot {
         let lookAt: Array<number>;
         let isShowLookAt: boolean;
 
-        if (GameManager.instance.gameState === GameState.FREEING) {
+        if (SlotGameManager.instance.gameState === GameState.FREEING) {
             lookAt = WebResponseManager.instance.freeResult.LookAt;
         } else {
             lookAt = WebResponseManager.instance.result.LookAt;
@@ -373,7 +373,7 @@ export default class NoLineSlot extends ASlot {
 
         let gridAnswer: Array<number>;
 
-        if (GameManager.instance.gameState === GameState.FREEING) {
+        if (SlotGameManager.instance.gameState === GameState.FREEING) {
             gridAnswer = WebResponseManager.instance.freeResult.Grid;
         } else {
             gridAnswer = WebResponseManager.instance.result.Grid;
@@ -412,7 +412,7 @@ export default class NoLineSlot extends ASlot {
 
         let gridAnswer: Array<number>;
 
-        if (GameManager.instance.gameState === GameState.FREEING) {
+        if (SlotGameManager.instance.gameState === GameState.FREEING) {
             gridAnswer = WebResponseManager.instance.freeResult.Grid;
         } else {
             gridAnswer = WebResponseManager.instance.result.Grid;

@@ -1,7 +1,7 @@
-enum GameState {
+export enum GameState {
 
     /**
-     * 無狀態,待機押注狀態...
+     * 無狀態,待機狀態...
      * @type {GameState.STANDBY}
      */
     STANDBY = 'STANDBY',
@@ -20,26 +20,8 @@ enum GameState {
 
 }
 
-export {GameState};
-
-enum GameType {
+export enum GameType {
 
     FREE = 'FREE',
     NORMAL = 'NORMAL',
-
 }
-
-export {GameType};
-
-enum ProcedureState {
-
-    customizeStart = 'customizeStart',
-    sineInGrid = 'sineInGrid',
-    runGrid = 'runGrid',
-    sineOutGrid = 'sineInGrid',
-    customizeEnd = 'customizeStart',
-    showAnswer = 'showAnswer',
-
-}
-
-export {ProcedureState};

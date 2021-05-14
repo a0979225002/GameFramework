@@ -1,7 +1,7 @@
 import {Effect} from '../../Framework/Audio/AudioManager'
 import LoadResManager from '../../Framework/LoadResources/LoadResManager'
 import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import GameManager from '../../Framework/Procedure/GameManager'
+import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import ASlotInitializeTemplate from '../../Framework/Template/Slot/ASlotInitializeTemplate'
@@ -143,7 +143,7 @@ class SlotController extends ASlotInitializeTemplate {
 
         if (self.timer) clearInterval(self.timer);
 
-        if (GameManager.instance.gameState == GameState.FREEING) {
+        if (SlotGameManager.instance.gameState == GameState.FREEING) {
             self.answerToArray = WebResponseManager.instance.freeResult.Grid;
         } else {
             self.answerToArray = WebResponseManager.instance.result.Grid;

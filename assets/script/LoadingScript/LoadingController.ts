@@ -123,12 +123,6 @@ export default class LoadingController extends ALoadingTemplate {
         LoadResManager.instance
             .loadBundle("music2", LoadType.music, "music")
             .loadBundle("prefab", LoadType.prefab, "prefab")
-            .callback((progress)=>{
-                cc.log("music2",progress);
-            },"music2")
-            .callback((progress)=>{
-                cc.log("prefab",progress);
-            },"prefab")
     }
 
     /**

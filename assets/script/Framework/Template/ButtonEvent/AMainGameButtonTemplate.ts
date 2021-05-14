@@ -1,5 +1,5 @@
 import ButtonMethod from '../../GlobalMethod/ButtonMethod'
-import GameManager from '../../Procedure/GameManager'
+import SlotGameManager from '../../Procedure/SlotGameManager'
 
 const {ccclass, property} = cc._decorator;
 
@@ -52,13 +52,13 @@ export default abstract class AMainGameButtonTemplate extends cc.Component {
 
     autoButtonEventListener() {
 
-        GameManager.instance.updateAuto();
+        SlotGameManager.instance.updateAuto();
 
     }
 
     speedUpButtonEventListener() {
 
-        GameManager.instance.updateSpeed();
+        SlotGameManager.instance.updateSpeed();
 
     }
 

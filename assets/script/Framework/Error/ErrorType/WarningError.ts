@@ -18,10 +18,10 @@ export default class WarningError {
         //確認當前有無該物件,如無該物件,將會throw中斷
 
         if (!ErrorManager.instance.warningNode)
-            ErrorManager.instance.executeError(ErrorType.undefinedFW, "ErrorManager warningNode為空");
+            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager warningNode為空");
 
         if (!ErrorManager.instance.warningLabel)
-            ErrorManager.instance.executeError(ErrorType.undefinedFW, "ErrorManager warningLabel為空");
+            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager warningLabel為空");
 
         if (ErrorManager.instance.warningDelayTime == 0) {
 
@@ -51,16 +51,16 @@ export default class WarningError {
 
         //確認當前有無該物件,如無該物件,將會throw中斷
         if (!ErrorManager.instance.errorNode)
-            ErrorManager.instance.executeError(ErrorType.undefinedFW, "ErrorManager errorNode為空");
+            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager errorNode為空");
 
         if (!ErrorManager.instance.errorLabel)
-            ErrorManager.instance.executeError(ErrorType.undefinedFW, "ErrorManager errorLabel為空");
+            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager errorLabel為空");
 
         if (!ErrorManager.instance.errorButton)
-            ErrorManager.instance.executeError(ErrorType.undefinedFW, "ErrorManager errorButton為空");
+            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager errorButton為空");
 
         if (ErrorManager.instance.errorDelayTime == 0) {
-            ErrorManager.instance.executeError(ErrorType.undefinedFW, "ErrorManager errorDelayTime為空 無法顯示");
+            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager errorDelayTime為空 無法顯示");
         }
 
         if (ErrorManager.errorState) return;

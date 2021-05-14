@@ -2,7 +2,7 @@ import AudioManager from '../../Audio/AudioManager'
 import {AutoType} from '../../Config/Enum/ConfigEnum'
 import {GameEventType} from '../../Listener/Enum/gameEventType'
 import EventManager from '../../Listener/EventManager'
-import GameManager from '../../Procedure/GameManager'
+import SlotGameManager from '../../Procedure/SlotGameManager'
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 
 const {ccclass} = cc._decorator;
@@ -34,7 +34,7 @@ export default abstract class AMenuButtonEvent extends cc.Component {
 
     protected betUpEventListener() {
 
-        let beforeBetIndex = GameManager.instance.userBetPoint.LineBet;
+        let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
         let afterBetIndex = ++beforeBetIndex;
         if (afterBetIndex > WebResponseManager.instance.tableInfo.LineBet.length - 1) {
             afterBetIndex = 0;
@@ -47,7 +47,7 @@ export default abstract class AMenuButtonEvent extends cc.Component {
 
     protected betDownEventListener() {
 
-        let beforeBetIndex = GameManager.instance.userBetPoint.LineBet;
+        let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
         let afterBetIndex = --beforeBetIndex;
 
         if (afterBetIndex < 0) {
@@ -62,7 +62,7 @@ export default abstract class AMenuButtonEvent extends cc.Component {
 
     private totalBetChangeEventListener() {
 
-        GameManager.instance.userTotalBetEventListener((beforeIndex, afterIndex) => {
+        SlotGameManager.instance.userTotalBetEventListener((beforeIndex, afterIndex) => {
 
             this.totalBetChangeEvent(beforeIndex, afterIndex);
 
@@ -78,7 +78,7 @@ export default abstract class AMenuButtonEvent extends cc.Component {
 
     private autoEventListener() {
 
-        GameManager.instance.autoStateEventListener((isAutomaticState, beforeAutoCount, afterAutoCount) => {
+        SlotGameManager.instance.autoStateEventListener((isAutomaticState, beforeAutoCount, afterAutoCount) => {
 
             this.autoEvent(beforeAutoCount, afterAutoCount);
 

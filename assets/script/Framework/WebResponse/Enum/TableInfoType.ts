@@ -1,8 +1,5 @@
-enum TableInfoType {
+export enum TableInfoType {
 
     NoLine,
 
-
 }
-
-export {TableInfoType};

@@ -109,7 +109,7 @@ export interface IConfigManager {
     resultType: ResultType;
 
     /**
-     * server回傳的ResultType類型,做綁定 model用
+     * server回傳的FreeResultType類型,做綁定 model用
      * @type {FreeResultType}
      * @private
      */
@@ -125,116 +125,121 @@ export interface IConfigManager {
 
     /**
      * 添加MainScene 名稱
-     * @param name
+     * @param {string} name : mainScene 檔案名稱
+     * @returns {this}
      */
     setMainScene(name: string): this;
 
     /**
      * 添加遊戲名稱
-     * @param name
+     * @param {number} name : 遊戲名稱
+     * @returns {this}
      */
     setGameNumber(name: number): this;
 
     /**
-     * 設置初始默認音量
-     * @param number
+     * 設置初始預設音量
+     * @param {number} number : 音量 0~1
+     * @returns {this}
      */
     setMusicVolume(number: number): this;
 
     /**
-     * 設置初始默認效果音量
-     * @param number
+     * 設置初始預設效果音量
+     * @param {number} number : 音量 0~1
+     * @returns {this}
      */
     setEffectVolume(number: number): this;
 
     /**
      * 設置初始User倍率
-     * @param lineBet Object | number
+     * @param {UserBetPoint | number} lineBet : 參數可以直接使用倍率的index or 給予 實例化的UserBetPoint Object
+     * @returns {this}
      */
-    setUserBet(lineBet: object | number): this;
+    setUserBet(lineBet: UserBetPoint | number): this;
 
     /**
-     * 開始Debug模式
-     * @param use
-     */
-    setFrameWorkDebug(use: boolean): this;
-
-    /**
-     * 添加Auto狀態
-     * @param type
+     * 初始遊戲最初的auto次數
+     * @param {AutoType} type
+     * @returns {this}
      */
     setAutoCont(type: AutoType): this;
 
     /**
      * 初始要從外部拿取資源的URL
-     * @param url
+     * 注意:此URL為開發中生效
+     * @param {string} url : 獲取外部資源的URL
+     * @returns {this}
      */
     setExternallyLoadURL(url: string): this;
 
     /**
-     * 貫穿整個遊戲,到destroy前遊戲語系(test 使用,正式上線,會拿取 webResponse 資源)
-     * @param languageType
+     * 貫穿整個遊戲,到destroy前遊戲語系
+     * 注意:當前使用無效
+     * @param {LanguageType} languageType : 語系
+     * @returns {this}
      */
     setLanguage(languageType: LanguageType): this;
 
     /**
-     * 自定義,遊戲初始背景音量
-     * @param volume
-     */
-    setMusicVolume(volume: number): this;
-
-    /**
-     * 自定義,遊戲初始效果音量
-     * @param volume
-     */
-    setEffectVolume(volume: number): this;
-
-    /**
-     * 初始當前遊戲Auto狀態
-     * @param isAuto
+     * 初始進入遊戲時Auto狀態
+     * @param {boolean} isAuto : 是否在遊戲進入後開啟auto狀態
+     * @returns {this}
      */
     setAutoState(isAuto: boolean): this;
 
     /**
-     * 初始當前加速狀態
-     * @param isSpeedUp
+     * 是否在遊戲進入後是加速的狀態
+     * @param {boolean} isSpeedUp
+     * @returns {this}
      */
     setSpeedState(isSpeedUp: boolean): this;
 
     /**
-     * 初始是否打開背景音樂
-     * @return {this}
-     * @param OnMute
+     * 初始將背景音樂靜音
+     * @param {boolean} OnMute : 是否靜音
+     * @returns {this}
      */
     setMusicOnMute(OnMute: boolean): this;
 
     /**
-     * 初始是否打開效果音樂
-     * @return {this}
-     * @param OnMute
+     * 初始是否將效果音效靜音
+     * @param {boolean} OnMute : 是否靜音
+     * @returns {this}
      */
     setEffectOnMute(OnMute: boolean): this;
 
     /**
      * server回傳的TableInfoType類型,做綁定 model用
      * @param {TableInfoType} tableInfoType
+     * @returns {this}
      */
     setTableInfo(tableInfoType: TableInfoType);
 
     /**
-     *  server回傳的FreeResult類型,做綁定 model用
-     * @param {FreeResultType} freeType
-     */
-    setFreeResult(freeType: FreeResultType);
-
-    /**
-     *  server回傳的ResultType類型,做綁定 model用
+     * server回傳的ResultType類型,做綁定 model用
      * @param {ResultType} resultType
+     * @returns {this}
      */
     setBetResult(resultType: ResultType);
 
     /**
-     * 初始所有manager();
+     * server回傳的FreeResultType類型,做綁定 model用
+     * @param {FreeResultType} freeType
+     * @returns {this}
+     */
+    setFreeResult(freeType: FreeResultType);
+
+    /**
+     * 是否要開啟Framework Debug模式
+     * 注意:遊戲正式上線須關閉
+     * @param {boolean} use
+     * @returns {this}
+     */
+    setFrameWorkDebug(use: boolean): this;
+
+    /**
+     * 實例化所有Manager class;
      */
     builder();
 

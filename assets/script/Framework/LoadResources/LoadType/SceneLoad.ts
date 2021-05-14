@@ -12,7 +12,7 @@ export default class SceneLoad extends ALoadType {
     setResToManager(key: string, asset: any) {
 
         if (LoadResManager.instance.scriptRes.has(key))
-            ErrorManager.instance.executeError(ErrorType.loadErrorFW, `${key} 鍵值重複,請檢查該資源是否已加載過`)
+            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `${key} 鍵值重複,請檢查該資源是否已加載過`)
 
         LoadResManager.instance.sceneRes.set(key, asset);
 

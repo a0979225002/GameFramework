@@ -48,10 +48,10 @@ export default class LoadTypeHandler implements ILoadFactory {
     private checkRepeatTheName(name:string){
 
         if (LoadResManager.instance.initialLoadState.has(name)) {
-            ErrorManager.instance.executeError(ErrorType.loadErrorFW, `${name} 此(主資源)已載入過了,或名稱重複,請檢察`);
+            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `${name} 此(主資源)已載入過了,或名稱重複,請檢察`);
         }
         if (LoadResManager.instance.secondaryLoadState.has(name)) {
-            ErrorManager.instance.executeError(ErrorType.loadErrorFW, `${name} 此(次資源)已載入過了,或名稱重複,請檢察`);
+            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `${name} 此(次資源)已載入過了,或名稱重複,請檢察`);
         }
     }
 

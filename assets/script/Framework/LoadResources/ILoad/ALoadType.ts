@@ -37,9 +37,9 @@ export default abstract class ALoadType implements ILoadType {
 
     private loadResCallBack(error: Error, assets: [] | cc.SceneAsset) {
         if (error) {
-            ErrorManager.instance.executeError(ErrorType.loadErrorFW, error);
+            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, error);
         } else if (!(assets instanceof cc.SceneAsset) && assets.length == 0) {
-            ErrorManager.instance.executeError(ErrorType.loadErrorFW, `無載入任何資源 ${this.url} `);
+            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `無載入任何資源 ${this.url} `);
         }
 
         this.setResToManager(this.dataName, assets);

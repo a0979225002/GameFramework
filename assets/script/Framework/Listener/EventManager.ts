@@ -1,3 +1,6 @@
+import {IConfigManager} from "../Config/IConfigManager";
+import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
+import ErrorManager from "../Error/ErrorManager";
 import {GameEventType} from './Enum/gameEventType'
 import {ServerEventType} from './Enum/ServerEventType'
 import IEventManager from './IEventManager'
@@ -5,6 +8,7 @@ import IEventManager from './IEventManager'
 export default class EventManager implements IEventManager {
 
     private static _instance: IEventManager;
+    private configManager: IConfigManager;
 
     /**
      * 事件總數量
@@ -25,8 +29,9 @@ export default class EventManager implements IEventManager {
      */
     private readonly _eventsCurrentlyBeing: Map<string, ServerEventType | GameEventType>
 
-    private constructor() {
+    private constructor(configManager: IConfigManager) {
 
+        this.configManager = configManager;
         this._eventCount = 0;
         this._eventsCurrentlyBeing = new Map<string, ServerEventType | GameEventType>();
         EventManager.serverTarget = new cc.EventTarget();
@@ -35,12 +40,18 @@ export default class EventManager implements IEventManager {
     }
 
     //單例
+    public static setInstance(configManager: IConfigManager) {
+        if (!this._instance) {
+            this._instance = new EventManager(configManager);
+        }
+    }
+
+    //單例
     public static get instance(): IEventManager {
 
         if (!this._instance) {
-
-            this._instance = new EventManager();
-
+            ErrorManager.instance.executeError(ErrorType.ListenerFW, "該類尚未實例化");
+            return;
         }
 
         return this._instance;

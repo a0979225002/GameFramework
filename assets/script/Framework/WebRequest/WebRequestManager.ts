@@ -1,7 +1,11 @@
-export default class WebRequestManager implements IServerManager {
+import {IConfigManager} from "../Config/IConfigManager";
+import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
+import ErrorManager from "../Error/ErrorManager";
 
-    private static _instance: WebRequestManager;
+export default class WebRequestManager implements IWebRequestManager {
 
+    private static _instance: IWebRequestManager;
+    private configManager: IConfigManager;
     private _CocosDebug: boolean;
     private _CocosDebug2: number;
     private _LoginData: string;
@@ -28,47 +32,50 @@ export default class WebRequestManager implements IServerManager {
     private _whereRoom: string;
 
 
-    // constructor() {
-    //
-    //     this.serverHost = "10.10.0.48";
-    //
-    //     this.CocosDebug = ;
-    //     this.CocosDebug2 = CocosDebug2;
-    //     this.LoginData = LoginData;
-    //     this.LoginState = LoginState;
-    //     this.Ratio = Ratio;
-    //     this.UserLanguage = UserLanguage;
-    //     this.WarningText = WarningText;
-    //     this.account = account;
-    //     this.backHomeURL = backHomeURL;
-    //     this.loadLanguage = loadLanguage;
-    //     this.loadLanguageCount = loadLanguageCount;
-    //     this.loadLanguageDefaultURL = loadLanguageDefaultURL;
-    //     this.password = password;
-    //     this.serverGameGroupID = serverGameGroupID;
-    //     this.serverPort = serverPort;
-    //     this.serverZone = serverZone;
-    //     this.userChannel_Id = userChannel_Id;
-    //     this.userCode = userCode;
-    //     this.userGameMaker = userGameMaker;
-    //     this.userGame_id = userGame_id;
-    //     this.userLang = userLang;
-    //     this.userToken = userToken;
-    //     this.whereRoom = whereRoom;
-    // }
+    constructor(configManager: IConfigManager) {
 
+        // this.serverHost = "10.10.0.48";
+        // this.CocosDebug = ;
+        // this.CocosDebug2 = CocosDebug2;
+        // this.LoginData = LoginData;
+        // this.LoginState = LoginState;
+        // this.Ratio = Ratio;
+        // this.UserLanguage = UserLanguage;
+        // this.WarningText = WarningText;
+        // this.account = account;
+        // this.backHomeURL = backHomeURL;
+        // this.loadLanguage = loadLanguage;
+        // this.loadLanguageCount = loadLanguageCount;
+        // this.loadLanguageDefaultURL = loadLanguageDefaultURL;
+        // this.password = password;
+        // this.serverGameGroupID = serverGameGroupID;
+        // this.serverPort = serverPort;
+        // this.serverZone = serverZone;
+        // this.userChannel_Id = userChannel_Id;
+        // this.userCode = userCode;
+        // this.userGameMaker = userGameMaker;
+        // this.userGame_id = userGame_id;
+        // this.userLang = userLang;
+        // this.userToken = userToken;
+        // this.whereRoom = whereRoom;
+    }
+
+    //單例
+    public static setInstance(configManager: IConfigManager) {
+        if (!this._instance) {
+            this._instance = new WebRequestManager(configManager);
+        }
+    }
 
     /**
      * 單例模式,一個遊戲開始到結束,只有一個ServerManager
      */
-    public static get instance(): WebRequestManager {
+    public static get instance(): IWebRequestManager {
 
         if (!this._instance) {
-
-            this._instance = new WebRequestManager();
+            ErrorManager.instance.executeError(ErrorType.WebRequestErrorFW, "該類尚未實例化");
+            return;
         }
-
-
         return this._instance;
     }
 
