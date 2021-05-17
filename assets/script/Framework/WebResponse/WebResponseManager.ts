@@ -1,20 +1,21 @@
-import {IConfigManager} from "../Config/IConfigManager";
+import {ISlotConfigManager} from "../Config/IConfig/ISlotConfigManager";
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
-import IResponseHandler from './IWebResponse/IResponseHandler'
+import IResponseHandler from './ISlotWebResponse/IResponseHandler'
 import ResponseHandler from './ResponseHandler'
 
 export class WebResponseManager implements IWebResponseManager {
 
     private static _instance: IWebResponseManager;
-    private configManager: IConfigManager;
+    private configManager: ISlotConfigManager;
     private _tableInfo: ITableInfoModel;
-    private _result: IResultModel;
+    private _result: INoLineResultModel;
     private _freeResult: IFreeResultModel;
     private readonly _handler: IResponseHandler;
 
-    private constructor(configManager: IConfigManager) {
-        this._handler = new ResponseHandler();
+    private constructor(configManager: ISlotConfigManager) {
+
+        this._handler = new ResponseHandler(this);
         this.configManager = configManager;
         this._handler.setTableInfo(this.configManager.tableInfoType);
         this._handler.setResultModel(this.configManager.resultType);
@@ -22,7 +23,7 @@ export class WebResponseManager implements IWebResponseManager {
     }
 
     //單例
-    public static setInstance(configManager: IConfigManager) {
+    public static setInstance(configManager: ISlotConfigManager) {
         if (!this._instance) {
             this._instance = new WebResponseManager(configManager);
         }
@@ -49,7 +50,7 @@ export class WebResponseManager implements IWebResponseManager {
 
     }
 
-    public setResultModel(model: IResultModel) {
+    public setResultModel(model: INoLineResultModel) {
 
         this._result = model;
 

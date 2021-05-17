@@ -3,13 +3,18 @@ import ErrorManager from '../Error/ErrorManager'
 import {FreeResultType} from './Enum/FreeResultType'
 import {ResultType} from './Enum/ResultType'
 import {TableInfoType} from './Enum/TableInfoType'
-import IResponseHandler from './IWebResponse/IResponseHandler'
-import NoLineFreeResult from './Model/FreeResultType/NoLineFreeResult'
-import NoLineResult from './Model/ResultType/NoLineResult'
-import NoLineTableInfo from './Model/TableInfoType/NoLineTableInfo'
-import {WebResponseManager} from './WebResponseManager'
+import IResponseHandler from './ISlotWebResponse/IResponseHandler'
+import NoLineFreeResult from './Model/FreeResult/NoLineFreeResult'
+import NoLineResult from './Model/NormalResult/NoLineResult'
+import NoLineTableInfo from './Model/TableInfo/NoLineTableInfo'
 
 export default class ResponseHandler implements IResponseHandler {
+
+    private webResponseManager: IWebResponseManager;
+
+    constructor(webResponseManager: IWebResponseManager) {
+        this.webResponseManager = webResponseManager;
+    }
 
 
     setResultModel(resultType: ResultType) {
@@ -17,8 +22,7 @@ export default class ResponseHandler implements IResponseHandler {
         switch (resultType) {
 
             case ResultType.NoLine:
-                WebResponseManager.instance.setResultModel(new NoLineResult());
-
+                this.webResponseManager.setResultModel(new NoLineResult());
                 break;
             default:
                 ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, "尚未有此版resultModel 請詢問創作者")
@@ -32,7 +36,7 @@ export default class ResponseHandler implements IResponseHandler {
         switch (freeResultType) {
 
             case FreeResultType.NoLine:
-                WebResponseManager.instance.setFreeResultModel(new NoLineFreeResult());
+                this.webResponseManager.setFreeResultModel(new NoLineFreeResult());
                 break;
             default:
                 ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, "尚未有此版freeResultModel 請詢問創作者");
@@ -44,8 +48,7 @@ export default class ResponseHandler implements IResponseHandler {
 
         switch (tableInfoType) {
             case TableInfoType.NoLine:
-                WebResponseManager.instance.setTableInfoModel(new NoLineTableInfo());
-
+                this.webResponseManager.setTableInfoModel(new NoLineTableInfo());
                 break;
             default:
                 ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, "尚未有此版freeResultModel 請詢問創作者");

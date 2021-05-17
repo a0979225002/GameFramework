@@ -1,13 +1,16 @@
 import AudioManager from '../Framework/Audio/AudioManager'
 import {AudioStateType} from "../Framework/Audio/Enum/AudioStateType";
 import LoadResManager from '../Framework/LoadResources/LoadResManager'
-import {GameType} from '../Framework/Procedure/Enum/GameState'
-import SlotGameProcess from '../Framework/Procedure/Procress/SlotGameProcess'
-import SlotGameManager from '../Framework/Procedure/SlotGameManager'
+import {GameType} from '../Framework/Process/Enum/GameState'
+import GameProcess from "../Framework/Process/Procress/GameProcess";
+import SlotGameProcess from '../Framework/Process/Procress/SlotGameProcess'
+import SlotGameManager from '../Framework/Process/SlotGameManager'
 import {SceneDirection} from '../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../Framework/Scene/SceneManager'
 import AMainGameSettingTemplate from '../Framework/Template/Setting/AMainGameSettingTemplate'
 import SocketSetting from "../Socket/SocketSetting";
+import FreeProcessTest from "../Test/GameProcess/FreeProcessTest";
+import MainGameNormalProcessTest from "../Test/GameProcess/MainGameNormalProcess.test";
 import MainGameFreeProcess from './GameProcess/MainGameFreeProcess'
 import MainGameNormalProcess from "./GameProcess/MainGameNormalProcess";
 
@@ -134,9 +137,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         let freeContainer = new MainGameFreeProcess();
         let freeProcess = new SlotGameProcess(freeContainer);
 
-        let normalContainer = new MainGameNormalProcess();
-        let normalProcess = new SlotGameProcess(normalContainer);
-
         const freeP = freeProcess
             .onCustomizeStart()
             .onSineInGrid()
@@ -145,18 +145,35 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
             .onCustomizeEnd()
             .onChangeStatus();
 
-        const normalP = normalProcess
-            .onCustomizeStart()
-            .onSineInGrid()
-            .onRunning()
-            .onShowAnswer()
-            .onCustomizeEnd()
-            .onChangeStatus();
+        // let normalContainer = new MainGameNormalProcess();
+        // let normalProcess = new SlotGameProcess(normalContainer);
+        //
+        // const normalP = normalProcess
+        //     .onCustomizeStart()
+        //     .onSineInGrid()
+        //     .onRunning()
+        //     .onShowAnswer()
+        //     .onCustomizeEnd()
+        //     .onChangeStatus();
+
+        // SlotGameManager.instance
+        //     .setProcess(GameType.FREE, freeP)
+        //     .setProcess(GameType.NORMAL, normalP)
+        //     .setInitialProcess(normalP);
+
+        let testContainer = new FreeProcessTest();
+        let testProcess = new GameProcess(testContainer);
+
+        const testP =  testProcess
+            .onCreate()
+            .onExecution()
+            .onEnd()
+            .onChangeStatus()
 
         SlotGameManager.instance
             .setProcess(GameType.FREE, freeP)
-            .setProcess(GameType.NORMAL, normalP)
-            .setInitialProcess(normalP);
+            .setProcess(GameType.NORMAL, testP)
+            .setInitialProcess(testP);
     }
 
     /**

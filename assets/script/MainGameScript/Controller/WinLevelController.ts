@@ -2,8 +2,8 @@ import AudioManager, {Effect, Music, EffectStop} from '../../Framework/Audio/Aud
 import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
-import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
+import {GameState} from '../../Framework/Process/Enum/GameState'
+import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
 
@@ -233,13 +233,21 @@ class WinLevelController extends cc.Component {
      */
     userMoneyEventEmit(point) {
 
-        EventManager.instance.setEvent(
-            EventManager.gameTarget,
-            GameEventType.WIN_POINT,
-            point,
-            WebResponseManager.instance.result.BaseLevelWin
-        );
-
+        if(SlotGameManager.instance.gameState === GameState.PLAYING){
+            EventManager.instance.setEvent(
+                EventManager.gameTarget,
+                GameEventType.WIN_POINT,
+                point,
+                WebResponseManager.instance.result.BaseLevelWin
+            );
+        }else if(SlotGameManager.instance.gameState == GameState.FREEING){
+            EventManager.instance.setEvent(
+                EventManager.gameTarget,
+                GameEventType.WIN_POINT,
+                WebResponseManager.instance.freeResult.FreeSpinWin,
+                WebResponseManager.instance.freeResult.BaseLevelWin
+            );
+        }
         if (SlotGameManager.instance.gameState != GameState.FREEING) {
             EventManager.instance.setEvent(
                 EventManager.serverTarget,

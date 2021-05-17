@@ -1,9 +1,10 @@
-import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
+import {GameState, GameType} from '../../Framework/Process/Enum/GameState'
+import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import FreeOpenController from "../../MainGameScript/Controller/FreeOpenController";
+import WinLevelController from "../../MainGameScript/Controller/WinLevelController";
 import {socketJS} from '../../Socket/Socket'
 
 export default class MainGameNormalProcessTest implements ISlotProcedureExecutionContainer{
@@ -32,24 +33,14 @@ export default class MainGameNormalProcessTest implements ISlotProcedureExecutio
 
             socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
             //測試BigWin
-            //WinLevelController.showWinAboveState(1580,resolve);
+            WinLevelController.showWinAboveState(1580,resolve);
 
-            await FreeOpenController.showFreeOpeningAnimation(20);
-            cc.log("有來嗎???")
+            // await FreeOpenController.showFreeOpeningAnimation(20);
+            // cc.log("有來嗎???")
 
             //測試FreeEnd
 //            await FreeEndController.showFreeEnd(1500000.579,4);
 //            cc.log("我結束?")
-
-            let a = setInterval(() => {
-
-                if (SlotGameManager.instance.isResultOk) {
-
-                    clearInterval(a);
-                    resolve();
-                }
-            }, 0.5);
-
         });
     }
 
@@ -70,7 +61,11 @@ export default class MainGameNormalProcessTest implements ISlotProcedureExecutio
     }
 
     onChangeStatus() {
+        //如果一般模式中response的免費次數不等於0,進入free狀態
+        if (WebResponseManager.instance.result.FreeSpinCount > 0) {
+            SlotGameManager.instance.gameState = GameState.FREEING;
+            SlotGameManager.instance.changeProcess(GameType.FREE);
+            return;
+        }
     }
-
-
 }

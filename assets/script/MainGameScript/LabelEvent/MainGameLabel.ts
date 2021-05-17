@@ -2,8 +2,8 @@ import {Effect} from '../../Framework/Audio/AudioManager'
 import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
-import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
+import {GameState} from '../../Framework/Process/Enum/GameState'
+import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
@@ -157,26 +157,18 @@ class MainGameLabel extends AGenericTemplate {
     private updateWinPointLabelListener() {
 
         SlotGameManager.instance.userWinPointEventListener((winPoint: number, level: number) => {
-
+            cc.log(winPoint,level);
             let numberFormat = new Intl.NumberFormat().format(winPoint);
-
             this.winPointLabelV.string = String(numberFormat);
             this.winPointLabelH.string = String(numberFormat);
-
-
-            if (SlotGameManager.instance.gameState == GameState.FREEING) {
-
+            if (SlotGameManager.instance.gameState == GameState.FREEING && level == 0) {
                 winPoint = WebResponseManager.instance.freeResult.TotalWinPoint;
-
                 this.winEvent(winPoint);
-
                 return;
             }
-
             if (level == 0) {
                 this.winEvent(winPoint);
             }
-
         })
     }
 

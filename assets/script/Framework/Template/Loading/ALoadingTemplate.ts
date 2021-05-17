@@ -1,5 +1,5 @@
 import {socketJS} from '../../../Socket/Socket'
-import ConfigManager from '../../Config/ConfigManager'
+import SlotConfigManager from '../../Config/SlotConfigManager'
 import {ErrorType} from '../../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../../Error/ErrorManager'
 import {ServerEventType} from '../../Listener/Enum/ServerEventType'
@@ -56,9 +56,9 @@ export default abstract class ALoadingTemplate extends cc.Component implements I
     protected onLoad() {
 
         this._canPlayGame = false;          //由 Server TableInfo Event 改變狀態
-        this.tableInfoEvent.apply(this);    //TableInfo Event 事件
         this.configSetting();               //遊戲初始設定
-        socketJS.SFSLoad(ConfigManager.instance.gameNumber);
+        this.tableInfoEvent.apply(this);    //TableInfo Event 事件
+        socketJS.SFSLoad(SlotConfigManager.instance.gameNumber);
         ALoadingTemplate.updateUserIp();    //如果是正式上線,將自動更新拿取外部資源的IP
         this.onCreat();                     //自訂義初始 例:拿取node...
 
@@ -74,7 +74,7 @@ export default abstract class ALoadingTemplate extends cc.Component implements I
                     ? window.libraryPath.replace(/\/([^\/]+\/[^\/]+)$/, "")
                     : "../..";
             // 打包與測試讀取不同路徑
-            ConfigManager.instance.setExternallyLoadURL(path);
+            SlotConfigManager.instance.setExternallyLoadURL(path);
         }
     }
 

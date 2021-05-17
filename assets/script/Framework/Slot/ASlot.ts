@@ -1,6 +1,6 @@
 import {GameEventType} from '../Listener/Enum/gameEventType'
 import EventManager from '../Listener/EventManager'
-import SlotGameManager from '../Procedure/SlotGameManager'
+import SlotGameManager from '../Process/SlotGameManager'
 import {StyleData} from './SlotStyleManager'
 
 export default abstract class ASlot implements ISlot {
@@ -38,6 +38,10 @@ export default abstract class ASlot implements ISlot {
 
     }
 
+    /**
+     * 即停監聽事件
+     * @private
+     */
     private immediateStopEventListener() {
 
         EventManager.instance.gameEventListener(GameEventType.IMMEDIATE_STOP, () => {
@@ -47,6 +51,10 @@ export default abstract class ASlot implements ISlot {
         }, false);
     }
 
+    /**
+     * 加速按鈕監聽事件
+     * @private
+     */
     private speedUpEventListener() {
 
         EventManager.instance.gameEventListener(GameEventType.SPEED_UP, (speedState: boolean) => {
@@ -56,6 +64,7 @@ export default abstract class ASlot implements ISlot {
 
         }, false);
     }
+
 
     public abstract runSlotAnimation(): Promise<void>;
 

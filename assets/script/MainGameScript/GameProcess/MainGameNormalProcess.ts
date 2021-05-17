@@ -1,8 +1,8 @@
 import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
-import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
+import {GameState, GameType} from '../../Framework/Process/Enum/GameState'
+import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
@@ -11,7 +11,7 @@ import SlotController from '../Controller/SlotController'
 import WinLevelController from '../Controller/WinLevelController'
 import MainGameLabel from '../LabelEvent/MainGameLabel'
 
-export default class MainGameNormalProcess implements ISlotProcedureExecutionContainer{
+export default class MainGameNormalProcess implements ISlotProcedureExecutionContainer {
 
     private slotStyle: NoLineSlot;
 
@@ -25,10 +25,9 @@ export default class MainGameNormalProcess implements ISlotProcedureExecutionCon
         this.onCreate();
         return new Promise(async (resolve, reject) => {
             this.slotStyle.initializeState();
-
             MainGameLabel.remove();
             SlotController.closeWinGrid();
-
+            SlotGameManager.instance.gameState = GameState.PLAYING;
             resolve();
         });
     }
@@ -51,53 +50,28 @@ export default class MainGameNormalProcess implements ISlotProcedureExecutionCon
     public onShowAnswer(): Promise<void> {
         cc.log("onShowAnswer");
         return new Promise(async (resolve, reject) => {
-
             if (WebResponseManager.instance.result.TotalWinPoint != 0) {
-
                 SlotController.showWinGrid(WebResponseManager.instance.result.GridWin);
-
             }
-
             await this.checkWinPoint();
-
             resolve();
         });
     }
 
-    public onCustomizeEnd(): Promise<void> {
-        cc.log("onCustomizeEnd");
-        return new Promise(async (resolve, reject) => {
 
-            if (WebResponseManager.instance.result.FreeSpinCount != 0) {
-                SlotGameManager.instance.gameState = GameState.FREEING;
-            }
-
-            resolve();
-        });
+    onCustomizeEnd(): Promise<void> {
+        SlotGameManager.instance.gameState = GameState.STANDBY;
+        return Promise.resolve(undefined);
     }
+
 
     onChangeStatus() {
-
-        // private async checkNowState() {
-        //     if (WebResponseManager.instance.result.FreeSpinCount > 0) {
-        //         this.gameState = GameState.FREEING;
-        //         await this._freeProcess.start();
-        //
-        //     } else if (WebResponseManager.instance.freeResult.FreeToFree > 0) {
-        //
-        //         this.gameState = GameState.FREEING;
-        //         await this._freeProcess.start();
-        //
-        //     } else if (WebResponseManager.instance.freeResult.Count > 0) {
-        //
-        //         this.gameState = GameState.FREEING;
-        //         await this._freeProcess.start();
-        //
-        //     } else {
-        //         this.gameState = GameState.PLAYING;
-        //         await this._normalProcess.start();
-        //     }
-        // }
+        //如果一般模式中response的免費次數不等於0,進入free狀態
+        if (WebResponseManager.instance.result.FreeSpinCount > 0) {
+            SlotGameManager.instance.gameState = GameState.FREEING;
+            SlotGameManager.instance.changeProcess(GameType.FREE);
+            return;
+        }
     }
 
     private checkWinPoint(): Promise<void> {

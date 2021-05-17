@@ -1,6 +1,6 @@
 import {Music, Effect} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
-import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
+import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";

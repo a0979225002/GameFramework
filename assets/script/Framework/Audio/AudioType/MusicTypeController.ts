@@ -3,7 +3,6 @@ import ErrorManager from '../../Error/ErrorManager'
 import LoadResManager from '../../LoadResources/LoadResManager'
 
 enum MusicStateType{
-
     STOP = -1,      //無撥放
     PLAYING = 1,    //撥放中
     PAUSE = 2,      //暫停中

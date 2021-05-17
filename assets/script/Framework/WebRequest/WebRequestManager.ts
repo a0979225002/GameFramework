@@ -1,4 +1,4 @@
-import {IConfigManager} from "../Config/IConfigManager";
+import {IConfigManager} from "../Config/IConfig/IConfigManager";
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
 
@@ -32,7 +32,7 @@ export default class WebRequestManager implements IWebRequestManager {
     private _whereRoom: string;
 
 
-    constructor(configManager: IConfigManager) {
+    constructor() {
 
         // this.serverHost = "10.10.0.48";
         // this.CocosDebug = ;
@@ -60,21 +60,16 @@ export default class WebRequestManager implements IWebRequestManager {
         // this.whereRoom = whereRoom;
     }
 
-    //單例
-    public static setInstance(configManager: IConfigManager) {
-        if (!this._instance) {
-            this._instance = new WebRequestManager(configManager);
-        }
+    public static setInstance(configManager:IConfigManager){
+        //TODO
     }
 
     /**
      * 單例模式,一個遊戲開始到結束,只有一個ServerManager
      */
     public static get instance(): IWebRequestManager {
-
         if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.WebRequestErrorFW, "該類尚未實例化");
-            return;
+            this._instance = new WebRequestManager();
         }
         return this._instance;
     }

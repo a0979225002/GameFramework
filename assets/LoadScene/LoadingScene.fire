@@ -106,8 +106,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        640,
+        360,
         0,
         0,
         0,
@@ -266,7 +266,7 @@
       "array": [
         0,
         0,
-        410.59076292236284,
+        359.396496725097,
         0,
         0,
         0,
@@ -1865,13 +1865,10 @@
       },
       {
         "__id__": 72
-      },
-      {
-        "__id__": 73
       }
     ],
     "_prefab": {
-      "__id__": 74
+      "__id__": 73
     },
     "_opacity": 255,
     "_color": {
@@ -2744,33 +2741,6 @@
     },
     "_enabled": true,
     "_id": "71WUt9ypZE/ZX52BJP7aYb"
-  },
-  {
-    "__type__": "cc.Widget",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 49
-    },
-    "_enabled": true,
-    "alignMode": 0,
-    "_target": null,
-    "_alignFlags": 18,
-    "_left": 0,
-    "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
-    "_verticalCenter": 0,
-    "_horizontalCenter": 0,
-    "_isAbsLeft": true,
-    "_isAbsRight": true,
-    "_isAbsTop": true,
-    "_isAbsBottom": true,
-    "_isAbsHorizontalCenter": true,
-    "_isAbsVerticalCenter": true,
-    "_originalWidth": 0,
-    "_originalHeight": 0,
-    "_id": "8bqy0SXw1MPKuZRCQ7FE85"
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -2,7 +2,7 @@ import AudioManager from '../../Audio/AudioManager'
 import {AutoType} from '../../Config/Enum/ConfigEnum'
 import {GameEventType} from '../../Listener/Enum/gameEventType'
 import EventManager from '../../Listener/EventManager'
-import SlotGameManager from '../../Procedure/SlotGameManager'
+import SlotGameManager from '../../Process/SlotGameManager'
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 
 const {ccclass} = cc._decorator;

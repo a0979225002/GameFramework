@@ -1,8 +1,8 @@
 import AudioManager from '../../Audio/AudioManager'
 import {GameEventType} from '../../Listener/Enum/gameEventType'
 import EventManager from '../../Listener/EventManager'
-import {GameState} from '../../Procedure/Enum/GameState'
-import SlotGameManager from '../../Procedure/SlotGameManager'
+import {GameState} from '../../Process/Enum/GameState'
+import SlotGameManager from '../../Process/SlotGameManager'
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 import ASlot from '../ASlot'
 import {StyleData} from '../SlotStyleManager'
@@ -145,7 +145,6 @@ export default class NoLineSlot extends ASlot {
                     this.makeSlotAnimation(i, resolve);
                     return;
                 }
-
                 this.makeSlotAnimation(i);
             }
 

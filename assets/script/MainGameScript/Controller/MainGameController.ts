@@ -1,5 +1,5 @@
-import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
+import {GameState} from '../../Framework/Process/Enum/GameState'
+import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {SceneDirection} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
 

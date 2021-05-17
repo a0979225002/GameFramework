@@ -1,4 +1,4 @@
-import ConfigManager from '../Config/ConfigManager'
+import SlotConfigManager from '../Config/SlotConfigManager'
 import SceneManager from './SceneManager'
 
 export default class SceneListener {
@@ -34,7 +34,7 @@ export default class SceneListener {
                     resolve();
                 }, time);
             } else {
-                if(ConfigManager.instance.isFrameworkDebug)
+                if(SlotConfigManager.instance.isFrameworkDebug)
                     reject("正在UpdateScene中 請稍後......");
             }
         }))

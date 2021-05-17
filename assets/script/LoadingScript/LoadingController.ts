@@ -1,4 +1,4 @@
-import ConfigManager from '../Framework/Config/ConfigManager'
+import SlotConfigManager from '../Framework/Config/SlotConfigManager'
 import {AutoType, LanguageType} from '../Framework/Config/Enum/ConfigEnum'
 import ButtonMethod from '../Framework/GlobalMethod/ButtonMethod'
 import LanguageMethod from "../Framework/GlobalMethod/LanguageMethod";
@@ -36,8 +36,7 @@ export default class LoadingController extends ALoadingTemplate {
      * 遊戲整體參數設置
      */
     public configSetting() {
-
-        ConfigManager.instance
+        SlotConfigManager.instance
             .setAutoCont(AutoType.auto)                         //初始自動次數 AutoType Enum
             .setAutoState(false)                                //自動開關
             .setUserBet(0)                                      //初始玩家押注倍率
@@ -53,7 +52,7 @@ export default class LoadingController extends ALoadingTemplate {
             .setTableInfo(TableInfoType.NoLine)                 //初始化 tableInfo Model
             .setBetResult(ResultType.NoLine)                    //初始化 Result Model
             .setFreeResult(FreeResultType.NoLine)               //初始化 FreeResult Model
-            .setFrameWorkDebug(false)                           //強烈要求正式上線時關閉
+            .setFrameWorkDebug(true)                           //強烈要求正式上線時關閉
             .builder();
     }
 

@@ -107,8 +107,6 @@ export default abstract class ALoadingDialogTemplate extends cc.Component {
      */
     private checkHasRes(resName: string, resolve: (value: (PromiseLike<void> | void)) => void): boolean {
 
-        cc.log(LoadResManager.instance.secondaryLoadState.has(resName),LoadResManager.instance.secondaryLoadState.get(resName))
-
         if (!LoadResManager.instance.secondaryLoadState.has(resName)) {
             ErrorManager.instance.executeError(ErrorType.UndefinedFW, `${resName}該無該資源`);
             this.loadingDialogNode.active = false;

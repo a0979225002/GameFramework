@@ -1,4 +1,4 @@
-import ConfigManager from '../Config/ConfigManager'
+import SlotConfigManager from '../Config/SlotConfigManager'
 import AudioManager from './AudioManager'
 import Effect from './AudioType/EffectTypeController'
 import Music from './AudioType/MusicTypeController'
@@ -28,11 +28,11 @@ export default class AudioFactory implements IAudioFactory {
 
     constructor() {
 
-        this.musicVolume = ConfigManager.instance.musicVolume;                                           //初始音量
-        this.effectVolume = ConfigManager.instance.musicVolume;                                          //初始音量
+        this.musicVolume = SlotConfigManager.instance.musicVolume;                                           //初始音量
+        this.effectVolume = SlotConfigManager.instance.musicVolume;                                          //初始音量
         this.canSuperimpose = false;                                                                     //初始無Loop的音樂是否可以疊加
-        this.musicOnMute = ConfigManager.instance.isMusicOnMute;                                         //初始音樂是否打開
-        this.effectOnMute = ConfigManager.instance.isEffectOnMute;                                       //初始效果音是否打開
+        this.musicOnMute = SlotConfigManager.instance.isMusicOnMute;                                         //初始音樂是否打開
+        this.effectOnMute = SlotConfigManager.instance.isEffectOnMute;                                       //初始效果音是否打開
         this.loop = false;                                                                               //初始音樂循環
         this.musicData = new Map<string, Map<string, string | boolean | number>>();                      //初始享元模式的音樂
         this.effectData = new Map<string, Map<string, string | AudioStateType | boolean | number>>();    //初始享元模式的效果音效

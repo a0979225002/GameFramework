@@ -1,4 +1,4 @@
-import ConfigManager from "../../Config/ConfigManager";
+import SlotConfigManager from "../../Config/SlotConfigManager";
 import {ErrorType} from "../Enum/ErrorManagerEnum";
 import UnknownError from "./UnknownError";
 
@@ -15,7 +15,7 @@ export default class FrameWorkError {
 
     checkErrorType(message: string | ErrorType, obj: any) {
 
-        if (ConfigManager.instance.isFrameworkDebug) {
+        if (SlotConfigManager.instance.isFrameworkDebug) {
 
             switch (message) {
                 case ErrorType.IsRunningFW:

@@ -1,5 +1,5 @@
 import ButtonMethod from '../../GlobalMethod/ButtonMethod'
-import SlotGameManager from '../../Procedure/SlotGameManager'
+import SlotGameManager from '../../Process/SlotGameManager'
 
 const {ccclass, property} = cc._decorator;
 

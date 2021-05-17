@@ -1,7 +1,7 @@
 import AudioManager, {Effect, Music} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import ButtonMethod from "../../Framework/GlobalMethod/ButtonMethod";
-import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
+import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {SceneDirection} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
 import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/AMenuDoubleButtonTemplate'

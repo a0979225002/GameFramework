@@ -1,7 +1,6 @@
 import socketSetting from './SocketSetting';
 import ResultSortOut from "./ResultSortOut";
 import WebRequestManager from "../Framework/WebRequest/WebRequestManager";
-import {LoadType} from "../Framework/LoadResources/Enum/LoadEnum";
 import {LanguageType} from "../Framework/Config/Enum/ConfigEnum";
 
 let socketJS = null;
@@ -19,7 +18,7 @@ cc.Class({
         cc.game.addPersistRootNode(this.node);
         socketSetting.setboolean = true;
         obj_socket.self = this;
-        socketSetting.ClientSetObject.serverhost             = "10.10.0.48";//serverIP //210.241.243.206
+        socketSetting.ClientSetObject.serverhost = "10.10.0.48";//serverIP //210.241.243.206
         // socketSetting.ClientSetObject.serverhost = "210.241.243.206";//serverIP //210.241.243.206
         socketSetting.ClientSetObject.serverport = 8080;
         socketSetting.ClientSetObject.account = "ppg018";//ppg015~020
@@ -39,19 +38,19 @@ cc.Class({
         // socketSetting.ClientSetObject.usertoken              = "69190146c53e471b0029411571d09dffbb04cdef508904c8d07ec504241372ea183003e4fb67461185f4ffe69affed098aeeca1097b239c7";
         socketSetting.ClientSetObject.userlang = "";
         socketSetting.ClientSetObject.usergameMaker = "";
-        socketSetting.ClientSetObject.backHomeURL            = "http://va-game.com/pc/VA-index";
+        socketSetting.ClientSetObject.backHomeURL = "http://va-game.com/pc/VA-index";
         // socketSetting.ClientSetObject.backHomeURL = "";
         // socketSetting.ClientSetObject.loadLanguageDefaultURL = "http://210.241.243.206/VAWebsite/game/ce_game_h5/lib/language/";
         socketSetting.ClientSetObject.loadLanguageDefaultURL = "http://10.10.0.47/games/lib/language/";
         socketSetting.ClientSetObject.loadLanguage = socketSetting.ClientSetObject.loadLanguageDefaultURL;
         socketSetting.ClientSetObject.loadLanguageCount = 0;
         socketSetting.ClientSetObject.LoginData = "";
-        socketSetting.ClientSetObject.UserLanguage = LanguageType.Thailand;//語言
+        socketSetting.ClientSetObject.UserLanguage = LanguageType.Chinese;//語言
 
         //TODO
-        WebRequestManager.instance.serverHost =  socketSetting.ClientSetObject.serverhost;
+        WebRequestManager.instance.serverHost = socketSetting.ClientSetObject.serverhost;
         WebRequestManager.instance.UserLanguage = socketSetting.ClientSetObject.UserLanguage;
-        WebRequestManager.instance.backHomeURL = socketSetting.ClientSetObject.backHomeURL ;
+        WebRequestManager.instance.backHomeURL = socketSetting.ClientSetObject.backHomeURL;
 
 
         // API參數

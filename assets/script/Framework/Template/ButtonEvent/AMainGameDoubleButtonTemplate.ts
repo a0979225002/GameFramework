@@ -6,8 +6,8 @@ import ButtonMethod from '../../GlobalMethod/ButtonMethod'
 import {GameEventType} from '../../Listener/Enum/gameEventType'
 import {ServerEventType} from '../../Listener/Enum/ServerEventType'
 import EventManager from '../../Listener/EventManager'
-import {GameState} from '../../Procedure/Enum/GameState'
-import SlotGameManager from '../../Procedure/SlotGameManager'
+import {GameState} from '../../Process/Enum/GameState'
+import SlotGameManager from '../../Process/SlotGameManager'
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 
 const {ccclass} = cc._decorator;
@@ -309,19 +309,14 @@ export default abstract class AMainGameDoubleButtonTemplate extends cc.Component
     private betResultEventListener(): void {
 
         EventManager.instance.serverEventListener(ServerEventType.BET_RESULT, (target: object) => {
-
             for (let name of Object.keys(target)) {
-
                 if (WebResponseManager.instance.result[name] === undefined) {
-
                     ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換BetResultModule Type`)
                 } else {
                     WebResponseManager.instance.result[name] = target[name];
                 }
             }
-
             SlotGameManager.instance.isResultOk = true;
-
         }, false);
     }
 

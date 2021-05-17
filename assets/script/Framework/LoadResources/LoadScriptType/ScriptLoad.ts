@@ -1,4 +1,4 @@
-import ConfigManager from '../../Config/ConfigManager'
+import SlotConfigManager from '../../Config/SlotConfigManager'
 import {ErrorType} from '../../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../../Error/ErrorManager'
 import ALoadScriptType from '../ILoad/ALoadScriptType'
@@ -17,7 +17,7 @@ export default class ScriptLoad extends ALoadScriptType {
     }
 
     loadScript() {
-        let url = `${ConfigManager.instance.externallyLoadURL}/${this.url}/${this.scriptName}.js`;
+        let url = `${SlotConfigManager.instance.externallyLoadURL}/${this.url}/${this.scriptName}.js`;
 
         if (LoadResManager.instance.scriptRes.has(url)) {
             ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `請勿重複加載已有的外部腳本 : ${url}`)

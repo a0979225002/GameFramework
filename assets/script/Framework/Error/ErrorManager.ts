@@ -1,5 +1,4 @@
-import {IConfigManager} from "../Config/IConfigManager";
-import WebRequestManager from "../WebRequest/WebRequestManager";
+import {IConfigManager} from "../Config/IConfig/IConfigManager";
 import {ErrorType} from "./Enum/ErrorManagerEnum";
 import ErrorHandler from "./ErrorHandler";
 import IErrorHandler from "./IErrorHandler";
@@ -31,8 +30,7 @@ export default class ErrorManager implements IErrorManager {
         this._warningDelayTime = 1000;                                          //警告訊息顯示時間 : 1秒
         ErrorManager._errorState = false;                                       //當前是否正在顯示 Error
         ErrorManager._warningState = false;                                     //當前是否正在顯示警告
-        this._isShowBackHomeButton = !!WebRequestManager.instance.backHomeURL;  //檢查當前是否回首頁URL,將之賦予true:false
-
+        this._isShowBackHomeButton = !!this.configManager.backHomeURL;          //檢查當前是否回首頁URL,將之賦予true:false
     }
 
     //單例
@@ -46,7 +44,6 @@ export default class ErrorManager implements IErrorManager {
      * 單例模式 : 一個遊戲只能有個 ErrorManager
      */
     public static get instance(): IErrorManager {
-
         if (!this._instance) {
             throw new Error(`ErrorManager類錯誤 :  該類尚未實例化`)
         }

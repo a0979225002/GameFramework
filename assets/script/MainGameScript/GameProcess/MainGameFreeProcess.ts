@@ -2,8 +2,8 @@ import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
-import {GameState} from '../../Framework/Procedure/Enum/GameState'
-import SlotGameManager from '../../Framework/Procedure/SlotGameManager'
+import {GameState, GameType} from '../../Framework/Process/Enum/GameState'
+import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
@@ -16,7 +16,7 @@ import SlotController from '../Controller/SlotController'
 import WinLevelController from '../Controller/WinLevelController'
 import MainGameLabel from '../LabelEvent/MainGameLabel'
 
-export default class MainGameFreeProcess implements ISlotProcedureExecutionContainer{
+export default class MainGameFreeProcess implements ISlotProcedureExecutionContainer {
 
     private slotStyle: NoLineSlot;
 
@@ -32,8 +32,6 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
 
         return new Promise<void>(async (resolve) => {
 
-            cc.log("free onCustomizeStart");
-
             this.slotStyle.initializeState();
             SlotController.closeWinGrid();
 
@@ -42,32 +40,21 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
 
             //第一次進入Free狀態
             if (WebResponseManager.instance.result.FreeSpinCount != 0) {
-
                 MainGameLabel.remove();
-
                 MainGameButton.switchButton(false);
-
                 MainGameController.showFreeBG();
-
                 await FreeOpenController.showFreeOpeningAnimation(
                     WebResponseManager.instance.result.FreeSpinCount);
-
                 count = WebResponseManager.instance.result.FreeSpinCount - 1;
-
-                //清空一般模式的free狀態,避免重複近來
+                //清空一般responseModel 的 free狀態,避免重複近來
                 WebResponseManager.instance.result.FreeSpinCount = 0;
             }
-
             //FREE TO FREE 判斷是否增加 更新count數
             if (WebResponseManager.instance.freeResult.FreeToFree != 0) {
-
                 await FreeOpenController.showFreeOpeningAnimation(
                     WebResponseManager.instance.freeResult.FreeToFree);
-
                 count = WebResponseManager.instance.freeResult.Count + WebResponseManager.instance.freeResult.FreeToFree - 1;
-
             }
-
             MainGameLabel.updateFreeTitle(count);
             resolve();
         });
@@ -75,53 +62,38 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
 
     public onSineInGrid(): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
-
             socketJS.SFSToServer("FreeSpin", "");
-
             await this.slotStyle.sineInSlot();
-
             resolve();
         });
     }
 
     public onRunGrid(): Promise<void> {
         return new Promise(async (resolve, reject) => {
-
             await this.slotStyle.runSlotAnimation();
-
             resolve();
         });
     }
 
     public onShowAnswer(): Promise<void> {
         return new Promise(async (resolve, reject) => {
-
             if (WebResponseManager.instance.freeResult.TotalWinPoint != 0) {
-
                 SlotController.showWinGrid(WebResponseManager.instance.freeResult.GridWin);
-
             }
-
             await this.checkWinPoint(
                 WebResponseManager.instance.freeResult.TotalWinPoint,
             );
-
             resolve();
         });
     }
 
     public onCustomizeEnd(): Promise<void> {
-
         return new Promise<void>(async (resolve, reject) => {
-
             if (WebResponseManager.instance.freeResult.FreeToFree == 0 &&
                 WebResponseManager.instance.freeResult.Count == 0
             ) {
-
                 let point = WebResponseManager.instance.freeResult.FreeSpinWin;
-
                 await FreeEndController.showFreeEnd(point, 4);
-
                 //關閉 free 背景
                 MainGameController.closeFreeBG();
                 //關閉 free 標題
@@ -139,21 +111,19 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
     }
 
     onChangeStatus() {
-
-
+        if (WebResponseManager.instance.freeResult.FreeToFree == 0 && WebResponseManager.instance.freeResult.Count == 0) {
+            SlotGameManager.instance.changeProcess(GameType.NORMAL);
+        }
     }
 
     private checkWinPoint(spinWin: number, level?: number): Promise<void> {
-
         return new Promise(resolve => {
-
             if (spinWin == 0) {
                 resolve();
                 return;
             }
 
             let winPoint = WebResponseManager.instance.freeResult.FreeSpinWin;
-
             if (spinWin != 0 &&
                 //顯示 一般獎動畫
                 WebResponseManager.instance.freeResult.BaseLevelWin == 0) {
@@ -173,9 +143,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
                 }, 900);
 
             } else if (WebResponseManager.instance.freeResult.BaseLevelWin > 0) {
-
                 WinLevelController.showWinAboveState(spinWin, resolve);
-
             }
         });
     }

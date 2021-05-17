@@ -1,4 +1,4 @@
-import {IConfigManager} from "../Config/IConfigManager";
+import {IConfigManager} from "../Config/IConfig/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import AudioFactory from './AudioFactory'
