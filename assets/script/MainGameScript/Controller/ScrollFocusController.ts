@@ -7,15 +7,11 @@ const {ccclass, property} = cc._decorator;
 export default class ScrollFrameController extends ALookAtTemplate {
 
     @property(cc.Animation)
-    public allLookAtEffect: cc.Animation[] = [];
-    private showHeight: number;
-    private removeHeight: number;
+    protected allLookAtEffect: cc.Animation[] = [];
+    private readonly showMaxHeight: number = 490;
+    private readonly hideMinHeight: number = 160;
 
     protected onCreate() {
-
-        this.showHeight = 490;
-        this.removeHeight = 160;
-
         for (let effect of this.allLookAtEffect) {
             effect.node.active = false;
         }
@@ -23,21 +19,19 @@ export default class ScrollFrameController extends ALookAtTemplate {
 
     @EffectStop("slottrunFast")
     protected removeLookAtEffect(index: number) {
-
         cc.tween(this.allLookAtEffect[index].node)
-            .to(0.5, {height: this.removeHeight})
+            .to(0.5, {height: this.hideMinHeight})
             .call(() => {
                 this.allLookAtEffect[index].node.active = false;
             })
             .start();
-
     }
 
     @Effect("slottrunFast")
     public showLookAtEffect(index: number) {
         this.allLookAtEffect[index].node.active = true;
         cc.tween(this.allLookAtEffect[index].node)
-            .to(0.5, {height: this.showHeight})
+            .to(0.5, {height: this.showMaxHeight})
             .start();
     }
 }

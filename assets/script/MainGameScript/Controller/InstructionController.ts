@@ -1,17 +1,15 @@
-import {Music} from '../../Framework/Audio/AudioManager'
+import {Music} from "../../Framework/Audio/AudioManager";
 import ButtonMethod from '../../Framework/GlobalMethod/ButtonMethod'
 import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
-import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
-import EventManager from '../../Framework/Listener/EventManager'
-import {SceneDirection} from '../../Framework/Scene/Enum/SceneStyle'
+import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
 import SceneManager from '../../Framework/Scene/SceneManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
 import MainGameButton from '../ButtonEvent/MainGameButton'
 
 const {ccclass, property} = cc._decorator;
-
-let self: InstructionController;
 
 @ccclass
 export default class InstructionController extends AGenericTemplate {
@@ -41,15 +39,18 @@ export default class InstructionController extends AGenericTemplate {
     @property(cc.Label)
     speedTextV: cc.Label = null;
 
-    protected onCreate() {
+    private sceneDirectionChangeObserver: SceneDirectionChangeObserver;
+    public static instance: InstructionController;
 
-        self = this;
+    protected onCreate() {
+        InstructionController.instance = this;
+
         switch (SceneManager.instance.sceneDirection) {
-            case SceneDirection.LANDSCAPE:
+            case SceneDirectionType.LANDSCAPE:
                 this.pageH.active = true;
                 this.pageV.active = false;
                 break;
-            case SceneDirection.PORTRAIT:
+            case SceneDirectionType.PORTRAIT:
                 this.pageV.active = true;
                 this.pageH.active = false;
                 break;
@@ -67,7 +68,8 @@ export default class InstructionController extends AGenericTemplate {
             this
         );
 
-        SceneManager.instance.sceneDirectionEventListener(this.sceneDirectionListener);
+        this.sceneDirectionChangeObserver = this.sceneDirectionObserverListener();
+        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionChangeObserver);
     }
 
     protected languageSetting() {
@@ -107,37 +109,26 @@ export default class InstructionController extends AGenericTemplate {
         this.node.destroy();
     }
 
-    private sceneDirectionListener(type) {
+    private sceneDirectionObserverListener(): SceneDirectionChangeObserver {
 
-        if (type == SceneDirection.LANDSCAPE) {
+        return new SceneDirectionChangeObserver((type) => {
+            if (type == SceneDirectionType.LANDSCAPE) {
 
-            self.pageH.active = true;
-            self.pageV.active = false;
+                this.pageH.active = true;
+                this.pageV.active = false;
 
-        } else if (type == SceneDirection.PORTRAIT) {
+            } else if (type == SceneDirectionType.PORTRAIT) {
 
-            self.pageV.active = true;
-            self.pageH.active = false;
+                this.pageV.active = true;
+                this.pageH.active = false;
 
-        } else {
-            cc.log(`MainGameSetting sceneDirectionEvent() 有錯誤 : ${type}`);
-        }
-
+            } else {
+                cc.log(`MainGameSetting sceneDirectionEvent() 有錯誤 : ${type}`);
+            }
+        }, this);
     }
 
     protected onDestroy() {
-
-        EventManager.instance.destroyEvent(
-            GameEventType.LANDSCAPE,
-            EventManager.gameTarget,
-            this.sceneDirectionListener
-        );
-        EventManager.instance.destroyEvent(
-            GameEventType.PORTRAIT,
-            EventManager.gameTarget,
-            this.sceneDirectionListener
-        );
-
+        SceneDirectionChangeNotification.instance.unsubscribe(this.sceneDirectionChangeObserver)
     }
-
 }

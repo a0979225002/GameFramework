@@ -4,7 +4,9 @@ import {Effect} from "../../Framework/Audio/AudioManager";
 import ButtonMethod from "../../Framework/GlobalMethod/ButtonMethod";
 import {ServerEventType} from "../../Framework/Listener/Enum/ServerEventType";
 import EventManager from "../../Framework/Listener/EventManager";
-import {SceneDirection} from "../../Framework/Scene/Enum/SceneStyle";
+import {SceneDirectionType} from "../../Framework/Scene/Enum/SceneStyle";
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
 import SceneManager from "../../Framework/Scene/SceneManager";
 import {DayType, GameHistoryData, PageChange} from "../../Framework/Template/ButtonEvent/ARecordButtonEvent";
 import ARecordDoubleButtonTemplate from "../../Framework/Template/ButtonEvent/ARecordDoubleButtonTemplate";
@@ -114,10 +116,13 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
             GRAY: cc.color().fromHEX("#777777"),
             WHITE: cc.color().fromHEX("#FFFFFF"),
         }
-        this.showDetailEventListener();                     //顯示祥單監聽器
-        this.addListViewItemTouchEventListener();           //ListView 內的Item 按鈕監聽
-        this.sceneDirectionListener();                      //直橫向螢幕監聽器
-        this.initialize();                                  //初始化
+        this.showDetailEventListener();                                     //顯示祥單監聽器
+        this.addListViewItemTouchEventListener();                           //ListView 內的Item 按鈕監聽
+
+        SceneDirectionChangeNotification
+            .instance.subscribe(this.sceneDirectionObserverListener());     //註冊直橫式監聽
+
+        this.initialize();                                                  //初始化
     }
 
     /**
@@ -239,24 +244,21 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
     /**
      * 直橫向監聽器
      */
-    private sceneDirectionListener() {
-
-        SceneManager.instance.sceneDirectionEventListener((type) => {
-
+    private sceneDirectionObserverListener(): SceneDirectionChangeObserver {
+        return new SceneDirectionChangeObserver((type) => {
             if (!this.recordNodeH.active && !this.recordNodeV.active) return;
             this.checkSceneDirection(type).then();
-
-        })
+        }, this);
     }
 
     /**
      * 確認當前直橫式下,做相對應的開啟該樣式的節點
-     * @param {SceneDirection} type
+     * @param {SceneDirectionType} type
      * @private
      */
-    private async checkSceneDirection(type: SceneDirection) {
+    private async checkSceneDirection(type: SceneDirectionType) {
 
-        if (type == SceneDirection.LANDSCAPE) {
+        if (type == SceneDirectionType.LANDSCAPE) {
 
             this.recordNodeH.active = true;
             this.recordNodeV.active = false;
@@ -264,7 +266,7 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
             this.nowNumberOfPagesH.string = String(1);
             await this.getRecordData(this.getGameHistoryH);
 
-        } else if (type == SceneDirection.PORTRAIT) {
+        } else if (type == SceneDirectionType.PORTRAIT) {
 
             this.recordNodeH.active = false;
             this.recordNodeV.active = true;
@@ -655,14 +657,14 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
      * @protected
      */
     @Effect("BtnClick")
-    protected goBackTouchEvent(event, sceneDirection: SceneDirection) {
+    protected goBackTouchEvent(event, sceneDirection: SceneDirectionType) {
         cc.log(sceneDirection);
         switch (sceneDirection) {
-            case SceneDirection.LANDSCAPE:
+            case SceneDirectionType.LANDSCAPE:
                 MenuPageButton.instance.showMenu();
                 this.recordNodeH.active = false;
                 break;
-            case SceneDirection.PORTRAIT:
+            case SceneDirectionType.PORTRAIT:
                 MenuPageButton.instance.showMenu();
                 this.recordNodeV.active = false;
                 break;

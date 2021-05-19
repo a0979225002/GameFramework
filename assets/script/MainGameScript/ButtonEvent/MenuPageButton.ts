@@ -2,7 +2,9 @@ import AudioManager, {Effect, Music} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import ButtonMethod from "../../Framework/GlobalMethod/ButtonMethod";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
-import {SceneDirection} from '../../Framework/Scene/Enum/SceneStyle'
+import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
 import SceneManager from '../../Framework/Scene/SceneManager'
 import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/AMenuDoubleButtonTemplate'
 import WebRequestManager from '../../Framework/WebRequest/WebRequestManager'
@@ -139,7 +141,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
 
         MenuPageButton.instance = this;
 
-        this.color = {
+        this.color = {                                                     //menu頁面需用到的顏色
             YELLOW: cc.color().fromHEX("#FFC000"),
             COAL_BLACK: cc.color().fromHEX("#191919"),
             GREY: cc.color().fromHEX("#646464"),
@@ -150,22 +152,24 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         this.autoIcon = {
-            SHORT_CLOSE: this.icon[0],
-            SHORT_OPEN: this.icon[1],
-            LONG_CLOSE: this.icon[2],
-            LONG_OPEN: this.icon[3]
+            SHORT_CLOSE: this.icon[0],                                      //短按鈕關閉時圖案
+            SHORT_OPEN: this.icon[1],                                       //短按鈕打開時圖案
+            LONG_CLOSE: this.icon[2],                                       //長按鈕關閉時圖案
+            LONG_OPEN: this.icon[3]                                         //長按鈕打開時圖案
         }
 
-        if (!WebRequestManager.instance.backHomeURL) {    //檢查是否有返回首頁URL,如果沒有,將返回首頁按鈕關閉
+        if (!WebRequestManager.instance.backHomeURL) {                      //檢查是否有返回首頁URL,如果沒有,將返回首頁按鈕關閉
             this.goHomeButtonH.node.active = false;
             this.goHomeButtonV.node.active = false;
         }
 
-        this.sceneDirectionListener();                  //直橫式監聽
-        this.initialize();                              //初始設定頁按鈕
-        this.setDescriptionButtonListener();            //說明頁按鈕監聽事件添加
-        this.nowPage = UserNowPage.DESCRIPTION_PAGE;    //隨機一個,都可
-        this.closeMenu();                               //初始關閉menu
+        SceneDirectionChangeNotification
+            .instance.subscribe(this.sceneDirectionObserverListener());     //註冊直橫式監聽
+
+        this.initialize();                                                  //初始設定頁按鈕
+        this.setDescriptionButtonListener();                                //說明頁按鈕監聽事件添加
+        this.nowPage = UserNowPage.DESCRIPTION_PAGE;                        //隨機一個,都可
+        this.closeMenu();                                                   //初始關閉menu
     }
 
     /**
@@ -262,18 +266,16 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
     /**
      * 直橫向監聽器
      */
-    private sceneDirectionListener() {
-
-        SceneManager.instance.sceneDirectionEventListener((type) => {
-
+    private sceneDirectionObserverListener() {
+        return new SceneDirectionChangeObserver((type) => {
             if (!this.menuNodeH.active && !this.menuNodeV.active) return;
 
-            if (type == SceneDirection.LANDSCAPE) {
+            if (type == SceneDirectionType.LANDSCAPE) {
 
                 this.menuNodeH.active = true;
                 this.menuNodeV.active = false;
 
-            } else if (type == SceneDirection.PORTRAIT) {
+            } else if (type == SceneDirectionType.PORTRAIT) {
 
                 this.menuNodeH.active = false;
                 this.menuNodeV.active = true;
@@ -281,7 +283,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
             } else {
                 cc.log(`MainGameSetting sceneDirectionEvent() 有錯誤 : ${type}`);
             }
-        })
+        }, this)
     }
 
     /**
@@ -613,12 +615,12 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
 
         let direction = SceneManager.instance.sceneDirection;
 
-        if (direction == SceneDirection.LANDSCAPE) {
+        if (direction == SceneDirectionType.LANDSCAPE) {
 
             this.menuNodeH.active = true;
             this.menuNodeV.active = false;
 
-        } else if (direction == SceneDirection.PORTRAIT) {
+        } else if (direction == SceneDirectionType.PORTRAIT) {
 
             this.menuNodeH.active = false;
             this.menuNodeV.active = true;

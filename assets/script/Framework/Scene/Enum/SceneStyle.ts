@@ -8,19 +8,19 @@ enum SceneStyle {
 
 export {SceneStyle};
 
-enum SceneDirection {
+enum SceneDirectionType {
 
     /**
      * 直向
-     * @type {SceneDirection.PORTRAIT}
+     * @type {SceneDirectionType.PORTRAIT}
      */
     PORTRAIT = 'PORTRAIT',
 
     /**
      * 橫向
-     * @type {SceneDirection.LANDSCAPE}
+     * @type {SceneDirectionType.LANDSCAPE}
      */
     LANDSCAPE = 'LANDSCAPE',
 }
 
-export {SceneDirection};
+export {SceneDirectionType};

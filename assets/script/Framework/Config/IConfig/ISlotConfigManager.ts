@@ -17,13 +17,6 @@ export interface UserBetPoint {
 export interface ISlotConfigManager extends IConfigManager {
 
     /**
-     * 前往 {MainGame Scene} 的scene名稱
-     * @type {string}
-     * @private
-     */
-    mainScene: string;
-
-    /**
      * 是否在遊戲進入後開啟auto狀態
      * @type {boolean}
      * @private
@@ -74,15 +67,6 @@ export interface ISlotConfigManager extends IConfigManager {
      * @private
      */
     freeResultType: FreeResultType;
-
-
-    /**
-     * 添加MainScene 名稱
-     * @param {string} name : mainScene 檔案名稱
-     * @returns {this}
-     */
-    setMainScene(name: string): this;
-
     /**
      * 初始遊戲最初的auto次數
      * @param {AutoType} type

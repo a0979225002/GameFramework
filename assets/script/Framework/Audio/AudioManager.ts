@@ -13,13 +13,13 @@ import IAudioManager from "./IAudio/IAudioManager";
  */
 export default class AudioManager implements IAudioManager {
 
-    private configManager : IConfigManager;
+    private configManager: IConfigManager;
     private static _instance: IAudioManager;
     private factory: AudioFactory;              //音樂工廠
     private _musicOnMute: boolean;              //當前是否靜音
     private _effectOnMute: boolean;             //當前是否靜音
 
-    private constructor(configManager : IConfigManager) {
+    private constructor(configManager: IConfigManager) {
 
         this.configManager = configManager;
         this.factory = new AudioFactory();
@@ -39,12 +39,11 @@ export default class AudioManager implements IAudioManager {
     }
 
     /**
-     *  懶漢加載
-     *  初始化,只讓一個專案只有一次產生此class
+     *  獲取已經單例加載後的實例化class
      */
-    public static get instance() :IAudioManager{
-        if(!this._instance){
-            ErrorManager.instance.executeError(ErrorType.MusicFW,"該類尚未實例化");
+    public static get instance(): IAudioManager {
+        if (!this._instance) {
+            ErrorManager.instance.executeError(ErrorType.MusicFW, "該類尚未實例化");
             return;
         }
         return this._instance;

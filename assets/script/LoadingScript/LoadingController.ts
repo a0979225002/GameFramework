@@ -46,7 +46,6 @@ export default class LoadingController extends ALoadingTemplate {
             .setGameNumber(84)                                  //遊戲名稱
             .setMusicVolume(1)                                  //初始背景音量
             .setEffectVolume(1)                                 //初始音效音量
-            .setMainScene("MainScene")                          //主遊戲scene名稱
             .setLanguage(LanguageType.America)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
             .setExternallyLoadURL("http://10.10.0.47/games")    //同上
             .setTableInfo(TableInfoType.NoLine)                 //初始化 tableInfo Model
@@ -176,17 +175,15 @@ export default class LoadingController extends ALoadingTemplate {
             .setDesignWidth(1280)
             .setDesignHeight(720)
             .updateSize(SceneStyle.AUTO)
-            .autoListenerStart(100);
+            .designSceneSizeListenerAutoStart(100);
     }
 
     /**
      * 進入主遊戲按鈕點擊事件
      */
     private intoMainGameButtonEventListener() {
-
-        SceneManager.instance.changeScene();
+        SceneManager.instance.changeScene("MainScene");
         SceneManager.instance.removeScene(this);
-
     }
 
     /**

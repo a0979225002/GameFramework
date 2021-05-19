@@ -1,16 +1,14 @@
-import {GameEventType} from '../../Listener/Enum/gameEventType'
-import EventManager from '../../Listener/EventManager'
-import {SceneDirection} from '../Enum/SceneStyle'
+import {SceneDirectionType} from '../Enum/SceneStyle'
+import SceneDirectionChangeNotification from "../SceneDirectionChangeNotification";
 import SceneManager from '../SceneManager'
 
-export default class AutoStyle implements IStyle {
+export default class AutoStyle implements ISceneStyle {
 
     public executionStyle(width: number, height: number) {
 
         this.updateSceneDirection();
 
         if ((cc.view.getFrameSize().width / cc.view.getFrameSize().height) >= (width / height)) {
-
             //宽度超出
             let newWidth = cc.view.getFrameSize().width * (width / cc.view.getFrameSize().height);
             cc.view.setDesignResolutionSize(newWidth, height, cc.ResolutionPolicy.FIXED_HEIGHT);
@@ -32,20 +30,14 @@ export default class AutoStyle implements IStyle {
     }
 
     updateSceneDirection() {
-        //直向
         if (cc.view.getFrameSize().width < cc.view.getFrameSize().height) {
-            if (SceneManager.instance.sceneDirection == SceneDirection.PORTRAIT) return;
-            cc.log("直向");
-            SceneManager.instance.updateSceneDirection(SceneDirection.PORTRAIT);
-            EventManager.instance.setEvent(EventManager.gameTarget, GameEventType.PORTRAIT, SceneDirection.PORTRAIT);
-
-            //橫向
+            //直向
+            if (SceneManager.instance.sceneDirection == SceneDirectionType.PORTRAIT) return;
+            SceneDirectionChangeNotification.instance.notify(SceneDirectionType.PORTRAIT);
         } else {
-            if (SceneManager.instance.sceneDirection == SceneDirection.LANDSCAPE) return;
-            cc.log("橫向");
-            SceneManager.instance.updateSceneDirection(SceneDirection.LANDSCAPE);
-            EventManager.instance.setEvent(EventManager.gameTarget, GameEventType.LANDSCAPE, SceneDirection.LANDSCAPE);
+            //橫向
+            if (SceneManager.instance.sceneDirection == SceneDirectionType.LANDSCAPE) return;
+            SceneDirectionChangeNotification.instance.notify(SceneDirectionType.LANDSCAPE);
         }
     }
-
 }

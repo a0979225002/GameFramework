@@ -1,5 +1,5 @@
 import ButtonMethod from "../../GlobalMethod/ButtonMethod";
-import {SceneDirection} from "../../Scene/Enum/SceneStyle";
+import {SceneDirectionType} from "../../Scene/Enum/SceneStyle";
 import ARecordButtonEvent, {DayType, PageChange} from "./ARecordButtonEvent";
 
 export default abstract class ARecordDoubleButtonTemplate extends ARecordButtonEvent {
@@ -21,9 +21,9 @@ export default abstract class ARecordDoubleButtonTemplate extends ARecordButtonE
 
         //反回上一頁按鈕事件綁定
         ButtonMethod
-            .addButtonEvent(this.goBackButtonH, "goBackTouchEvent", this, SceneDirection.LANDSCAPE);
+            .addButtonEvent(this.goBackButtonH, "goBackTouchEvent", this, SceneDirectionType.LANDSCAPE);
         ButtonMethod
-            .addButtonEvent(this.goBackButtonV, "goBackTouchEvent", this, SceneDirection.PORTRAIT);
+            .addButtonEvent(this.goBackButtonV, "goBackTouchEvent", this, SceneDirectionType.PORTRAIT);
 
         ButtonMethod
             .addButtonEvent(this.oneDayRecordButtonH, "daysRecordTouchEvent", this, DayType.ONE_DAY);

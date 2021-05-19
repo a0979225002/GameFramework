@@ -15,8 +15,7 @@ export default class SceneStyleHandler {
         this.verticalStyle = new VerticalStyle();
     }
 
-    getStyle(sceneStyle: SceneStyle | Function, width: number, height: number) {
-
+    getStyle(sceneStyle: SceneStyle | ISceneStyle, width: number, height: number) {
         switch (sceneStyle) {
             case SceneStyle.AUTO:
                 this.autoStyle.executionStyle(width, height);
@@ -27,8 +26,8 @@ export default class SceneStyleHandler {
             case SceneStyle.Vertical:
                 this.verticalStyle.executionStyle(width, height);
                 break;
-            default:
-                sceneStyle();
+            default :
+                sceneStyle.executionStyle(width,height);
         }
     }
 }

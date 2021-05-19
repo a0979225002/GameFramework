@@ -1,6 +1,8 @@
 import {GameState} from '../../Framework/Process/Enum/GameState'
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
-import {SceneDirection} from '../../Framework/Scene/Enum/SceneStyle'
+import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
 import SceneManager from '../../Framework/Scene/SceneManager'
 
 const {ccclass, property} = cc._decorator;
@@ -23,18 +25,19 @@ class MainGameController extends cc.Component {
         self = this;
         this.freeBGH.active = false;
         this.freeBGV.active = false;
-        this.sceneDirectionListener();
+        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener());
     }
 
-    public sceneDirectionListener() {
-        SceneManager.instance.sceneDirectionEventListener((type) => {
+    public sceneDirectionObserverListener(): SceneDirectionChangeObserver {
+
+        return new SceneDirectionChangeObserver((type) => {
             if (SlotGameManager.instance.gameState != GameState.FREEING) return;
             switch (type) {
-                case SceneDirection.PORTRAIT:
+                case SceneDirectionType.PORTRAIT:
                     this.freeBGV.active = true;
                     break;
             }
-        })
+        }, this);
     }
 
     public closeFreeBG() {
@@ -46,7 +49,7 @@ class MainGameController extends cc.Component {
 
     public showFreeBG() {
 
-        if (SceneManager.instance.sceneDirection == SceneDirection.LANDSCAPE) {
+        if (SceneManager.instance.sceneDirection == SceneDirectionType.LANDSCAPE) {
             self.freeBGH.active = true;
         } else {
             self.freeBGH.active = true;

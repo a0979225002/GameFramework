@@ -1,5 +1,7 @@
 import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
-import {SceneDirection} from '../../Framework/Scene/Enum/SceneStyle'
+import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
 import SceneManager from '../../Framework/Scene/SceneManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
@@ -29,8 +31,8 @@ class WarningController extends AGenericTemplate {
         this.timer = null;
         this.warningH.active = false;
         this.warningV.active = false;
-        this.SceneDirectionListener();
-
+        SceneDirectionChangeNotification
+            .instance.subscribe(this.SceneDirectionObserverListener()); //註冊直橫式監聽
     }
 
     public languageSetting() {
@@ -59,28 +61,27 @@ class WarningController extends AGenericTemplate {
         }, 1500);
     }
 
-    protected SceneDirectionListener() {
-
-        SceneManager.instance.sceneDirectionEventListener((type) => {
+    protected SceneDirectionObserverListener(): SceneDirectionChangeObserver {
+        return new SceneDirectionChangeObserver((type) => {
             if (this.isShowWarning) {
                 self.checkScene(type);
             }
-        })
+        }, this)
     }
 
     /**
      * 確認當前方向
-     * @param {SceneDirection} type
+     * @param {SceneDirectionType} type
      * @protected
      */
-    protected checkScene(type: SceneDirection) {
+    protected checkScene(type: SceneDirectionType) {
 
         switch (type) {
-            case SceneDirection.LANDSCAPE:
+            case SceneDirectionType.LANDSCAPE:
                 self.warningH.active = true;
                 self.warningV.active = false;
                 break;
-            case SceneDirection.PORTRAIT:
+            case SceneDirectionType.PORTRAIT:
                 self.warningH.active = false;
                 self.warningV.active = true;
                 break;

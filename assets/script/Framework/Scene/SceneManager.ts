@@ -1,59 +1,58 @@
 import {IConfigManager} from "../Config/IConfig/IConfigManager";
-import SlotConfigManager from '../Config/SlotConfigManager'
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
-import {GameEventType} from '../Listener/Enum/gameEventType'
-import EventManager from '../Listener/EventManager'
 import LoadResManager from '../LoadResources/LoadResManager'
-import {SceneStyle, SceneDirection} from './Enum/SceneStyle'
-import SceneListener from './SceneListener'
+import {SceneStyle, SceneDirectionType} from './Enum/SceneStyle'
+import {ISceneManager} from "./IScene/ISceneManager";
+import SceneDirectionChangeNotification from "./SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "./SceneDirectionChangeObserver";
+import SceneSizeChangeListener from './SceneSizeChangeListener'
 import SceneStyleHandler from './SceneStyleHandler'
 
 export default class SceneManager implements ISceneManager {
 
     private configManager: IConfigManager;
-    private static _instance: SceneManager;
-    private style: SceneStyle | Function;
+    private static _instance: ISceneManager;
+    private style: SceneStyle | ISceneStyle;
     private _designWidth: number;
     private _designHeight: number;
-    private sceneListener: SceneListener;
+    private sceneSizeChangeListener: SceneSizeChangeListener;
     private sceneStyleHandler: SceneStyleHandler;
-    private readonly _mainGameSceneName: string;
-    private _sceneDirection: SceneDirection;
-    private changeDirectionCallFun: Set<(type: SceneDirection) => void>;
-
+    private _sceneDirection: SceneDirectionType;
+    private sceneDirectionChangeNotification: SceneDirectionChangeNotification;
 
     private constructor(configManager: IConfigManager) {
         this.configManager = configManager;
         this._designWidth = 1280;                                                   //初始預設寬度
         this._designHeight = 720;                                                   //初始預設高度
-        this._mainGameSceneName = SlotConfigManager.instance.mainScene;             //獲取當初config設定的主畫面名稱
-        this.sceneListener = new SceneListener();                                   //實例化監聽器
-        this.sceneStyleHandler = new SceneStyleHandler();                           //實例化scene導向器
+        this.sceneSizeChangeListener = new SceneSizeChangeListener();                         //實例化監聽器
+        this.sceneStyleHandler = new SceneStyleHandler();                           //實例化scene樣式導向器
         this.style = SceneStyle.Horizontal;                                         //初始預設scene畫面調整的模式
-        this.changeDirectionCallFun = new Set<(type: SceneDirection) => void>();    //初始螢幕方向改變回傳事件
     }
 
-    //單例
+    /**
+     *  懶漢加載
+     *  初始化,只讓一個專案產生一次該class
+     */
     public static setInstance(configManager: IConfigManager) {
         if (!this._instance) {
             this._instance = new SceneManager(configManager);
         }
     }
 
-    //單例
-    public static get instance(): SceneManager {
-
+    /**
+     *  獲取已經單例加載後的實例化class
+     */
+    public static get instance(): ISceneManager {
         if (!this._instance) {
             ErrorManager.instance.executeError(ErrorType.SceneFW, "該類尚未實例化");
             return;
         }
-
         return this._instance;
     }
 
     /**
-     * cavers 設計原寬度
+     * cavers 設計寬度
      * @param {number} width
      * @return {this}
      */
@@ -65,7 +64,7 @@ export default class SceneManager implements ISceneManager {
     }
 
     /**
-     * cavers 設計原高度
+     * cavers 設計高度
      * @param {number} height
      * @return {this}
      */
@@ -79,56 +78,58 @@ export default class SceneManager implements ISceneManager {
     /**
      * 更新當前示配寬高,會保存上次的scene更動模式
      * 如不添加參數,第一次將會使用預設模式更動
-     * @param {SceneStyle | Function} style : 可自定義更動樣式
+     * @param {SceneStyle | Function} style : 可自定義更動樣式,但實作(介面)ISceneStyle
      * @return {this}
      */
-    updateSize(style?: SceneStyle | Function): this {
-
+    updateSize(style?: SceneStyle | ISceneStyle): this {
         if (style) {
             this.style = style;
-
             switch (style) {
                 case SceneStyle.Horizontal:
-                    this._sceneDirection = SceneDirection.PORTRAIT;
+                    this._sceneDirection = SceneDirectionType.PORTRAIT;
                     break;
                 case SceneStyle.Vertical:
-                    this._sceneDirection = SceneDirection.LANDSCAPE;
+                    this._sceneDirection = SceneDirectionType.LANDSCAPE;
+                    break;
+                case SceneStyle.AUTO:
+                default:
+                    if (!this.sceneDirectionChangeNotification) {
+                        this.sceneChangeDirectionEventListener();
+                    }
                     break;
             }
         }
-
         this.sceneStyleHandler.getStyle(this.style, this._designWidth, this._designHeight);
-
         return this;
     }
 
+    /**
+     * 自發監聽,當用戶開啟AUTO樣式,或自訂樣式時才會開啟
+     * 當推波發送過來時將會更新當前 sceneDirectionType
+     * @private
+     */
     private sceneChangeDirectionEventListener() {
-
-        EventManager.instance.gameEventListener(GameEventType.LANDSCAPE, () => {
-
-            if (this.changeDirectionCallFun.size > 0) {
-                for (let method of this.changeDirectionCallFun) {
-
-                }
-            }
-        }, false);
-
-        EventManager.instance.gameEventListener(GameEventType.PORTRAIT, (type: SceneDirection) => {
-
-            if (this.changeDirectionCallFun.size > 0) {
-                for (let method of this.changeDirectionCallFun) {
-
-                }
-            }
-
-        }, false);
+        this.sceneDirectionChangeNotification = SceneDirectionChangeNotification.instance;
+        this.sceneDirectionChangeNotification.subscribe(this.sceneChangeDirectionObserver())
     }
 
-    sceneDirectionEventListener(callFun: (type: SceneDirection) => void) {
+    /**
+     * 建立scene方向改變觀察者,並綁定改變scene方向時,更新當前遊戲方向狀態
+     * @returns {SceneDirectionChangeObserver}
+     * @private
+     */
+    private sceneChangeDirectionObserver(): SceneDirectionChangeObserver {
+        return new SceneDirectionChangeObserver((type) => {
+            this.updateSceneDirection(type);
+        }, this);
+    }
 
-        EventManager.instance.gameEventListener(GameEventType.LANDSCAPE, callFun, false);
-        EventManager.instance.gameEventListener(GameEventType.PORTRAIT, callFun, false);
-
+    /**
+     * 更新當前遊戲方向
+     * @param {SceneDirectionType} direction
+     */
+    private updateSceneDirection(direction: SceneDirectionType) {
+        this._sceneDirection = direction;
     }
 
     /**
@@ -137,37 +138,20 @@ export default class SceneManager implements ISceneManager {
      * 如果需求更動樣式,須先更新 updateSize()
      * @param {number} time : 更新的頻率 單位毫秒 ms
      */
-    autoListenerStart(time: number) {
-
-        this.sceneListener.designSceneEventListener(time);
-
+    designSceneSizeListenerAutoStart(time: number) {
+        this.sceneSizeChangeListener.designSceneEventListener(time);
     }
 
     /**
      * 更換場景
-     * @param {string} name : 如果不寫參數,將使用Config內的MainGameScene 名稱
+     * @param {string} name : 場景資源名稱為你Res動態加載的自訂義的scene名稱
      */
-    changeScene(name?: string) {
+    changeScene(name: string) {
 
-        if (!name) {
-
-            name = this._mainGameSceneName;
-        }
         if (!LoadResManager.instance.sceneRes.has(name)) {
-
             ErrorManager.instance.executeError(ErrorType.SceneFW, "加載不到你的Scene資源,請檢查該資源名是否正確");
         }
-
         cc.director.runScene(LoadResManager.instance.sceneRes.get(name));
-
-    }
-
-    /**
-     * 更新當前遊戲方向
-     * @param {SceneDirection} direction
-     */
-    updateSceneDirection(direction: SceneDirection) {
-        this._sceneDirection = direction;
     }
 
     /**
@@ -178,7 +162,7 @@ export default class SceneManager implements ISceneManager {
         scene.destroy();
     }
 
-    public get sceneDirection(): SceneDirection {
+    public get sceneDirection(): SceneDirectionType {
         return this._sceneDirection
     }
 }

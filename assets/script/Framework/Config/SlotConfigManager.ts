@@ -24,13 +24,6 @@ export default class SlotConfigManager implements ISlotConfigManager {
     private static _instance: ISlotConfigManager;
 
     /**
-     * 前往 {MainGame Scene} 的scene名稱
-     * @type {string}
-     * @private
-     */
-    private _mainScene: string;
-
-    /**
      * 載入外部資源URL(只有開發模式中有效)
      * @type {string}
      * @private
@@ -144,7 +137,6 @@ export default class SlotConfigManager implements ISlotConfigManager {
 
     private constructor() {
 
-        this._mainScene = ""                                    //主遊戲場景名稱
         this._gameNumber = null;                                //該遊戲名稱
         this._externallyLoadURL = ""                            //預設測試使用
         this._isAuto = false;                                   //是否自動
@@ -172,17 +164,6 @@ export default class SlotConfigManager implements ISlotConfigManager {
         }
 
         return this._instance;
-    }
-
-
-    /**
-     * 添加MainScene 名稱
-     * @param {string} name : mainScene 檔案名稱
-     * @returns {this}
-     */
-    setMainScene(name: string) {
-        this._mainScene = name;
-        return this;
     }
 
     /**
@@ -384,10 +365,6 @@ export default class SlotConfigManager implements ISlotConfigManager {
     get userBet(): UserBetPoint {
 
         return this._userBet;
-    }
-
-    get mainScene(): string {
-        return this._mainScene;
     }
 
     get externallyLoadURL(): string {

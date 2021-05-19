@@ -1,6 +1,6 @@
 import {ServerEventType} from "../../Listener/Enum/ServerEventType";
 import EventManager from "../../Listener/EventManager";
-import {SceneDirection} from "../../Scene/Enum/SceneStyle";
+import {SceneDirectionType} from "../../Scene/Enum/SceneStyle";
 
 const {ccclass} = cc._decorator;
 
@@ -59,7 +59,7 @@ export default abstract class ARecordButtonEvent extends cc.Component {
      * 返回上一頁事件
      * @protected
      */
-    protected abstract goBackTouchEvent(event, sceneDirection: SceneDirection);
+    protected abstract goBackTouchEvent(event, sceneDirection: SceneDirectionType);
 
     /**
      * 顯示祥單頁面

@@ -1,0 +1,22 @@
+import {SceneDirectionType} from "./Enum/SceneStyle";
+
+/**
+ * @Author XIAO-LI-PIN
+ * @Description 場景方向改變觀察者,當有事件推送時,將會發送綁定的callFun方法
+ * @Date 2021-05-19 下午 01:46
+ * @Version 1.0
+ */
+export default class SceneDirectionChangeObserver implements IObserver {
+
+    private readonly self: any;
+    private readonly callFun: (type: SceneDirectionType) => void;
+
+    constructor(callFun:(type: SceneDirectionType) => void,self) {
+        this.self = self;
+        this.callFun = callFun;
+    }
+
+    pushNotification(type: SceneDirectionType) {
+        this.callFun.call(this.self,type);
+    }
+}

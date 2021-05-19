@@ -30,15 +30,15 @@ export default class AudioFactory implements IAudioFactory {
 
         this.musicVolume = SlotConfigManager.instance.musicVolume;                                           //初始音量
         this.effectVolume = SlotConfigManager.instance.musicVolume;                                          //初始音量
-        this.canSuperimpose = false;                                                                     //初始無Loop的音樂是否可以疊加
+        this.canSuperimpose = false;                                                                         //初始無Loop的音樂是否可以疊加
         this.musicOnMute = SlotConfigManager.instance.isMusicOnMute;                                         //初始音樂是否打開
         this.effectOnMute = SlotConfigManager.instance.isEffectOnMute;                                       //初始效果音是否打開
-        this.loop = false;                                                                               //初始音樂循環
-        this.musicData = new Map<string, Map<string, string | boolean | number>>();                      //初始享元模式的音樂
-        this.effectData = new Map<string, Map<string, string | AudioStateType | boolean | number>>();    //初始享元模式的效果音效
-        this.music = new Music()                                                                         //新增播放Music音樂類
-        this.effect = new Effect()                                                                       //新增播放Effect音效類
-        this.initializeData();                                                                           //初始化享元預設撥放模式
+        this.loop = false;                                                                                   //初始音樂循環
+        this.musicData = new Map<string, Map<string, string | boolean | number>>();                          //初始享元模式的音樂
+        this.effectData = new Map<string, Map<string, string | AudioStateType | boolean | number>>();        //初始享元模式的效果音效
+        this.music = new Music()                                                                             //新增播放Music音樂類
+        this.effect = new Effect()                                                                           //新增播放Effect音效類
+        this.initializeData();                                                                               //初始化享元預設撥放模式
     }
 
     /**

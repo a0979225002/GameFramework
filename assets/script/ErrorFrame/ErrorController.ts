@@ -18,7 +18,6 @@ class ErrorController extends AErrorFrameTemplate {
     public onCreat() {
         cc.game.addPersistRootNode(this.node);
         this.node.active = false;
-        cc.log("cccc");
         ErrorManager
             .instance
             .setErrorNode(this.node)
