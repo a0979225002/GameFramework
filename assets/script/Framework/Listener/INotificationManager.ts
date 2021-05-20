@@ -13,7 +13,7 @@ interface INotificationManager {
     subscribe(observer:IObserver);
 
     /**
-     * 移除通知
+     * 移除訂閱
      * @param {IObserver} observer
      */
     unsubscribe(observer:IObserver);
@@ -25,12 +25,12 @@ interface INotificationManager {
     notify(...any);
 
     /**
-     * 該事件以訂閱數量
+     * 獲取該事件所有訂閱數量
      */
-    getToSubscribeCount():number;
+    getSubscribeCount():number;
 
     /**
-     * 該事件以訂閱數量
+     * 獲取該事件所有訂閱者
      */
     getAllSubscribe():Set<any>;
 

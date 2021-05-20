@@ -15,12 +15,12 @@ export default class SceneDirectionChangeNotification implements INotificationMa
 
     private static _instance: SceneDirectionChangeNotification;
 
-    constructor() {
+    private constructor() {
         this.observer = new Set<SceneDirectionChangeObserver>();
     }
 
     /**
-     * 懶漢加載,單利模式
+     * 懶漢加載,單例模式
      * @returns {SceneDirectionChangeNotification}
      */
     public static get instance(): SceneDirectionChangeNotification {
@@ -43,6 +43,8 @@ export default class SceneDirectionChangeNotification implements INotificationMa
     unsubscribe(observer: SceneDirectionChangeObserver) {
         if (this.observer.has(observer)) {
             this.observer.delete(observer);
+        }else {
+            ErrorManager.instance.executeError(ErrorType.GameProcessFW,`${observer} : 該觀察類尚未綁定過,無須移除觀察對象`);
         }
     }
 
@@ -54,7 +56,7 @@ export default class SceneDirectionChangeNotification implements INotificationMa
         }
     }
 
-    getToSubscribeCount(): number {
+    getSubscribeCount(): number {
         return this.observer.size;
     }
 

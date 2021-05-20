@@ -1,4 +1,4 @@
-import {GameType} from "../Enum/GameState";
+import {GameType} from "./Enum/GameState";
 
 /**
  * @Author XIAO-LI-PIN

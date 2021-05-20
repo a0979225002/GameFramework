@@ -7,8 +7,8 @@ import {ServerEventType} from '../Listener/Enum/ServerEventType'
 import EventManager from '../Listener/EventManager'
 import {GameState, GameType} from './Enum/GameState'
 import GameProcessFactory from "./GameProcessFactory";
-import {IGameProcessFactory} from "./IProcedure/IGameProcessFactory";
-import ISlotGameManager from './IProcedure/ISlotGameManager'
+import {IGameProcessFactory} from "./IGameProcessFactory";
+import ISlotGameManager from './ISlotGameManager'
 
 /**
  * @Author XIAO-LI-PIN
@@ -30,8 +30,8 @@ export default class SlotGameManager implements ISlotGameManager {
     private _isResultOk: boolean;
     private inExecution: boolean
     private gameProcessFactory: IGameProcessFactory;
-    private readonly userMoneyCallFun: Set<(money: number) => void>;
-    private readonly userTotalBetCallFun: Set<(beforeIndex: number, afterIndex: number) => void>;
+    private readonly userMoneyCallFun: Set<(money: number) => void>;//ok
+    private readonly userTotalBetCallFun: Set<(beforeIndex: number, afterIndex: number) => void>;//ok
     private readonly userWinPointCallFun: Set<(winPoint: number, level: number) => void>;
     private readonly autoCallFun: Set<(isAutomaticState: boolean, beforeAutoCount: AutoType, afterAutoCount: AutoType) => void>;
 
@@ -69,7 +69,7 @@ export default class SlotGameManager implements ISlotGameManager {
     //單例
     public static get instance(): ISlotGameManager {
         if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.GameProcedureFW, "該類尚未實例化");
+            ErrorManager.instance.executeError(ErrorType.GameProcessFW, "該類尚未實例化");
             return;
         }
         return this._instance;

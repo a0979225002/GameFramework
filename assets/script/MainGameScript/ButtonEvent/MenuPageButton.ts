@@ -12,12 +12,26 @@ import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from './MainGameButton'
 import RecordPageButton from "./RecordPageButton";
-
 const {ccclass, property} = cc._decorator;
 
 enum UserNowPage {
+
+    /**
+     * 紀錄頁
+     * @type {UserNowPage.RECORD_PAGE}
+     */
     RECORD_PAGE = 'RECORD_PAGE',
+
+    /**
+     * 設定頁
+     * @type {UserNowPage.SETTING_PAGE}
+     */
     SETTING_PAGE = 'SETTING_PAGE',
+
+    /**
+     * 說明頁
+     * @type {UserNowPage.DESCRIPTION_PAGE}
+     */
     DESCRIPTION_PAGE = 'DESCRIPTION_PAGE',
 }
 

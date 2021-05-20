@@ -1,12 +1,12 @@
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
 import {GameType} from "./Enum/GameState";
-import ISlotGameManager from "./IProcedure/ISlotGameManager";
-import {IGameProcessFactory} from "./IProcedure/IGameProcessFactory";
+import ISlotGameManager from "./ISlotGameManager";
+import {IGameProcessFactory} from "./IGameProcessFactory";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 更新,獲取,加入,變更等..流程工廠
+ * @Description 流程工廠 : 更新,獲取,加入,變更等..
  * @Date 2021-05-13 下午 06:17
  * @Version 1.1
  */
@@ -47,7 +47,7 @@ export default class GameProcessFactory implements IGameProcessFactory {
     changeProcess(processName: string | GameType) {
 
         if(!this.processToMap.has(processName)){
-            ErrorManager.instance.executeError(ErrorType.GameProcedureFW,`${processName} 搜尋不到此流程,請檢查流程是否添加`);
+            ErrorManager.instance.executeError(ErrorType.GameProcessFW,`${processName} 搜尋不到此流程,請檢查流程是否添加`);
         }
 
         this.process = this.processToMap.get(processName);

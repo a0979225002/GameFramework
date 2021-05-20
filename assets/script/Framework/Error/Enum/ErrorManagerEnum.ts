@@ -1,3 +1,5 @@
+import GameProcessFactory from "../../Process/GameProcessFactory";
+
 export enum ErrorType {
 
     server,
@@ -16,7 +18,7 @@ export enum ErrorType {
     SceneFW = "Scene 類有錯誤 :",
     ProcedureFW = "Procedure 類有錯誤 :",
     ListenerFW = "Event 類有錯誤 :",
-    GameProcedureFW = "GameProcedure類有錯誤 : ",
+    GameProcessFW = "GameProcess類有錯誤 : ",
     SlotStyleFW = "SlotStyleFW類有錯誤 : ",
 
 }

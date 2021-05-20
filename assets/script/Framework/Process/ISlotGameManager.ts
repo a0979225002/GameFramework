@@ -1,6 +1,6 @@
-import {AutoType} from '../../Config/Enum/ConfigEnum'
-import {UserBetPoint} from "../../Config/IConfig/ISlotConfigManager";
-import {GameState, GameType} from "../Enum/GameState";
+import {AutoType} from '../Config/Enum/ConfigEnum'
+import {UserBetPoint} from "../Config/IConfig/ISlotConfigManager";
+import {GameState, GameType} from "./Enum/GameState";
 
 /**
  * @Author XIAO-LI-PIN

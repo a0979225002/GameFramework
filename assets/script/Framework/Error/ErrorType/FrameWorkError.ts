@@ -42,8 +42,8 @@ export default class FrameWorkError {
                     throw new Error(`${ErrorType.ProcedureFW} ${obj}`);
                 case ErrorType.ListenerFW:
                     throw new Error(`${ErrorType.ListenerFW} ${obj}`);
-                case ErrorType.GameProcedureFW:
-                    throw new Error(`${ErrorType.GameProcedureFW} ${obj}`);
+                case ErrorType.GameProcessFW:
+                    throw new Error(`${ErrorType.GameProcessFW} ${obj}`);
                 case ErrorType.SlotStyleFW:
                     throw new Error(`${ErrorType.SlotStyleFW} ${obj}`);
                 default :
