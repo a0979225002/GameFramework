@@ -8,15 +8,25 @@ import {AutoType} from "../../Config/Enum/ConfigEnum";
  */
 export default class AutoStateChangeObserver implements IObserver {
 
+    private _isPermanent: boolean;
     private readonly self: any;
     private readonly callFun: (isAutomaticState: boolean, beforeAutoCount: AutoType, afterAutoCount: AutoType) => void;
 
     constructor(callFun: (isAutomaticState: boolean, beforeAutoCount: AutoType, afterAutoCount: AutoType) => void, self) {
+        this._isPermanent = false;
         this.self = self;
         this.callFun = callFun;
     }
 
     pushNotification(isAutomaticState: boolean, beforeAutoCount: AutoType, afterAutoCount: AutoType) {
         this.callFun.call(this.self, isAutomaticState, beforeAutoCount, afterAutoCount);
+    }
+
+    get isPermanent(): boolean {
+        return this._isPermanent;
+    }
+
+    set isPermanent(value: boolean) {
+        this._isPermanent = value;
     }
 }

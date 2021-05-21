@@ -6,6 +6,7 @@ import {GameState, GameType} from '../../Framework/Process/Enum/GameState'
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
+import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from '../ButtonEvent/MainGameButton'
@@ -19,6 +20,14 @@ import MainGameLabel from '../LabelEvent/MainGameLabel'
 export default class MainGameFreeProcess implements ISlotProcedureExecutionContainer {
 
     private slotStyle: NoLineSlot;
+    private result: INoLineResultModel;
+    private freeResult: IFreeResultModel;
+
+    constructor() {
+        this.result = WebResponseManager.instance.result as NoLineResult;
+        this.freeResult = WebResponseManager.instance.freeResult
+    }
+
 
     private onCreate() {
         if (!this.slotStyle) {
@@ -34,30 +43,52 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
 
             this.slotStyle.initializeState();
             SlotController.closeWinGrid();
-
+            cc.log("ccccc")
             //-1 為這次剩餘次數,因為資料是上局資料
-            let count: number = WebResponseManager.instance.freeResult.Count - 1;
+            let count: number = this.freeResult.Count - 1;
 
-            //第一次進入Free狀態
-            if (WebResponseManager.instance.result.FreeSpinCount != 0) {
-                MainGameLabel.remove();
-                MainGameButton.switchButton(false);
-                MainGameController.showFreeBG();
-                await FreeOpenController.showFreeOpeningAnimation(
-                    WebResponseManager.instance.result.FreeSpinCount);
-                count = WebResponseManager.instance.result.FreeSpinCount - 1;
-                //清空一般responseModel 的 free狀態,避免重複近來
-                WebResponseManager.instance.result.FreeSpinCount = 0;
-            }
-            //FREE TO FREE 判斷是否增加 更新count數
-            if (WebResponseManager.instance.freeResult.FreeToFree != 0) {
-                await FreeOpenController.showFreeOpeningAnimation(
-                    WebResponseManager.instance.freeResult.FreeToFree);
-                count = WebResponseManager.instance.freeResult.Count + WebResponseManager.instance.freeResult.FreeToFree - 1;
-            }
+            count = await this.normalToFree(count);
+            count = await this.freeToFree(count);
+
             MainGameLabel.updateFreeTitle(count);
             resolve();
         });
+    }
+
+    /**
+     * 由一般模式進入free時
+     * @param {number} count
+     * @returns {Promise<number>}
+     * @private
+     */
+    private async normalToFree(count: number): Promise<number> {
+        //第一次進入Free狀態
+        if (this.result.FreeSpinCount != 0) {
+            MainGameLabel.remove();
+            MainGameButton.instance.switchButton(false);
+            MainGameController.showFreeBG();
+            await FreeOpenController.showFreeOpeningAnimation(
+                this.result.FreeSpinCount);
+            count = this.result.FreeSpinCount - 1;
+            //清空一般responseModel 的 free狀態,避免重複近來
+            this.result.FreeSpinCount = 0;
+        }
+        return count;
+    }
+
+    /**
+     * 進入freeToFree時
+     * @param {number} count
+     * @returns {Promise<number>}
+     * @private
+     */
+    private async freeToFree(count: number) :Promise<number>{
+        //FREE TO FREE 判斷是否增加 更新count數
+        if (this.freeResult.FreeToFree != 0) {
+            await FreeOpenController.showFreeOpeningAnimation(this.freeResult.FreeToFree);
+            count = this.freeResult.Count + this.freeResult.FreeToFree - 1;
+        }
+        return count;
     }
 
     public onSineInGrid(): Promise<void> {
@@ -99,7 +130,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
                 //關閉 free 標題
                 MainGameLabel.closeFreeTitle();
                 //打開一般模式所有按鈕
-                MainGameButton.switchButton(true);
+                MainGameButton.instance.switchButton(true);
                 SlotGameManager.instance.gameState = GameState.STANDBY;
                 //如果是自動狀態是free結束,將在結束時關閉auto狀態
                 if (SlotGameManager.instance.autoType == AutoType.freeEnd && SlotGameManager.instance.isAutoState) {
@@ -111,7 +142,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
     }
 
     onChangeStatus() {
-        if (WebResponseManager.instance.freeResult.FreeToFree == 0 && WebResponseManager.instance.freeResult.Count == 0) {
+        if (this.freeResult.FreeToFree == 0 && this.freeResult.Count == 0) {
             SlotGameManager.instance.changeProcess(GameType.NORMAL);
         }
     }
@@ -124,9 +155,9 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
             }
 
             let winPoint = WebResponseManager.instance.freeResult.FreeSpinWin;
-            if (spinWin != 0 &&
+
+            if (spinWin != 0 && this.freeResult.BaseLevelWin == 0) {
                 //顯示 一般獎動畫
-                WebResponseManager.instance.freeResult.BaseLevelWin == 0) {
                 EventManager.instance.setEvent(
                     EventManager.gameTarget,
                     GameEventType.WIN_POINT,

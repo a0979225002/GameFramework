@@ -1,5 +1,6 @@
 import {GameState, GameType} from "../../Framework/Process/Enum/GameState";
 import SlotGameManager from "../../Framework/Process/SlotGameManager";
+import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
 import {WebResponseManager} from "../../Framework/WebResponse/WebResponseManager";
 import {socketJS} from "../../Socket/Socket";
 
@@ -10,6 +11,14 @@ import {socketJS} from "../../Socket/Socket";
  * @Version 1.0
  */
 export default class FreeProcessTest implements IGameProcedureExecutionContainer{
+
+    private result :INoLineResultModel;
+
+
+    constructor() {
+        this.result = WebResponseManager.instance.result as NoLineResult;
+    }
+
     onCreate(): Promise<void> {
         return new Promise(resolve => {
             socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
@@ -31,9 +40,8 @@ export default class FreeProcessTest implements IGameProcedureExecutionContainer
     }
 
     onChangeStatus() {
-
         //如果一般模式中response的免費次數不等於0,進入free狀態
-        if (WebResponseManager.instance.result.FreeSpinCount > 0) {
+        if (this.result.FreeSpinCount > 0) {
             SlotGameManager.instance.gameState = GameState.FREEING;
             SlotGameManager.instance.changeProcess(GameType.FREE);
             return;

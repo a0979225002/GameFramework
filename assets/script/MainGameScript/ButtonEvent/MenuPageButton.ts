@@ -3,15 +3,16 @@ import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import ButtonMethod from "../../Framework/GlobalMethod/ButtonMethod";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
 import SceneManager from '../../Framework/Scene/SceneManager'
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/AMenuDoubleButtonTemplate'
 import WebRequestManager from '../../Framework/WebRequest/WebRequestManager'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from './MainGameButton'
 import RecordPageButton from "./RecordPageButton";
+
 const {ccclass, property} = cc._decorator;
 
 enum UserNowPage {
@@ -178,12 +179,12 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         SceneDirectionChangeNotification
-            .instance.subscribe(this.sceneDirectionObserverListener());     //註冊直橫式監聽
+            .instance.subscribe(this.sceneDirectionObserverListener(), true);     //註冊直橫式監聽
 
-        this.initialize();                                                  //初始設定頁按鈕
-        this.setDescriptionButtonListener();                                //說明頁按鈕監聽事件添加
-        this.nowPage = UserNowPage.DESCRIPTION_PAGE;                        //隨機一個,都可
-        this.closeMenu();                                                   //初始關閉menu
+        this.initialize();                                                                  //初始設定頁按鈕
+        this.setDescriptionButtonListener();                                                //說明頁按鈕監聽事件添加
+        this.nowPage = UserNowPage.DESCRIPTION_PAGE;                                        //隨機一個,都可
+        this.closeMenu();                                                                   //初始關閉menu
     }
 
     /**
@@ -353,8 +354,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         this.checkAutoNode(beforeAutoCount, false);
         this.checkAutoNode(afterAutoCount, true);
         this.closeMenu();
-
-        MainGameButton.buttonOnEnable();
+        MainGameButton.instance.buttonOnEnable();
     }
 
     private checkAutoNode(autoType: AutoType, isOpen: boolean) {
@@ -497,10 +497,8 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      */
     @Effect("BtnClick")
     protected goBackTouchEvent() {
-
         this.closeMenu();
-        MainGameButton.buttonOnEnable();
-
+        MainGameButton.instance.buttonOnEnable();
     }
 
     /**
@@ -625,7 +623,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      */
     public showMenu() {
 
-        MainGameButton.buttonDisable();
+        MainGameButton.instance.buttonDisable();
 
         let direction = SceneManager.instance.sceneDirection;
 

@@ -6,8 +6,8 @@ import GameProcess from "../Framework/Process/Procress/GameProcess";
 import SlotGameProcess from '../Framework/Process/Procress/SlotGameProcess'
 import SlotGameManager from '../Framework/Process/SlotGameManager'
 import {SceneDirectionType} from '../Framework/Scene/Enum/SceneStyle'
-import SceneDirectionChangeNotification from "../Framework/Scene/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../Framework/Scene/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import SceneManager from '../Framework/Scene/SceneManager'
 import AMainGameSettingTemplate from '../Framework/Template/Setting/AMainGameSettingTemplate'
 import SocketSetting from "../Socket/SocketSetting";
@@ -43,10 +43,10 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * 初始,重新更新 scene適配
      */
     protected onCreate() {
-        //初始化當前scene方向,該開啟的node
+        //第一次加載,需先自行更新一次
         this.updateSceneDirection(SceneManager.instance.sceneDirection);
         //註冊scene樣式更新推波事件
-        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener());
+        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener(),true);
         //重新更新scene方向,scene跳轉會造成需重新式配size問題
         SceneManager.instance.updateSize();//重新更新mainScene的長寬是配
         //將dialog節點放置在最後一個位置
@@ -83,7 +83,9 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * 直橫向監聽器
      */
     private sceneDirectionObserverListener(): SceneDirectionChangeObserver {
-        return new SceneDirectionChangeObserver(this.updateSceneDirection, this);
+        return new SceneDirectionChangeObserver((type)=>{
+            this.updateSceneDirection(type);
+        }, this);
     }
 
     /**

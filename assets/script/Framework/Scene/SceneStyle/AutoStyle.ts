@@ -1,13 +1,11 @@
 import {SceneDirectionType} from '../Enum/SceneStyle'
-import SceneDirectionChangeNotification from "../SceneDirectionChangeNotification";
 import SceneManager from '../SceneManager'
+import SceneDirectionChangeNotification from "../SceneNotification/SceneDirectionChangeNotification";
 
 export default class AutoStyle implements ISceneStyle {
 
     public executionStyle(width: number, height: number) {
-
         this.updateSceneDirection();
-
         if ((cc.view.getFrameSize().width / cc.view.getFrameSize().height) >= (width / height)) {
             //宽度超出
             let newWidth = cc.view.getFrameSize().width * (width / cc.view.getFrameSize().height);
@@ -33,10 +31,12 @@ export default class AutoStyle implements ISceneStyle {
         if (cc.view.getFrameSize().width < cc.view.getFrameSize().height) {
             //直向
             if (SceneManager.instance.sceneDirection == SceneDirectionType.PORTRAIT) return;
+            SceneManager.instance.sceneDirection = SceneDirectionType.PORTRAIT;
             SceneDirectionChangeNotification.instance.notify(SceneDirectionType.PORTRAIT);
         } else {
             //橫向
             if (SceneManager.instance.sceneDirection == SceneDirectionType.LANDSCAPE) return;
+            SceneManager.instance.sceneDirection = SceneDirectionType.LANDSCAPE;
             SceneDirectionChangeNotification.instance.notify(SceneDirectionType.LANDSCAPE);
         }
     }

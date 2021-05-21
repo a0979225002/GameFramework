@@ -225,7 +225,7 @@ export default class NoLineSlot extends ASlot {
         return count;
     }
 
-    setLookAtEvent(isShow: boolean, index) {
+    setLookAtEvent(isShow: boolean, index:number) {
         if (this.isSlotEnd[index - 1] && this.checkLookAt(index)) {
             EventManager.instance
                 .setEvent(EventManager.gameTarget, GameEventType.LOOK_AT, index, isShow);

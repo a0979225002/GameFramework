@@ -78,14 +78,18 @@ export default class LanguageMethod {
         }
     }
 
+    /**
+     * 更新當前語系Label樣式,只需傳入需匹配的label即可
+     * @param {cc.Label} label
+     * @returns {this}
+     */
     public updateLabelStyle(label: cc.Label) {
 
         let language = WebRequestManager.instance.UserLanguage;
 
-        if(!this.lang_LabelSetting[language]){
+        if (!this.lang_LabelSetting[language]) {
             language = LanguageType.America;
         }
-
         label.fontFamily = this.lang_LabelSetting[language].fontFamily;
         label.fontSize = this.lang_LabelSetting[language].fontSize;
         label.lineHeight = this.lang_LabelSetting[language].lineHeight;

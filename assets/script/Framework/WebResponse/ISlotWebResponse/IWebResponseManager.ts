@@ -8,7 +8,7 @@ interface IWebResponseManager {
     /**
      * Result Model
      */
-    result: INoLineResultModel;
+    result: ISlotResultModel;
 
     /**
      * freeResult Model

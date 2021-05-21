@@ -14,13 +14,10 @@ import WarningController from '../Controller/WarningController'
 import MainGameLabel from '../LabelEvent/MainGameLabel'
 import MenuPageButton from './MenuPageButton'
 
-
 const {ccclass, property} = cc._decorator;
 
-let self: MainGameButton;
-
 @ccclass
-class MainGameButton extends AMainGameDoubleButtonTemplate {
+export default class MainGameButton extends AMainGameDoubleButtonTemplate {
 
     @property(cc.Button)
     protected autoButtonH: cc.Button = null
@@ -71,13 +68,11 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
     private betButtonToArray: Array<cc.Node>;
     protected autoCount: number;
     private color: { GRAY: any; WHITE: any; YELLOW: any };
+    public static instance: MainGameButton;
 
     constructor() {
-
         super();
-
         this.betButtonToArray = new Array<cc.Node>();
-
         this.color = {
             YELLOW: cc.color().fromHEX("#FFE000"),
             GRAY: cc.color().fromHEX("#8B8787"),
@@ -86,8 +81,7 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
     }
 
     protected onCreate() {
-
-        self = this;
+        MainGameButton.instance = this;
         this.buttonDisable();
         this.autoCount = SlotGameManager.instance.autoType;
         this.buttonSpriteFrame = {
@@ -409,7 +403,7 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
      * @protected
      */
     protected warningEvent() {
-        WarningController.showWarning();
+        WarningController.instance.showWarning();
     }
 
     /**
@@ -418,30 +412,34 @@ class MainGameButton extends AMainGameDoubleButtonTemplate {
      */
     public switchButton(isShow: boolean) {
 
-        self.startButtonH.node.active = isShow;
-        self.startButtonV.node.active = isShow;
-        self.autoButtonH.node.active = isShow;
-        self.autoButtonV.node.active = isShow;
-        self.menuButtonH.node.active = isShow;
-        self.menuButtonV.node.active = isShow;
-        self.betSelectionButtonH.node.active = isShow;
-        self.betSelectionButtonV.node.active = isShow;
+        this.startButtonH.node.active = isShow;
+        this.startButtonV.node.active = isShow;
+        this.autoButtonH.node.active = isShow;
+        this.autoButtonV.node.active = isShow;
+        this.menuButtonH.node.active = isShow;
+        this.menuButtonV.node.active = isShow;
+        this.betSelectionButtonH.node.active = isShow;
+        this.betSelectionButtonV.node.active = isShow;
 
         if (isShow) {
-            self.buttonOnEnable();
+            this.buttonOnEnable();
         } else {
-            self.startButtonDisable();
+            this.startButtonDisable();
         }
     }
 
+    /**
+     * 打開監聽開始按鈕
+     */
     public buttonOnEnable() {
-        self.startButtonOnEnable();
+        this.startButtonOnEnable();
     }
 
+    /**
+     * 禁用開始遊戲按鈕
+     */
     public buttonDisable() {
-        self.startButtonDisable();
+        this.startButtonDisable();
     }
 
 }
-
-export default new MainGameButton();

@@ -38,14 +38,13 @@ class SlotController extends ASlotInitializeTemplate {
             .setSlotGirdSpeed(0.08)                                      //遊戲一般速度
             .setSlotGridHeight(170)                                      //老虎機格子高度
             .setSlotRowGridCount(3)                                      //老虎機每列格子數
-            .setSlotTurnCount(4)                                         //一般停止最少轉動次數
-            .setSpeedUpMultiple(2)                                       //加速倍率
+            .setSlotTurnCount(2)                                         //一般停止最少轉動次數
+            .setSpeedUpMultiple(5)                                       //加速倍率
             .slotColumnToTween(this.slotRow)                             //執行老虎機動畫的列
             .setGridNodeToMap(this.gridNodeToMap)                        //執行動畫的所有格子
             .setGirdSpriteToMap(this.girdSpriteToMap)                    //更換圖片的所有格子
             .setGridImg(LoadResManager.instance.imgRes.get("gridImg"))   //遊戲中grid的所有格子
             .build();                                                    //實例化setSlotTemplate參數內的Class
-
     }
 
     /**

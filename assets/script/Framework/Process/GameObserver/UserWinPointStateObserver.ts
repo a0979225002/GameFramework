@@ -6,15 +6,25 @@
  */
 export default class UserWinPointStateObserver implements IObserver {
 
+    private _isPermanent: boolean;
     private readonly self: any;
     private readonly callFun: (winPoint: number, level: number) => void;
 
     constructor(callFun: (winPoint: number, level: number) => void, self) {
+        this._isPermanent = false;
         this.self = self;
         this.callFun = callFun;
     }
 
     pushNotification(winPoint: number, level: number) {
         this.callFun.call(this.self, winPoint, level);
+    }
+
+    get isPermanent(): boolean {
+        return this._isPermanent;
+    }
+
+    set isPermanent(value: boolean) {
+        this._isPermanent = value;
     }
 }

@@ -30,13 +30,17 @@ export default class AutoStateChangeNotification implements INotificationManager
         return this._instance;
     }
 
-    subscribe(observer: AutoStateChangeObserver) {
-
+    /**
+     * 訂閱該事件
+     * @param {AutoStateChangeObserver} observer : 關注者
+     * @param {boolean} isPermanent : 是否常駐
+     */
+    subscribe(observer: AutoStateChangeObserver, isPermanent: boolean) {
         if (this.observer.has(observer)) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, "你已註冊過該scene方向更改監聽事件,請解查")
+            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已註冊過自動狀態改變時事件,請檢查`)
             return;
         }
-
+        observer.isPermanent = isPermanent;
         this.observer.add(observer);
     }
 
@@ -50,8 +54,11 @@ export default class AutoStateChangeNotification implements INotificationManager
 
     notify(isAutomaticState: boolean, beforeAutoCount: AutoType, afterAutoCount: AutoType) {
         if (this.observer.size > 0) {
-            for (let method of this.observer) {
-                method.pushNotification(isAutomaticState, beforeAutoCount, afterAutoCount);
+            for (let observer of this.observer) {
+                observer.pushNotification(isAutomaticState, beforeAutoCount, afterAutoCount);
+                if (!observer.isPermanent) {
+                    this.unsubscribe(observer);
+                }
             }
         }
     }

@@ -1,8 +1,8 @@
 import {GameState} from '../../Framework/Process/Enum/GameState'
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import SceneManager from '../../Framework/Scene/SceneManager'
 
 const {ccclass, property} = cc._decorator;
@@ -25,7 +25,7 @@ class MainGameController extends cc.Component {
         self = this;
         this.freeBGH.active = false;
         this.freeBGV.active = false;
-        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener());
+        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener(),true);
     }
 
     public sceneDirectionObserverListener(): SceneDirectionChangeObserver {

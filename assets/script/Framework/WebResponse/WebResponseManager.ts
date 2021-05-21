@@ -9,7 +9,7 @@ export class WebResponseManager implements IWebResponseManager {
     private static _instance: IWebResponseManager;
     private configManager: ISlotConfigManager;
     private _tableInfo: ITableInfoModel;
-    private _result: INoLineResultModel;
+    private _result: ISlotResultModel;
     private _freeResult: IFreeResultModel;
     private readonly _handler: IResponseHandler;
 
@@ -50,25 +50,25 @@ export class WebResponseManager implements IWebResponseManager {
 
     }
 
-    public setResultModel(model: INoLineResultModel) {
+    public setResultModel(model: ISlotResultModel) {
 
         this._result = model;
 
     }
 
-    public get tableInfo() {
-        return this._tableInfo
+    get tableInfo(): ITableInfoModel {
+        return this._tableInfo;
     }
 
-    public get result() {
-        return this._result
+    get result(): ISlotResultModel {
+        return this._result;
     }
 
-    public get freeResult() {
-        return this._freeResult
+    get freeResult(): IFreeResultModel {
+        return this._freeResult;
     }
 
-    public get handler(): IResponseHandler {
-        return this._handler
+    get handler(): IResponseHandler {
+        return this._handler;
     }
 }

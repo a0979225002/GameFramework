@@ -6,6 +6,8 @@
  */
 interface IObserver {
 
+    isPermanent:boolean;
+
     /**
      * 推波通知
      */

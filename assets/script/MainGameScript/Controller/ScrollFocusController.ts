@@ -4,7 +4,7 @@ import ALookAtTemplate from '../../Framework/Template/LookAtFrame/ALookAtTemplat
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class ScrollFrameController extends ALookAtTemplate {
+export default class ScrollFocusController extends ALookAtTemplate {
 
     @property(cc.Animation)
     protected allLookAtEffect: cc.Animation[] = [];
@@ -15,6 +15,7 @@ export default class ScrollFrameController extends ALookAtTemplate {
         for (let effect of this.allLookAtEffect) {
             effect.node.active = false;
         }
+
     }
 
     @EffectStop("slottrunFast")

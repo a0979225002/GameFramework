@@ -39,5 +39,4 @@ function Loading(resName: string) {
         }
     }
 }
-
 export {Loading};

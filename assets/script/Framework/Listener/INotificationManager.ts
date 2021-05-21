@@ -8,13 +8,14 @@ interface INotificationManager {
 
     /**
      * 訂閱該事件
-     * @param {IObserver} observer
+     * @param {IObserver} observer : 關注者
+     * @param {boolean} isPermanent : 是否常駐
      */
-    subscribe(observer:IObserver);
+    subscribe(observer:IObserver,isPermanent:boolean);
 
     /**
      * 移除訂閱
-     * @param {IObserver} observer
+     * @param {IObserver} observer : 關注者
      */
     unsubscribe(observer:IObserver);
 

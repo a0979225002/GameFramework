@@ -1,7 +1,6 @@
 import {ErrorType} from "../../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../../Error/ErrorManager";
 import UserTotalBetChangeObserver from "../GameObserver/UserTotalBetChangeObserver";
-import SlotGameManager from "../SlotGameManager";
 
 /**
  * @Author XIAO-LI-PIN
@@ -30,19 +29,20 @@ export default class UserTotalBetChangeNotification implements INotificationMana
         return this._instance;
     }
 
-    subscribe(observer: UserTotalBetChangeObserver) {
+    subscribe(observer: UserTotalBetChangeObserver, isPermanent: boolean) {
         if (this.observer.has(observer)) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, "你已註冊過用戶更換的押住金額監聽事件,請解查")
+            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已註冊過用戶更換的押住金額監聽事件,請檢察`)
             return;
         }
+        observer.isPermanent = isPermanent;
         this.observer.add(observer);
     }
 
     unsubscribe(observer: UserTotalBetChangeObserver) {
         if (this.observer.has(observer)) {
             this.observer.delete(observer);
-        }else {
-            ErrorManager.instance.executeError(ErrorType.GameProcessFW,`${observer} : 該觀察類尚未綁定過,無須移除觀察對象`);
+        } else {
+            ErrorManager.instance.executeError(ErrorType.GameProcessFW, `${observer} : 該觀察類尚未綁定過,無須移除觀察對象`);
         }
     }
 
@@ -51,10 +51,13 @@ export default class UserTotalBetChangeNotification implements INotificationMana
      * @param {number} beforeIndex
      * @param {number} afterIndex
      */
-    notify(beforeIndex:number,afterIndex: number) {
+    notify(beforeIndex: number, afterIndex: number) {
         if (this.observer.size > 0) {
-            for (let method of this.observer) {
-                method.pushNotification(beforeIndex,afterIndex);
+            for (let observer of this.observer) {
+                observer.pushNotification(beforeIndex, afterIndex);
+                if (!observer.isPermanent) {
+                    this.unsubscribe(observer);
+                }
             }
         }
     }

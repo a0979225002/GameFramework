@@ -5,16 +5,25 @@
  * @Version 1.0
  */
 export default class UserTotalBetChangeObserver implements IObserver {
-
+    private _isPermanent: boolean;
     private readonly self: any;
     private readonly callFun: (beforeIndex: number, afterIndex: number) => void;
 
     constructor(callFun: (beforeIndex: number, afterIndex: number) => void, self) {
+        this._isPermanent = false;
         this.self = self;
         this.callFun = callFun;
     }
 
     pushNotification(beforeIndex: number, afterIndex: number) {
         this.callFun.call(this.self, beforeIndex, afterIndex);
+    }
+
+    get isPermanent(): boolean {
+        return this._isPermanent;
+    }
+
+    set isPermanent(value: boolean) {
+        this._isPermanent = value;
     }
 }

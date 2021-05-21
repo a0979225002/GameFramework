@@ -1,4 +1,4 @@
-import {SceneDirectionType} from "./Enum/SceneStyle";
+import {SceneDirectionType} from "../Enum/SceneStyle";
 
 /**
  * @Author XIAO-LI-PIN
@@ -7,16 +7,25 @@ import {SceneDirectionType} from "./Enum/SceneStyle";
  * @Version 1.0
  */
 export default class SceneDirectionChangeObserver implements IObserver {
-
+    private _isPermanent: boolean;
     private readonly self: any;
     private readonly callFun: (type: SceneDirectionType) => void;
 
-    constructor(callFun:(type: SceneDirectionType) => void,self) {
+    constructor(callFun: (type: SceneDirectionType) => void, self) {
+        this._isPermanent = false;
         this.self = self;
         this.callFun = callFun;
     }
 
     pushNotification(type: SceneDirectionType) {
-        this.callFun.call(this.self,type);
+        this.callFun.call(this.self, type);
+    }
+
+    get isPermanent(): boolean {
+        return this._isPermanent;
+    }
+
+    set isPermanent(value: boolean) {
+        this._isPermanent = value;
     }
 }

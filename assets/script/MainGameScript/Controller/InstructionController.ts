@@ -2,8 +2,8 @@ import {Music} from "../../Framework/Audio/AudioManager";
 import ButtonMethod from '../../Framework/GlobalMethod/ButtonMethod'
 import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import SceneManager from '../../Framework/Scene/SceneManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
@@ -44,7 +44,6 @@ export default class InstructionController extends AGenericTemplate {
 
     protected onCreate() {
         InstructionController.instance = this;
-
         switch (SceneManager.instance.sceneDirection) {
             case SceneDirectionType.LANDSCAPE:
                 this.pageH.active = true;
@@ -69,7 +68,7 @@ export default class InstructionController extends AGenericTemplate {
         );
 
         this.sceneDirectionChangeObserver = this.sceneDirectionObserverListener();
-        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionChangeObserver);
+        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionChangeObserver,true);
     }
 
     protected languageSetting() {
@@ -105,7 +104,7 @@ export default class InstructionController extends AGenericTemplate {
      */
     @Music("NBS")
     private pageTouchListener() {
-        MainGameButton.buttonOnEnable();
+        MainGameButton.instance.buttonOnEnable();
         this.node.destroy();
     }
 

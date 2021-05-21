@@ -28,11 +28,12 @@ export default class UserMoneyChangeNotification implements INotificationManager
         return this._instance;
     }
 
-    subscribe(observer: UserMoneyChangeObserver) {
+    subscribe(observer: UserMoneyChangeObserver, isPermanent: boolean) {
         if (this.observer.has(observer)) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, "你已註冊過該scene方向更改監聽事件,請解查")
+            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} : 已註冊過該用戶金額變更時事件,請檢察`)
             return;
         }
+        observer.isPermanent = isPermanent;
         this.observer.add(observer);
     }
 
@@ -46,8 +47,11 @@ export default class UserMoneyChangeNotification implements INotificationManager
 
     notify(money: number) {
         if (this.observer.size > 0) {
-            for (let method of this.observer) {
-                method.pushNotification(money);
+            for (let observer of this.observer) {
+                observer.pushNotification(money);
+                if (!observer.isPermanent) {
+                    this.unsubscribe(observer);
+                }
             }
         }
     }

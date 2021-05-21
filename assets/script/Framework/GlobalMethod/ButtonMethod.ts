@@ -1,4 +1,4 @@
-class ButtonMethod {
+export default class ButtonMethod {
 
     /**
      * //TITLE:對該button添加監聽事件
@@ -8,7 +8,7 @@ class ButtonMethod {
      * @param {string : 回調參數} customEventData
      */
 
-    addButtonEvent(buttonNode: cc.Button, methodName: string, self: any, customEventData?: any) {
+    static addButtonEvent(buttonNode: cc.Button, methodName: string, self: any, customEventData?: any) {
         //手動添加監聽事件
 
         let thisNode = self.node;
@@ -28,7 +28,7 @@ class ButtonMethod {
      * //TITLE:禁用button
      * @param {cc.Button}button
      */
-    disableButton(button: cc.Button) {
+    static disableButton(button: cc.Button) {
         button.interactable = false;
     }
 
@@ -36,7 +36,7 @@ class ButtonMethod {
      * //TITLE:啟用button
      * @param {cc.Button}button
      */
-    enableButton(button: cc.Button) {
+    static enableButton(button: cc.Button) {
         button.interactable = true;
     }
 
@@ -47,7 +47,7 @@ class ButtonMethod {
      * @param {this} thisJs
      * @param {boolean} useCapture : "可關閉多點觸控更能"
      */
-    addTouchStartEvent(node: cc.Node, method: Function, thisJs: any, useCapture?: boolean) {
+    static addTouchStartEvent(node: cc.Node, method: Function, thisJs: any, useCapture?: boolean) {
         node.on(cc.Node.EventType.TOUCH_START, method, thisJs, useCapture);
     }
 
@@ -58,22 +58,7 @@ class ButtonMethod {
      * @param {this} thisJs
      * @param {boolean} useCapture : "可關閉多點觸控更能"
      */
-    offTouchStartEvent(node: cc.Node, method: Function, thisJs: any, useCapture?: boolean) {
+    static offTouchStartEvent(node: cc.Node, method: Function, thisJs: any, useCapture?: boolean) {
         node.off(cc.Node.EventType.TOUCH_START, method, thisJs, useCapture);
     }
 }
-
-function addButtonEvent() {
-    return function (target: any, key: string, descriptor: PropertyDescriptor) {
-
-        descriptor.enumerable = true;
-        const method = descriptor.value;
-
-        descriptor.value = (script: any) => {
-
-            method.call(this);
-        }
-    }
-}
-
-export default new ButtonMethod();

@@ -4,8 +4,8 @@ import ErrorManager from '../Error/ErrorManager'
 import LoadResManager from '../LoadResources/LoadResManager'
 import {SceneStyle, SceneDirectionType} from './Enum/SceneStyle'
 import {ISceneManager} from "./IScene/ISceneManager";
-import SceneDirectionChangeNotification from "./SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "./SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification from "./SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "./SceneObserver/SceneDirectionChangeObserver";
 import SceneSizeChangeListener from './SceneSizeChangeListener'
 import SceneStyleHandler from './SceneStyleHandler'
 
@@ -19,7 +19,7 @@ export default class SceneManager implements ISceneManager {
     private sceneSizeChangeListener: SceneSizeChangeListener;
     private sceneStyleHandler: SceneStyleHandler;
     private _sceneDirection: SceneDirectionType;
-    private sceneDirectionChangeNotification: SceneDirectionChangeNotification;
+    private sceneChangeDirectionObserver: SceneDirectionChangeObserver;
 
     private constructor(configManager: IConfigManager) {
         this.configManager = configManager;
@@ -86,16 +86,16 @@ export default class SceneManager implements ISceneManager {
             this.style = style;
             switch (style) {
                 case SceneStyle.Horizontal:
+                    this.removeSceneChangeDirectionEventListener();
                     this._sceneDirection = SceneDirectionType.PORTRAIT;
                     break;
                 case SceneStyle.Vertical:
+                    this.removeSceneChangeDirectionEventListener();
                     this._sceneDirection = SceneDirectionType.LANDSCAPE;
                     break;
                 case SceneStyle.AUTO:
                 default:
-                    if (!this.sceneDirectionChangeNotification) {
-                        this.sceneChangeDirectionEventListener();
-                    }
+                    this.sceneChangeDirectionEventListener();
                     break;
             }
         }
@@ -104,13 +104,28 @@ export default class SceneManager implements ISceneManager {
     }
 
     /**
+     * 如果使用者更改螢幕式配度時,判斷當前是否開啟SceneChangeDirectionEventListener監聽
+     * 如果有,且並不是SceneStyle.AUTO類型,將自動關閉訂閱
+     * @private
+     */
+    private removeSceneChangeDirectionEventListener() {
+        if (this.sceneChangeDirectionObserver) {
+            SceneDirectionChangeNotification
+                .instance.unsubscribe(this.sceneChangeDirectionObserver);
+            this.sceneChangeDirectionObserver = null;
+        }
+    }
+
+    /**
      * 自發監聽,當用戶開啟AUTO樣式,或自訂樣式時才會開啟
      * 當推波發送過來時將會更新當前 sceneDirectionType
      * @private
      */
     private sceneChangeDirectionEventListener() {
-        this.sceneDirectionChangeNotification = SceneDirectionChangeNotification.instance;
-        this.sceneDirectionChangeNotification.subscribe(this.sceneChangeDirectionObserver())
+        //如果sceneChangeDirectionObserver以創建過,代表已開始監聽中,將直接離開,不重複訂閱
+        if (this.sceneChangeDirectionObserver) return;
+        SceneDirectionChangeNotification
+            .instance.subscribe(this.getSceneChangeDirectionObserver(), true)
     }
 
     /**
@@ -118,10 +133,13 @@ export default class SceneManager implements ISceneManager {
      * @returns {SceneDirectionChangeObserver}
      * @private
      */
-    private sceneChangeDirectionObserver(): SceneDirectionChangeObserver {
-        return new SceneDirectionChangeObserver((type) => {
+    private getSceneChangeDirectionObserver(): SceneDirectionChangeObserver {
+
+        this.sceneChangeDirectionObserver = new SceneDirectionChangeObserver((type => {
             this.updateSceneDirection(type);
-        }, this);
+        }), true);
+
+        return this.sceneChangeDirectionObserver;
     }
 
     /**

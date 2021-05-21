@@ -113,8 +113,6 @@ export default class SlotGameManager implements ISlotGameManager {
         } else {
             this.inExecution = false;
             this._isResultOk = false;
-            // if (this._gameState == GameState.FREEING) return;
-            // this._gameState = GameState.STANDBY;
         }
     }
 

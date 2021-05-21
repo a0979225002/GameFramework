@@ -148,7 +148,7 @@ export default class SlotConfigManager implements ISlotConfigManager {
         this._isEffectOnMute = false                            //是否打開效果音校
         this._userBet = {LineBet: 0};                           //初始user倍率
         this._language = LanguageType.Chinese                   //初始當前語系,將依據該語系,載入所有耦合圖檔
-        this._backHomeURL = undefined                            //初始返回首頁URL
+        this._backHomeURL = undefined                           //初始返回首頁URL
         this._isFrameworkDebug = false;                         //是否要開啟框架的Debug模式
 
     }

@@ -1,7 +1,7 @@
-import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
-import ErrorManager from "../Error/ErrorManager";
-import {SceneDirectionType} from "./Enum/SceneStyle";
-import SceneDirectionChangeObserver from "./SceneDirectionChangeObserver";
+import {ErrorType} from "../../Error/Enum/ErrorManagerEnum";
+import ErrorManager from "../../Error/ErrorManager";
+import {SceneDirectionType} from "../Enum/SceneStyle";
+import SceneDirectionChangeObserver from "../SceneObserver/SceneDirectionChangeObserver";
 
 /**
  * @Author XIAO-LI-PIN
@@ -30,13 +30,13 @@ export default class SceneDirectionChangeNotification implements INotificationMa
         return this._instance;
     }
 
-    subscribe(observer: SceneDirectionChangeObserver) {
+    subscribe(observer: SceneDirectionChangeObserver, isPermanent: boolean) {
 
         if (this.observer.has(observer)) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, "你已註冊過該scene方向更改監聽事件,請解查")
+            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已註冊過該scene方向更改監聽事件,請檢察`)
             return;
         }
-
+        observer.isPermanent = isPermanent;
         this.observer.add(observer);
     }
 
@@ -50,8 +50,11 @@ export default class SceneDirectionChangeNotification implements INotificationMa
 
     notify(type: SceneDirectionType) {
         if (this.observer.size > 0) {
-            for (let method of this.observer) {
-                method.pushNotification(type);
+            for (let observer of this.observer) {
+                observer.pushNotification(type);
+                if (!observer.isPermanent) {
+                    this.unsubscribe(observer);
+                }
             }
         }
     }

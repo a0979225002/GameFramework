@@ -5,8 +5,8 @@ import ButtonMethod from "../../Framework/GlobalMethod/ButtonMethod";
 import {ServerEventType} from "../../Framework/Listener/Enum/ServerEventType";
 import EventManager from "../../Framework/Listener/EventManager";
 import {SceneDirectionType} from "../../Framework/Scene/Enum/SceneStyle";
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import SceneManager from "../../Framework/Scene/SceneManager";
 import {DayType, GameHistoryData, PageChange} from "../../Framework/Template/ButtonEvent/ARecordButtonEvent";
 import ARecordDoubleButtonTemplate from "../../Framework/Template/ButtonEvent/ARecordDoubleButtonTemplate";
@@ -116,13 +116,13 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
             GRAY: cc.color().fromHEX("#777777"),
             WHITE: cc.color().fromHEX("#FFFFFF"),
         }
-        this.showDetailEventListener();                                     //顯示祥單監聽器
-        this.addListViewItemTouchEventListener();                           //ListView 內的Item 按鈕監聽
+        this.showDetailEventListener();                                                     //顯示祥單監聽器
+        this.addListViewItemTouchEventListener();                                           //ListView 內的Item 按鈕監聽
 
         SceneDirectionChangeNotification
-            .instance.subscribe(this.sceneDirectionObserverListener());     //註冊直橫式監聽
+            .instance.subscribe(this.sceneDirectionObserverListener(), true);     //註冊直橫式監聽
 
-        this.initialize();                                                  //初始化
+        this.initialize();                                                                  //初始化
     }
 
     /**
