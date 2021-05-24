@@ -1,5 +1,5 @@
 export enum FreeResultType {
 
-    NoLine,
-
+    NOT_LINE,
+    HAVE_LINE,
 }

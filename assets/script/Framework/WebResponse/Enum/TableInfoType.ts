@@ -1,5 +1,6 @@
 export enum TableInfoType {
 
-    NoLine,
+    NOT_LINE,
+    HAVE_LINE,
 
 }

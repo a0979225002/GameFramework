@@ -1,7 +1,10 @@
 import {AutoType} from '../Config/Enum/ConfigEnum'
 import {UserBetPoint} from "../Config/IConfig/ISlotConfigManager";
 import {GameState, GameType} from "./Enum/GameState";
-
+import AutoStateChangeObserver from "./GameObserver/AutoStateChangeObserver";
+import SpeedStateChangeObserver from "./GameObserver/SpeedStateChangeObserver";
+import UserMoneyChangeObserver from "./GameObserver/UserMoenyChangeObserver";
+import UserTotalBetChangeObserver from "./GameObserver/UserTotalBetChangeObserver";
 /**
  * @Author XIAO-LI-PIN
  * @Description (介面)遊戲管理器,管理當前流程,遊戲當前狀態
@@ -75,58 +78,72 @@ export default interface ISlotGameManager {
      */
     setInitialProcess(process: IProcess);
 
+
+    /**
+     * 拿取Framework內用戶更新金額時,推撥給框架的綁定者
+     * 注意:如果取消框架內的訂閱者,框架內的參數將無法自動更新,需手動自行更新
+     * @returns {UserMoneyChangeObserver}
+     */
+    getUserMoneyChangeObserver(): UserMoneyChangeObserver;
+
+    /**
+     * 拿取Framework內用戶更換押注時,推撥給框架的綁定者
+     * 注意:如果取消框架內的訂閱者,框架內的參數將無法自動更新,需手動自行更新
+     * @returns {UserTotalBetChangeObserver}
+     */
+    getUserTotalBetChangeObserver(): UserTotalBetChangeObserver;
+
+    /**
+     * 拿取Framework內用戶更新auto狀態時,推撥給框架的綁定者
+     * 注意:如果取消框架內的訂閱者,框架內的參數將無法自動更新,需手動自行更新
+     * @returns {AutoStateChangeObserver}
+     */
+    getAutoStateChangeObserver(): AutoStateChangeObserver;
+
+    /**
+     * 拿取Framework內用戶更新加速狀態時,推撥給框架的綁定者
+     * 注意:如果取消框架內的訂閱者,框架內的參數將無法自動更新,需手動自行更新
+     * @returns {SpeedStateChangeObserver}
+     */
+    getSpeedStateChangeObserver(): SpeedStateChangeObserver;
+
     /**
      * 更新當前玩家押注金額
+     * 如需同步,建議使用推撥事件更新
      * @param {number} betIndex
+     * @returns {UserBetPoint} : 當前用戶押注的回傳server物件狀態
      */
-    updateUserBetPoint(betIndex: number);
+    updateUserBetPoint(betIndex: number):UserBetPoint;
 
     /**
      * 更新當前auto次數
+     * 如果需要同步所有auto,建議使用推撥事件更新
+     * @param {AutoType} autoType
+     * @returns {AutoType} : 當前auto類型
      */
-    updateAutoCount(autoType: AutoType);
+    updateAutoCount(autoType: AutoType):AutoType;
 
     /**
      * 更動當前自動狀態
      * 如果是自動狀態,將會更動為非自動
      * 如果是非自動狀態,將會更動自動
+     * 如果需要同步所有auto狀態,建議綁定推撥事件更新
+     * @returns {boolean} : 是否需要自動
      */
-    updateAuto();
+    updateAuto():boolean;
 
     /**
      * 更新當前速度
      * 如果是加速狀態,將會更動為不加速
      * 如果無加速狀態,將會更動加速狀態
+     * 如果需要同步所有auto狀態,建議綁定推撥事件更新
+     * @returns {boolean} : 是否需要加速
      */
-    updateSpeed();
+    updateSpeed():boolean;
 
     /**
-     * 監聽:如果server有更新當前玩家的金額時,將會自動執行該callback function
-     * @param {() => void} callFun
-     */
-    userMoneyEventListener(callFun: (money: number) => void);
-
-    /**
-     * 監聽: 如果user有更換押注金額,將會執行保存的callBack Function
-     * @param {(betIndex: number) => void} callFun
-     */
-    userTotalBetEventListener(callFun: (beforeIndex: number, afterIndex: number) => void)
-
-    /**
-     * 接收Game流程有獲獎時,回傳監聽事件
-     * @param {(winPoint: number) => void} callFun
-     */
-    userWinPointEventListener(callFun: (winPoint: number, level: number) => void);
-
-
-    /**
-     * 添加關注AUTO事件改變時的回傳
-     * @param {(isAutomaticState: boolean, autoType: AutoType) => void} callFun
-     */
-    autoStateEventListener(callFun: (isAutomaticState: boolean, beforeAutoCount: AutoType, afterAutoCount: AutoType) => void);
-
-    /**
-     * 清除所有狀態,返回預設模式
+     * 清除堵塞狀態
+     * 注意:清除該狀態後,該次的流程即使尚未執行完,也能執行下次流程
      */
     remake();
 

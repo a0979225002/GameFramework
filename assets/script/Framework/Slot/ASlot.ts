@@ -1,6 +1,8 @@
-import {GameEventType} from '../Listener/Enum/gameEventType'
-import EventManager from '../Listener/EventManager'
+import SpeedStateChangeNotification from "../Process/GameNotification/SpeedStateChangeNotification";
+import SpeedStateChangeObserver from "../Process/GameObserver/SpeedStateChangeObserver";
 import SlotGameManager from '../Process/SlotGameManager'
+import StopNowStateNotification from "./SlotNotifivation/StopNowStateNotification";
+import StopNowStateObserver from "./SlotObserver/StopNowStateObserver";
 import {StyleData} from './SlotStyleManager'
 
 export default abstract class ASlot implements ISlot {
@@ -28,43 +30,48 @@ export default abstract class ASlot implements ISlot {
      */
     protected speed: number;
 
+    protected stopNowStateObserver: StopNowStateObserver;
+    protected speedStateChangeObserver: SpeedStateChangeObserver;
+
     protected constructor(styleData: StyleData) {
 
         this.isSpeedUp = SlotGameManager.instance.isSpeedUp;
         this.styleData = styleData
         this.speed = 1;
-        this.immediateStopEventListener();
-        this.speedUpEventListener();
+
+        StopNowStateNotification
+            .instance.subscribe(this.getStopNowStateObserver(), true);
+        SpeedStateChangeNotification
+            .instance.subscribe(this.getSpeedStateChangeObserver(), true);
 
     }
 
     /**
      * 即停監聽事件
+     * @returns {StopNowStateObserver}
      * @private
      */
-    private immediateStopEventListener() {
-
-        EventManager.instance.gameEventListener(GameEventType.IMMEDIATE_STOP, () => {
-
-            this.isSlotImmediateStop = true;
-
-        }, false);
+    private getStopNowStateObserver(): StopNowStateObserver {
+        if (!this.isSlotImmediateStop) {
+            this.stopNowStateObserver = new StopNowStateObserver(() => {
+                this.isSlotImmediateStop = true;
+            }, this);
+        }
+        return this.stopNowStateObserver;
     }
 
     /**
      * 加速按鈕監聽事件
      * @private
      */
-    private speedUpEventListener() {
-
-        EventManager.instance.gameEventListener(GameEventType.SPEED_UP, (speedState: boolean) => {
-
-            //更新加速率,如果關閉加速模式莫認為 1 一般倍率
-            speedState ? this.speed = this.styleData.speedUpMultiple : this.speed = 1;
-
-        }, false);
+    private getSpeedStateChangeObserver(): SpeedStateChangeObserver {
+        if (!this.speedStateChangeObserver) {
+            this.speedStateChangeObserver = new SpeedStateChangeObserver((isSpeedUp) => {
+                isSpeedUp ? this.speed = this.styleData.speedUpMultiple : this.speed = 1;
+            }, this);
+        }
+        return this.speedStateChangeObserver;
     }
-
 
     public abstract runSlotAnimation(): Promise<void>;
 

@@ -1,5 +1,6 @@
 export  enum ResultType {
     
-    NoLine,
+    NOT_LINE,
+    HAVE_LINE,
     
 }
