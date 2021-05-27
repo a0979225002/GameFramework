@@ -104,7 +104,7 @@ export default class InstructionController extends AGenericTemplate {
      */
     @Music("NBS")
     private pageTouchListener() {
-        MainGameButton.instance.buttonOnEnable();
+        MainGameButton.instance.startButtonOnEnable();
         this.node.destroy();
     }
 

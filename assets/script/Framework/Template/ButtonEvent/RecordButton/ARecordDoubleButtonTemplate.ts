@@ -1,5 +1,5 @@
-import ButtonMethod from "../../GlobalMethod/ButtonMethod";
-import {SceneDirectionType} from "../../Scene/Enum/SceneStyle";
+import ButtonMethod from "../../../GlobalMethod/ButtonMethod";
+import {SceneDirectionType} from "../../../Scene/Enum/SceneStyle";
 import ARecordButtonEvent, {DayType, PageChange} from "./ARecordButtonEvent";
 
 export default abstract class ARecordDoubleButtonTemplate extends ARecordButtonEvent {

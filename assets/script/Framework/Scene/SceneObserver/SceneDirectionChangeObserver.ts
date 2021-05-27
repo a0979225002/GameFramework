@@ -2,7 +2,7 @@ import {SceneDirectionType} from "../Enum/SceneStyle";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 場景方向改變觀察者,當有事件推送時,將會將該事件推撥給綁定者
+ * @Description 場景方向改變觀察者,當有事件推送時,將會將該事件推播給綁定者
  * @Date 2021-05-19 下午 01:46
  * @Version 1.0
  */

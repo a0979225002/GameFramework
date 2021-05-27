@@ -4,7 +4,7 @@ import UserMoneyChangeObserver from "../GameObserver/UserMoenyChangeObserver";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 : 用戶金額變更時事件推撥管理器
+ * @Description 通知管理器 : 用戶金額變更時事件推播管理器
  * @Date 2021-05-20 下午 03:02
  * @Version 1.0
  */

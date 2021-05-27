@@ -4,7 +4,7 @@ import ScrollFocusStateObserver from "../SlotObserver/ScrollFocusStateObserver";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 : 瞇牌時的狀態事件推撥管理
+ * @Description 通知管理器 : 瞇牌時的狀態事件推播管理
  * @Date 2021-05-21 下午 12:08
  * @Version 1.0
  */

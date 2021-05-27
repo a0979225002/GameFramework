@@ -4,7 +4,7 @@ import UserWinPointStateObserver from "../GameObserver/UserWinPointStateObserver
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 : 用戶贏分時事件推撥管理器
+ * @Description 通知管理器 : 用戶贏分時事件推播管理器
  * @Date 2021-05-20 下午 04:38
  * @Version 1.0
  */
@@ -31,7 +31,7 @@ export default class UserWinPointStateNotification implements INotificationManag
 
     subscribe(observer: UserWinPointStateObserver, isPermanent: boolean) {
         if (this.observer.has(observer)) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已註冊過用戶贏分時狀態推撥事件,請檢察`)
+            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已註冊過用戶贏分時狀態推播事件,請檢察`)
             return;
         }
         observer.isPermanent = isPermanent;

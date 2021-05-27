@@ -1,10 +1,11 @@
 import AudioManager from '../../Audio/AudioManager'
-import {GameEventType} from '../../Listener/Enum/gameEventType'
-import EventManager from '../../Listener/EventManager'
 import {GameState} from '../../Process/Enum/GameState'
 import SlotGameManager from '../../Process/SlotGameManager'
+import NoLineFreeResult from "../../WebResponse/Model/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../WebResponse/Model/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 import ASlot from '../ASlot'
+import ScrollFocusStateNotification from "../SlotNotifivation/ScrollFocusStateNotification";
 import {StyleData} from '../SlotStyleManager'
 
 export default class NoLineSlot extends ASlot {
@@ -72,14 +73,16 @@ export default class NoLineSlot extends ASlot {
     private readonly gridImg: Map<string, cc.SpriteFrame>;
     private readonly rowData: Array<number> // ["當前要跑幾個格子","當前要跑的高度"]
 
+    private normalResult: NoLineResult;
+    private freeResult: NoLineFreeResult
     //遊戲每列是否已經結束
     private readonly isSlotEnd: Array<boolean>;
 
     constructor(styleData: StyleData) {
         super(styleData)
-
         if (!styleData) return;
-
+        this.normalResult = WebResponseManager.instance.result as NoLineResult;
+        this.freeResult = WebResponseManager.instance.freeResult as NoLineFreeResult;
         this.slotTurnCount = this.styleData.slotTurnCount;
         this.slotGirdSpeed = this.styleData.slotGirdSpeed;
         this.slotRowGridCount = this.styleData.slotRowGridCount;
@@ -89,19 +92,13 @@ export default class NoLineSlot extends ASlot {
         this.gridNodeToMap = this.styleData.gridNodeToMap;
         this.gridSpriteToMap = this.styleData.gridSpriteToMap;
         this.gridImg = this.styleData.gridImg;
-
         //計算每列高度
         let rowHeight = this.slotRowGridCount * this.slotGridHeight;
-
         this.rowData = new Array<number>();
-
         //rowData (要往下的格子數量,要下拉的高度);
         this.rowData.push(this.slotRowGridCount, rowHeight);
-
         this.isSlotEnd = [];
-
         this.initializeState();
-
     }
 
     public sineInSlot(): Promise<void> {
@@ -195,7 +192,7 @@ export default class NoLineSlot extends ASlot {
 
                         this.showAnswer(index, resolve);
                         this.isSlotEnd[index] = true;
-                        this.setLookAtEvent(false, index);
+                        this.setLookAtEventNotify(false, index);
                         AudioManager.instance.effectPlay("SlotStop");
 
                     } else {
@@ -217,7 +214,7 @@ export default class NoLineSlot extends ASlot {
             count = this.slotTurnCount;
         } else if (this.checkLookAt(index)) {
             count = index * 4 + this.slotTurnCount;
-            this.setLookAtEvent(true, index);
+            this.setLookAtEventNotify(true, index);
         } else {
             count = this.slotTurnCount + index;
         }
@@ -225,10 +222,9 @@ export default class NoLineSlot extends ASlot {
         return count;
     }
 
-    setLookAtEvent(isShow: boolean, index:number) {
+    setLookAtEventNotify(isShow: boolean, index: number) {
         if (this.isSlotEnd[index - 1] && this.checkLookAt(index)) {
-            EventManager.instance
-                .setEvent(EventManager.gameTarget, GameEventType.LOOK_AT, index, isShow);
+            ScrollFocusStateNotification.instance.notify(index, isShow);
         }
     }
 
@@ -240,7 +236,7 @@ export default class NoLineSlot extends ASlot {
         if (this.isSlotImmediateStop) {
             this.showAnswer(index, resolve);
             this.isSlotEnd[index] = true;
-            this.setLookAtEvent(false, index);
+            this.setLookAtEventNotify(false, index);
 
             return true;
         }
@@ -319,9 +315,9 @@ export default class NoLineSlot extends ASlot {
         let isShowLookAt: boolean;
 
         if (SlotGameManager.instance.gameState === GameState.FREEING) {
-            lookAt = WebResponseManager.instance.freeResult.LookAt;
+            lookAt = this.freeResult.LookAt;
         } else {
-            lookAt = WebResponseManager.instance.result.LookAt;
+            lookAt = this.normalResult.LookAt;
         }
 
         isShowLookAt = !!lookAt[index];
@@ -373,9 +369,9 @@ export default class NoLineSlot extends ASlot {
         let gridAnswer: Array<number>;
 
         if (SlotGameManager.instance.gameState === GameState.FREEING) {
-            gridAnswer = WebResponseManager.instance.freeResult.Grid;
+            gridAnswer = this.freeResult.Grid;
         } else {
-            gridAnswer = WebResponseManager.instance.result.Grid;
+            gridAnswer = this.normalResult.Grid;
         }
 
         let start = index * 3;
@@ -412,9 +408,9 @@ export default class NoLineSlot extends ASlot {
         let gridAnswer: Array<number>;
 
         if (SlotGameManager.instance.gameState === GameState.FREEING) {
-            gridAnswer = WebResponseManager.instance.freeResult.Grid;
+            gridAnswer = this.freeResult.Grid;
         } else {
-            gridAnswer = WebResponseManager.instance.result.Grid;
+            gridAnswer = this.normalResult.Grid;
         }
 
         let start = index * this.slotRowGridCount;

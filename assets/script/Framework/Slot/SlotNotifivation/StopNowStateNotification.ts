@@ -4,7 +4,7 @@ import StopNowStateObserver from "../SlotObserver/StopNowStateObserver";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 : 即停事件推撥管理器
+ * @Description 通知管理器 : 即停事件推播管理器
  * @Date 2021-05-21 上午 11:59
  * @Version 1.0
  */
@@ -47,7 +47,7 @@ export default class StopNowStateNotification implements INotificationManager {
     }
 
     /**
-     * 即停事件推撥
+     * 即停事件推播
      */
     notify() {
         if (this.observer.size > 0) {

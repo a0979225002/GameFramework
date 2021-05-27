@@ -52,13 +52,13 @@ export default class SlotGameManager implements ISlotGameManager {
         this._userBetPoint = this.configManager.userBet;                                                //初始玩家押住
         this._isResultOk = false;                                                                       //初始尚未獲取server 該局資料
         this.inExecution = false;                                                                       //初始尚未開使執行流程
-        UserMoneyChangeNotification                                                                     //訂閱用戶更新金額時,回傳推撥事件
+        UserMoneyChangeNotification                                                                     //訂閱用戶更新金額時,回傳推播事件
             .instance.subscribe(this.getUserMoneyChangeObserver(), true);
-        UserTotalBetChangeNotification                                                                  //訂閱用戶更新更換押注時,回傳推撥事件
+        UserTotalBetChangeNotification                                                                  //訂閱用戶更新更換押注時,回傳推播事件
             .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
-        AutoStateChangeNotification                                                                     //訂閱用戶更動自動狀態時,回傳推撥事件
+        AutoStateChangeNotification                                                                     //訂閱用戶更動自動狀態時,回傳推播事件
             .instance.subscribe(this.getAutoStateChangeObserver(), true);
-        SpeedStateChangeNotification                                                                    //訂閱用戶更新自動狀態時,回傳推撥事件
+        SpeedStateChangeNotification                                                                    //訂閱用戶更新自動狀態時,回傳推播事件
             .instance.subscribe(this.getSpeedStateChangeObserver(), true);
     }
 
@@ -127,7 +127,7 @@ export default class SlotGameManager implements ISlotGameManager {
     }
 
     /**
-     * 拿取Framework內用戶更新金額時,推撥給框架的綁定者
+     * 拿取Framework內用戶更新金額時,推播給框架的綁定者
      * 注意:如果取消框架內的訂閱者,框架內的參數將無法自動更新,需手動自行更新
      */
     public getUserMoneyChangeObserver(): UserMoneyChangeObserver {
@@ -140,7 +140,7 @@ export default class SlotGameManager implements ISlotGameManager {
     }
 
     /**
-     * 拿取Framework內用戶更換押注時,推撥給框架的綁定者
+     * 拿取Framework內用戶更換押注時,推播給框架的綁定者
      * 注意:如果取消框架內的訂閱者,框架內的參數將無法自動更新,需手動自行更新
      */
     public getUserTotalBetChangeObserver(): UserTotalBetChangeObserver {
@@ -153,7 +153,7 @@ export default class SlotGameManager implements ISlotGameManager {
     }
 
     /**
-     * 拿取Framework內用戶更新auto狀態時,推撥給框架的綁定者
+     * 拿取Framework內用戶更新auto狀態時,推播給框架的綁定者
      * 注意:如果取消框架內的訂閱者,框架內的參數將無法自動更新,需手動自行更新
      */
     public getAutoStateChangeObserver(): AutoStateChangeObserver {
@@ -167,7 +167,7 @@ export default class SlotGameManager implements ISlotGameManager {
     }
 
     /**
-     * 拿取Framework內用戶更新加速狀態時,推撥給框架的綁定者
+     * 拿取Framework內用戶更新加速狀態時,推播給框架的綁定者
      * 注意:如果取消框架內的訂閱者,框架內的參數將無法自動更新,需手動自行更新
      */
     public getSpeedStateChangeObserver(): SpeedStateChangeObserver {
@@ -181,7 +181,7 @@ export default class SlotGameManager implements ISlotGameManager {
 
     /**
      * 更新當前玩家押注金額
-     * 如需同步,建議使用推撥事件更新
+     * 如需同步,建議使用推播事件更新
      * @param {number} betIndex
      * @returns {UserBetPoint}
      */
@@ -192,7 +192,7 @@ export default class SlotGameManager implements ISlotGameManager {
 
     /**
      * 更新當前auto次數
-     * 如果需要同步所有auto次數,建議使用推撥事件更新
+     * 如果需要同步所有auto次數,建議使用推播事件更新
      * @param {AutoType} autoType
      * @returns {AutoType}
      */
@@ -205,7 +205,7 @@ export default class SlotGameManager implements ISlotGameManager {
      * 更動當前自動狀態
      * 如果是自動狀態,將會更動為非自動
      * 如果是非自動狀態,將會更動自動
-     * 如果需要同步所有auto狀態,建議綁定推撥事件更新
+     * 如果需要同步所有auto狀態,建議綁定推播事件更新
      * @returns {boolean}
      */
     updateAuto(): boolean {
@@ -220,7 +220,7 @@ export default class SlotGameManager implements ISlotGameManager {
      * 更新當前速度
      * 如果是加速狀態,將會更動為不加速
      * 如果無加速狀態,將會更動加速狀態
-     * 如果需要同步所有auto狀態,建議綁定推撥事件更新
+     * 如果需要同步所有auto狀態,建議綁定推播事件更新
      * @returns {boolean}
      */
     updateSpeed(): boolean {

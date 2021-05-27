@@ -1,16 +1,14 @@
 import {GameState} from '../../Framework/Process/Enum/GameState'
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
+import SceneManager from '../../Framework/Scene/SceneManager'
 import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
 import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
-import SceneManager from '../../Framework/Scene/SceneManager'
-
 const {ccclass, property} = cc._decorator;
 
-let self: MainGameController;
 
 @ccclass
-class MainGameController extends cc.Component {
+export default class MainGameController extends cc.Component {
 
     @property(cc.Node)
     private freeBGH: cc.Node = null;
@@ -20,12 +18,13 @@ class MainGameController extends cc.Component {
     private normalBGH: cc.Node = null
     @property(cc.Node)
     private normalBGV: cc.Node = null
+    public static instance: MainGameController;
 
     protected onLoad() {
-        self = this;
+        MainGameController.instance = this;
         this.freeBGH.active = false;
         this.freeBGV.active = false;
-        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener(),true);
+        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener(), true);
     }
 
     public sceneDirectionObserverListener(): SceneDirectionChangeObserver {
@@ -42,20 +41,18 @@ class MainGameController extends cc.Component {
 
     public closeFreeBG() {
 
-        self.freeBGH.active = false;
-        self.freeBGV.active = false;
+        this.freeBGH.active = false;
+        this.freeBGV.active = false;
 
     }
 
     public showFreeBG() {
 
         if (SceneManager.instance.sceneDirection == SceneDirectionType.LANDSCAPE) {
-            self.freeBGH.active = true;
+            this.freeBGH.active = true;
         } else {
-            self.freeBGH.active = true;
-            self.freeBGV.active = true;
+            this.freeBGH.active = true;
+            this.freeBGV.active = true;
         }
     }
 }
-
-export default new MainGameController();

@@ -4,7 +4,7 @@ import UserTotalBetChangeObserver from "../GameObserver/UserTotalBetChangeObserv
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 : 用戶更換的押住金額事件推撥管理器
+ * @Description 通知管理器 : 用戶更換的押住金額事件推播管理器
  * @Date 2021-05-20 下午 04:11
  * @Version 1.0
  */

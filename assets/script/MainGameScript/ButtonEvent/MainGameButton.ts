@@ -2,11 +2,13 @@ import AudioManager, {Effect} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import ButtonMethod from '../../Framework/GlobalMethod/ButtonMethod'
 import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
-import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
-import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Process/Enum/GameState'
+import AutoStateChangeNotification from "../../Framework/Process/GameNotification/AutoStateChangeNotification";
+import UserTotalBetChangeNotification from "../../Framework/Process/GameNotification/UserTotalBetChangeNotification";
+import UserTotalBetChangeObserver from "../../Framework/Process/GameObserver/UserTotalBetChangeObserver";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
-import AMainGameDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/AMainGameDoubleButtonTemplate'
+import AMainGameDoubleButtonTemplate
+    from '../../Framework/Template/ButtonEvent/MainButton/AMainGameDoubleButtonTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
 import SlotController from '../Controller/SlotController'
@@ -61,14 +63,15 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
     protected startAutoIconV: cc.Node = null;
     @property(cc.Label)
     protected titleText: cc.Label = null;
-
     @property(cc.SpriteAtlas)
     protected buttonSpriteAtlas: cc.SpriteAtlas = null;
+
     private buttonSpriteFrame: { SPEED_OFF: cc.SpriteFrame; AUTO_OFF: cc.SpriteFrame; SPEED_ON: cc.SpriteFrame; AUTO_ON: cc.SpriteFrame; STANDBY: cc.SpriteFrame; PLAYING: cc.SpriteFrame }
-    private betButtonToArray: Array<cc.Node>;
+    private betButtonToArray: Array<cc.Node>;//所有押注按鈕
     protected autoCount: number;
     private color: { GRAY: any; WHITE: any; YELLOW: any };
     public static instance: MainGameButton;
+    private userTotalBetChangeObserver: UserTotalBetChangeObserver;
 
     constructor() {
         super();
@@ -82,7 +85,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
 
     protected onCreate() {
         MainGameButton.instance = this;
-        this.buttonDisable();
+        this.startButtonDisable();
         this.autoCount = SlotGameManager.instance.autoType;
         this.buttonSpriteFrame = {
             SPEED_ON: this.buttonSpriteAtlas.getSpriteFrame("FastOn"),
@@ -92,12 +95,13 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             STANDBY: this.buttonSpriteAtlas.getSpriteFrame("Spin_ICON"),
             PLAYING: this.buttonSpriteAtlas.getSpriteFrame("Stop_ICON"),
         }
-
         this.offBetFrameButtonAnimation(this.betSelectionButtonH.node.children[0]);
         this.offBetFrameButtonAnimation(this.betSelectionButtonV.node.children[0]);
         this.buttonStanByAnimation(this.startButtonImgH.node);
         this.buttonStanByAnimation(this.startButtonImgV.node);
-        this.userTotalBetEventListener();
+
+        UserTotalBetChangeNotification                                                  //押注事件推播綁定
+            .instance.subscribe(this.getUserTotalBetChangeObserver(),true);
         this.totalFrameNode.active = false;
         this.startAutoNodeH.active = false;
         this.startAutoNodeV.active = false;
@@ -275,7 +279,8 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
      */
     protected endEvent() {
         if (SlotGameManager.instance.isAutoState && this.autoCount == 0) {
-            EventManager.instance.setEvent(EventManager.gameTarget, GameEventType.AUTO);
+            let autoType = SlotGameManager.instance.autoType;
+            AutoStateChangeNotification.instance.notify(false, autoType, autoType);
         }
         if (!SlotGameManager.instance.isAutoState) {
             this.buttonStanByAnimation(this.startButtonImgV.node);
@@ -345,27 +350,28 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
     }
 
     /**
-     * 總押住視窗中,各別押住按鈕點時 推撥事件
+     * 總押住視窗中,各別押住按鈕點時 推播事件
      * @param event
      * @param callback
      */
     @Effect("BtnClick")
     protected betButtonTouchEvent(event, callback: number) {
-
-        EventManager
-            .instance
-            .setEvent(EventManager.gameTarget, GameEventType.USER_TOTAL_BET, callback);
-
+        let beforeIndex = SlotGameManager.instance.userBetPoint.LineBet;
+        UserTotalBetChangeNotification.instance.notify(beforeIndex, callback);
     }
 
     /**
      * 監聽 如果有更換押注金額 將更新當前狀態
      * @private
      */
-    private userTotalBetEventListener() {
-        SlotGameManager.instance.userTotalBetEventListener((beforeIndex, afterIndex) => {
-            this.updateTotalBetEvent(beforeIndex, afterIndex);
-        })
+    private getUserTotalBetChangeObserver(): UserTotalBetChangeObserver {
+        if (!this.userTotalBetChangeObserver) {
+            this.userTotalBetChangeObserver = new UserTotalBetChangeObserver(
+                (beforeIndex, afterIndex) => {
+                    this.updateTotalBetEvent(beforeIndex,afterIndex);
+                }, this);
+        }
+        return this.userTotalBetChangeObserver;
     }
 
     /**
@@ -386,8 +392,8 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         afterBetNode.normalColor = this.color.YELLOW;
         afterBetNode.hoverColor = this.color.YELLOW;
 
-        SlotController.closeWinGrid();
-        MainGameLabel.remove();
+        SlotController.instance.closeWinGrid();
+        MainGameLabel.instance.remove();
 
     }
 
@@ -411,7 +417,6 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
      * @param {boolean} isShow
      */
     public switchButton(isShow: boolean) {
-
         this.startButtonH.node.active = isShow;
         this.startButtonV.node.active = isShow;
         this.autoButtonH.node.active = isShow;
@@ -420,26 +425,12 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         this.menuButtonV.node.active = isShow;
         this.betSelectionButtonH.node.active = isShow;
         this.betSelectionButtonV.node.active = isShow;
-
         if (isShow) {
-            this.buttonOnEnable();
+            this.startButtonOnEnable();
         } else {
             this.startButtonDisable();
         }
     }
 
-    /**
-     * 打開監聽開始按鈕
-     */
-    public buttonOnEnable() {
-        this.startButtonOnEnable();
-    }
-
-    /**
-     * 禁用開始遊戲按鈕
-     */
-    public buttonDisable() {
-        this.startButtonDisable();
-    }
 
 }

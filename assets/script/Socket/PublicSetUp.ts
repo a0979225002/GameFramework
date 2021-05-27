@@ -5,7 +5,6 @@ export default class PublicSetUp {
 
     //遊戲名稱
     static GameName: number = 84;
-    static userPoint: number;
     //該次遊戲序號
     static GroupID: number;
     //主遊戲場景Scene名稱

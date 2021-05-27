@@ -1,18 +1,17 @@
 import AudioManager, {Effect, Music, EffectStop} from '../../Framework/Audio/AudioManager'
-import {GameEventType} from '../../Framework/Listener/Enum/gameEventType'
-import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
-import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Process/Enum/GameState'
+import UserMoneyChangeNotification from "../../Framework/Process/GameNotification/UserMoneyChangeNotification";
+import UserWinPointStateNotification from "../../Framework/Process/GameNotification/UserWinPointStateNotification";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
 
 const {ccclass, property} = cc._decorator;
 
-let self: WinLevelController;
-
 @ccclass
-class WinLevelController extends cc.Component {
+export default class WinLevelController extends cc.Component {
 
     @property(cc.Label)
     private winPointLabel: cc.Label = null;
@@ -39,17 +38,20 @@ class WinLevelController extends cc.Component {
     private isMegaWinOpen: boolean;
     private resolve: (value: (void | PromiseLike<void>)) => void;
     private levelWinPoint: number
+    public static instance: WinLevelController;
+    private normalResult: NoLineResult;
+    private freeResult: NoLineFreeResult;
 
     protected onLoad() {
+        WinLevelController.instance = this;
+        this.normalResult = WebResponseManager.instance.result as NoLineResult;         //強制轉型為NoLineResult data
+        this.freeResult = WebResponseManager.instance.freeResult as NoLineFreeResult;   //強制轉型為NoLineFreeResult data
+        this.node.active = false;                                                       //初始押注prefab組件為隱藏
+        this.winPointLabel.string = "";                                                 //初始押注分數 label 為空
+        this.winLevelRange = WebResponseManager.instance.tableInfo.LevelWinPoint;       //遊戲前三個等級的押注倍率
+        this.winLevelRange.push(60, 70);                                                //額外新增押注倍率
 
-        self = this;
-        this.node.active = false;
-        this.winPointLabel.string = "";
-
-        this.winLevelRange = WebResponseManager.instance.tableInfo.LevelWinPoint;
-        this.winLevelRange.push(60, 70);
-
-        this.spineData = {
+        this.spineData = {                                                              //贏分,spine動畫
             FREE_TITLE_OPEN: "0Animate_FreespinsComeout",
             FREE_TITLE_LOOP: "0Animate_FreespinsRoop",
             BIG_WIN_OPEN: "1Animate_Comeout",
@@ -60,23 +62,22 @@ class WinLevelController extends cc.Component {
             MEGA_WIN_LOOP: "6Animate_MegaWin",
             WIN_BORDER_OPEN: "1Animate_ComeoutBG",
             WIN_BORDER_LOOP: "2~6Animate_BG",
-
         }
     }
 
     initializeSpine() {
 
-        self.resolve = null;
+        this.resolve = null;
         //當前獲獎分數
-        self.userNowBet = WebResponseManager.instance.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet];
-        self.startNum = 0;                  //當前開始跑分的初始分數
-        self.pointSplitIndex = 0;           //當前尋訪第幾個Level
-        self.isNumberRun = false;           //當前是否能開始跑分
-        self.winPointLabel.string = "";     //當前顯示跑到幾分
-        self.node.active = true;            //打開整個node
-        self.totalPoint = []                //初始拆分的數字
-        self.levelWinPoint = 0              //當前跑到第幾個拆分的數字儲存用
-        self.showBigWin();                  //開啟Big Win
+        this.userNowBet = WebResponseManager.instance.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet];
+        this.startNum = 0;                  //當前開始跑分的初始分數
+        this.pointSplitIndex = 0;           //當前尋訪第幾個Level
+        this.isNumberRun = false;           //當前是否能開始跑分
+        this.winPointLabel.string = "";     //當前顯示跑到幾分
+        this.node.active = true;            //打開整個node
+        this.totalPoint = []                //初始拆分的數字
+        this.levelWinPoint = 0              //當前跑到第幾個拆分的數字儲存用
+        this.showBigWin();                  //開啟Big Win
     }
 
     public totalPointSplit(point) {
@@ -93,10 +94,10 @@ class WinLevelController extends cc.Component {
         while (true) {
 
             if (count == 0) {
-                numberSplit.push(self.userNowBet * self.winLevelRange[count]);
+                numberSplit.push(this.userNowBet * this.winLevelRange[count]);
             }
 
-            if (count == self.winLevelRange.length - 1) {
+            if (count == this.winLevelRange.length - 1) {
 
                 totalPoint - afterPoint > afterPoint ?
                     numberSplit.push(afterPoint - beforePoint, totalPoint - afterPoint) : numberSplit.push(totalPoint - beforePoint);
@@ -112,39 +113,40 @@ class WinLevelController extends cc.Component {
                 break;
             }
 
-            if (count < self.winLevelRange.length) {
+            if (count < this.winLevelRange.length) {
                 count++;
-                beforePoint = self.userNowBet * self.winLevelRange[count - 1];
-                afterPoint = self.userNowBet * self.winLevelRange[count];
+                beforePoint = this.userNowBet * this.winLevelRange[count - 1];
+                afterPoint = this.userNowBet * this.winLevelRange[count];
             }
         }
 
-        self.totalPoint = numberSplit;
-        cc.log(self.totalPoint)
+        this.totalPoint = numberSplit;
+        cc.log(this.totalPoint)
     }
 
     @Effect("runPoint")
     private runTotalWinPoint() {
-        self.isNumberRun = true;
+        this.isNumberRun = true;
     }
+
     @Loading("prefab")
     public showWinAboveState(point: number, resolve: (value: (void | PromiseLike<void>)) => void) {
-        self.initializeSpine();
-        self.totalPointSplit(point);
-        self.point = point;
-        self.scheduleOnce(() => {
-            self.runTotalWinPoint();
-            self.node.once(cc.Node.EventType.TOUCH_END, self.runPointTouchEnd);
-            cc.systemEvent.once(cc.SystemEvent.EventType.KEY_DOWN, self.keyboardEvent, self);
+        this.initializeSpine();
+        this.totalPointSplit(point);
+        this.point = point;
+        this.scheduleOnce(() => {
+            this.runTotalWinPoint();
+            this.node.once(cc.Node.EventType.TOUCH_END, this.runPointTouchEnd);
+            cc.systemEvent.once(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardEvent, this);
         }, 0.5);
 
-        self.resolve = resolve;
+        this.resolve = resolve;
     }
 
     private keyboardEvent(event) {
         switch (event.keyCode) {
             case cc.macro.KEY.space:
-                self.runPointTouchEnd();
+                this.runPointTouchEnd();
                 break;
         }
     }
@@ -155,8 +157,8 @@ class WinLevelController extends cc.Component {
      */
     private runPointTouchEnd() {
 
-        self.pointSplitIndex = self.totalPoint.length - 1;
-        self.startNum = self.point;
+        this.pointSplitIndex = this.totalPoint.length - 1;
+        this.startNum = this.point;
 
     }
 
@@ -197,33 +199,33 @@ class WinLevelController extends cc.Component {
     @Music("bigWin3")
     private showBigWin() {
 
-        self.isBigWinOpen = true;
-        self.winSpine.setAnimation(0, self.spineData.BIG_WIN_OPEN, false);
-        self.winSpine.addAnimation(0, self.spineData.BIG_WIN_LOOP, true);
-        self.winSpineBorder.setAnimation(0, self.spineData.WIN_BORDER_OPEN, false);
-        self.winSpineBorder.addAnimation(0, self.spineData.WIN_BORDER_LOOP, true);
-        self.winLevel[1].active = false;
-        self.winLevel[2].active = false;
+        this.isBigWinOpen = true;
+        this.winSpine.setAnimation(0, this.spineData.BIG_WIN_OPEN, false);
+        this.winSpine.addAnimation(0, this.spineData.BIG_WIN_LOOP, true);
+        this.winSpineBorder.setAnimation(0, this.spineData.WIN_BORDER_OPEN, false);
+        this.winSpineBorder.addAnimation(0, this.spineData.WIN_BORDER_LOOP, true);
+        this.winLevel[1].active = false;
+        this.winLevel[2].active = false;
 
     }
 
     private showSuperWin() {
-        self.isBigWinOpen = false;
-        self.isSuperWinOpen = true;
-        self.winSpine.setAnimation(0, self.spineData.SUPER_WIN_OPEN, false);
-        self.winSpine.addAnimation(0, self.spineData.SUPER_WIN_LOOP, true);
-        self.winLevel[1].active = true;
+        this.isBigWinOpen = false;
+        this.isSuperWinOpen = true;
+        this.winSpine.setAnimation(0, this.spineData.SUPER_WIN_OPEN, false);
+        this.winSpine.addAnimation(0, this.spineData.SUPER_WIN_LOOP, true);
+        this.winLevel[1].active = true;
 
     }
 
     private showMegaWin() {
 
-        self.isBigWinOpen = false;
-        self.isSuperWinOpen = false;
-        self.isMegaWinOpen = true;
-        self.winSpine.setAnimation(0, self.spineData.MEGA_WIN_OPEN, false);
-        self.winSpine.addAnimation(0, self.spineData.MEGA_WIN_LOOP, true);
-        self.winLevel[2].active = true;
+        this.isBigWinOpen = false;
+        this.isSuperWinOpen = false;
+        this.isMegaWinOpen = true;
+        this.winSpine.setAnimation(0, this.spineData.MEGA_WIN_OPEN, false);
+        this.winSpine.addAnimation(0, this.spineData.MEGA_WIN_LOOP, true);
+        this.winLevel[2].active = true;
 
     }
 
@@ -232,28 +234,16 @@ class WinLevelController extends cc.Component {
      * @param point
      */
     userMoneyEventEmit(point) {
-
-        if(SlotGameManager.instance.gameState === GameState.PLAYING){
-            EventManager.instance.setEvent(
-                EventManager.gameTarget,
-                GameEventType.WIN_POINT,
-                point,
-                WebResponseManager.instance.result.BaseLevelWin
-            );
-        }else if(SlotGameManager.instance.gameState == GameState.FREEING){
-            EventManager.instance.setEvent(
-                EventManager.gameTarget,
-                GameEventType.WIN_POINT,
-                WebResponseManager.instance.freeResult.FreeSpinWin,
-                WebResponseManager.instance.freeResult.BaseLevelWin
-            );
+        if (SlotGameManager.instance.gameState === GameState.PLAYING) {
+            let level = WebResponseManager.instance.freeResult.BaseLevelWin
+            UserWinPointStateNotification.instance.notify(point, level);
+        } else if (SlotGameManager.instance.gameState == GameState.FREEING) {
+            let point = this.freeResult.FreeSpinWin;
+            let level = this.freeResult.BaseLevelWin
+            UserWinPointStateNotification.instance.notify(point, level);
         }
         if (SlotGameManager.instance.gameState != GameState.FREEING) {
-            EventManager.instance.setEvent(
-                EventManager.serverTarget,
-                ServerEventType.UPDATE_POINTS,
-                WebResponseManager.instance.result.UserPointAfter
-            )
+            UserMoneyChangeNotification.instance.notify(WebResponseManager.instance.result.UserPointAfter);
         }
     }
 
@@ -265,19 +255,19 @@ class WinLevelController extends cc.Component {
     @EffectStop("runPoint")
     updateWinPointEnd(totalPoint: number) {
 
-        self.winPointLabel.string = new Intl.NumberFormat().format(totalPoint);
-        self.userMoneyEventEmit(totalPoint);
-        self.isNumberRun = false;
+        this.winPointLabel.string = new Intl.NumberFormat().format(totalPoint);
+        this.userMoneyEventEmit(totalPoint);
+        this.isNumberRun = false;
 
         //時間到後初始所有參數
         this.scheduleOnce(() => {
 
             this.winPointLabel.string = "";
-            self.isBigWinOpen = false;
-            self.isMegaWinOpen = false;
-            self.isSuperWinOpen = false;
+            this.isBigWinOpen = false;
+            this.isMegaWinOpen = false;
+            this.isSuperWinOpen = false;
 
-            self.node.active = false;
+            this.node.active = false;
 
             if (SlotGameManager.instance.gameState == GameState.FREEING) {
 
@@ -287,57 +277,55 @@ class WinLevelController extends cc.Component {
                 AudioManager.instance.musicPlay("NBS")
             }
 
-            self.resolve();
+            this.resolve();
 
         }, 5);
     }
 
     protected update(dt: number) {
 
-        if (self.isNumberRun) {
-            cc.log("測試...", self.levelWinPoint);
-            let totalPoint = self.point;
+        if (this.isNumberRun) {
+            cc.log("測試...", this.levelWinPoint);
+            let totalPoint = this.point;
 
-            let time = self.checkTimer(this.pointSplitIndex);
+            let time = this.checkTimer(this.pointSplitIndex);
 
-            if (self.pointSplitIndex == 2 && !self.isSuperWinOpen) {
-                self.showSuperWin();
+            if (this.pointSplitIndex == 2 && !this.isSuperWinOpen) {
+                this.showSuperWin();
             }
 
-            if (self.pointSplitIndex >= 3 && !self.isMegaWinOpen) {
-                self.showMegaWin();
+            if (this.pointSplitIndex >= 3 && !this.isMegaWinOpen) {
+                this.showMegaWin();
             }
 
             //當分數到達時呼叫
-            if (self.startNum >= totalPoint) {
-                self.updateWinPointEnd(totalPoint);
+            if (this.startNum >= totalPoint) {
+                this.updateWinPointEnd(totalPoint);
                 return;
             }
 
-            let numberFormat = new Intl.NumberFormat().format(Math.floor(self.startNum * 10) / 10);
+            let numberFormat = new Intl.NumberFormat().format(Math.floor(this.startNum * 10) / 10);
 
             if (numberFormat.indexOf(".") == -1) {
                 numberFormat = numberFormat + ".0"
             }
 
-            self.winPointLabel.string = numberFormat;
+            this.winPointLabel.string = numberFormat;
 
-            self.startNum += self.totalPoint[self.pointSplitIndex] / time * dt;
+            this.startNum += this.totalPoint[this.pointSplitIndex] / time * dt;
 
             //當前跑分要到達的level數字
-            if (self.pointSplitIndex == 0 && self.levelWinPoint != 0) {
-                self.levelWinPoint = self.userNowBet * self.totalPoint[self.pointSplitIndex];
+            if (this.pointSplitIndex == 0 && this.levelWinPoint != 0) {
+                this.levelWinPoint = this.userNowBet * this.totalPoint[this.pointSplitIndex];
             }
 
-            if (self.startNum >= self.levelWinPoint) {
-                if (self.pointSplitIndex == self.totalPoint.length - 1) {
+            if (this.startNum >= this.levelWinPoint) {
+                if (this.pointSplitIndex == this.totalPoint.length - 1) {
                     return;
                 }
-                self.pointSplitIndex++;
-                self.levelWinPoint += self.totalPoint[self.pointSplitIndex];
+                this.pointSplitIndex++;
+                this.levelWinPoint += this.totalPoint[this.pointSplitIndex];
             }
         }
     }
 }
-
-export default new WinLevelController();

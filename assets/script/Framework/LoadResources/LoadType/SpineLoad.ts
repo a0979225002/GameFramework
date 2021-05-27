@@ -1,4 +1,3 @@
-import AnimationManager from '../../Animation/AnimationManager'
 import {ErrorType} from '../../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../../Error/ErrorManager'
 import ALoadType from "../ILoad/ALoadType";
@@ -25,13 +24,10 @@ export default class SpineLoad extends ALoadType {
 
             let spineNames: Array<string> = Object.keys(spine.skeletonJson.animations);
             let spineToMap: Map<string, string> = new Map<string, string>();
-
             //取出spine動畫名稱
             for (let spineName of spineNames) {
-
                 //檢查是否有grid關鍵字,將把取spineName 的key 更換為數字
                 if (checkGrid) {
-
                     let spineNameToNumber = spineName.replace(/[^0-9]/ig, '');
                     //如果動畫內包含不含數字的的動畫名,將直接將動畫名整個保存成key
                     if (spineNameToNumber === "") {
@@ -42,12 +38,11 @@ export default class SpineLoad extends ALoadType {
                         }
                         spineToMap.set(spineNameToNumber, spineName);
                     }
-
                 } else {
                     spineToMap.set(spineName, spineName);
                 }
             }
-            AnimationManager.instance.spineName.set(key, spineToMap);
+          //TODO:尚未想到要把grid動換資源放在哪
         }
 
         //目的解決異步操作

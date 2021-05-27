@@ -6,7 +6,7 @@ import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
 import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
 import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
-import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/AMenuDoubleButtonTemplate'
+import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/MenuButton/AMenuDoubleButtonTemplate'
 import WebRequestManager from '../../Framework/WebRequest/WebRequestManager'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
@@ -213,17 +213,14 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
     descriptionButtonEvent(event: any, callBack: string) {
 
         if (callBack === "previous") {
-
             let pageIndexH = this.descriptionPageH.getCurrentPageIndex() - 1;
             let pageIndexV = this.descriptionPageV.getCurrentPageIndex() - 1;
             this.descriptionPageH.setCurrentPageIndex(pageIndexH);
             this.descriptionPageV.setCurrentPageIndex(pageIndexV);
-
             return;
         }
 
         if (callBack === "next") {
-
             let pageIndexH = this.descriptionPageH.getCurrentPageIndex() + 1;
             let pageIndexV = this.descriptionPageV.getCurrentPageIndex() + 1;
             this.descriptionPageH.setCurrentPageIndex(pageIndexH);
@@ -236,7 +233,6 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      * 初始setting 按鈕
      */
     initialize() {
-
         //初始背景音樂按鈕位置
         if (AudioManager.instance.musicOnMute) {
             this.musicIconH.x = -50
@@ -314,7 +310,6 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         } else {
             this.audioButtonSettingAnimation(this.musicIconH, 50, this.color.YELLOW)
             this.audioButtonSettingAnimation(this.musicIconV, 50, this.color.YELLOW)
-
         }
     }
 
@@ -350,11 +345,10 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
 
     @Effect("BtnClick")
     protected autoEvent(beforeAutoCount: AutoType, afterAutoCount: AutoType) {
-
         this.checkAutoNode(beforeAutoCount, false);
         this.checkAutoNode(afterAutoCount, true);
         this.closeMenu();
-        MainGameButton.instance.buttonOnEnable();
+        MainGameButton.instance.startButtonOnEnable();
     }
 
     private checkAutoNode(autoType: AutoType, isOpen: boolean) {
@@ -444,9 +438,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      */
     @Effect("BtnClick")
     protected goHomeTouchEvent() {
-
         socketJS.backHome();
-
     }
 
     /**
@@ -455,12 +447,10 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      */
     @Effect("BtnClick")
     protected recordPageTouchEvent() {
-
         let beforePage: UserNowPage = this.nowPage;
         let afterPage: UserNowPage = (this.nowPage = UserNowPage.RECORD_PAGE);
         this.changePage(beforePage, false);
         this.changePage(afterPage, true);
-
     }
 
     /**
@@ -469,12 +459,10 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      */
     @Effect("BtnClick")
     protected settingPageTouchEvent() {
-
         let beforePage: UserNowPage = this.nowPage;
         let afterPage: UserNowPage = (this.nowPage = UserNowPage.SETTING_PAGE);
         this.changePage(beforePage, false);
         this.changePage(afterPage, true);
-
     }
 
     /**
@@ -485,10 +473,8 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
     protected descriptionPageEvent() {
         let beforePage: UserNowPage = this.nowPage;
         let afterPage: UserNowPage = (this.nowPage = UserNowPage.DESCRIPTION_PAGE);
-
         this.changePage(beforePage, false);
         this.changePage(afterPage, true);
-
     }
 
     /**
@@ -498,17 +484,15 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
     @Effect("BtnClick")
     protected goBackTouchEvent() {
         this.closeMenu();
-        MainGameButton.instance.buttonOnEnable();
+        MainGameButton.instance.startButtonOnEnable();
     }
 
     /**
      * 更新底部 換頁,(PageButton)更換顏色
      */
     private changePage(pageType: UserNowPage, isOpen: boolean) {
-
         switch (pageType) {
             case UserNowPage.RECORD_PAGE:
-
                 if (isOpen) {
                     this.makePageButtonToColorH(this.recordButtonH, true);
                     this.makePageButtonToColorV(this.recordButtonV, true);
@@ -518,10 +502,8 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
                     this.makePageButtonToColorH(this.recordButtonH, false)
                     this.makePageButtonToColorV(this.recordButtonV, false);
                 }
-
                 break;
             case UserNowPage.SETTING_PAGE:
-
                 if (isOpen) {
                     this.makePageButtonToColorH(this.settingButtonH, true);
                     this.makePageButtonToColorV(this.settingButtonV, true);
@@ -535,7 +517,6 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
                 }
                 break;
             case UserNowPage.DESCRIPTION_PAGE:
-
                 if (isOpen) {
                     this.makePageButtonToColorH(this.descriptionPageButtonH, true);
                     this.makePageButtonToColorV(this.descriptionPageButtonV, true);
@@ -611,7 +592,6 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
 
         let lineBetValue = String(WebResponseManager.instance.tableInfo.LineBet[afterIndex]);
         let lineTotalBetValue = String(WebResponseManager.instance.tableInfo.LineTotalBet[afterIndex]);
-
         this.lineBetLabelH.string = lineBetValue;
         this.lineBetLabelV.string = lineBetValue;
         this.lineBetMoneyLabelH.string = lineTotalBetValue;
@@ -622,21 +602,14 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      * 顯示menu組件
      */
     public showMenu() {
-
-        MainGameButton.instance.buttonDisable();
-
+        MainGameButton.instance.startButtonDisable();
         let direction = SceneManager.instance.sceneDirection;
-
         if (direction == SceneDirectionType.LANDSCAPE) {
-
             this.menuNodeH.active = true;
             this.menuNodeV.active = false;
-
         } else if (direction == SceneDirectionType.PORTRAIT) {
-
             this.menuNodeH.active = false;
             this.menuNodeV.active = true;
-
         } else {
             cc.log("有錯誤:", direction);
         }

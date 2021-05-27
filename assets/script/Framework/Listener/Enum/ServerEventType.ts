@@ -1,4 +1,4 @@
-enum ServerEventType {
+export enum ServerEventType {
 
     /**
      *  一般獲獎回傳
@@ -36,15 +36,7 @@ enum ServerEventType {
     TABLE_INFO = "TABLE_INFO",
 
     /**
-     * 更新玩家金額
-     */
-    UPDATE_POINTS = "UPDATE_POINTS",
-
-    /**
      * 各種錯誤訊息
      */
     WARNING = "WARNING",
-
 }
-
-export {ServerEventType};

@@ -1,6 +1,6 @@
-import {ServerEventType} from "../../Listener/Enum/ServerEventType";
-import EventManager from "../../Listener/EventManager";
-import {SceneDirectionType} from "../../Scene/Enum/SceneStyle";
+import {ServerEventType} from "../../../Listener/Enum/ServerEventType";
+import EventManager from "../../../Listener/EventManager";
+import {SceneDirectionType} from "../../../Scene/Enum/SceneStyle";
 
 const {ccclass} = cc._decorator;
 

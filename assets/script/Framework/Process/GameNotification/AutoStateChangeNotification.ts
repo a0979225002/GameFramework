@@ -5,7 +5,7 @@ import AutoStateChangeObserver from "../GameObserver/AutoStateChangeObserver";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 : 自動狀態改變時事件推撥管理器
+ * @Description 通知管理器 : 自動狀態改變時事件推播管理器
  * @Date 2021-05-20 下午 05:05
  * @Version 1.0
  */
@@ -52,6 +52,12 @@ export default class AutoStateChangeNotification implements INotificationManager
         }
     }
 
+    /**
+     * 發送自動狀態通知
+     * @param {boolean} isAutomaticState - 更改後的狀態是否是自動狀態
+     * @param {AutoType} beforeAutoCount - 更改前的auto類型
+     * @param {AutoType} afterAutoCount  - 更改後的auto類型
+     */
     notify(isAutomaticState: boolean, beforeAutoCount: AutoType, afterAutoCount: AutoType) {
         if (this.observer.size > 0) {
             for (let observer of this.observer) {

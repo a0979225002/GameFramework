@@ -4,7 +4,7 @@ import SpeedStateChangeObserver from "../GameObserver/SpeedStateChangeObserver";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 :當前遊戲速度狀態改變時事件推撥管理器
+ * @Description 通知管理器 :當前遊戲速度狀態改變時事件推播管理器
  * @Date 2021-05-21 上午 11:56
  * @Version 1.0
  */
@@ -31,7 +31,7 @@ export default class SpeedStateChangeNotification implements INotificationManage
 
     subscribe(observer: SpeedStateChangeObserver, isPermanent: boolean) {
         if (this.observer.has(observer)) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已將該類註冊過遊戲速度狀態改變時事件推撥事件了,請檢查`)
+            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已將該類註冊過遊戲速度狀態改變時事件推播事件了,請檢查`)
             return;
         }
         observer.isPermanent = isPermanent;

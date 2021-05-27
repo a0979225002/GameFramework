@@ -5,14 +5,14 @@ import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import ASlotInitializeTemplate from '../../Framework/Template/Slot/ASlotInitializeTemplate'
+import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 
 const {ccclass, property} = cc._decorator;
 
-let self: SlotController;
-
 @ccclass
-class SlotController extends ASlotInitializeTemplate {
+export default class SlotController extends ASlotInitializeTemplate {
 
     @property(cc.Node)
     protected slotRow: cc.Node[] = [];
@@ -21,9 +21,14 @@ class SlotController extends ASlotInitializeTemplate {
 
     protected gridNodeToMap: Map<number, Array<cc.Node>>;
     protected girdSpriteToMap: Map<number, Array<cc.Sprite>>;
+    private normalResult: NoLineResult;
+    private freeResult: NoLineFreeResult;
+    public static instance: SlotController;
 
     protected onCreate() {
-        self = this;
+        SlotController.instance = this;
+        this.normalResult = WebResponseManager.instance.result as NoLineResult;
+        this.freeResult = WebResponseManager.instance.freeResult as NoLineFreeResult;
         this.gridNodeToMap = this.getAllGridNode();
         this.girdSpriteToMap = this.getAllGridSprite();
     }
@@ -53,10 +58,8 @@ class SlotController extends ASlotInitializeTemplate {
      * @private
      */
     protected slotInitialize() {
-
         let arrayToSprites: IterableIterator<Array<cc.Sprite>> = this.girdSpriteToMap.values();
         let imgLength = LoadResManager.instance.imgRes.get("gridImg").size;
-
         let gridIndex;
         let answerIndex = 0;
         for (let sprites of arrayToSprites) {
@@ -65,7 +68,6 @@ class SlotController extends ASlotInitializeTemplate {
                 let random: number = Math.floor(Math.random() * imgLength);
                 //如果該格子是用來顯示初始答案的,將不更新隨機圖片
                 if (gridIndex >= 3 && gridIndex <= 5) {
-
                     this.updateAnswerGrid(gridIndex, answerIndex);
                     answerIndex++;
                 } else {
@@ -84,9 +86,7 @@ class SlotController extends ASlotInitializeTemplate {
      * @private
      */
     private updateAnswerGrid(gridIndex: number, answerIndex: number) {
-
         let rowIndex = Math.floor(answerIndex / 3);
-
         let answer: number = WebResponseManager.instance.tableInfo.Grid[answerIndex];
         this.girdSpriteToMap
             .get(rowIndex)[gridIndex]
@@ -98,14 +98,10 @@ class SlotController extends ASlotInitializeTemplate {
      * return Map<number , Array<cc.Node>>
      */
     protected getAllGridNode(): Map<number, Array<cc.Node>> {
-
         let grids: Map<number, Array<cc.Node>> = new Map<number, Array<cc.Node>>();
-
         for (let i = 0; i < this.slotRow.length; i++) {
-
             let nodes: Array<cc.Node> = this.slotRow[i].children;
             let nodeToArray: Array<cc.Node> = new Array<cc.Node>();
-
             for (let j = nodes.length - 1; j >= 0; j--) {
                 nodeToArray.push(nodes[j]);
             }
@@ -139,43 +135,31 @@ class SlotController extends ASlotInitializeTemplate {
     private answerToArray: Array<number>;
 
     public showWinGrid(winGrid: Array<number>) {
-
-        if (self.timer) clearInterval(self.timer);
-
+        if (this.timer) clearInterval(this.timer);
         if (SlotGameManager.instance.gameState == GameState.FREEING) {
-            self.answerToArray = WebResponseManager.instance.freeResult.Grid;
+            this.answerToArray = this.freeResult.Grid;
         } else {
-            self.answerToArray = WebResponseManager.instance.result.Grid;
+            this.answerToArray = this.normalResult.Grid;
         }
-
-        self.winGrid = winGrid;
-        self.playGridAnimation(self.answerToArray);
-
-        self.timer = window.setInterval(() => {
-
-            self.playGridAnimation(self.answerToArray);
-
+        this.winGrid = winGrid;
+        this.playGridAnimation(this.answerToArray);
+        this.timer = window.setInterval(() => {
+            this.playGridAnimation(this.answerToArray);
         }, 1500);
     }
 
     @Effect("WinSingleLine")
     private playGridAnimation(answerToArray) {
-
         let columnIndex = 0;
         let gridIndex = 3;
-        for (let i = 0; i < self.winGrid.length; i++) {
-
+        for (let i = 0; i < this.winGrid.length; i++) {
             if (gridIndex > 5) gridIndex = 3;
-
             columnIndex = Math.floor(i / 3);
-
-            if (self.winGrid[i] == 1) {
-                let anima = self.girdSpriteToMap
+            if (this.winGrid[i] == 1) {
+                let anima = this.girdSpriteToMap
                     .get(columnIndex)[gridIndex].getComponent(cc.Animation);
-
                 let answer = answerToArray[i];
-
-                anima.addClip(self.gridAnimation[answer], `${answer}`);
+                anima.addClip(this.gridAnimation[answer], `${answer}`);
                 anima.play(String(answer));
             }
             gridIndex++;
@@ -183,32 +167,24 @@ class SlotController extends ASlotInitializeTemplate {
     }
 
     public closeWinGrid() {
-
-        if (!self.winGrid && !self.timer) return;
-
-        clearInterval(self.timer);
-
+        if (!this.winGrid && !this.timer) return;
+        clearInterval(this.timer);
         let columnIndex = 0;
         let gridIndex = 3;
-        for (let i = 0; i < self.winGrid.length; i++) {
+        for (let i = 0; i < this.winGrid.length; i++) {
             if (gridIndex > 5) gridIndex = 3;
             columnIndex = Math.floor(i / 3);
-            if (self.winGrid[i] == 1) {
-
-                let answer = self.answerToArray[i];
-                let anima = self.girdSpriteToMap
+            if (this.winGrid[i] == 1) {
+                let answer = this.answerToArray[i];
+                let anima = this.girdSpriteToMap
                     .get(columnIndex)[gridIndex].getComponent(cc.Animation);
-                anima.removeClip(self.gridAnimation[answer], true);
-
-                self.girdSpriteToMap.get(columnIndex)[gridIndex].spriteFrame =
+                anima.removeClip(this.gridAnimation[answer], true);
+                this.girdSpriteToMap.get(columnIndex)[gridIndex].spriteFrame =
                     LoadResManager.instance.imgRes.get("gridImg").get(String(answer))
-
             }
             gridIndex++;
         }
-        self.winGrid = null;
-        self.timer = null;
+        this.winGrid = null;
+        this.timer = null;
     }
 }
-
-export default new SlotController();

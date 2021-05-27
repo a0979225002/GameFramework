@@ -1,6 +1,9 @@
 import {ISlotConfigManager} from "../Config/IConfig/ISlotConfigManager";
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
+import {ServerEventType} from "../Listener/Enum/ServerEventType";
+import EventManager from "../Listener/EventManager";
+import SlotGameManager from "../Process/SlotGameManager";
 import IResponseHandler from './ISlotWebResponse/IResponseHandler'
 import ResponseHandler from './ResponseHandler'
 
@@ -20,6 +23,9 @@ export class WebResponseManager implements IWebResponseManager {
         this._handler.setTableInfo(this.configManager.tableInfoType);
         this._handler.setResultModel(this.configManager.resultType);
         this._handler.setFreeResultModel(this.configManager.freeResultType);
+        this.normalResultResponse();
+        this.freeResultEvenResponse();
+
     }
 
     //單例
@@ -55,6 +61,42 @@ export class WebResponseManager implements IWebResponseManager {
         this._result = model;
 
     }
+
+    /**
+     * 一般狀態回傳事件接收器
+     */
+    private normalResultResponse(): void {
+        EventManager.instance.serverEventListener(ServerEventType.BET_RESULT, (target: object) => {
+            for (let name of Object.keys(target)) {
+                if (WebResponseManager.instance.result[name] === undefined) {
+                    ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換BetResultModule Type`)
+                } else {
+                    WebResponseManager.instance.result[name] = target[name];
+                }
+            }
+            SlotGameManager.instance.isResultOk = true;
+        }, false);
+    }
+
+    /**
+     * free回傳 game 事件接收器
+     * @private
+     */
+    private freeResultEvenResponse() {
+        EventManager.instance.serverEventListener(ServerEventType.FREE_SPIN_RESULT, (target: object) => {
+
+            for (let name of Object.keys(target)) {
+
+                if (WebResponseManager.instance.freeResult[name] === undefined) {
+                    ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換FreeResultModule Type`)
+                } else {
+                    WebResponseManager.instance.freeResult[name] = target[name];
+                }
+            }
+            SlotGameManager.instance.isResultOk = true;
+        }, false);
+    }
+
 
     get tableInfo(): ITableInfoModel {
         return this._tableInfo;

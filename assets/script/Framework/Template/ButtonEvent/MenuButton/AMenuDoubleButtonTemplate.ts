@@ -1,9 +1,13 @@
-import {AutoType} from '../../Config/Enum/ConfigEnum'
-import ButtonMethod from '../../GlobalMethod/ButtonMethod'
+import {AutoType} from '../../../Config/Enum/ConfigEnum'
+import ButtonMethod from '../../../GlobalMethod/ButtonMethod'
 import AMenuButtonEvent from './AMenuButtonEvent'
-
 const {ccclass} = cc._decorator;
-
+/**
+ * @Author XIAO-LI-PIN
+ * @Description (抽象類)MENU主頁面,場景方向雙向,按鈕事件監聽綁定(H and V 頁面 兩倍按鈕)
+ * @Date 2021-05-26 上午 15:59
+ * @Version 1.1
+ */
 @ccclass
 export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonEvent {
 
@@ -40,7 +44,6 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonEvent
 
     protected onLoad() {
         super.onLoad();
-
         //音樂按鈕
         ButtonMethod.addButtonEvent(this.musicButtonH, "musicEventListener", this);
         ButtonMethod.addButtonEvent(this.musicButtonV, "musicEventListener", this);
@@ -100,10 +103,6 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonEvent
         //說明頁按鈕
         ButtonMethod.addButtonEvent(this.descriptionPageButtonH, "descriptionPageEvent", this);
         ButtonMethod.addButtonEvent(this.descriptionPageButtonV, "descriptionPageEvent", this);
-
-
-        this.onCreate();
-
     }
 
 }

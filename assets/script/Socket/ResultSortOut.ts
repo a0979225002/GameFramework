@@ -1,6 +1,7 @@
 import ErrorManager from '../Framework/Error/ErrorManager'
 import {ServerEventType} from '../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../Framework/Listener/EventManager'
+import UserMoneyChangeNotification from "../Framework/Process/GameNotification/UserMoneyChangeNotification";
 import PublicSetUp from "./PublicSetUp";
 import {socketJS} from './Socket'
 import SocketSetting from "./SocketSetting";
@@ -8,7 +9,7 @@ import SocketSetting from "./SocketSetting";
 const {ccclass} = cc._decorator;
 
 @ccclass
-class ResultSortOut extends cc.Component {
+export default class ResultSortOut extends cc.Component {
 
     async SFSToGame(_cmd: string) {
         switch (_cmd) {
@@ -24,9 +25,7 @@ class ResultSortOut extends cc.Component {
 
                 PublicSetUp.SlotTableInfo["GameID"] = SocketSetting.ClientSetObject.serverGameGroupID;
                 PublicSetUp.SlotTableInfo["BetLobby"] = "1";
-                // this.socket.SFSToServer("SlotTableInfo",PublicSetUp.SlotTableInfo);
                 socketJS.SFSToServer("SlotTableInfo", PublicSetUp.SlotTableInfo);
-
                 break;
             case "SlotTableInfoResult":
 
@@ -39,35 +38,31 @@ class ResultSortOut extends cc.Component {
                 break;
             case "TableInfo":
                 cc.log("TableInfo:", SocketSetting.ServerReturnData[_cmd]);
-
                 EventManager.instance.setEvent(
                     EventManager.serverTarget,
                     ServerEventType.TABLE_INFO,
                     SocketSetting.ServerReturnData[_cmd]
                 );
-
-                //更新玩家金額
-                EventManager
-                    .instance
-                    .setEvent(
-                        EventManager.serverTarget,
-                        ServerEventType.UPDATE_POINTS,
-                        SocketSetting.ServerReturnData[_cmd]["UserPoint"]
-                    );
                 break;
             case "BetResult"://額外新增判斷
                 console.log(_cmd, SocketSetting.ServerReturnData[_cmd]);
-
                 let betData: object = SocketSetting.ServerReturnData[_cmd];
                 let betState: number = parseInt(SocketSetting.ServerReturnData[_cmd].State);
-                await this.betState(betState, betData);
+                try {
+                    await this.betState(betState, betData);
+                } catch (e) {
+                    console.log(e);
+                }
                 break;
             case "FreeSpinResult":
                 console.log(_cmd, SocketSetting.ServerReturnData[_cmd]);
-
                 let freeData: object = SocketSetting.ServerReturnData[_cmd];
                 let freeState: number = parseInt(SocketSetting.ServerReturnData[_cmd].State);
-                await this.freeState(freeState, freeData);
+                try {
+                    await this.freeState(freeState, freeData);
+                } catch (e) {
+                    console.log(e);
+                }
                 break;
             case "GetGameHistoryResult":
                 let gameHistoryData = SocketSetting.ServerReturnData[_cmd];
@@ -77,10 +72,8 @@ class ResultSortOut extends cc.Component {
                     ServerEventType.GET_GAME_HISTORY_RESULT,
                     gameHistoryData
                 )
-
                 break;
             case "GetHistoryDetailResult":
-
                 let historyDetail = SocketSetting.ServerReturnData[_cmd];
                 cc.log("GetHistoryDetailResult:", historyDetail);
                 EventManager.instance.setEvent(
@@ -88,12 +81,9 @@ class ResultSortOut extends cc.Component {
                     ServerEventType.GET_HISTORY_DETAIL_RESULT,
                     historyDetail
                 )
-
                 break;
             case "GroupID":
-
                 let groupID = SocketSetting.ServerReturnData[_cmd].GroupID;
-
                 EventManager.instance.setEvent(
                     EventManager.serverTarget,
                     ServerEventType.GROUP_ID,
@@ -108,13 +98,9 @@ class ResultSortOut extends cc.Component {
 
                 break;
             case "UpdatePoints":
-
-                PublicSetUp.userPoint = SocketSetting.ServerReturnData[_cmd].Points;
-
-                EventManager
-                    .instance
-                    .setEvent(EventManager.serverTarget, ServerEventType.UPDATE_POINTS, SocketSetting.ServerReturnData[_cmd].Points);
-
+                let userPoint = SocketSetting.ServerReturnData[_cmd].Points;
+                //用戶自行更新遊玩金額時,推播更新金額事件
+                UserMoneyChangeNotification.instance.notify(userPoint);
                 break;
         }
     }
@@ -160,26 +146,20 @@ class ResultSortOut extends cc.Component {
                     reject("bet 重複押注");
                     break;
                 case 0 ://押注成功
-
                     EventManager
                         .instance
                         .setEvent(EventManager.serverTarget, ServerEventType.BET_RESULT, betData);
-
-                    EventManager
-                        .instance
-                        .setEvent(EventManager.serverTarget, ServerEventType.UPDATE_POINTS, betData["UserPointBefore"]);
-
+                    //用戶下注後的金額,推播更新
+                    UserMoneyChangeNotification.instance.notify(betData["UserPointBefore"])
                     resolve(true);
                     break;
                 case 2 ://超過本金(這裡只是一個保險機制,需要先在傳送封包前就先擋掉避免傳封包)
-
                     ErrorManager
                         .instance
                         .serverError(true, SocketSetting.t("S_9003"));
                     reject("bet 超過本金(這裡只是一個保險機制,需要先在傳送封包前就先擋掉避免傳封包)");
                     break;
                 default://(1:遊戲狀態不符合,3:投注區間錯誤,4:投注參數錯誤)
-
                     ErrorManager
                         .instance
                         .serverError(true, SocketSetting.t("S_9015"));
@@ -203,19 +183,12 @@ class ResultSortOut extends cc.Component {
                     reject("free 重複押注");
                     break;
                 case 0 ://押注成功
-
                     EventManager
                         .instance
                         .setEvent(EventManager.serverTarget, ServerEventType.FREE_SPIN_RESULT, freeData);
-
-                    EventManager
-                        .instance
-                        .setEvent(EventManager.serverTarget, ServerEventType.UPDATE_POINTS, freeData["UserPointAfter"]);
-
                     resolve(true);
                     break;
                 default://(1:遊戲狀態不符合,3:投注區間錯誤,4:投注參數錯誤)
-
                     ErrorManager
                         .instance
                         .serverError(true, SocketSetting.t("S_9015"));
@@ -225,5 +198,3 @@ class ResultSortOut extends cc.Component {
         })
     }
 }
-
-export default new ResultSortOut();

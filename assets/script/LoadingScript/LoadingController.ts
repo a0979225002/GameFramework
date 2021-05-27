@@ -96,13 +96,10 @@ export default class LoadingController extends ALoadingTemplate {
             .loadAsset("GameIcon", LoadType.img, "image/loadLanguage", true)
             .callback((progress) => {
                 if (progress == 1) {
-
                     this.intoMainGameButtonImg.spriteFrame =
                         LoadResManager.instance.imgRes.get("GameIcon").get("btn_start");
-
                     this.logoImg.spriteFrame =
                         LoadResManager.instance.imgRes.get("GameIcon").get("logo");
-
                     this.logoAnimation();
                 }
             }, "GameIcon")
@@ -145,10 +142,8 @@ export default class LoadingController extends ALoadingTemplate {
         if (textIndex > 7) textIndex = 1;
         let textHeight = this.loadTextToArray[0].node.height;
         let nextNodeY = this.loadTextToArray[1].node.y;
-
         this.loadTextToArray[1].string
             = SocketSetting.t("DES_00" + (textIndex));
-
         cc.tween(this.loadingTextNode)
             .delay(2)
             .to(1, {y: this.loadingTextNode.y + textHeight})

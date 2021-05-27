@@ -1,6 +1,12 @@
-import ButtonMethod from '../../GlobalMethod/ButtonMethod'
+import ButtonMethod from '../../../GlobalMethod/ButtonMethod'
 import AMenuButtonEvent from './AMenuButtonEvent'
 
+/**
+ * @Author XIAO-LI-PIN
+ * @Description (抽象類)MENU主頁面,場景方向單向,按鈕事件監聽綁定
+ * @Date 2021-05-26 上午 15:59
+ * @Version 1.1
+ */
 export default abstract class AMenuButtonTemplate extends AMenuButtonEvent {
 
     protected abstract musicButton: cc.Button;
@@ -23,7 +29,6 @@ export default abstract class AMenuButtonTemplate extends AMenuButtonEvent {
 
         ButtonMethod.addButtonEvent(this.musicButton, "musicEvent", this);
 
-        this.onCreate();
     }
 
 

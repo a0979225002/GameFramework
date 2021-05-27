@@ -3,6 +3,12 @@ import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Process/Enum/GameState'
+import UserMoneyChangeNotification from "../../Framework/Process/GameNotification/UserMoneyChangeNotification";
+import UserTotalBetChangeNotification from "../../Framework/Process/GameNotification/UserTotalBetChangeNotification";
+import UserWinPointStateNotification from "../../Framework/Process/GameNotification/UserWinPointStateNotification";
+import UserMoneyChangeObserver from "../../Framework/Process/GameObserver/UserMoenyChangeObserver";
+import UserTotalBetChangeObserver from "../../Framework/Process/GameObserver/UserTotalBetChangeObserver";
+import UserWinPointStateObserver from "../../Framework/Process/GameObserver/UserWinPointStateObserver";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
@@ -10,10 +16,8 @@ import SocketSetting from '../../Socket/SocketSetting'
 
 const {ccclass, property} = cc._decorator;
 
-let self: MainGameLabel;
-
 @ccclass
-class MainGameLabel extends AGenericTemplate {
+export default class MainGameLabel extends AGenericTemplate {
 
     @property(cc.Label)
     private userMoneyLabelH: cc.Label = null;
@@ -53,23 +57,27 @@ class MainGameLabel extends AGenericTemplate {
     private freeTitle: cc.Node = null;
     @property(cc.Label)
     private freeCount: cc.Label = null;
-
-    private tableInfo: ITableInfoModel
+    private tableInfo: ITableInfoModel;
+    public static instance: MainGameLabel;
 
     protected onCreate() {
+        MainGameLabel.instance = this;
+        this.tableInfo = WebResponseManager.instance.tableInfo;
 
-        self = this;
+        //初始free標題
         this.freeCount.string = "";
         this.freeTitle.active = false;
+
+        //初始:單局識別號
         let groupIDNum = SocketSetting.ServerReturnData["GroupID"].GroupID;
         this.groupIDH.string = groupIDNum;
         this.groupIDV.string = groupIDNum;
 
-        this.tableInfo = WebResponseManager.instance.tableInfo;
+        //初始獲獎欄位
         this.winPoint.string = "";
         this.winPoint.node.active = false;
 
-        //手動更新該遊戲線數:無線遊戲無從計算(寫死)
+        //初始手動更新該遊戲線數:無線遊戲無從計算(寫死)
         this.gameLineLabelH.string = "243";
         this.gameLineLabelV.string = "243";
 
@@ -91,11 +99,14 @@ class MainGameLabel extends AGenericTemplate {
         this.winPointLabelH.string = "";
         this.winPointLabelV.string = "";
 
-        //賦予監聽事件
-        this.updateUserMoneyListener();             //更新user金額時 監聽事件
-        this.updateUserTotalBetLabelListener();     //更動user下注金額時 監聽事件
-        this.updateWinPointLabelListener();         //有獲獎時 監聽事件
-        this.updateGroupIDEventListener();          //GroupID 監聽變更
+        //訂閱推播事件
+        UserMoneyChangeNotification                                                     //更新user金額時 訂閱事件
+            .instance.subscribe(this.getUserMoneyChangeObserver(), true);
+        UserTotalBetChangeNotification                                                  //更新user下注金額時 訂閱事件
+            .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
+        UserWinPointStateNotification                                                   //獲獎時 訂閱事件
+            .instance.subscribe(this.getUserWinPointStateObserver(), true);
+        this.updateGroupIDEventListener();                                              //GroupID 監聽變更
 
     }
 
@@ -121,27 +132,20 @@ class MainGameLabel extends AGenericTemplate {
     }
 
     private updateGroupIDEventListener() {
-
         EventManager.instance.serverEventListener(ServerEventType.GROUP_ID, (groupID: string) => {
             this.groupIDV.string = groupID;
             this.groupIDH.string = groupID;
         }, false);
     }
 
-    private updateUserTotalBetLabelListener() {
-
-        SlotGameManager.instance.userTotalBetEventListener((beforeIndex, afterIndex) => {
-
+    private getUserTotalBetChangeObserver(): UserTotalBetChangeObserver {
+        return new UserTotalBetChangeObserver((beforeIndex, afterIndex) => {
             this.userTotalBetLabelAnimation(this.userTotalBetLabelV.node);
             this.userTotalBetLabelAnimation(this.userTotalBetLabelH.node);
-
             this.userTotalBetLabelV.string = String(this.tableInfo.LineTotalBet[afterIndex]);
             this.userTotalBetLabelH.string = String(this.tableInfo.LineTotalBet[afterIndex]);
-
-
-        })
+        }, this);
     }
-
 
     private userTotalBetLabelAnimation(node: cc.Node): void {
 
@@ -151,13 +155,9 @@ class MainGameLabel extends AGenericTemplate {
             .start();
     }
 
-    /**
-     * 需自行發送更新贏分資訊
-     */
-    private updateWinPointLabelListener() {
-
-        SlotGameManager.instance.userWinPointEventListener((winPoint: number, level: number) => {
-            cc.log(winPoint,level);
+    private getUserWinPointStateObserver(): UserWinPointStateObserver {
+        return new UserWinPointStateObserver((winPoint, level) => {
+            cc.log(winPoint, level);
             let numberFormat = new Intl.NumberFormat().format(winPoint);
             this.winPointLabelV.string = String(numberFormat);
             this.winPointLabelH.string = String(numberFormat);
@@ -169,7 +169,7 @@ class MainGameLabel extends AGenericTemplate {
             if (level == 0) {
                 this.winEvent(winPoint);
             }
-        })
+        }, this)
     }
 
     @Effect("WinSingleLine")
@@ -183,17 +183,12 @@ class MainGameLabel extends AGenericTemplate {
         }, 900);
     }
 
-
-    private updateUserMoneyListener() {
-
-        SlotGameManager.instance.userMoneyEventListener((money) => {
-
+    private getUserMoneyChangeObserver(): UserMoneyChangeObserver {
+        return new UserMoneyChangeObserver((money) => {
             let numberFormat = new Intl.NumberFormat().format(money);
-
             this.userMoneyLabelH.string = String(numberFormat);
             this.userMoneyLabelV.string = String(numberFormat);
-
-        });
+        }, this);
     }
 
     /**
@@ -201,28 +196,26 @@ class MainGameLabel extends AGenericTemplate {
      */
     public remove() {
 
-        self.winPointLabelV.string = "";
-        self.winPointLabelH.string = "";
+        this.winPointLabelV.string = "";
+        this.winPointLabelH.string = "";
 
     }
 
     public closeFreeTitle() {
-        self.freeCount.string = "";
+        this.freeCount.string = "";
 
-        if (self.freeTitle.active) {
-            self.freeTitle.active = false;
+        if (this.freeTitle.active) {
+            this.freeTitle.active = false;
         }
     }
 
     public updateFreeTitle(count: number) {
 
-        if (!self.freeTitle.active) {
-            self.freeTitle.active = true;
+        if (!this.freeTitle.active) {
+            this.freeTitle.active = true;
         }
-        self.freeCount.string = String(count);
+        this.freeCount.string = String(count);
 
     }
 
 }
-
-export default new MainGameLabel();
