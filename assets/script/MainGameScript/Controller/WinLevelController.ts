@@ -36,11 +36,12 @@ export default class WinLevelController extends cc.Component {
     private isBigWinOpen: boolean;
     private isSuperWinOpen: boolean;
     private isMegaWinOpen: boolean;
-    private resolve: (value: (void | PromiseLike<void>)) => void;
+
     private levelWinPoint: number
     public static instance: WinLevelController;
     private normalResult: NoLineResult;
     private freeResult: NoLineFreeResult;
+    private resolve: (value: (PromiseLike<void> | void)) => void;
 
     protected onLoad() {
         WinLevelController.instance = this;
@@ -50,7 +51,7 @@ export default class WinLevelController extends cc.Component {
         this.winPointLabel.string = "";                                                 //初始押注分數 label 為空
         this.winLevelRange = WebResponseManager.instance.tableInfo.LevelWinPoint;       //遊戲前三個等級的押注倍率
         this.winLevelRange.push(60, 70);                                                //額外新增押注倍率
-
+        this.totalPoint = new Array<number>();
         this.spineData = {                                                              //贏分,spine動畫
             FREE_TITLE_OPEN: "0Animate_FreespinsComeout",
             FREE_TITLE_LOOP: "0Animate_FreespinsRoop",
@@ -66,18 +67,17 @@ export default class WinLevelController extends cc.Component {
     }
 
     initializeSpine() {
-
         this.resolve = null;
         //當前獲獎分數
         this.userNowBet = WebResponseManager.instance.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet];
-        this.startNum = 0;                  //當前開始跑分的初始分數
-        this.pointSplitIndex = 0;           //當前尋訪第幾個Level
-        this.isNumberRun = false;           //當前是否能開始跑分
-        this.winPointLabel.string = "";     //當前顯示跑到幾分
-        this.node.active = true;            //打開整個node
-        this.totalPoint = []                //初始拆分的數字
-        this.levelWinPoint = 0              //當前跑到第幾個拆分的數字儲存用
-        this.showBigWin();                  //開啟Big Win
+        this.startNum = 0;                      //當前開始跑分的初始分數
+        this.pointSplitIndex = 0;               //當前尋訪第幾個Level
+        this.isNumberRun = false;               //當前是否能開始跑分
+        this.winPointLabel.string = "";         //當前顯示跑到幾分
+        this.node.active = true;                //打開整個node
+        this.totalPoint.length = 0;             //初始拆分的數字
+        this.levelWinPoint = 0                  //當前跑到第幾個拆分的數字儲存用
+        this.showBigWin();                      //開啟Big Win
     }
 
     public totalPointSplit(point) {
@@ -92,19 +92,15 @@ export default class WinLevelController extends cc.Component {
         let afterPoint = 0;
 
         while (true) {
-
             if (count == 0) {
                 numberSplit.push(this.userNowBet * this.winLevelRange[count]);
             }
-
             if (count == this.winLevelRange.length - 1) {
-
                 totalPoint - afterPoint > afterPoint ?
                     numberSplit.push(afterPoint - beforePoint, totalPoint - afterPoint) : numberSplit.push(totalPoint - beforePoint);
 
                 break;
             }
-
             if (count > 0) {
                 numberSplit.push(afterPoint - beforePoint);
             }
@@ -119,7 +115,6 @@ export default class WinLevelController extends cc.Component {
                 afterPoint = this.userNowBet * this.winLevelRange[count];
             }
         }
-
         this.totalPoint = numberSplit;
         cc.log(this.totalPoint)
     }
@@ -130,16 +125,15 @@ export default class WinLevelController extends cc.Component {
     }
 
     @Loading("prefab")
-    public showWinAboveState(point: number, resolve: (value: (void | PromiseLike<void>)) => void) {
+    public showWinAboveState(point: number, resolve:  (value: (PromiseLike<void> | void)) => void) {
         this.initializeSpine();
         this.totalPointSplit(point);
         this.point = point;
         this.scheduleOnce(() => {
             this.runTotalWinPoint();
-            this.node.once(cc.Node.EventType.TOUCH_END, this.runPointTouchEnd);
+            this.node.once(cc.Node.EventType.TOUCH_END, this.runPointTouchEnd,this);
             cc.systemEvent.once(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardEvent, this);
         }, 0.5);
-
         this.resolve = resolve;
     }
 
@@ -156,10 +150,8 @@ export default class WinLevelController extends cc.Component {
      * @private
      */
     private runPointTouchEnd() {
-
         this.pointSplitIndex = this.totalPoint.length - 1;
         this.startNum = this.point;
-
     }
 
     /**
@@ -261,64 +253,46 @@ export default class WinLevelController extends cc.Component {
 
         //時間到後初始所有參數
         this.scheduleOnce(() => {
-
             this.winPointLabel.string = "";
             this.isBigWinOpen = false;
             this.isMegaWinOpen = false;
             this.isSuperWinOpen = false;
-
             this.node.active = false;
-
             if (SlotGameManager.instance.gameState == GameState.FREEING) {
-
                 AudioManager.instance.musicPlay("FBS");
-
             } else {
                 AudioManager.instance.musicPlay("NBS")
             }
-
             this.resolve();
-
         }, 5);
     }
 
     protected update(dt: number) {
 
         if (this.isNumberRun) {
-            cc.log("測試...", this.levelWinPoint);
             let totalPoint = this.point;
-
             let time = this.checkTimer(this.pointSplitIndex);
-
             if (this.pointSplitIndex == 2 && !this.isSuperWinOpen) {
                 this.showSuperWin();
             }
-
             if (this.pointSplitIndex >= 3 && !this.isMegaWinOpen) {
                 this.showMegaWin();
             }
-
             //當分數到達時呼叫
             if (this.startNum >= totalPoint) {
                 this.updateWinPointEnd(totalPoint);
                 return;
             }
-
             let numberFormat = new Intl.NumberFormat().format(Math.floor(this.startNum * 10) / 10);
-
             if (numberFormat.indexOf(".") == -1) {
                 numberFormat = numberFormat + ".0"
             }
-
             this.winPointLabel.string = numberFormat;
-
             this.startNum += this.totalPoint[this.pointSplitIndex] / time * dt;
-
             //當前跑分要到達的level數字
             if (this.pointSplitIndex == 0 && this.levelWinPoint != 0) {
                 this.levelWinPoint = this.userNowBet * this.totalPoint[this.pointSplitIndex];
             }
-
             if (this.startNum >= this.levelWinPoint) {
                 if (this.pointSplitIndex == this.totalPoint.length - 1) {
                     return;

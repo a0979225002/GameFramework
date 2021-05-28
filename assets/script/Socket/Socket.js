@@ -130,7 +130,7 @@ cc.Class({
     loadLanguageErrorAgain() {
         socketSetting.ClientSetObject.WarningText = socketSetting.t("S_9077");//"语言包下载失败请通知客服";
         socketSetting.ClientSetObject.WarningBtnBoolean = true;
-        ResultSortOut.SFSToGame("Warning");
+        ResultSortOut.instance.SFSToGame("Warning");
         obj_socket.self.realSFSLoad();
     },
     SFSLoad: function (GameNumber) {
@@ -190,7 +190,7 @@ cc.Class({
             socketSetting.ClientSetObject.SFSLoadStart = false;
             socketSetting.ClientSetObject.WarningText = socketSetting.t("S_9009");
             socketSetting.ClientSetObject.WarningBoolean = true;
-            ResultSortOut.SFSToGame("Warning");
+            ResultSortOut.instance.SFSToGame("Warning");
         }
     },
     //連線遺失
@@ -209,21 +209,21 @@ cc.Class({
             //Client was banned from the server. Banning can occur automatically (i.e. for flooding, if the flood filter is active) or due to the intervention of a user with enough privileges (i.e. an administrator or a moderator).
             //被Server阻擋
             socketSetting.ClientSetObject.WarningText = socketSetting.t("S_9009") + '!';
-            ResultSortOut.SFSToGame("GameClose");
-            ResultSortOut.SFSToGame("Warning");
+            ResultSortOut.instance.SFSToGame("GameClose");
+            ResultSortOut.instance.SFSToGame("Warning");
         } else if (reason == SFS2X.ClientDisconnectionReason.IDLE) {
             //Client was disconnected because it was idle for too long. The connection timeout depends on the server settings.
             //閒置過久斷開
             socketSetting.ClientSetObject.WarningText = socketSetting.t("S_9005") + '!!';
-            ResultSortOut.SFSToGame("GameClose");
-            ResultSortOut.SFSToGame("Warning");
+            ResultSortOut.instance.SFSToGame("GameClose");
+            ResultSortOut.instance.SFSToGame("Warning");
         } else if (reason == SFS2X.ClientDisconnectionReason.KICK) {
             //Client was kicked out of the server. Kicking can occur automatically (i.e. for swearing, if the words filter is active) or due to the intervention of a user with enough privileges (i.e. an administrator or a moderator).
             //Client被Server踢出
             socketSetting.ClientSetObject.WarningText = socketSetting.t("S_9009") + '!!!';
             if (!socketSetting.ClientSetObject.SendWarning) {
-                ResultSortOut.SFSToGame("GameClose");
-                ResultSortOut.SFSToGame("Warning");
+                ResultSortOut.instance.SFSToGame("GameClose");
+                ResultSortOut.instance.SFSToGame("Warning");
             }
         } else if (reason == SFS2X.ClientDisconnectionReason.MANUAL) {
             //The client manually disconnected from the server. The disconnect method on the SmartFox class was called.
@@ -234,8 +234,8 @@ cc.Class({
             //客戶端無法得知的錯誤，需查server 的 Log
             socketSetting.ClientSetObject.WarningText = socketSetting.t("S_9009") + '!!!!!';
             if (!socketSetting.ClientSetObject.SendWarning) {
-                ResultSortOut.SFSToGame("GameClose");
-                ResultSortOut.SFSToGame("Warning");
+                ResultSortOut.instance.SFSToGame("GameClose");
+                ResultSortOut.instance.SFSToGame("Warning");
             }
         }
 
@@ -336,7 +336,7 @@ cc.Class({
                         socketSetting.ClientSetObject.LoginData = new SFS2X.SFSObject();
                         break;
                     case 1:
-                        ResultSortOut.SFSToGame("loginError");
+                        ResultSortOut.instance.SFSToGame("loginError");
                         break;
                 }
                 break;
@@ -371,14 +371,14 @@ cc.Class({
         socketSetting.ClientSetObject.whereRoom = evtParams.room.groupId;
         switch (socketSetting.ClientSetObject.whereRoom) {
             case "Lobby":
-                ResultSortOut.SFSToGame("LeaveGame");
+                ResultSortOut.instance.SFSToGame("LeaveGame");
                 break;
             case "GameLobby":
-                ResultSortOut.SFSToGame("GameLobby");
+                ResultSortOut.instance.SFSToGame("GameLobby");
                 break;
             case socketSetting.ClientSetObject.serverGameGroupID:
                 socketSetting.serverSfs.enableLagMonitor(true, 5);//開啟Ping功能
-                ResultSortOut.SFSToGame("CanPlayGame");
+                ResultSortOut.instance.SFSToGame("CanPlayGame");
                 break;
         }
     },
@@ -459,22 +459,22 @@ cc.Class({
                 socketSetting.ClientSetObject.ErrorMessageCode = "S_9023";
                 socketSetting.ClientSetObject.WarningBoolean = true;//底層警告文字是否常駐
                 socketSetting.ClientSetObject.WarningBtnBoolean = true;//警告文字的按鈕是否顯示
-                ResultSortOut.SFSToGame("Warning");
+                ResultSortOut.instance.SFSToGame("Warning");
                 socketSetting.ClientSetObject.SendWarning = true;
                 break;
 
             case "KickMsg":
                 socketSetting.ClientSetObject.WarningText = socketSetting.ServerReturnData[cmd].Msg;
                 socketSetting.ClientSetObject.WarningBoolean = true;//底層警告文字是否常駐
-                ResultSortOut.SFSToGame("Warning");
+                ResultSortOut.instance.SFSToGame("Warning");
                 socketSetting.ClientSetObject.SendWarning = true;
                 break;
 
             case "UpdatePoints":
-                ResultSortOut.SFSToGame("UpdatePoints");
+                ResultSortOut.instance.SFSToGame("UpdatePoints");
                 break;
         }
-        ResultSortOut.SFSToGame(cmd);
+        ResultSortOut.instance.SFSToGame(cmd);
     },
     //各種失敗回傳 代碼及訊息
     serverreturnError: function (event) {
@@ -577,7 +577,7 @@ cc.Class({
                 socketSetting.ClientSetObject.WarningText = socketSetting.t("S_9901") + "9999!!";
                 break;
         }
-        ResultSortOut.SFSToGame("Warning");
+        ResultSortOut.instance.SFSToGame("Warning");
     },
     //給客端呼叫送值給server
     SFSToServer: function (PackName, DataObject) {
@@ -603,12 +603,12 @@ cc.Class({
     onAdminMessage: function (event) {
         //console.log("onAdminMessage",event.message);
         socketSetting.ServerReturnData.Message = "<color=#ffffff><b>" + event.message + "</b></c>";
-        ResultSortOut.SFSToGame("Marquee");
+        ResultSortOut.instanceSFSToGame("Marquee");
     },
     onObjectMessage: function (event) {
         //console.log("onObjectMessage",event.message);
         socketSetting.ServerReturnData.Message = "<color=#ffffff><b>" + event.message + "</b></c>";
-        ResultSortOut.SFSToGame("Marquee");
+        ResultSortOut.instance.SFSToGame("Marquee");
     },
     onModeratorMessage: function (event) {
         console.log("onModeratorMessage", event.message);
@@ -631,7 +631,7 @@ cc.Class({
                 break;
         }
         socketSetting.ClientSetObject.WarningBoolean = true;//底層警告文字是否常駐
-        ResultSortOut.SFSToGame("Warning");
+        ResultSortOut.instance.SFSToGame("Warning");
         socketSetting.ClientSetObject.SendWarning = true;
     },
     // =============訊息類=============
@@ -640,7 +640,7 @@ cc.Class({
         //console.log(event.lagValue);
         socketSetting.ClientSetObject.PingPong = event.lagValue;
         if (socketSetting.ClientSetObject.joinRoom === true && socketSetting.ClientSetObject.joinLobbyRoom === false) {
-            ResultSortOut.SFSToGame("ShowPing");
+            ResultSortOut.instance.SFSToGame("ShowPing");
         }
     },
     otherserver: function () {

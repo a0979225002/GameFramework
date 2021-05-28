@@ -6,6 +6,7 @@ import AutoStateChangeObserver from "../../../Process/GameObserver/AutoStateChan
 import UserTotalBetChangeObserver from "../../../Process/GameObserver/UserTotalBetChangeObserver";
 import SlotGameManager from '../../../Process/SlotGameManager'
 import {WebResponseManager} from '../../../WebResponse/WebResponseManager'
+import OverrideComponent from "../../OverrideComponent";
 
 const {ccclass} = cc._decorator;
 
@@ -16,7 +17,7 @@ const {ccclass} = cc._decorator;
  * @Version 1.1
  */
 @ccclass
-export default abstract class AMenuButtonEvent extends cc.Component {
+export default abstract class AMenuButtonEvent extends OverrideComponent {
 
     /**
      * 訂閱自動事件

@@ -33,7 +33,7 @@ export default class MainGameNormalProcessTest implements ISlotProcedureExecutio
 
     public onCustomizeStart(): Promise<void> {
 
-        return new Promise(async (resolve) => {
+        return new Promise<void>(async (resolve) => {
             this.onCreate();
 
             socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);

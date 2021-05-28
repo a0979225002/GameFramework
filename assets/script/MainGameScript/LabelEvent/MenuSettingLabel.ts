@@ -63,12 +63,12 @@ export default class MenuSettingLabel extends AGenericTemplate {
         this.betMoneyTextV.string = SocketSetting.t("S_2002");
 
         //免費旋轉
-        this.autoFreeTextH.string = SocketSetting.t("S_9079");
-        this.autoFreeTextV.string = SocketSetting.t("S_9079");
+        this.autoFreeTextH.string = SocketSetting.t("S_1002");
+        this.autoFreeTextV.string = SocketSetting.t("S_1002");
 
         //普通旋轉
-        this.autoTextH.string = SocketSetting.t("S_9078");
-        this.autoTextV.string = SocketSetting.t("S_9078");
+        this.autoTextH.string = SocketSetting.t("S_1001");
+        this.autoTextV.string = SocketSetting.t("S_1001");
 
         LanguageMethod.instance
             .updateLabelStyle(this.musicTextH)

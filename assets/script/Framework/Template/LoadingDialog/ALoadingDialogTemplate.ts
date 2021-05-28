@@ -2,6 +2,7 @@ import ccclass = cc._decorator.ccclass;
 import {ErrorType} from "../../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../../Error/ErrorManager";
 import LoadResManager from "../../LoadResources/LoadResManager";
+import OverrideComponent from "../OverrideComponent";
 
 /**
  * @Author XIAO-LI-PIN
@@ -10,7 +11,7 @@ import LoadResManager from "../../LoadResources/LoadResManager";
  * @Version 1.0
  */
 @ccclass
-export default abstract class ALoadingDialogTemplate extends cc.Component {
+export default abstract class ALoadingDialogTemplate extends OverrideComponent {
 
     protected abstract loadingDialogNode: cc.Node;
     protected abstract progressBar: cc.ProgressBar;
@@ -19,14 +20,9 @@ export default abstract class ALoadingDialogTemplate extends cc.Component {
     protected timeOut: number;
     protected addProgressValue;
     private timer: number;
-    public static instance: ALoadingDialogTemplate;
-
-
     protected onLoad() {
-
         this.loadingInitialize();
         this.onCreate();
-
     }
 
     /**

@@ -7,10 +7,8 @@ import {Loading} from "./LoadingDialogController";
 
 const {ccclass, property} = cc._decorator;
 
-let self: FreeOpenController;
-
 @ccclass
-class FreeOpenController extends AGenericTemplate {
+export default class FreeOpenController extends AGenericTemplate {
 
     @property(cc.Label)
     private freeCountLabel: cc.Label = null;
@@ -23,12 +21,11 @@ class FreeOpenController extends AGenericTemplate {
 
     private resolve: (value: (PromiseLike<void> | void)) => void
     private timer: number;
+    public static instance: FreeOpenController;
 
     public onCreate() {
-
-        self = this;
+        FreeOpenController.instance = this;
         this.initialFreeOpen();
-
     }
 
     /**
@@ -37,47 +34,38 @@ class FreeOpenController extends AGenericTemplate {
      */
     @Effect("GetWin")
     private freeCountAnimation() {
-
+        cc.log("freeCountAnimation")
         if (SlotGameManager.instance.isAutoState && SlotGameManager.instance.autoType != AutoType.freeEnd) {
-            self.timer = 3;
+            this.timer = 3;
         } else {
-            self.timer = 10;
+            this.timer = 10;
         }
-
         if (WebResponseManager.instance.freeResult.FreeToFree != 0) {
-            self.timer = 1;
+            this.timer = 1;
         }
-
-        self.schedule(this.addCountTimer, 0.016 * 5);
-
+        this.schedule(this.addCountTimer, 0.016 * 5);
     }
 
     private addCountTimer() {
-
-        self.count++;
-
-        if (self.count > self.freeCount) {
-            self.touchEndListener();
-
-            self.scheduleOnce(self.removeFreeOpeningAnimation, self.timer)
-
-            self.unschedule(self.addCountTimer);
-
+        this.count++;
+        if (this.count > this.freeCount) {
+            this.touchEndListener();
+            this.unschedule(this.addCountTimer);
+            this.scheduleOnce(this.removeFreeOpeningAnimation, this.timer)
             return;
         }
-        self.freeCountLabel.string = String(this.count);
+        this.freeCountLabel.string = String(this.count);
     }
 
     private touchEndListener() {
-
-        self.freeAnimation.node.once(cc.Node.EventType.TOUCH_END, self.removeFreeOpeningAnimation, self);
-        cc.systemEvent.once(cc.SystemEvent.EventType.KEY_DOWN, self.keyboardEvent, self);
+        this.freeAnimation.node.once(cc.Node.EventType.TOUCH_END, this.removeFreeOpeningAnimation, this);
+        cc.systemEvent.once(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardEvent, this);
     }
 
     private keyboardEvent(event) {
         switch (event.keyCode) {
             case cc.macro.KEY.space:
-                self.removeFreeOpeningAnimation();
+                this.removeFreeOpeningAnimation();
                 break;
         }
     }
@@ -89,59 +77,48 @@ class FreeOpenController extends AGenericTemplate {
      */
     @Loading("prefab")
     public showFreeOpeningAnimation(freeCount: number): Promise<void> {
-
-        self.playFreeAnimation(freeCount);
-
-        self.freeAnimation.once('finished', this.freeCountAnimation, self);
-
+        cc.log("showFreeOpeningAnimation")
+        this.playFreeAnimation(freeCount);
+        this.freeAnimation.once('finished', this.freeCountAnimation, this);
         return new Promise(resolve => {
-
-            self.resolve = resolve;
-
+            this.resolve = resolve;
         })
     }
 
     @Music("GetFG")
     private playFreeAnimation(freeCount: number) {
-        self.node.active = true;
-        self.freeCount = freeCount;
-        self.freeAnimation.play();
+        this.node.active = true;
+        this.freeCount = freeCount;
+        this.freeAnimation.play();
     }
 
     /**
      * 關閉free開場動畫
      */
     @Music("FBS")
-    public removeFreeOpeningAnimation() {
-
-        cc.tween(self.node)
+    private removeFreeOpeningAnimation() {
+        cc.log("removeFreeOpeningAnimation")
+        this.freeAnimation.node.off(cc.Node.EventType.TOUCH_END, this.removeFreeOpeningAnimation, this);
+        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardEvent, this);
+        cc.tween(this.node)
             .to(0.4, {opacity: 0})
             .call(() => {
-
-                self.initialFreeOpen();
-                self.resolve();
+                cc.log("removeFreeOpeningAnimationCallBack")
+                this.initialFreeOpen();
+                this.resolve();
             })
             .start();
     }
 
     private initialFreeOpen() {
-
-        self.freeAnimation.node.off(cc.Node.EventType.TOUCH_END, self.removeFreeOpeningAnimation, self);
-        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, self.keyboardEvent, self)
-        self.unschedule(self.removeFreeOpeningAnimation);
-
-        self.freeCountLabel.string = "";
-        self.count = 0;
-        self.node.active = false;
-        self.freeAnimation.node.width = 0;
-        self.freeAnimation.node.height = 0;
-        self.node.opacity = 255;
-
+        this.freeCountLabel.string = "";
+        this.count = 0;
+        this.node.active = false;
+        this.freeAnimation.node.width = 0;
+        this.freeAnimation.node.height = 0;
+        this.node.opacity = 255;
     }
 
     public languageSetting() {
-
     }
 }
-
-export default new FreeOpenController();

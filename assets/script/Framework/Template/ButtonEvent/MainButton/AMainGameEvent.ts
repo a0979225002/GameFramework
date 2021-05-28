@@ -8,6 +8,7 @@ import AutoStateChangeObserver from "../../../Process/GameObserver/AutoStateChan
 import SlotGameManager from "../../../Process/SlotGameManager";
 import StopNowStateNotification from "../../../Slot/SlotNotifivation/StopNowStateNotification";
 import {WebResponseManager} from "../../../WebResponse/WebResponseManager";
+import OverrideComponent from "../../OverrideComponent";
 
 /**
  * @Author XIAO-LI-PIN
@@ -15,7 +16,7 @@ import {WebResponseManager} from "../../../WebResponse/WebResponseManager";
  * @Date 2021-05-26 上午 11:29
  * @Version 1.0
  */
-export default abstract class AMainGameEvent extends cc.Component {
+export default abstract class AMainGameEvent extends OverrideComponent {
 
     /**
      * 當前是否開啟總押注視窗

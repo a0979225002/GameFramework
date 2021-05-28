@@ -18,7 +18,7 @@ export default class LoadingDialogController extends ALoadingDialogTemplate {
     @property(cc.Label)
     protected progressText: cc.Label = null;
 
-    public static instance: ALoadingDialogTemplate;
+    public static instance: LoadingDialogController;
 
     protected onCreate() {
         LoadingDialogController.instance = this;
@@ -27,10 +27,8 @@ export default class LoadingDialogController extends ALoadingDialogTemplate {
 }
 
 //裝飾器
-function Loading(resName: string) {
-
+export function Loading(resName: string) {
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
-
         descriptor.enumerable = true;
         const method = descriptor.value;
         descriptor.value = async function (...any) {
@@ -39,4 +37,3 @@ function Loading(resName: string) {
         }
     }
 }
-export {Loading};

@@ -30,7 +30,7 @@ export default class LoadTypeFactory implements ILoadFactory {
         });
 
         //加載Bundle資源時須先加載Bundle清單
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             if (!this.isLoadBundle) {
                 this.isLoadBundle = true;
                 cc.assetManager.loadBundle("secondaryRes", (error, bundle) => {
@@ -114,9 +114,7 @@ export default class LoadTypeFactory implements ILoadFactory {
      * @param url
      */
     executeLoadExternalScript(name: string, type: LoadType, url: string) {
-
         switch (type) {
-
             case LoadType.css:
                 new CSSLoad(name, "text/css", url).loadScript();
                 break

@@ -62,7 +62,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
             MainGameLabel.instance.remove();
             MainGameButton.instance.switchButton(false);
             MainGameController.instance.showFreeBG();
-            await FreeOpenController.showFreeOpeningAnimation(
+            await FreeOpenController.instance.showFreeOpeningAnimation(
                 this.result.FreeSpinCount);
             count = this.result.FreeSpinCount - 1;
             //清空一般responseModel 的 free狀態,避免重複近來
@@ -80,7 +80,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
     private async freeToFree(count: number): Promise<number> {
         //FREE TO FREE 判斷是否增加 更新count數
         if (this.freeResult.FreeToFree != 0) {
-            await FreeOpenController.showFreeOpeningAnimation(this.freeResult.FreeToFree);
+            await FreeOpenController.instance.showFreeOpeningAnimation(this.freeResult.FreeToFree);
             count = this.freeResult.Count + this.freeResult.FreeToFree - 1;
         }
         return count;
@@ -119,7 +119,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
                 WebResponseManager.instance.freeResult.Count == 0
             ) {
                 let point = WebResponseManager.instance.freeResult.FreeSpinWin;
-                await FreeEndController.showFreeEnd(point, 4);
+                await FreeEndController.instance.showFreeEnd(point, 4);
                 //關閉 free 背景
                 MainGameController.instance.closeFreeBG();
                 //關閉 free 標題

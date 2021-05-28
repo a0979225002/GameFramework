@@ -1,6 +1,7 @@
 import {ServerEventType} from "../../../Listener/Enum/ServerEventType";
 import EventManager from "../../../Listener/EventManager";
 import {SceneDirectionType} from "../../../Scene/Enum/SceneStyle";
+import OverrideComponent from "../../OverrideComponent";
 
 const {ccclass} = cc._decorator;
 
@@ -37,7 +38,7 @@ export interface GameHistoryData {
  * @Version 1.0
  */
 @ccclass
-export default abstract class ARecordButtonEvent extends cc.Component {
+export default abstract class ARecordButtonEvent extends OverrideComponent {
 
     protected isResultOK: boolean;
 

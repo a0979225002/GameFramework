@@ -21,7 +21,6 @@ export default class CSSLoad extends ALoadScriptType {
         if (LoadResManager.instance.scriptRes.has(url)) {
             ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `請勿重複加載已有的外部腳本 : ${url}`)
         }
-
         this.linkElem.rel = "stylesheet";
         this.linkElem.type = this.type;
         this.linkElem.href = url;

@@ -1,9 +1,10 @@
 import ButtonMethod from '../../GlobalMethod/ButtonMethod'
+import OverrideComponent from "../OverrideComponent";
 
 const {ccclass} = cc._decorator;
 
 @ccclass
-export default abstract class AErrorFrameTemplate extends cc.Component {
+export default abstract class AErrorFrameTemplate extends OverrideComponent {
 
     protected abstract errorLabel: cc.Label;
     protected abstract errorButtonLabel: cc.Label;

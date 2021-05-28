@@ -5,11 +5,12 @@ import ErrorManager from '../../Error/ErrorManager'
 import {ServerEventType} from '../../Listener/Enum/ServerEventType'
 import EventManager from '../../Listener/EventManager'
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
+import OverrideComponent from "../OverrideComponent";
 
 const {ccclass} = cc._decorator;
 
 @ccclass
-export default abstract class ALoadingTemplate extends cc.Component implements ILoadTemplate {
+export default abstract class ALoadingTemplate extends OverrideComponent implements ILoadTemplate {
 
     private _canPlayGame: boolean;
 

@@ -1,8 +1,9 @@
+import OverrideComponent from "../OverrideComponent";
 
 const {ccclass} = cc._decorator;
 
 @ccclass
-export default abstract class ASlotInitializeTemplate extends cc.Component{
+export default abstract class ASlotInitializeTemplate extends OverrideComponent{
     
     //slot 的列
     protected abstract slotRow:Array<cc.Node>;

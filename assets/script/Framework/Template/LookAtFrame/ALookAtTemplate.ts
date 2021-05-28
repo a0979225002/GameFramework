@@ -1,5 +1,6 @@
 import ScrollFocusStateNotification from "../../Slot/SlotNotifivation/ScrollFocusStateNotification";
 import ScrollFocusStateObserver from "../../Slot/SlotObserver/ScrollFocusStateObserver";
+import OverrideComponent from "../OverrideComponent";
 
 const {ccclass} = cc._decorator;
 
@@ -10,7 +11,7 @@ const {ccclass} = cc._decorator;
  * @Version 1.1
  */
 @ccclass
-export default abstract class ALookAtTemplate extends cc.Component {
+export default abstract class ALookAtTemplate extends OverrideComponent {
 
     protected abstract allLookAtEffect: Array<cc.Animation>;
     private _scrollFocusStateObserver: ScrollFocusStateObserver;

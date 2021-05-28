@@ -24,11 +24,11 @@ export default class MainGameController extends cc.Component {
         MainGameController.instance = this;
         this.freeBGH.active = false;
         this.freeBGV.active = false;
-        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener(), true);
+        SceneDirectionChangeNotification
+            .instance.subscribe(this.sceneDirectionObserverListener(), true);
     }
 
     public sceneDirectionObserverListener(): SceneDirectionChangeObserver {
-
         return new SceneDirectionChangeObserver((type) => {
             if (SlotGameManager.instance.gameState != GameState.FREEING) return;
             switch (type) {

@@ -11,6 +11,12 @@ const {ccclass} = cc._decorator;
 @ccclass
 export default class ResultSortOut extends cc.Component {
 
+    public static instance: ResultSortOut;
+
+    protected onLoad() {
+        ResultSortOut.instance = this;
+    }
+
     async SFSToGame(_cmd: string) {
         switch (_cmd) {
             case "MemberInfo":
