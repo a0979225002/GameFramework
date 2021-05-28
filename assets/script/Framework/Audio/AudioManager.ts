@@ -227,20 +227,14 @@ export default class AudioManager implements IAudioManager {
  * @constructor
  */
 function Music(name) {
-
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
-
         descriptor.enumerable = true;
         const method = descriptor.value;
-
         descriptor.value = function (...any) {
-
             method.call(this, ...any);
-
             AudioManager.instance.musicPlay(name);
         }
     }
-
 }
 
 /**

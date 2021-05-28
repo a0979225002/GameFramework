@@ -4,6 +4,7 @@ import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
+import Button = cc.Button;
 
 const {ccclass, property} = cc._decorator;
 
@@ -12,20 +13,43 @@ export default class FreeOpenController extends AGenericTemplate {
 
     @property(cc.Label)
     private freeCountLabel: cc.Label = null;
-
     @property(cc.Animation)
     private freeAnimation: cc.Animation = null;
-
     private freeCount = 0;
     private count: number = 0;
-
     private resolve: (value: (PromiseLike<void> | void)) => void
     private timer: number;
+    private CLOSING : boolean;
     public static instance: FreeOpenController;
 
     public onCreate() {
         FreeOpenController.instance = this;
         this.initialFreeOpen();
+    }
+
+    private initialFreeOpen() {
+        this.CLOSING = false;
+        this.freeCountLabel.string = "";
+        this.count = 0;
+        this.node.active = false;
+        this.freeAnimation.node.width = 0;
+        this.freeAnimation.node.height = 0;
+        this.node.opacity = 255;
+    }
+
+    /**
+     * 打開free 開場動畫
+     * @param {number} freeCount
+     * @return {Promise<void>}
+     */
+    @Loading("prefab")
+    public showFreeOpeningAnimation(freeCount: number): Promise<void> {
+        cc.log("showFreeOpeningAnimation")
+        this.playFreeAnimation(freeCount);
+        this.freeAnimation.once('finished', this.freeCountAnimation, this);
+        return new Promise(resolve => {
+            this.resolve = resolve;
+        })
     }
 
     /**
@@ -70,20 +94,6 @@ export default class FreeOpenController extends AGenericTemplate {
         }
     }
 
-    /**
-     * 打開free 開場動畫
-     * @param {number} freeCount
-     * @return {Promise<void>}
-     */
-    @Loading("prefab")
-    public showFreeOpeningAnimation(freeCount: number): Promise<void> {
-        cc.log("showFreeOpeningAnimation")
-        this.playFreeAnimation(freeCount);
-        this.freeAnimation.once('finished', this.freeCountAnimation, this);
-        return new Promise(resolve => {
-            this.resolve = resolve;
-        })
-    }
 
     @Music("GetFG")
     private playFreeAnimation(freeCount: number) {
@@ -97,7 +107,7 @@ export default class FreeOpenController extends AGenericTemplate {
      */
     @Music("FBS")
     private removeFreeOpeningAnimation() {
-        cc.log("removeFreeOpeningAnimation")
+        this.unscheduleAllCallbacks();
         this.freeAnimation.node.off(cc.Node.EventType.TOUCH_END, this.removeFreeOpeningAnimation, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardEvent, this);
         cc.tween(this.node)
@@ -110,14 +120,6 @@ export default class FreeOpenController extends AGenericTemplate {
             .start();
     }
 
-    private initialFreeOpen() {
-        this.freeCountLabel.string = "";
-        this.count = 0;
-        this.node.active = false;
-        this.freeAnimation.node.width = 0;
-        this.freeAnimation.node.height = 0;
-        this.node.opacity = 255;
-    }
 
     public languageSetting() {
     }

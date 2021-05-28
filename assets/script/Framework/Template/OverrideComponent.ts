@@ -27,10 +27,9 @@ export default class OverrideComponent extends cc.Component {
         this.scheduleTag.push(callback);
     }
 
+    @Callback()
     scheduleOnce(callback: Function, delay?: number) {
-        super.scheduleOnce(callback, delay);
-        let index = this.scheduleTag.indexOf(callback);
-        this.scheduleTag.splice(index, 1);
+        this.schedule(callback, 0, 0, delay);
     }
 
 
@@ -44,5 +43,21 @@ export default class OverrideComponent extends cc.Component {
     unscheduleAllCallbacks() {
         super.unscheduleAllCallbacks();
         this.scheduleTag.length = 0;
+    }
+}
+
+function Callback(){
+    return function (target: any, key: string, descriptor: PropertyDescriptor) {
+        descriptor.enumerable = true;
+        const method = descriptor.value;
+        descriptor.value = function (...any) {
+            let i : Function;
+            for(let fun of any){
+                if(typeof fun === "function"){
+
+                    break;
+                }
+            }
+        }
     }
 }
