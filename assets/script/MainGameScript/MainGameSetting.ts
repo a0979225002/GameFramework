@@ -15,6 +15,7 @@ import FreeProcessTest from "../Test/GameProcess/FreeProcessTest";
 import MainGameNormalProcessTest from "../Test/GameProcess/MainGameNormalProcess.test";
 import MainGameFreeProcess from './GameProcess/MainGameFreeProcess'
 import MainGameNormalProcess from "./GameProcess/MainGameNormalProcess";
+import NoSleep = require('../Socket/NoSleep');
 
 const {ccclass, property} = cc._decorator;
 
@@ -53,6 +54,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         SceneManager.instance.updateSize();//重新更新mainScene的長寬是配
         //將dialog節點放置在最後一個位置
         this.loadingDialog.setSiblingIndex(99);
+        this.useNoSleep();
     }
 
     /**
@@ -80,7 +82,32 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         }
     }
 
-
+    private useNoSleep(){
+        if(!cc.sys.isMobile){
+            cc.log("不是mobile");
+            return;
+        }
+        cc.log("我是手機");
+        if(cc.sys.os == cc.sys.OS_IOS){
+            cc.log("我是 apple 手機 ,因為無法 noSleep 所以不執行監聽")
+            return;
+        }
+        if(window.screenLock != 1){
+            cc["plug"] = cc["plug"]|| {};
+            cc["plug"].noSleep = new NoSleep ;
+            cc["plug"].noSleep.enable();
+            cc.log( cc["plug"].noSleep)
+            cc.game.on(cc.game.EVENT_HIDE, function () {
+                // cc.log("游戏进入后台时触发的事件");
+                cc["plug"].noSleep.disable();
+            });
+            cc.game.on(cc.game.EVENT_SHOW, function () {
+                // cc.log("游戏进入前台运行时触发的事件");
+                cc["plug"].noSleep = new NoSleep();
+                cc["plug"].noSleep.enable();
+            });
+        }
+    }
     /**
      * 直橫向監聽器
      */

@@ -4,6 +4,7 @@ interface Window{
     test : any;
     libraryPath : any;
     SFS2X:any;
+    screenLock:any;
 }
 declare var window:Window;
 

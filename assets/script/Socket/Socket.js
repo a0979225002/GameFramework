@@ -18,7 +18,7 @@ cc.Class({
         cc.game.addPersistRootNode(this.node);
         socketSetting.setboolean = true;
         obj_socket.self = this;
-        socketSetting.ClientSetObject.serverhost = "10.10.0.48";//serverIP //210.241.243.206
+        socketSetting.ClientSetObject.serverhost = "210.241.243.206";//serverIP //210.241.243.206
         // socketSetting.ClientSetObject.serverhost = "210.241.243.206";//serverIP //210.241.243.206
         socketSetting.ClientSetObject.serverport = 8080;
         socketSetting.ClientSetObject.account = "ppg018";//ppg015~020

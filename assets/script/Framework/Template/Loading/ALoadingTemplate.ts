@@ -69,6 +69,7 @@ export default abstract class ALoadingTemplate extends OverrideComponent impleme
      * 如果為上線模式,將會獲取外部IP,自動更新遊戲配置Config內的URL
      */
     private static updateUserIp() {
+
         if (!window.test) {
             let path =
                 window.libraryPath && window.libraryPath != ""
