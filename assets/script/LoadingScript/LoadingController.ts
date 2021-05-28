@@ -1,11 +1,13 @@
-import SlotConfigManager from '../Framework/Config/SlotConfigManager'
 import {AutoType, LanguageType} from '../Framework/Config/Enum/ConfigEnum'
+import SlotConfigManager from '../Framework/Config/SlotConfigManager'
 import ButtonMethod from '../Framework/GlobalMethod/ButtonMethod'
 import LanguageMethod from "../Framework/GlobalMethod/LanguageMethod";
 import {LoadType} from '../Framework/LoadResources/Enum/LoadEnum'
 import LoadResManager from '../Framework/LoadResources/LoadResManager'
-import {SceneStyle} from '../Framework/Scene/Enum/SceneStyle'
+import {SceneStyle, SceneDirectionType} from '../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../Framework/Scene/SceneManager'
+import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import ALoadingTemplate from '../Framework/Template/Loading/ALoadingTemplate'
 import {FreeResultType} from '../Framework/WebResponse/Enum/FreeResultType'
 import {ResultType} from '../Framework/WebResponse/Enum/ResultType'
@@ -27,10 +29,13 @@ export default class LoadingController extends ALoadingTemplate {
     private loadingTextNode: cc.Node = null;
     @property(cc.Sprite)
     private logoImg: cc.Sprite = null;
+    @property(cc.Node)
+    private loadBG: cc.Node = null;
 
     private progressNum: number
     private loadTextToArray: Array<cc.Label>;
     private isLogoAnimaEnd: boolean
+    private _sceneDirectionChangeObserver: SceneDirectionChangeObserver;
 
     /**
      * 遊戲整體參數設置
@@ -59,7 +64,6 @@ export default class LoadingController extends ALoadingTemplate {
      * 自定義初始
      */
     public onCreat() {
-
         this.isLogoAnimaEnd = false;                                    //初始化尚未結束logo動畫
         this.progressNum = 0;                                           //初始進度條為0;
         this.progressBar.progress = this.progressNum;                   //初始UI進度條為0
@@ -67,21 +71,39 @@ export default class LoadingController extends ALoadingTemplate {
             this.loadingTextNode.children[0].getComponent(cc.Label),
             this.loadingTextNode.children[1].getComponent(cc.Label),
         ];
-
         this.loadTextToArray[0].string                                  //初始第一條進度條文字
             = SocketSetting.t("DES_00" + 1);
-
         ButtonMethod.addButtonEvent(                                    //添加進入主遊戲Button監聽事件
             this.intoMainGameButton,
             "intoMainGameButtonEventListener",
             this
         );
-
         this.intoMainGameButton.node.active = false;                    //初始關閉進入主遊戲Button顯示,等待進度載入完成後才顯示
-
         LanguageMethod.instance
             .updateLabelStyle(this.loadTextToArray[0])
             .updateLabelStyle(this.loadTextToArray[1])
+        SceneDirectionChangeNotification
+            .instance.subscribe(this.getSceneDirectionChangeObserver(), true);
+    }
+
+    getSceneDirectionChangeObserver(): SceneDirectionChangeObserver {
+        if (!this._sceneDirectionChangeObserver) {
+            this._sceneDirectionChangeObserver =
+                new SceneDirectionChangeObserver((type) => {
+                    cc.log(type);
+                    if (type == SceneDirectionType.LANDSCAPE) {
+                        this.loadBG.height = 960;
+                        this.loadBG.width = 1560;
+                    } else {
+                        let newHeight = 1000 / cc.view.getFrameSize().width * cc.view.getFrameSize().height;
+                        let newWidth = newHeight / 9 * 16;
+                        cc.log(newHeight,newWidth);
+                        this.loadBG.height = newHeight;
+                        this.loadBG.width = newWidth;
+                    }
+                }, this);
+        }
+        return this._sceneDirectionChangeObserver;
     }
 
     /**
@@ -165,13 +187,13 @@ export default class LoadingController extends ALoadingTemplate {
      * 配置該遊戲Scene適配寬高,與更新頻率
      */
     public sceneStyle() {
-
         SceneManager.instance
             .setDesignWidth(1280)
             .setDesignHeight(720)
             .updateSize(SceneStyle.AUTO)
             .designSceneSizeListenerAutoStart(100);
     }
+
 
     /**
      * 進入主遊戲按鈕點擊事件
@@ -225,5 +247,10 @@ export default class LoadingController extends ALoadingTemplate {
                 this.intoMainGameButtonAnimation();
             }
         }
+    }
+
+    protected onDestroy() {
+        SceneDirectionChangeNotification
+            .instance.unsubscribe(this.getSceneDirectionChangeObserver());
     }
 }

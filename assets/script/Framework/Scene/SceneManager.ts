@@ -180,7 +180,12 @@ export default class SceneManager implements ISceneManager {
         scene.destroy();
     }
 
-    public get sceneDirection(): SceneDirectionType {
-        return this._sceneDirection
+
+    get sceneDirection(): SceneDirectionType {
+        return this._sceneDirection;
+    }
+
+    set sceneDirection(value: SceneDirectionType) {
+        this._sceneDirection = value;
     }
 }

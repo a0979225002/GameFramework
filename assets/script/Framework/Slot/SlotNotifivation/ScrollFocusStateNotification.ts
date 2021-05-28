@@ -30,7 +30,6 @@ export default class ScrollFocusStateNotification implements INotificationManage
     }
 
     subscribe(observer: ScrollFocusStateObserver, isPermanent: boolean) {
-
         if (this.observer.has(observer)) {
             ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已經註冊過瞇牌時的狀態事件,請檢查`)
             return;

@@ -26,6 +26,7 @@ export default class SceneDirectionChangeObserver implements IObserver {
     }
 
     set isPermanent(value: boolean) {
+        cc.log(value);
         this._isPermanent = value;
     }
 }

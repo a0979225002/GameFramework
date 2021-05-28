@@ -8,7 +8,7 @@ enum SceneStyle {
 
 export {SceneStyle};
 
-enum SceneDirectionType {
+export enum SceneDirectionType {
 
     /**
      * 直向
@@ -22,5 +22,3 @@ enum SceneDirectionType {
      */
     LANDSCAPE = 'LANDSCAPE',
 }
-
-export {SceneDirectionType};

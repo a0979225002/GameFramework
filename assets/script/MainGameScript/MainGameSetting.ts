@@ -5,7 +5,7 @@ import {GameType} from '../Framework/Process/Enum/GameState'
 import GameProcess from "../Framework/Process/Procress/GameProcess";
 import SlotGameProcess from '../Framework/Process/Procress/SlotGameProcess'
 import SlotGameManager from '../Framework/Process/SlotGameManager'
-import {SceneDirectionType} from '../Framework/Scene/Enum/SceneStyle'
+import {SceneDirectionType, SceneStyle} from '../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../Framework/Scene/SceneManager'
 import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
 import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
@@ -51,7 +51,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         //註冊scene樣式更新推波事件
         SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener(), true);
         //重新更新scene方向,scene跳轉會造成需重新式配size問題
-        SceneManager.instance.updateSize();//重新更新mainScene的長寬是配
+        SceneManager.instance.updateSize(SceneStyle.AUTO);//重新更新mainScene的長寬是配
         //將dialog節點放置在最後一個位置
         this.loadingDialog.setSiblingIndex(99);
         this.useNoSleep();
@@ -94,7 +94,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         }
         if(window.screenLock != 1){
             cc["plug"] = cc["plug"]|| {};
-            cc["plug"].noSleep = new NoSleep ;
+            cc["plug"].noSleep = new NoSleep() ;
             cc["plug"].noSleep.enable();
             cc.log( cc["plug"].noSleep)
             cc.game.on(cc.game.EVENT_HIDE, function () {
@@ -188,7 +188,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
             .setProcess(GameType.FREE, freeP)
             .setProcess(GameType.NORMAL, normalP)
             .setProcess(GameType.NORMAL, this.getTestProcess())
-            .setProcess("Test2", this.getTestProcess2())
+            // .setProcess("Test2", this.getTestProcess2())
             // .setInitialProcess(normalP);
             .setInitialProcess(this.getTestProcess());
         // .setInitialProcess(this.getTestProcess2());

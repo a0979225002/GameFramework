@@ -6,7 +6,6 @@
  */
 export default class ScrollFocusStateObserver implements IObserver {
     private _isPermanent: boolean;
-
     private readonly self: any;
     private readonly callFun: (index: number, isShow: boolean) => void;
 
