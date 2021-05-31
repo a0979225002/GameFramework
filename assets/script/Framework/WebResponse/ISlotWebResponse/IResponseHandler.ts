@@ -1,12 +1,10 @@
-import {FreeResultType} from '../Enum/FreeResultType'
-import {ResultType} from '../Enum/ResultType'
-import {TableInfoType} from '../Enum/TableInfoType'
+export default interface IResponseHandler<T> {
 
-export default interface IResponseHandler {
+    setResultModel(module: new() => T);
 
-    setResultModel(resultType: ResultType);
-
-    setFreeResultModel(freeResultType: FreeResultType);
-
-    setTableInfo(tableInfoType: TableInfoType);
+    getResult():T;
+    //
+    // setFreeResultModel(freeResultModule: new() => F);
+    //
+    // setTableInfo(tableInfoModule: new() => T);
 }

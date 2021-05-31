@@ -1,4 +1,4 @@
-export default class NoLineFreeResult implements IFreeResultModel{
+export default class NoLineFreeResult implements ISlotFreeResultModel{
     
     private _BaseLevelWin : number
     private _Change : Array<number>;

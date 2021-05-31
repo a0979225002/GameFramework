@@ -1,37 +1,9 @@
-interface IWebResponseManager {
+import {ResponseType} from "../Enum/ResponseType";
+import IResponseHandler from "./IResponseHandler";
 
-    /**
-     * tableInfo Model
-     */
-    tableInfo: ITableInfoModel;
+export interface IWebResponseManager<T> {
 
-    /**
-     * Result Model
-     */
-    result: ISlotResultModel;
+    setResponseModule(type: ResponseType, model:IResponseHandler<T>)
 
-    /**
-     * freeResult Model
-     */
-    freeResult: IFreeResultModel;
-
-    /**
-     * 添加當前遊戲的TableInfo Model
-     * @param {ITableInfoModel} model
-     */
-    setTableInfoModel(model: ITableInfoModel);
-
-    /**
-     * 添加當前遊戲的Result Model
-     * @param {IFreeResultModel} model
-     */
-    setResultModel(model: INoLineResultModel);
-
-    /**
-     * 添加當前遊戲的FreeResult Model
-     * @param {IFreeResultModel} model
-     */
-    setFreeResultModel(model: IFreeResultModel);
-
-
+    getResult(type: ResponseType): T;
 }

@@ -1,8 +1,4 @@
-import {FreeResultType} from '../../WebResponse/Enum/FreeResultType'
-import {ResultType} from '../../WebResponse/Enum/ResultType'
-import {TableInfoType} from '../../WebResponse/Enum/TableInfoType'
-import {AutoType, LanguageType} from "../Enum/ConfigEnum";
-import path = cc.path;
+import {LanguageType} from "../Enum/ConfigEnum";
 
 
 export interface IConfigManager {
@@ -60,7 +56,7 @@ export interface IConfigManager {
     /**
      * 返回首頁URL
      */
-    backHomeURL:string;
+    backHomeURL: string;
 
     /**
      * 是否要開啟Framework Debug模式
@@ -135,7 +131,7 @@ export interface IConfigManager {
      * @param {string} url
      * @returns {this}
      */
-    setBackHomeURL(url:string):this;
+    setBackHomeURL(url: string): this;
 
     /**
      * 實例化所有Manager class;

@@ -1,4 +1,4 @@
-interface IFreeResultModel {
+interface ISlotFreeResultModel {
 
     BaseLevelWin: number
     Change: Array<number>;

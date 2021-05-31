@@ -4,38 +4,31 @@ import ErrorManager from "../Error/ErrorManager";
 import {ServerEventType} from "../Listener/Enum/ServerEventType";
 import EventManager from "../Listener/EventManager";
 import SlotGameManager from "../Process/SlotGameManager";
-import IResponseHandler from './ISlotWebResponse/IResponseHandler'
-import ResponseHandler from './ResponseHandler'
+import {ResponseType} from "./Enum/ResponseType";
+import IResponseHandler from "./ISlotWebResponse/IResponseHandler";
+import {IWebResponseManager} from "./ISlotWebResponse/IWebResponseManager";
 
-export class WebResponseManager implements IWebResponseManager {
+export class WebResponseManager<T> implements IWebResponseManager<T> {
 
-    private static _instance: IWebResponseManager;
+    private static _instance: IWebResponseManager<any>;
     private configManager: ISlotConfigManager;
-    private _tableInfo: ITableInfoModel;
-    private _result: ISlotResultModel;
-    private _freeResult: IFreeResultModel;
-    private readonly _handler: IResponseHandler;
+    private _handlerToMap: Map<ResponseType, IResponseHandler<T>>;
 
     private constructor(configManager: ISlotConfigManager) {
-
-        this._handler = new ResponseHandler(this);
         this.configManager = configManager;
-        this._handler.setTableInfo(this.configManager.tableInfoType);
-        this._handler.setResultModel(this.configManager.resultType);
-        this._handler.setFreeResultModel(this.configManager.freeResultType);
         this.normalResultResponse();
         this.freeResultEvenResponse();
-
+        this._handlerToMap = new Map<ResponseType, IResponseHandler<T>>();
     }
 
     //單例
-    public static setInstance(configManager: ISlotConfigManager) {
+    public static setInstance<T>(configManager: ISlotConfigManager) {
         if (!this._instance) {
-            this._instance = new WebResponseManager(configManager);
+            this._instance = new WebResponseManager<T>(configManager);
         }
     }
 
-    public static get instance(): IWebResponseManager {
+    public static instance<T>(): IWebResponseManager<T> {
         if (!this._instance) {
             ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, "該類尚未實例化");
             return;
@@ -43,23 +36,12 @@ export class WebResponseManager implements IWebResponseManager {
         return this._instance;
     }
 
-
-    public setTableInfoModel(model: ITableInfoModel) {
-
-        this._tableInfo = model;
-
+    public setResponseModule(type: ResponseType, model: IResponseHandler<T>) {
+        this._handlerToMap.set(type,model);
     }
 
-    public setFreeResultModel(model: IFreeResultModel) {
-
-        this._freeResult = model;
-
-    }
-
-    public setResultModel(model: ISlotResultModel) {
-
-        this._result = model;
-
+    public getResult(type: ResponseType): T {
+        return this._handlerToMap.get(type).getResult();
     }
 
     /**
@@ -68,10 +50,10 @@ export class WebResponseManager implements IWebResponseManager {
     private normalResultResponse(): void {
         EventManager.instance.serverEventListener(ServerEventType.BET_RESULT, (target: object) => {
             for (let name of Object.keys(target)) {
-                if (WebResponseManager.instance.result[name] === undefined) {
+                if (this.getResult(ResponseType.NORMAL)[name] === undefined) {
                     ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換BetResultModule Type`)
                 } else {
-                    WebResponseManager.instance.result[name] = target[name];
+                    this.getResult(ResponseType.NORMAL)[name] = target[name];
                 }
             }
             SlotGameManager.instance.isResultOk = true;
@@ -84,33 +66,14 @@ export class WebResponseManager implements IWebResponseManager {
      */
     private freeResultEvenResponse() {
         EventManager.instance.serverEventListener(ServerEventType.FREE_SPIN_RESULT, (target: object) => {
-
             for (let name of Object.keys(target)) {
-
-                if (WebResponseManager.instance.freeResult[name] === undefined) {
+                if (this.getResult(ResponseType.FREE)[name] === undefined) {
                     ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換FreeResultModule Type`)
                 } else {
-                    WebResponseManager.instance.freeResult[name] = target[name];
+                    this.getResult(ResponseType.FREE)[name] = target[name];
                 }
             }
             SlotGameManager.instance.isResultOk = true;
         }, false);
-    }
-
-
-    get tableInfo(): ITableInfoModel {
-        return this._tableInfo;
-    }
-
-    get result(): ISlotResultModel {
-        return this._result;
-    }
-
-    get freeResult(): IFreeResultModel {
-        return this._freeResult;
-    }
-
-    get handler(): IResponseHandler {
-        return this._handler;
     }
 }

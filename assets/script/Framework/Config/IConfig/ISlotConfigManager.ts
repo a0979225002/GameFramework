@@ -6,7 +6,7 @@
  */
 import {FreeResultType} from "../../WebResponse/Enum/FreeResultType";
 import {ResultType} from "../../WebResponse/Enum/ResultType";
-import {TableInfoType} from "../../WebResponse/Enum/TableInfoType";
+import {ResponseType} from "../../WebResponse/Enum/ResponseType";
 import {AutoType} from "../Enum/ConfigEnum";
 import {IConfigManager} from "./IConfigManager";
 
@@ -49,10 +49,10 @@ export interface ISlotConfigManager extends IConfigManager {
 
     /**
      * server回傳的TableInfoType類型,做綁定 model用
-     * @type {TableInfoType}
+     * @type {ResponseType}
      * @private
      */
-    tableInfoType: TableInfoType;
+    tableInfoType: ResponseType;
 
     /**
      * server回傳的ResultType類型,做綁定 model用
@@ -99,10 +99,10 @@ export interface ISlotConfigManager extends IConfigManager {
 
     /**
      * server回傳的TableInfoType類型,做綁定 model用
-     * @param {TableInfoType} tableInfoType
+     * @param {ResponseType} tableInfoType
      * @returns {this}
      */
-    setTableInfo(tableInfoType: TableInfoType);
+    setTableInfo(tableInfoType: ResponseType);
 
     /**
      * server回傳的ResultType類型,做綁定 model用

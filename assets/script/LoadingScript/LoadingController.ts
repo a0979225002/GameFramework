@@ -11,7 +11,7 @@ import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/Scene
 import ALoadingTemplate from '../Framework/Template/Loading/ALoadingTemplate'
 import {FreeResultType} from '../Framework/WebResponse/Enum/FreeResultType'
 import {ResultType} from '../Framework/WebResponse/Enum/ResultType'
-import {TableInfoType} from '../Framework/WebResponse/Enum/TableInfoType'
+import {ResponseType} from '../Framework/WebResponse/Enum/ResponseType'
 import SocketSetting from '../Socket/SocketSetting'
 
 const {ccclass, property} = cc._decorator;
@@ -53,7 +53,7 @@ export default class LoadingController extends ALoadingTemplate {
             .setEffectVolume(1)                                 //初始音效音量
             .setLanguage(LanguageType.America)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
             .setExternallyLoadURL("http://10.10.0.47/games")    //同上
-            .setTableInfo(TableInfoType.NOT_LINE)                 //初始化 tableInfo Model
+            .setTableInfo(ResponseType.NOT_LINE)                 //初始化 tableInfo Model
             .setBetResult(ResultType.NOT_LINE)                    //初始化 Result Model
             .setFreeResult(FreeResultType.NOT_LINE)               //初始化 FreeResult Model
             .setFrameWorkDebug(true)                           //強烈要求正式上線時關閉

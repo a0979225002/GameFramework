@@ -8,7 +8,7 @@ import SlotStyleManager from '../Slot/SlotStyleManager'
 import WebRequestManager from '../WebRequest/WebRequestManager'
 import {FreeResultType} from '../WebResponse/Enum/FreeResultType'
 import {ResultType} from '../WebResponse/Enum/ResultType'
-import {TableInfoType} from '../WebResponse/Enum/TableInfoType';
+import {ResponseType} from '../WebResponse/Enum/ResponseType';
 import {WebResponseManager} from '../WebResponse/WebResponseManager'
 import {AutoType, LanguageType} from "./Enum/ConfigEnum";
 import {ISlotConfigManager, UserBetPoint} from "./IConfig/ISlotConfigManager";
@@ -103,10 +103,10 @@ export default class SlotConfigManager implements ISlotConfigManager {
 
     /**
      * server回傳的TableInfoType類型,做綁定 model用
-     * @type {TableInfoType}
+     * @type {ResponseType}
      * @private
      */
-    private _tableInfoType: TableInfoType
+    private _tableInfoType: ResponseType
 
     /**
      * server回傳的ResultType類型,做綁定 model用
@@ -300,10 +300,10 @@ export default class SlotConfigManager implements ISlotConfigManager {
 
     /**
      * server回傳的TableInfoType類型,做綁定 model用
-     * @param {TableInfoType} tableInfoType
+     * @param {ResponseType} tableInfoType
      * @returns {this}
      */
-    public setTableInfo(tableInfoType: TableInfoType): this {
+    public setTableInfo(tableInfoType: ResponseType): this {
         this._tableInfoType = tableInfoType;
         return this
     }
@@ -411,7 +411,7 @@ export default class SlotConfigManager implements ISlotConfigManager {
         return this._isMusicOnMute;
     }
 
-    get tableInfoType(): TableInfoType {
+    get tableInfoType(): ResponseType {
         return this._tableInfoType;
     }
 

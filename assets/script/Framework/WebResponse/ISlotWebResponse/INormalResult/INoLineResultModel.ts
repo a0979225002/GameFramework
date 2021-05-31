@@ -1,5 +1,8 @@
 interface INoLineResultModel extends ISlotResultModel{
-
+    /**
+     * 15格的資料
+     */
+    Grid: Array<number>;
     /**
      * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
      */
@@ -20,10 +23,6 @@ interface INoLineResultModel extends ISlotResultModel{
      * 免費遊戲次數 (0:沒有 1~99次)
      */
     FreeSpinCount: number;
-    /**
-     * 15格的資料
-     */
-    Grid: Array<number>;
     /**
      * 哪幾格贏 0:沒贏 1:贏
      */

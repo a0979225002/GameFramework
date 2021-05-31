@@ -21,7 +21,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
 
     private slotStyle: NoLineSlot;
     private result: INoLineResultModel;
-    private freeResult: IFreeResultModel;
+    private freeResult: ISlotFreeResultModel;
 
     constructor() {
         this.result = WebResponseManager.instance.result as NoLineResult;
