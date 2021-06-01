@@ -11,8 +11,8 @@ import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotificati
 import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import AMainGameSettingTemplate from '../Framework/Template/Setting/AMainGameSettingTemplate'
 import SocketSetting from "../Socket/SocketSetting";
-import FreeProcessTest from "../Test/GameProcess/FreeProcessTest";
-import MainGameNormalProcessTest from "../Test/GameProcess/MainGameNormalProcess.test";
+import FreeProcessTest from "../../Test/GameProcess/FreeProcessTest";
+import NormalBigWinProcessTest from "../../Test/GameProcess/NormalBigWinProcess.test";
 import MainGameFreeProcess from './GameProcess/MainGameFreeProcess'
 import MainGameNormalProcess from "./GameProcess/MainGameNormalProcess";
 import NoSleep = require('../Socket/NoSleep');
@@ -225,7 +225,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * @returns {SlotGameProcess}
      */
     getTestProcess2(): SlotGameProcess {
-        let testContainer = new MainGameNormalProcessTest();
+        let testContainer = new NormalBigWinProcessTest();
         let testProcess = new SlotGameProcess(testContainer);
         return testProcess
             .onCustomizeStart()

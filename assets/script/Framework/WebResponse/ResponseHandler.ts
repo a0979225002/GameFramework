@@ -1,5 +1,5 @@
 import IResponseHandler from './ISlotWebResponse/IResponseHandler'
-export default class ResponseHandler<T extends ISlotResultModel> implements IResponseHandler<T> {
+export default class ResponseHandler<T> implements IResponseHandler<T> {
 
     private module: T
 

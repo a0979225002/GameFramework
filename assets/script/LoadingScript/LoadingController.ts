@@ -1,5 +1,3 @@
-import {AutoType, LanguageType} from '../Framework/Config/Enum/ConfigEnum'
-import SlotConfigManager from '../Framework/Config/SlotConfigManager'
 import ButtonMethod from '../Framework/GlobalMethod/ButtonMethod'
 import LanguageMethod from "../Framework/GlobalMethod/LanguageMethod";
 import {LoadType} from '../Framework/LoadResources/Enum/LoadEnum'
@@ -9,9 +7,6 @@ import SceneManager from '../Framework/Scene/SceneManager'
 import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
 import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import ALoadingTemplate from '../Framework/Template/Loading/ALoadingTemplate'
-import {FreeResultType} from '../Framework/WebResponse/Enum/FreeResultType'
-import {ResultType} from '../Framework/WebResponse/Enum/ResultType'
-import {ResponseType} from '../Framework/WebResponse/Enum/ResponseType'
 import SocketSetting from '../Socket/SocketSetting'
 
 const {ccclass, property} = cc._decorator;
@@ -31,34 +26,10 @@ export default class LoadingController extends ALoadingTemplate {
     private logoImg: cc.Sprite = null;
     @property(cc.Node)
     private loadBG: cc.Node = null;
-
     private progressNum: number
     private loadTextToArray: Array<cc.Label>;
     private isLogoAnimaEnd: boolean
     private _sceneDirectionChangeObserver: SceneDirectionChangeObserver;
-
-    /**
-     * 遊戲整體參數設置
-     */
-    public configSetting() {
-        SlotConfigManager.instance
-            .setAutoCont(AutoType.auto)                         //初始自動次數 AutoType Enum
-            .setAutoState(false)                                //自動開關
-            .setUserBet(0)                                      //初始玩家押注倍率
-            .setSpeedState(false)                               //加速開關
-            .setMusicOnMute(false)                              //是否關閉背景音
-            .setEffectOnMute(false)                             //是否關閉效果音
-            .setGameNumber(84)                                  //遊戲名稱
-            .setMusicVolume(1)                                  //初始背景音量
-            .setEffectVolume(1)                                 //初始音效音量
-            .setLanguage(LanguageType.America)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
-            .setExternallyLoadURL("http://10.10.0.47/games")    //同上
-            .setTableInfo(ResponseType.NOT_LINE)                 //初始化 tableInfo Model
-            .setBetResult(ResultType.NOT_LINE)                    //初始化 Result Model
-            .setFreeResult(FreeResultType.NOT_LINE)               //初始化 FreeResult Model
-            .setFrameWorkDebug(true)                           //強烈要求正式上線時關閉
-            .builder();
-    }
 
     /**
      * 自定義初始
@@ -90,14 +61,13 @@ export default class LoadingController extends ALoadingTemplate {
         if (!this._sceneDirectionChangeObserver) {
             this._sceneDirectionChangeObserver =
                 new SceneDirectionChangeObserver((type) => {
-                    cc.log(type);
                     if (type == SceneDirectionType.LANDSCAPE) {
                         this.loadBG.height = 960;
                         this.loadBG.width = 1560;
                     } else {
                         let newHeight = 1000 / cc.view.getFrameSize().width * cc.view.getFrameSize().height;
                         let newWidth = newHeight / 9 * 16;
-                        cc.log(newHeight,newWidth);
+                        cc.log(newHeight, newWidth);
                         this.loadBG.height = newHeight;
                         this.loadBG.width = newWidth;
                     }
@@ -207,21 +177,18 @@ export default class LoadingController extends ALoadingTemplate {
      * 進入主遊戲按鈕動畫
      */
     private intoMainGameButtonAnimation() {
-
         cc.tween(this.intoMainGameButton.node)
             .repeatForever(
                 cc.tween()
                     .to(1, {y: this.intoMainGameButton.node.y + 15}, {easing: 'bounceIn'})
                     .to(1, {y: this.intoMainGameButton.node.y - 15}, {easing: 'bounceOut'})
             ).start();
-
     }
 
     /**
      * logo進場動畫
      */
     private logoAnimation() {
-
         cc.tween(this.logoImg.node.parent)
             .parallel(
                 cc.tween().to(1.5, {y: 0}, {easing: 'bounceOut'}),

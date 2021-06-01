@@ -5,4 +5,5 @@
  * @Version 1.0
  */
 interface IHasLineTableInfoModule extends ITableInfoModel{
+
 }

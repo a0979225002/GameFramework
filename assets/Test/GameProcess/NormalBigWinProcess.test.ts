@@ -1,19 +1,23 @@
-import {GameState, GameType} from '../../Framework/Process/Enum/GameState'
-import SlotGameManager from '../../Framework/Process/SlotGameManager'
-import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
-import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
-import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
-import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
-import WinLevelController from "../../MainGameScript/Controller/WinLevelController";
-import {socketJS} from '../../Socket/Socket'
+import {GameState, GameType} from '../../script/Framework/Process/Enum/GameState'
+import SlotGameManager from '../../script/Framework/Process/SlotGameManager'
+import SlotStyleManager from '../../script/Framework/Slot/SlotStyleManager'
+import NoLineSlot from '../../script/Framework/Slot/SlotType/NoLineSlot'
+import {ResponseType} from "../../script/Framework/WebResponse/Enum/ResponseType";
+import NoLineResult from "../../script/Framework/WebResponse/Model/NormalResult/NoLineResult";
+import {WebResponseManager} from '../../script/Framework/WebResponse/WebResponseManager'
+import WinLevelController from "../../script/MainGameScript/Controller/WinLevelController";
+import {socketJS} from '../../script/Socket/Socket'
 
-export default class MainGameNormalProcessTest implements ISlotProcedureExecutionContainer {
+export default class NormalBigWinProcessTest implements ISlotProcedureExecutionContainer {
 
     private slotStyle: NoLineSlot;
     private normalResult: NoLineResult;
 
     constructor() {
-        this.normalResult = WebResponseManager.instance.result as NoLineResult;
+        this.normalResult =
+            WebResponseManager
+                .instance<NoLineResult>()
+                .getResult(ResponseType.NORMAL);
     }
 
     private onCreate() {
@@ -23,11 +27,6 @@ export default class MainGameNormalProcessTest implements ISlotProcedureExecutio
     }
 
     public onCustomizeEnd(): Promise<void> {
-
-        if (this.normalResult.FreeSpinCount != 0) {
-            SlotGameManager.instance.gameState = GameState.FREEING;
-        }
-
         return Promise.resolve(undefined);
     }
 
@@ -39,13 +38,6 @@ export default class MainGameNormalProcessTest implements ISlotProcedureExecutio
             socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
             //測試BigWin
             WinLevelController.instance.showWinAboveState(1580, resolve);
-
-            // await FreeOpenController.showFreeOpeningAnimation(20);
-            // cc.log("有來嗎???")
-
-            //測試FreeEnd
-//            await FreeEndController.showFreeEnd(1500000.579,4);
-//            cc.log("我結束?")
         });
     }
 

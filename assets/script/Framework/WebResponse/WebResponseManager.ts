@@ -22,9 +22,9 @@ export class WebResponseManager<T> implements IWebResponseManager<T> {
     }
 
     //單例
-    public static setInstance<T>(configManager: ISlotConfigManager) {
+    public static setInstance(configManager: ISlotConfigManager) {
         if (!this._instance) {
-            this._instance = new WebResponseManager<T>(configManager);
+            this._instance = new WebResponseManager(configManager);
         }
     }
 
@@ -41,6 +41,10 @@ export class WebResponseManager<T> implements IWebResponseManager<T> {
     }
 
     public getResult(type: ResponseType): T {
+        if(!this._handlerToMap.has(type)){
+            ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW,`${type} 該類型 module你尚未創建`);
+            return;
+        }
         return this._handlerToMap.get(type).getResult();
     }
 

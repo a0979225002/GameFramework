@@ -64,13 +64,13 @@ export default class LoadResManager implements ILoadResManager {
         this._initialLoadState = new Map<string, number>();                 //主加載狀態
         this._secondaryLoadState = new Map<string, number>();               //次加載狀態
         this._imgRes = new Map<string, Map<string, cc.SpriteFrame>>();      //圖片
-        this._spineRes = new Map<string, sp.SkeletonData>();   //骨架
+        this._spineRes = new Map<string, sp.SkeletonData>();                //骨架
         this._readFileRes = new Map<string, Map<string, string>>();         //text文件
         this._prefabRes = new Map<string, cc.Prefab>();                     //預載體
         this.callFun = new Map<string, (progress: number) => void>();       //callback方法
         this._musicRes = new Map<string, cc.AudioClip>();                   //音樂
         this._scriptRes = new Set<string>();                                //外部腳本保存URL地址,單存判斷是否重複加載
-        this._sceneRes = new Map<string, cc.SceneAsset>();                   //保存scene場場景資源
+        this._sceneRes = new Map<string, cc.SceneAsset>();                  //保存scene場場景資源
         this.count = 0;                                                     //初始要載入數量
         this.allProgress = 0;                                               //初始加載進度
         this.beforeProgress = 0;                                            //初始上次加載的進度
@@ -177,17 +177,11 @@ export default class LoadResManager implements ILoadResManager {
      * @return {this}
      */
     loadAsset(name: string, type: LoadType, url: string, isLanguageUsed?: boolean): this {
-
         this.count += 1;
-
         if (isLanguageUsed) {
-
             url = `${url}/${WebRequestManager.instance.UserLanguage}`;
-
         }
-
         this.loadTypeHandler.executeLoad(name, type, url);
-
         return this;
     }
 

@@ -1,22 +1,25 @@
-import {GameState, GameType} from "../../Framework/Process/Enum/GameState";
-import SlotGameManager from "../../Framework/Process/SlotGameManager";
-import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
-import {WebResponseManager} from "../../Framework/WebResponse/WebResponseManager";
-import {socketJS} from "../../Socket/Socket";
+import {GameState, GameType} from "../../script/Framework/Process/Enum/GameState";
+import SlotGameManager from "../../script/Framework/Process/SlotGameManager";
+import {ResponseType} from "../../script/Framework/WebResponse/Enum/ResponseType";
+import NoLineResult from "../../script/Framework/WebResponse/Model/NormalResult/NoLineResult";
+import {WebResponseManager} from "../../script/Framework/WebResponse/WebResponseManager";
+import {socketJS} from "../../script/Socket/Socket";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description TODO
+ * @Description (測試)直接跳過所有一般模式,直到server回傳下局是free模式時,更改遊戲流程為正常狀態free流程
  * @Date 2021-05-17 下午 05:00
  * @Version 1.0
  */
 export default class FreeProcessTest implements IGameProcedureExecutionContainer{
 
-    private result :INoLineResultModel;
-
+    private normalResult :INoLineResultModel;
 
     constructor() {
-        this.result = WebResponseManager.instance.result as NoLineResult;
+        this.normalResult =
+            WebResponseManager
+            .instance<NoLineResult>()
+                .getResult(ResponseType.NORMAL);
     }
 
     onCreate(): Promise<void> {
@@ -41,7 +44,7 @@ export default class FreeProcessTest implements IGameProcedureExecutionContainer
 
     onChangeStatus() {
         //如果一般模式中response的免費次數不等於0,進入free狀態
-        if (this.result.FreeSpinCount > 0) {
+        if (this.normalResult.FreeSpinCount > 0) {
             SlotGameManager.instance.gameState = GameState.FREEING;
             SlotGameManager.instance.changeProcess(GameType.FREE);
             return;

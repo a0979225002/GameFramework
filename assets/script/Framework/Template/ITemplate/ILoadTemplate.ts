@@ -1,9 +1,5 @@
 interface ILoadTemplate {
 
-    /**
-     * 初始化當前遊戲
-     */
-    configSetting();
 
     /**
      * 執行個人自定義設定

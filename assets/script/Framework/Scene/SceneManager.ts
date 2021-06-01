@@ -165,7 +165,6 @@ export default class SceneManager implements ISceneManager {
      * @param {string} name : 場景資源名稱為你Res動態加載的自訂義的scene名稱
      */
     changeScene(name: string) {
-
         if (!LoadResManager.instance.sceneRes.has(name)) {
             ErrorManager.instance.executeError(ErrorType.SceneFW, "加載不到你的Scene資源,請檢查該資源名是否正確");
         }

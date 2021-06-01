@@ -1,17 +1,17 @@
+import NoLineResult from "../../script/Framework/WebResponse/Model/NormalResult/NoLineResult";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description TODO
  * @Date 2021-05-31 下午 01:37
  * @Version 1.0
  */
-import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
-
 export default class Test01<T extends ISlotResultModel> {
     private _module: T;
 
     constructor() {
 
-        
+
     }
 
     get module(): T {
