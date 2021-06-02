@@ -9,6 +9,6 @@ interface IExecutionContainer {
     /**
      * 更換流程
      */
-    onChangeStatus();
+    onChangeStatus():void;
 
 }

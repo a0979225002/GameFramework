@@ -9,7 +9,6 @@ export default class EventManager implements IEventManager {
 
     private static _instance: IEventManager;
     private configManager: IConfigManager;
-
     /**
      * 事件總數量
      */
@@ -39,14 +38,19 @@ export default class EventManager implements IEventManager {
 
     }
 
-    //單例
+    /**
+     *  懶漢加載
+     *  初始化,只讓一個專案產生一次該class
+     */
     public static setInstance(configManager: IConfigManager) {
         if (!this._instance) {
             this._instance = new EventManager(configManager);
         }
     }
 
-    //單例
+    /**
+     *  獲取已經初始化的靜態實例class
+     */
     public static get instance(): IEventManager {
 
         if (!this._instance) {

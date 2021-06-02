@@ -9,7 +9,7 @@ export default abstract class AMainGameSettingTemplate extends OverrideComponent
 
         this.setHistoryDetail();
         this.prefabInstantiate();
-        this.gameProcedureSetting();
+        this.gameProcessSetting();
         this.audioSetting();
         this.onCreate();
 
@@ -28,7 +28,7 @@ export default abstract class AMainGameSettingTemplate extends OverrideComponent
     /**
      * 遊戲流程建立
      */
-    protected abstract gameProcedureSetting();
+    protected abstract gameProcessSetting();
 
     /**
      * 音樂初始設定

@@ -74,8 +74,7 @@ export default class SlotGameManager implements ISlotGameManager {
 
 
     /**
-     * 獲取已經單例加載後的實例化class
-     * @returns {ISlotGameManager}
+     *  獲取已經初始化的靜態實例class
      */
     public static get instance(): ISlotGameManager {
         if (!this._instance) {
@@ -90,8 +89,8 @@ export default class SlotGameManager implements ISlotGameManager {
         return this;
     }
 
-    setInitialProcess(process: IProcess) {
-        this.gameProcessFactory.process = process;
+    setInitialProcess(gameType: GameType | string) {
+        this.gameProcessFactory.changeProcess(gameType);
     }
 
     changeProcess(gameType: GameType | string) {

@@ -14,7 +14,7 @@ export default interface IAudioFactory {
      * @param {number} volume : 音量
      * @param {boolean} loop : 是否循環
      */
-    settingMusic(name: string, volume?: number, loop?: boolean);
+    settingMusic(name: string, volume?: number, loop?: boolean):void;
 
     /**
      * 保存該效果音效撥放模式設定
@@ -23,54 +23,54 @@ export default interface IAudioFactory {
      * @param {number} volume : 音量
      * @param {boolean} loop : 是否循環
      */
-    settingEffect(name: string, canSuperimpose?: AudioStateType, volume?: number, loop?: boolean);
+    settingEffect(name: string, canSuperimpose?: AudioStateType, volume?: number, loop?: boolean):void;
 
     /**
      * 撥放背景音樂
      * 如果拿取不到享元撥放資料,將拿取預設資料
      * @param {string} name
      */
-    musicPlay(name: string)
+    musicPlay(name: string):void;
 
     /**
      * 撥放效果音效
      * 如果拿取不到享元撥放資料,將拿取預設資料
      * @param {string} name
      */
-    effectPlay(name: string)
+    effectPlay(name: string):void;
 
     /**
      * 停止背景音樂
      */
-    musicStop()
+    musicStop():void;
 
     /**
      * 暫停背景音樂
      */
-    musicPause()
+    musicPause():void;
 
     /**
      * 停止效果音校
      * @param {string} name
      */
-    effectStop(name: string)
+    effectStop(name: string);
 
     /**
      * 停止所有效果音效
      */
-    effectStopAll()
+    effectStopAll():void;
 
     /**
      * 獲取該音樂撥放模式,如果返回NUll將照原預設
      * @param {string} name
      * @returns {Map<string, string | boolean | number>}
      */
-    getMusicState(name: string)
+    getMusicState(name: string): Map<string, string | AudioStateType | boolean | number> ;
 
     /**
      * 獲取該音效撥放模式,如果返回NUll將照原預設
      * @param {string} name
      * @returns {Map<string, string | boolean | number>}
      */
-    getEffectState(name: string)
+    getEffectState(name: string): Map<string, string | AudioStateType | boolean | number> ;
 }

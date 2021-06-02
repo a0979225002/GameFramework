@@ -9,7 +9,7 @@ export default interface ISlotStyleManager {
      * 添加執行流程的class 需繼承 ISlot
      * @return {this}
      */
-    setSlotTemplate<T extends new(styleData: StyleData) => ASlot>(slotTemplate: T)
+    setSlotTemplate<T extends new(styleData: StyleData) => ASlot>(slotTemplate: T): this;
 
     /**
      * 老虎機顯示答案前的最少轉動次數
@@ -91,5 +91,5 @@ export default interface ISlotStyleManager {
     /**
      * 初始所有操作,並實例化  綁定的 slot Class
      */
-    build()
+    build():void;
 }

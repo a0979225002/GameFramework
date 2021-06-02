@@ -1,5 +1,4 @@
 export enum ServerEventType {
-
     /**
      *  一般獲獎回傳
      */

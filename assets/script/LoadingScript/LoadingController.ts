@@ -80,7 +80,6 @@ export default class LoadingController extends ALoadingTemplate {
      * 載入主資源
      */
     public onLoadResources() {
-
         LoadResManager.instance
             .loadAsset("music", LoadType.music, "music")
             .loadAsset("MainScene", LoadType.scene, null)

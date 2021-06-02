@@ -4,6 +4,7 @@ import UserWinPointStateNotification from "../../Framework/Process/GameNotificat
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
 import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
@@ -17,7 +18,10 @@ export default class MainGameNormalProcess implements ISlotProcedureExecutionCon
     private normalResult: NoLineResult;
 
     constructor() {
-        this.normalResult = WebResponseManager.instance.result as NoLineResult;
+        this.normalResult =
+            WebResponseManager
+                .instance<NoLineResult>()
+                .getResult(ResponseType.NORMAL);
     }
 
     private onCreate() {
@@ -106,5 +110,4 @@ export default class MainGameNormalProcess implements ISlotProcedureExecutionCon
     public onSineOutGrid(): Promise<void> {
         return Promise.resolve(undefined);
     }
-
 }

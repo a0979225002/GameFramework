@@ -11,7 +11,7 @@ interface ISlotProcedureExecutionContainer extends IExecutionContainer{
      * 自訂流程開始時判斷
      * @returns {Promise<void>}
      */
-    onCustomizeStart(): Promise<void>;
+     onCustomizeStart(): Promise<void>;
 
     /**
      * 老虎機開始前漸入執行

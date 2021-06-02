@@ -39,7 +39,7 @@ export default class AudioManager implements IAudioManager {
     }
 
     /**
-     *  獲取已經單例加載後的實例化class
+     *  獲取已經初始化的靜態實例class
      */
     public static get instance(): IAudioManager {
         if (!this._instance) {

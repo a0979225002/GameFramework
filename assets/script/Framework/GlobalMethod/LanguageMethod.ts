@@ -7,7 +7,6 @@
 import {LanguageType} from "../Config/Enum/ConfigEnum";
 import WebRequestManager from "../WebRequest/WebRequestManager";
 
-
 export default class LanguageMethod {
 
     private static _instance: LanguageMethod;
@@ -95,6 +94,4 @@ export default class LanguageMethod {
         label.lineHeight = this.lang_LabelSetting[language].lineHeight;
         return this;
     }
-
-
 }

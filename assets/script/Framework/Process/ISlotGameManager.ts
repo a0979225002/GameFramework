@@ -70,13 +70,13 @@ export default interface ISlotGameManager {
      * 更換流程
      * @param {GameType} gameType
      */
-    changeProcess(gameType: GameType | string);
+    changeProcess(gameType: GameType | string):void;
 
     /**
      * 設定初始流程
-     * @param {IProcess} process
+     * @param processName
      */
-    setInitialProcess(process: IProcess);
+    setInitialProcess(processName: string | GameType):void;
 
 
     /**
@@ -145,6 +145,6 @@ export default interface ISlotGameManager {
      * 清除堵塞狀態
      * 注意:清除該狀態後,該次的流程即使尚未執行完,也能執行下次流程
      */
-    remake();
+    remake():void;
 
 }

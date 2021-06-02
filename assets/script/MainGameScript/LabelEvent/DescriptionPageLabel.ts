@@ -1,7 +1,9 @@
 import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
 import LoadResManager from '../../Framework/LoadResources/LoadResManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
-import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
+import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
+import {WebResponseManager} from "../../Framework/WebResponse/WebResponseManager";
 import SocketSetting from '../../Socket/SocketSetting'
 
 const {ccclass, property} = cc._decorator;
@@ -74,11 +76,16 @@ export default class DescriptionPageLabel extends AGenericTemplate {
 
     private gridImg: Map<string, cc.SpriteFrame>;
     private payTable: Map<number, Map<number, number>>;
+    protected tableInfo: NoLineTableInfo;
 
     protected onCreate() {
-        this.gridImg = LoadResManager.instance.imgRes.get("gridImg");
-        this.payTable = WebResponseManager.instance.tableInfo.PayTable;
+        this.tableInfo =
+            WebResponseManager
+                .instance<NoLineTableInfo>()
+                .getResult(ResponseType.TABLE_INFO);
 
+        this.gridImg = LoadResManager.instance.imgRes.get("gridImg");
+        this.payTable = this.tableInfo.PayTable;
         this.initializePage1();
         this.initializePage2();
         this.initializePage3();
@@ -115,7 +122,6 @@ export default class DescriptionPageLabel extends AGenericTemplate {
     }
 
     private updatePage2GridPoint() {
-
         let start = this.page2GridIconPointH.length - 1;
         let gridIndex = 0;
         for (let i = start; i >= 0; i--) {
@@ -123,10 +129,8 @@ export default class DescriptionPageLabel extends AGenericTemplate {
             let pointsToValues = Object.values(points);
             let nodeIndex = 2;
             for (let point of pointsToValues) {
-
                 this.page2GridIconPointH[gridIndex]
                     .children[nodeIndex].getComponent(cc.Label).string = point;
-
                 this.page2GridIconPointV[gridIndex]
                     .children[nodeIndex].getComponent(cc.Label).string = point;
                 nodeIndex--;

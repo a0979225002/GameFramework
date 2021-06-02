@@ -2,9 +2,11 @@ import {Music, Effect} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
+import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
-import Button = cc.Button;
+
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,10 +22,15 @@ export default class FreeOpenController extends AGenericTemplate {
     private resolve: (value: (PromiseLike<void> | void)) => void
     private timer: number;
     private CLOSING : boolean;
+    private freeResult:NoLineFreeResult;
     public static instance: FreeOpenController;
 
     public onCreate() {
         FreeOpenController.instance = this;
+        this.freeResult =
+            WebResponseManager
+                .instance<NoLineFreeResult>()
+                .getResult(ResponseType.FREE);
         this.initialFreeOpen();
     }
 
@@ -64,7 +71,7 @@ export default class FreeOpenController extends AGenericTemplate {
         } else {
             this.timer = 10;
         }
-        if (WebResponseManager.instance.freeResult.FreeToFree != 0) {
+        if (this.freeResult.FreeToFree != 0) {
             this.timer = 1;
         }
         this.schedule(this.addCountTimer, 0.016 * 5);

@@ -8,11 +8,12 @@ import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotific
 import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/MenuButton/AMenuDoubleButtonTemplate'
 import WebRequestManager from '../../Framework/WebRequest/WebRequestManager'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
+import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from './MainGameButton'
 import RecordPageButton from "./RecordPageButton";
-
 const {ccclass, property} = cc._decorator;
 
 enum UserNowPage {
@@ -146,15 +147,18 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
     private lineBetMoneyLabelV: cc.Label = null;
     @property(cc.SpriteFrame)
     private icon: cc.SpriteFrame[] = [];
-
+    protected tableInfo: NoLineTableInfo;
     private autoIcon: { LONG_OPEN: cc.SpriteFrame; LONG_CLOSE: cc.SpriteFrame; SHORT_OPEN: cc.SpriteFrame; SHORT_CLOSE: cc.SpriteFrame }
     private color: { WHITE: cc.Color; PALE_GREY: cc.Color; COAL_BLACK: cc.Color; BLACK: cc.Color; YELLOW: cc.Color; GREY: cc.Color; BROWN: cc.Color }
     private nowPage: UserNowPage;
     public static instance: MenuPageButton;
 
     protected onCreate() {
-
         MenuPageButton.instance = this;
+        this.tableInfo =
+            WebResponseManager
+                .instance<NoLineTableInfo>()
+                .getResult(ResponseType.TABLE_INFO);
 
         this.color = {                                                     //menu頁面需用到的顏色
             YELLOW: cc.color().fromHEX("#FFC000"),
@@ -263,14 +267,14 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
 
         //更新當前押注倍率
         this.lineBetLabelH.string =
-            String(WebResponseManager.instance.tableInfo.LineBet[betIndex]);
+            String(this.tableInfo.LineBet[betIndex]);
         this.lineBetLabelV.string =
-            String(WebResponseManager.instance.tableInfo.LineBet[betIndex]);
+            String(this.tableInfo.LineBet[betIndex]);
         //更新當前押注總金額
         this.lineBetMoneyLabelH.string =
-            String(WebResponseManager.instance.tableInfo.LineTotalBet[betIndex]);
+            String(this.tableInfo.LineTotalBet[betIndex]);
         this.lineBetMoneyLabelV.string =
-            String(WebResponseManager.instance.tableInfo.LineTotalBet[betIndex]);
+            String(this.tableInfo.LineTotalBet[betIndex]);
 
     }
 
@@ -590,8 +594,8 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      */
     protected totalBetChangeEvent(beforeIndex, afterIndex) {
 
-        let lineBetValue = String(WebResponseManager.instance.tableInfo.LineBet[afterIndex]);
-        let lineTotalBetValue = String(WebResponseManager.instance.tableInfo.LineTotalBet[afterIndex]);
+        let lineBetValue = String(this.tableInfo.LineBet[afterIndex]);
+        let lineTotalBetValue = String(this.tableInfo.LineTotalBet[afterIndex]);
         this.lineBetLabelH.string = lineBetValue;
         this.lineBetLabelV.string = lineBetValue;
         this.lineBetMoneyLabelH.string = lineTotalBetValue;

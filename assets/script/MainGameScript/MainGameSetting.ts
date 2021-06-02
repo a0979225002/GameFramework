@@ -1,3 +1,5 @@
+import FreeProcessTest from "../../Test/GameProcess/FreeProcessTest";
+import NormalBigWinProcessTest from "../../Test/GameProcess/NormalBigWinProcess.test";
 import AudioManager from '../Framework/Audio/AudioManager'
 import {AudioStateType} from "../Framework/Audio/Enum/AudioStateType";
 import LoadResManager from '../Framework/LoadResources/LoadResManager'
@@ -11,8 +13,6 @@ import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotificati
 import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import AMainGameSettingTemplate from '../Framework/Template/Setting/AMainGameSettingTemplate'
 import SocketSetting from "../Socket/SocketSetting";
-import FreeProcessTest from "../../Test/GameProcess/FreeProcessTest";
-import NormalBigWinProcessTest from "../../Test/GameProcess/NormalBigWinProcess.test";
 import MainGameFreeProcess from './GameProcess/MainGameFreeProcess'
 import MainGameNormalProcess from "./GameProcess/MainGameNormalProcess";
 import NoSleep = require('../Socket/NoSleep');
@@ -46,12 +46,15 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * 初始,重新更新 scene適配
      */
     protected onCreate() {
+        //註冊scene樣式更新推播事件
+        SceneDirectionChangeNotification
+            .instance
+            .subscribe(this.getSceneDirectionObserver(), true);
+        //重新更新scene方向,scene跳轉會造成需重新式配size問題
+        //重新更新mainScene的長寬是配
+        SceneManager.instance.updateSize(SceneStyle.AUTO);
         //第一次加載,需先自行更新一次
         this.updateSceneDirection(SceneManager.instance.sceneDirection);
-        //註冊scene樣式更新推波事件
-        SceneDirectionChangeNotification.instance.subscribe(this.sceneDirectionObserverListener(), true);
-        //重新更新scene方向,scene跳轉會造成需重新式配size問題
-        SceneManager.instance.updateSize(SceneStyle.AUTO);//重新更新mainScene的長寬是配
         //將dialog節點放置在最後一個位置
         this.loadingDialog.setSiblingIndex(99);
         this.useNoSleep();
@@ -111,7 +114,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
     /**
      * 直橫向監聽器
      */
-    private sceneDirectionObserverListener(): SceneDirectionChangeObserver {
+    private getSceneDirectionObserver(): SceneDirectionChangeObserver {
         return new SceneDirectionChangeObserver((type) => {
             this.updateSceneDirection(type);
         }, this);
@@ -124,7 +127,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * @private
      */
     private updateSceneDirection(sceneType: SceneDirectionType) {
-
         if (sceneType == SceneDirectionType.LANDSCAPE) {
             this.labelInformationH.active = true;
             this.allButtonH.active = true;
@@ -150,7 +152,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * 可否循環:否
      */
     protected audioSetting() {
-
         AudioManager.instance
             .settingMusic("NBS", 0.6, true)
             .settingMusic("FBS", 0.6, true)
@@ -161,19 +162,9 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
 
     /**
      * 綁定要使用的流程Class
-     * 使用方式:需自行繼承 抽象類 ExecutionContainer;
+     * 使用方式:需自行繼承 介面 IExecutionContainer;
      */
-    protected gameProcedureSetting() {
-        let freeContainer = new MainGameFreeProcess();
-        let freeProcess = new SlotGameProcess(freeContainer);
-        const freeP = freeProcess
-            .onCustomizeStart()
-            .onSineInGrid()
-            .onRunning()
-            .onShowAnswer()
-            .onCustomizeEnd()
-            .onChangeStatus();
-
+    protected gameProcessSetting() {
         let normalContainer = new MainGameNormalProcess();
         let normalProcess = new SlotGameProcess(normalContainer);
         const normalP = normalProcess
@@ -184,13 +175,23 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
             .onCustomizeEnd()
             .onChangeStatus();
 
+        let freeContainer = new MainGameFreeProcess();
+        let freeProcess = new SlotGameProcess(freeContainer);
+        const freeP = freeProcess
+            .onCustomizeStart()
+            .onSineInGrid()
+            .onRunning()
+            .onShowAnswer()
+            .onCustomizeEnd()
+            .onChangeStatus();
+
         SlotGameManager.instance
             .setProcess(GameType.FREE, freeP)
             .setProcess(GameType.NORMAL, normalP)
-            .setProcess(GameType.NORMAL, this.getTestProcess())
+            // .setProcess(GameType.NORMAL, this.getTestProcess())
             // .setProcess("Test2", this.getTestProcess2())
             // .setInitialProcess(normalP);
-            .setInitialProcess(this.getTestProcess());
+            .setInitialProcess(GameType.NORMAL);
         // .setInitialProcess(this.getTestProcess2());
     }
 
@@ -200,7 +201,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * @private
      */
     private getTestProcess(): GameProcess {
-
         // setTimeout(() => {
         //     cc.log("UserMoneyChangeNotification", UserMoneyChangeNotification.instance.getAllSubscribe());
         //     cc.log("UserTotalBetChangeNotification", UserTotalBetChangeNotification.instance.getAllSubscribe());
@@ -210,7 +210,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         //     cc.log("ScrollFocusStateNotification", ScrollFocusStateNotification.instance.getAllSubscribe());
         //     cc.log("StopNowStateNotification", StopNowStateNotification.instance.getAllSubscribe());
         // }, 1000)
-
         let testContainer = new FreeProcessTest();
         let testProcess = new GameProcess(testContainer);
         return testProcess
@@ -219,7 +218,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
             .onEnd()
             .onChangeStatus();
     }
-
     /**
      * 測試:
      * @returns {SlotGameProcess}

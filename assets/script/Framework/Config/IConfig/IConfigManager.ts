@@ -136,6 +136,6 @@ export interface IConfigManager {
     /**
      * 實例化所有Manager class;
      */
-    builder();
+    builder():void;
 
 }

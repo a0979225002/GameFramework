@@ -11,6 +11,9 @@ import UserTotalBetChangeObserver from "../../Framework/Process/GameObserver/Use
 import UserWinPointStateObserver from "../../Framework/Process/GameObserver/UserWinPointStateObserver";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
+import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
+import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
 
@@ -57,13 +60,21 @@ export default class MainGameLabel extends AGenericTemplate {
     private freeTitle: cc.Node = null;
     @property(cc.Label)
     private freeCount: cc.Label = null;
-    private tableInfo: ITableInfoModel;
+    private tableInfo: NoLineTableInfo;
+    private freeResult:NoLineFreeResult;
     public static instance: MainGameLabel;
+
 
     protected onCreate() {
         MainGameLabel.instance = this;
-        this.tableInfo = WebResponseManager.instance.tableInfo;
-
+        this.tableInfo =
+            WebResponseManager
+                .instance<NoLineTableInfo>()
+                .getResult(ResponseType.TABLE_INFO);
+        this.freeResult =
+            WebResponseManager
+                .instance<NoLineFreeResult>()
+                .getResult(ResponseType.FREE);
         //初始free標題
         this.freeCount.string = "";
         this.freeTitle.active = false;
@@ -148,7 +159,6 @@ export default class MainGameLabel extends AGenericTemplate {
     }
 
     private userTotalBetLabelAnimation(node: cc.Node): void {
-
         cc.tween(node)
             .to(0.3, {scale: 0})
             .to(0.4, {scale: 1}, {easing: "bounceOut"})
@@ -162,7 +172,7 @@ export default class MainGameLabel extends AGenericTemplate {
             this.winPointLabelV.string = String(numberFormat);
             this.winPointLabelH.string = String(numberFormat);
             if (SlotGameManager.instance.gameState == GameState.FREEING && level == 0) {
-                winPoint = WebResponseManager.instance.freeResult.TotalWinPoint;
+                winPoint = this.freeResult.TotalWinPoint;
                 this.winEvent(winPoint);
                 return;
             }
@@ -203,7 +213,6 @@ export default class MainGameLabel extends AGenericTemplate {
 
     public closeFreeTitle() {
         this.freeCount.string = "";
-
         if (this.freeTitle.active) {
             this.freeTitle.active = false;
         }

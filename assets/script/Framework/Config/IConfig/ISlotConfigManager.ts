@@ -4,9 +4,6 @@
  * @Date 2021-05-17 上午 11:41
  * @Version 1.0
  */
-import {FreeResultType} from "../../WebResponse/Enum/FreeResultType";
-import {ResultType} from "../../WebResponse/Enum/ResultType";
-import {ResponseType} from "../../WebResponse/Enum/ResponseType";
 import {AutoType} from "../Enum/ConfigEnum";
 import {IConfigManager} from "./IConfigManager";
 
@@ -48,26 +45,6 @@ export interface ISlotConfigManager extends IConfigManager {
     userBet: UserBetPoint;
 
     /**
-     * server回傳的TableInfoType類型,做綁定 model用
-     * @type {ResponseType}
-     * @private
-     */
-    tableInfoType: ResponseType;
-
-    /**
-     * server回傳的ResultType類型,做綁定 model用
-     * @type {FreeResultType}
-     * @private
-     */
-    resultType: ResultType;
-
-    /**
-     * server回傳的FreeResultType類型,做綁定 model用
-     * @type {FreeResultType}
-     * @private
-     */
-    freeResultType: FreeResultType;
-    /**
      * 初始遊戲最初的auto次數
      * @param {AutoType} type
      * @returns {this}
@@ -96,25 +73,4 @@ export interface ISlotConfigManager extends IConfigManager {
      * @returns {this}
      */
     setSpeedState(isSpeedUp: boolean): this;
-
-    /**
-     * server回傳的TableInfoType類型,做綁定 model用
-     * @param {ResponseType} tableInfoType
-     * @returns {this}
-     */
-    setTableInfo(tableInfoType: ResponseType);
-
-    /**
-     * server回傳的ResultType類型,做綁定 model用
-     * @param {ResultType} resultType
-     * @returns {this}
-     */
-    setBetResult(resultType: ResultType);
-
-    /**
-     * server回傳的FreeResultType類型,做綁定 model用
-     * @param {FreeResultType} freeType
-     * @returns {this}
-     */
-    setFreeResult(freeType: FreeResultType);
 }

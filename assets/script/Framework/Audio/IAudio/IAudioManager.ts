@@ -47,35 +47,35 @@ export  default interface IAudioManager {
      * 若無參數設定撥放模式,依照默認參數撥放
      * @param {string} name : 音樂檔名
      */
-    musicPlay(name: string);
+    musicPlay(name: string):void;
 
     /**
      * 撥放音效,將會依照當初設定的參數進行播放
      * 若無參數設定撥放模式,依照默認參數撥放
      * @param {string} name : 音效檔名
      */
-    effectPlay(name: string);
+    effectPlay(name: string):void;
 
     /**
      * 停止音樂
      */
-    musicStop();
+    musicStop():void;
 
     /**
      * 暫停音樂
      */
-    musicPause();
+    musicPause():void;
 
     /**
      * 停止音效
      * @param {string} name : 音效檔名
      */
-    effectStop(name: string);
+    effectStop(name: string):void;
 
     /**
      * 停止所有音效
      */
-    effectStopAll();
+    effectStopAll():void;
 
     /**
      * 獲取撥放的狀態

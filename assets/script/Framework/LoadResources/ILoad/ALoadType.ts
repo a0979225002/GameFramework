@@ -87,6 +87,6 @@ export default abstract class ALoadType implements ILoadType {
         }
     }
 
-    protected abstract setResToManager(dataName: string, asset: any);
+    protected abstract setResToManager(dataName: string, asset: any):void;
 
 }

@@ -3,8 +3,10 @@ import {GameState} from '../../Framework/Process/Enum/GameState'
 import UserMoneyChangeNotification from "../../Framework/Process/GameNotification/UserMoneyChangeNotification";
 import UserWinPointStateNotification from "../../Framework/Process/GameNotification/UserWinPointStateNotification";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
 import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
 import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
+import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
 
@@ -36,20 +38,30 @@ export default class WinLevelController extends cc.Component {
     private isBigWinOpen: boolean;
     private isSuperWinOpen: boolean;
     private isMegaWinOpen: boolean;
-
     private levelWinPoint: number
-    public static instance: WinLevelController;
     private normalResult: NoLineResult;
     private freeResult: NoLineFreeResult;
+    private tableInfo: NoLineTableInfo;
     private resolve: (value: (PromiseLike<void> | void)) => void;
+    public static instance: WinLevelController;
 
     protected onLoad() {
         WinLevelController.instance = this;
-        this.normalResult = WebResponseManager.instance.result as NoLineResult;         //強制轉型為NoLineResult data
-        this.freeResult = WebResponseManager.instance.freeResult as NoLineFreeResult;   //強制轉型為NoLineFreeResult data
+        this.normalResult =                                                            //拿取該遊戲一般狀態model
+            WebResponseManager
+                .instance<NoLineResult>()
+                .getResult(ResponseType.NORMAL);
+        this.freeResult =                                                              //拿取該遊戲免費狀態model
+            WebResponseManager
+                .instance<NoLineFreeResult>()
+                .getResult(ResponseType.FREE);
+        this.tableInfo =                                                                //拿取該遊戲基本資料model
+            WebResponseManager
+                .instance<NoLineTableInfo>()
+                .getResult(ResponseType.TABLE_INFO);
         this.node.active = false;                                                       //初始押注prefab組件為隱藏
         this.winPointLabel.string = "";                                                 //初始押注分數 label 為空
-        this.winLevelRange = WebResponseManager.instance.tableInfo.LevelWinPoint;       //遊戲前三個等級的押注倍率
+        this.winLevelRange = this.tableInfo.LevelWinPoint;                              //遊戲前三個等級的押注倍率
         this.winLevelRange.push(60, 70);                                                //額外新增押注倍率
         this.totalPoint = new Array<number>();
         this.spineData = {                                                              //贏分,spine動畫
@@ -69,7 +81,7 @@ export default class WinLevelController extends cc.Component {
     initializeSpine() {
         this.resolve = null;
         //當前獲獎分數
-        this.userNowBet = WebResponseManager.instance.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet];
+        this.userNowBet = this.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet];
         this.startNum = 0;                      //當前開始跑分的初始分數
         this.pointSplitIndex = 0;               //當前尋訪第幾個Level
         this.isNumberRun = false;               //當前是否能開始跑分
@@ -125,13 +137,13 @@ export default class WinLevelController extends cc.Component {
     }
 
     @Loading("prefab")
-    public showWinAboveState(point: number, resolve:  (value: (PromiseLike<void> | void)) => void) {
+    public showWinAboveState(point: number, resolve: (value: (PromiseLike<void> | void)) => void) {
         this.initializeSpine();
         this.totalPointSplit(point);
         this.point = point;
         this.scheduleOnce(() => {
             this.runTotalWinPoint();
-            this.node.once(cc.Node.EventType.TOUCH_END, this.runPointTouchEnd,this);
+            this.node.once(cc.Node.EventType.TOUCH_END, this.runPointTouchEnd, this);
             cc.systemEvent.once(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardEvent, this);
         }, 0.5);
         this.resolve = resolve;
@@ -161,7 +173,6 @@ export default class WinLevelController extends cc.Component {
      * @private
      */
     private checkTimer(pointSplitIndex: number): number {
-
         let time;
         switch (pointSplitIndex) {
             case 0 :
@@ -190,7 +201,6 @@ export default class WinLevelController extends cc.Component {
 
     @Music("bigWin3")
     private showBigWin() {
-
         this.isBigWinOpen = true;
         this.winSpine.setAnimation(0, this.spineData.BIG_WIN_OPEN, false);
         this.winSpine.addAnimation(0, this.spineData.BIG_WIN_LOOP, true);
@@ -198,7 +208,6 @@ export default class WinLevelController extends cc.Component {
         this.winSpineBorder.addAnimation(0, this.spineData.WIN_BORDER_LOOP, true);
         this.winLevel[1].active = false;
         this.winLevel[2].active = false;
-
     }
 
     private showSuperWin() {
@@ -207,18 +216,15 @@ export default class WinLevelController extends cc.Component {
         this.winSpine.setAnimation(0, this.spineData.SUPER_WIN_OPEN, false);
         this.winSpine.addAnimation(0, this.spineData.SUPER_WIN_LOOP, true);
         this.winLevel[1].active = true;
-
     }
 
     private showMegaWin() {
-
         this.isBigWinOpen = false;
         this.isSuperWinOpen = false;
         this.isMegaWinOpen = true;
         this.winSpine.setAnimation(0, this.spineData.MEGA_WIN_OPEN, false);
         this.winSpine.addAnimation(0, this.spineData.MEGA_WIN_LOOP, true);
         this.winLevel[2].active = true;
-
     }
 
     /**
@@ -227,7 +233,7 @@ export default class WinLevelController extends cc.Component {
      */
     userMoneyEventEmit(point) {
         if (SlotGameManager.instance.gameState === GameState.PLAYING) {
-            let level = WebResponseManager.instance.freeResult.BaseLevelWin
+            let level = this.freeResult.BaseLevelWin
             UserWinPointStateNotification.instance.notify(point, level);
         } else if (SlotGameManager.instance.gameState == GameState.FREEING) {
             let point = this.freeResult.FreeSpinWin;
@@ -235,10 +241,9 @@ export default class WinLevelController extends cc.Component {
             UserWinPointStateNotification.instance.notify(point, level);
         }
         if (SlotGameManager.instance.gameState != GameState.FREEING) {
-            UserMoneyChangeNotification.instance.notify(WebResponseManager.instance.result.UserPointAfter);
+            UserMoneyChangeNotification.instance.notify(this.normalResult.UserPointAfter);
         }
     }
-
     /**
      * 分數跑完時
      * @param {number} totalPoint
@@ -246,11 +251,9 @@ export default class WinLevelController extends cc.Component {
     @Music("bigWinEnd")
     @EffectStop("runPoint")
     updateWinPointEnd(totalPoint: number) {
-
         this.winPointLabel.string = new Intl.NumberFormat().format(totalPoint);
         this.userMoneyEventEmit(totalPoint);
         this.isNumberRun = false;
-
         //時間到後初始所有參數
         this.scheduleOnce(() => {
             this.winPointLabel.string = "";
@@ -268,7 +271,6 @@ export default class WinLevelController extends cc.Component {
     }
 
     protected update(dt: number) {
-
         if (this.isNumberRun) {
             let totalPoint = this.point;
             let time = this.checkTimer(this.pointSplitIndex);

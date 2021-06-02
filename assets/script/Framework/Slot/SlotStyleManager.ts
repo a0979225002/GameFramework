@@ -47,14 +47,19 @@ export default class SlotStyleManager implements ISlotStyleManager {
 
         };
     }
-    //單例
+    /**
+     *  懶漢加載
+     *  初始化,只讓一個專案產生一次該class
+     */
     public static setInstance(configManager: IConfigManager) {
         if (!this._instance) {
             this._instance = new SlotStyleManager(configManager);
         }
     }
 
-    //單例
+    /**
+     *  獲取已經初始化的靜態實例class
+     */
     public static get instance(): ISlotStyleManager {
         if (!this._instance) {
             ErrorManager.instance.executeError(ErrorType.SlotStyleFW, "該類尚未實例化");

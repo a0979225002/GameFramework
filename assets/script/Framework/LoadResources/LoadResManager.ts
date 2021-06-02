@@ -78,7 +78,10 @@ export default class LoadResManager implements ILoadResManager {
     }
 
 
-    //單例
+    /**
+     *  懶漢加載
+     *  初始化,只讓一個專案產生一次該class
+     */
     public static setInstance(configManager: IConfigManager) {
         if (!this._instance) {
             this._instance = new LoadResManager(configManager);
@@ -86,7 +89,9 @@ export default class LoadResManager implements ILoadResManager {
     }
 
 
-    //初始化,只讓一個專案只有一次產生此class
+    /**
+     *  獲取已經初始化的靜態實例class
+     */
     public static get instance(): ILoadResManager {
         if (!this._instance) {
             ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "該類尚未實例化");

@@ -55,7 +55,7 @@ export default interface ILoadResManager {
      * @param progress 又加載了多少
      * @param state 該物件加載到幾趴
      */
-    loadMainEventCallback(name: string, progress:number, state:number);
+    loadMainEventCallback(name: string, progress:number, state:number):void;
 
     /**
      * 次資源加載物件,監聽是否有callback,隨之返回該狀態
@@ -63,7 +63,7 @@ export default interface ILoadResManager {
      * @param {string} name
      * @param {number} state
      */
-    loadSecondaryEventCallback(name: string, state: number);
+    loadSecondaryEventCallback(name: string, state: number):void;
 
     /**
      * 加載該資料夾底下所有資源
@@ -73,7 +73,7 @@ export default interface ILoadResManager {
      * @param url
      * @param isLanguageUsed
      */
-    loadAsset(name : string,type : LoadType , url : string,isLanguageUsed?:boolean);
+    loadAsset(name : string,type : LoadType , url : string,isLanguageUsed?:boolean):void;
 
 
     /**
@@ -84,14 +84,14 @@ export default interface ILoadResManager {
      * @param type
      * @param url
      */
-    loadBundle(name: string, type: LoadType, url: string);
+    loadBundle(name: string, type: LoadType, url: string):void;
 
     /**
      * 保存使用者要callback的方法,當有回傳進度時將透過 loadEventCallback方法回傳進度
      * @param callFun
      * @param methodName
      */
-    callback(callFun: (progress:number)=> void,methodName?: string);
+    callback(callFun: (progress:number)=> void,methodName?: string):void;
 
     /**
      * 載入外部腳本
@@ -99,7 +99,7 @@ export default interface ILoadResManager {
      * @param {LoadType} type
      * @param {string} url
      */
-    loadExternalScript(name: string, type: LoadType, url: string);
+    loadExternalScript(name: string, type: LoadType, url: string):void;
 
     /**
      * 查看該資源是否已加載完畢
@@ -111,6 +111,6 @@ export default interface ILoadResManager {
     /**
      * 重置
      */
-    reset();
+    reset():void;
 
 }

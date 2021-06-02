@@ -21,13 +21,19 @@ export class WebResponseManager<T> implements IWebResponseManager<T> {
         this._handlerToMap = new Map<ResponseType, IResponseHandler<T>>();
     }
 
-    //單例
+    /**
+     *  懶漢加載
+     *  初始化,只讓一個專案產生一次該class
+     */
     public static setInstance(configManager: ISlotConfigManager) {
         if (!this._instance) {
             this._instance = new WebResponseManager(configManager);
         }
     }
 
+    /**
+     *  獲取已經初始化的靜態實例class
+     */
     public static instance<T>(): IWebResponseManager<T> {
         if (!this._instance) {
             ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, "該類尚未實例化");

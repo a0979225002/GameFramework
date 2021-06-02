@@ -8,7 +8,7 @@ export default interface ILoadFactory {
      * @param type
      * @param url
      */
-    executeLoad(name: string, type: LoadType, url: string);
+    executeLoad(name: string, type: LoadType, url: string):void;
 
 
     /**
@@ -17,7 +17,7 @@ export default interface ILoadFactory {
      * @param type
      * @param url
      */
-    executeLoadBundle(name: string, type: LoadType, url: string);
+    executeLoadBundle(name: string, type: LoadType, url: string):void;
 
     /**
      * 加載外部腳本
@@ -25,6 +25,6 @@ export default interface ILoadFactory {
      * @param type
      * @param url
      */
-    executeLoadExternalScript(name: string, type: LoadType, url: string);
+    executeLoadExternalScript(name: string, type: LoadType, url: string):void;
 
 }

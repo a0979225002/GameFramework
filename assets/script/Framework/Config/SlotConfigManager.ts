@@ -6,9 +6,6 @@ import SlotGameManager from '../Process/SlotGameManager'
 import SceneManager from '../Scene/SceneManager'
 import SlotStyleManager from '../Slot/SlotStyleManager'
 import WebRequestManager from '../WebRequest/WebRequestManager'
-import {FreeResultType} from '../WebResponse/Enum/FreeResultType'
-import {ResultType} from '../WebResponse/Enum/ResultType'
-import {ResponseType} from '../WebResponse/Enum/ResponseType';
 import {WebResponseManager} from '../WebResponse/WebResponseManager'
 import {AutoType, LanguageType} from "./Enum/ConfigEnum";
 import {ISlotConfigManager, UserBetPoint} from "./IConfig/ISlotConfigManager";
@@ -100,28 +97,6 @@ export default class SlotConfigManager implements ISlotConfigManager {
      * @private
      */
     private _language: LanguageType;
-
-    /**
-     * server回傳的TableInfoType類型,做綁定 model用
-     * @type {ResponseType}
-     * @private
-     */
-    private _tableInfoType: ResponseType
-
-    /**
-     * server回傳的ResultType類型,做綁定 model用
-     * @type {FreeResultType}
-     * @private
-     */
-    private _resultType: ResultType
-
-    /**
-     * server回傳的FreeResultType類型,做綁定 model用
-     * @type {FreeResultType}
-     * @private
-     */
-    private _freeResultType: FreeResultType
-
     /**
      * 返回首頁URL
      */
@@ -299,36 +274,6 @@ export default class SlotConfigManager implements ISlotConfigManager {
     }
 
     /**
-     * server回傳的TableInfoType類型,做綁定 model用
-     * @param {ResponseType} tableInfoType
-     * @returns {this}
-     */
-    public setTableInfo(tableInfoType: ResponseType): this {
-        this._tableInfoType = tableInfoType;
-        return this
-    }
-
-    /**
-     * server回傳的ResultType類型,做綁定 model用
-     * @param {ResultType} resultType
-     * @returns {this}
-     */
-    public setBetResult(resultType: ResultType): this {
-        this._resultType = resultType;
-        return this;
-    }
-
-    /**
-     * server回傳的FreeResultType類型,做綁定 model用
-     * @param {FreeResultType} freeType
-     * @returns {this}
-     */
-    public setFreeResult(freeType: FreeResultType): this {
-        this._freeResultType = freeType;
-        return this
-    }
-
-    /**
      * 是否要開啟Framework Debug模式
      * 注意:遊戲正式上線須關閉
      * @param {boolean} use
@@ -409,18 +354,6 @@ export default class SlotConfigManager implements ISlotConfigManager {
 
     get isMusicOnMute(): boolean {
         return this._isMusicOnMute;
-    }
-
-    get tableInfoType(): ResponseType {
-        return this._tableInfoType;
-    }
-
-    get freeResultType(): FreeResultType {
-        return this._freeResultType;
-    }
-
-    get resultType(): ResultType {
-        return this._resultType;
     }
 
     get backHomeURL(): string {

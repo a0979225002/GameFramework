@@ -5,23 +5,19 @@
  * @Version 1.0
  */
 export default class SlotGameProcess implements ISlotGameProcess {
-
     /**
      * 保存使用者流程
      * @type {Set<Function>}
      * @private
      */
     private readonly process: Set<() => Promise<void>>;
-
     /**
      * 流程執行
      * @type {ISlotProcedureExecutionContainer}
      * @private
      */
     private readonly _executionContainer: ISlotProcedureExecutionContainer;
-
-    constructor(container: IExecutionContainer) {
-
+    constructor(container: ISlotProcedureExecutionContainer) {
         this._executionContainer = container as ISlotProcedureExecutionContainer;
         this.process = new Set();              //初始化,存放要執行的方法
     }

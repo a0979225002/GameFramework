@@ -80,7 +80,6 @@ export default abstract class ALoadingTemplate extends OverrideComponent impleme
         this.loadAssetBundle();             //次資源
         this.updateProgressText();          //更新讀取條文字
     }
-
     /**
      * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
      */

@@ -1,13 +1,12 @@
 export default class ButtonMethod {
 
     /**
-     * //TITLE:對該button添加監聽事件
-     * @param self
-     * @param {cc.Button} buttonNode
-     * @param {String : 對事件添加function,名稱是字串} methodName
-     * @param {string : 回調參數} customEventData
+     * 對該button添加監聽事件
+     * @param {cc.Button} buttonNode : 按鈕組件
+     * @param {string} methodName : 事件方法名稱
+     * @param self{this} : 在哪裡開啟監聽的
+     * @param customEventData{any} : 回傳值
      */
-
     static addButtonEvent(buttonNode: cc.Button, methodName: string, self: any, customEventData?: any) {
         //手動添加監聽事件
 

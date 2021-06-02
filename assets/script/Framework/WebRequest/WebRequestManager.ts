@@ -60,12 +60,16 @@ export default class WebRequestManager implements IWebRequestManager {
         // this.whereRoom = whereRoom;
     }
 
+    /**
+     *  懶漢加載
+     *  初始化,只讓一個專案產生一次該class
+     */
     public static setInstance(configManager:IConfigManager){
         //TODO
     }
 
     /**
-     * 單例模式,一個遊戲開始到結束,只有一個ServerManager
+     *  獲取已經初始化的靜態實例class
      */
     public static get instance(): IWebRequestManager {
         if (!this._instance) {

@@ -19,7 +19,7 @@ export default interface IEventManager {
      * @param {string} eventName
      * @param {any} any : 要回傳的物件
      */
-    setEvent(eventTarget: cc.EventTarget, eventName: ServerEventType | GameEventType, ...any: any)
+    setEvent(eventTarget: cc.EventTarget, eventName: ServerEventType | GameEventType, ...any: any):void;
 
     /**
      * game接收監聽事件
@@ -27,7 +27,7 @@ export default interface IEventManager {
      * @param {Function} callFun
      * @param {boolean} isOnce : 是否使用一次性監聽
      */
-    gameEventListener(eventName: GameEventType, callFun: (...target: any) => void, isOnce: boolean);
+    gameEventListener(eventName: GameEventType, callFun: (...target: any) => void, isOnce: boolean):void;
 
     /**
      * server監聽回傳接收
@@ -35,16 +35,16 @@ export default interface IEventManager {
      * @param {Function} callFun
      * @param {boolean} isOnce : 是否使用一次性監聽
      */
-    serverEventListener(eventName: ServerEventType, callFun: (target?: any) => void, isOnce: boolean);
+    serverEventListener(eventName: ServerEventType, callFun: (target?: any) => void, isOnce: boolean):void;
 
     /**
      * 刪除事件,綁定的回傳也一並刪除
      * @param {ServerEventType | GameEventType} eventName
      * @param {cc.EventTarget} eventTarget
-     * @param callFun?
-     * @param target?
+     * @param callFun
+     * @param target
      */
-    destroyEvent(eventName: ServerEventType | GameEventType, eventTarget: cc.EventTarget, callFun?: Function, target?: Object);
+    destroyEvent(eventName: ServerEventType | GameEventType, eventTarget: cc.EventTarget, callFun?: Function, target?: Object):void;
 
     /**
      * 該事件是否持續監聽中

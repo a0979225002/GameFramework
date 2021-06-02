@@ -33,18 +33,18 @@ export interface ISceneManager {
      * 如果需求更動樣式,須先更新 updateSize()
      * @param {number} time : 更新的頻率 單位毫秒 ms
      */
-    designSceneSizeListenerAutoStart(time: number);
+    designSceneSizeListenerAutoStart(time: number):void;
 
     /**
      * 更換場景
      * @param {string} name : 場景資源名稱為你Res動態加載的自訂義的scene名稱
      */
-    changeScene(name: string);
+    changeScene(name: string):void;
 
     /**
      * 清除該scene所有動作
      * @param scene{any} : 要清除的scene class
      */
-    removeScene(scene: any);
+    removeScene(scene: any):void;
 
 }

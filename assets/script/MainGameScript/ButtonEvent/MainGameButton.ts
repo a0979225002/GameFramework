@@ -7,8 +7,9 @@ import AutoStateChangeNotification from "../../Framework/Process/GameNotificatio
 import UserTotalBetChangeNotification from "../../Framework/Process/GameNotification/UserTotalBetChangeNotification";
 import UserTotalBetChangeObserver from "../../Framework/Process/GameObserver/UserTotalBetChangeObserver";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
-import AMainGameDoubleButtonTemplate
-    from '../../Framework/Template/ButtonEvent/MainButton/AMainGameDoubleButtonTemplate'
+import AMainGameDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/MainButton/AMainGameDoubleButtonTemplate'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
+import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
 import SlotController from '../Controller/SlotController'
@@ -65,13 +66,13 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
     protected titleText: cc.Label = null;
     @property(cc.SpriteAtlas)
     protected buttonSpriteAtlas: cc.SpriteAtlas = null;
-
+    protected tableInfo: NoLineTableInfo;
+    protected autoCount: number;
     private buttonSpriteFrame: { SPEED_OFF: cc.SpriteFrame; AUTO_OFF: cc.SpriteFrame; SPEED_ON: cc.SpriteFrame; AUTO_ON: cc.SpriteFrame; STANDBY: cc.SpriteFrame; PLAYING: cc.SpriteFrame }
     private betButtonToArray: Array<cc.Node>;//所有押注按鈕
-    protected autoCount: number;
     private color: { GRAY: any; WHITE: any; YELLOW: any };
-    public static instance: MainGameButton;
     private userTotalBetChangeObserver: UserTotalBetChangeObserver;
+    public static instance: MainGameButton;
 
     constructor() {
         super();
@@ -82,9 +83,15 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             WHITE: cc.color().fromHEX("#FFFCFC"),
         }
     }
-
+//
     protected onCreate() {
         MainGameButton.instance = this;
+
+        this.tableInfo =
+            WebResponseManager
+                .instance<NoLineTableInfo>()
+                .getResult(ResponseType.TABLE_INFO);
+
         this.startButtonDisable();
         this.autoCount = SlotGameManager.instance.autoType;
         this.buttonSpriteFrame = {
@@ -101,7 +108,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         this.buttonStanByAnimation(this.startButtonImgV.node);
 
         UserTotalBetChangeNotification                                                  //押注事件推播綁定
-            .instance.subscribe(this.getUserTotalBetChangeObserver(),true);
+            .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
         this.totalFrameNode.active = false;
         this.startAutoNodeH.active = false;
         this.startAutoNodeV.active = false;
@@ -116,23 +123,16 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
 
     @Effect("BtnClick")
     protected autoEvent(isAutoState: boolean, autoType) {
-
         if (isAutoState) {
             this.autoButtonH.node.children[0]
                 .getComponent(cc.Sprite).spriteFrame = this.buttonSpriteFrame.AUTO_ON
-
             this.autoButtonV.node.children[0]
                 .getComponent(cc.Sprite).spriteFrame = this.buttonSpriteFrame.AUTO_ON
-
-
             //自動按鈕開啟時關閉特效
             this.autoButtonH.node.children[1].active = false;
             this.autoButtonV.node.children[1].active = false;
-
             this.checkAutoTypeToButton(autoType);
-
         } else {
-
             this.autoButtonH.node.children[0]
                 .getComponent(cc.Sprite).spriteFrame = this.buttonSpriteFrame.AUTO_OFF
             this.autoButtonV.node.children[0]
@@ -254,6 +254,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         cc.Tween.stopAllByTarget(this.startButtonImgV.node);
         cc.Tween.stopAllByTarget(this.startButtonImgH.node);
 
+        //如果該局狀態不是auto狀態,才給予按鈕聲音
         if (!SlotGameManager.instance.isAutoState) {
             this.startButtonImgH.spriteFrame = this.buttonSpriteFrame.PLAYING;
             this.startButtonImgV.spriteFrame = this.buttonSpriteFrame.PLAYING;
@@ -261,15 +262,14 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             return;
         }
 
+        //如果當前auto狀態是有次數的,將減去該局次數
         if (SlotGameManager.instance.isAutoState &&
             SlotGameManager.instance.autoType != AutoType.auto &&
             SlotGameManager.instance.autoType != AutoType.freeEnd
         ) {
-
             this.autoCount--;
             this.startAutoCountH.string = String(this.autoCount);
             this.startAutoCountV.string = String(this.autoCount);
-
         }
     }
 
@@ -313,29 +313,26 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
      */
     protected makeTotalBetButtonToListener() {
 
-        let lineBetLength = WebResponseManager.instance.tableInfo.LineTotalBet.length;
+        let lineBetLength = this.tableInfo.LineTotalBet.length;
         let containerNode = this.betButton.node.parent;
 
         for (let i = 0; i < lineBetLength; i++) {
             //複製按鈕
             let node = cc.instantiate(this.betButton.node);
             node.name = "Bet" + i + "_Button";
-            let lineBetValue = WebResponseManager.instance.tableInfo.LineTotalBet[i];
+            let lineBetValue = this.tableInfo.LineTotalBet[i];
 
             //更新該bet button內的數字
             let label = node.getChildByName("betNumber_Label").getComponent(cc.Label);
-
             label.string = String(lineBetValue)
-
             containerNode.addChild(node);
-
             this.betButtonToArray.push(node);
             //綁定全部按鈕點擊事件
             ButtonMethod.addButtonEvent(
                 node.getComponent(cc.Button),
                 "betButtonTouchEvent",
                 this,
-                String(i)
+                i
             );
         }
 
@@ -368,7 +365,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         if (!this.userTotalBetChangeObserver) {
             this.userTotalBetChangeObserver = new UserTotalBetChangeObserver(
                 (beforeIndex, afterIndex) => {
-                    this.updateTotalBetEvent(beforeIndex,afterIndex);
+                    this.updateTotalBetEvent(beforeIndex, afterIndex);
                 }, this);
         }
         return this.userTotalBetChangeObserver;
@@ -399,9 +396,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
 
     @Effect("OpenMenu")
     protected menuEvent() {
-
         MenuPageButton.instance.showMenu();
-
     }
 
     /**
@@ -431,6 +426,4 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             this.startButtonDisable();
         }
     }
-
-
 }

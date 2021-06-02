@@ -7,6 +7,7 @@ import SpeedStateChangeNotification from "../../../Process/GameNotification/Spee
 import AutoStateChangeObserver from "../../../Process/GameObserver/AutoStateChangeObserver";
 import SlotGameManager from "../../../Process/SlotGameManager";
 import StopNowStateNotification from "../../../Slot/SlotNotifivation/StopNowStateNotification";
+import {ResponseType} from "../../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from "../../../WebResponse/WebResponseManager";
 import OverrideComponent from "../../OverrideComponent";
 
@@ -17,33 +18,35 @@ import OverrideComponent from "../../OverrideComponent";
  * @Version 1.0
  */
 export default abstract class AMainGameEvent extends OverrideComponent {
-
     /**
      * 當前是否開啟總押注視窗
      * @type {boolean}
      * @protected
      */
     protected isShowTotalBetFrame: boolean;
-
     /**
      * 當前是否常壓空白建
      * @type {boolean}
      * @protected
      */
     protected keyboardListener: boolean;
-
     /**
      * 自動狀態事件綁定者
      * @type {AutoStateChangeObserver}
      * @private
      */
     private _autoStateChangeObserver: AutoStateChangeObserver;
+    protected tableInfo: ITableInfoModel;
 
     protected onLoad() {
         this.isShowTotalBetFrame = false;                                           //當前是否開啟總押注視窗
         this.keyboardListener = false;                                              //當前是否常壓空白建
+        this.tableInfo =
+            WebResponseManager
+                .instance<ITableInfoModel>()
+                .getResult(ResponseType.TABLE_INFO);
         AutoStateChangeNotification                                                 //自動按鈕推播事件綁定
-            .instance.subscribe(this.getAutoStateChangeObserver(),true);
+            .instance.subscribe(this.getAutoStateChangeObserver(), true);
         this.makeTotalBetButtonToListener();                                        //總押注視窗中按鈕監聽事件
         this.onCreate();                                                            //初始自訂狀態
     }
@@ -246,7 +249,7 @@ export default abstract class AMainGameEvent extends OverrideComponent {
             }
             //判斷當前是金額足夠
             let nowUserBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
-            let userBet = WebResponseManager.instance.tableInfo.LineTotalBet[nowUserBetIndex];
+            let userBet = this.tableInfo.LineTotalBet[nowUserBetIndex];
 
             //如果用戶金額不足的情況
             if (SlotGameManager.instance.userMoney - userBet < 0) {

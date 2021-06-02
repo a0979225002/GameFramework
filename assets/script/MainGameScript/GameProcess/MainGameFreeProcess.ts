@@ -6,6 +6,8 @@ import UserWinPointStateNotification from "../../Framework/Process/GameNotificat
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
+import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
 import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
@@ -20,12 +22,20 @@ import MainGameLabel from '../LabelEvent/MainGameLabel'
 export default class MainGameFreeProcess implements ISlotProcedureExecutionContainer {
 
     private slotStyle: NoLineSlot;
-    private result: INoLineResultModel;
-    private freeResult: ISlotFreeResultModel;
+    private normalResult: NoLineResult;
+    private freeResult: NoLineFreeResult;
 
     constructor() {
-        this.result = WebResponseManager.instance.result as NoLineResult;
-        this.freeResult = WebResponseManager.instance.freeResult
+
+        this.normalResult =
+            WebResponseManager
+                .instance<NoLineResult>()
+                .getResult(ResponseType.NORMAL);
+
+        this.freeResult =
+            WebResponseManager
+                .instance<NoLineFreeResult>()
+                .getResult(ResponseType.FREE);
     }
 
     private onCreate() {
@@ -58,15 +68,15 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
      */
     private async normalToFree(count: number): Promise<number> {
         //第一次進入Free狀態
-        if (this.result.FreeSpinCount != 0) {
+        if (this.normalResult.FreeSpinCount != 0) {
             MainGameLabel.instance.remove();
             MainGameButton.instance.switchButton(false);
             MainGameController.instance.showFreeBG();
             await FreeOpenController.instance.showFreeOpeningAnimation(
-                this.result.FreeSpinCount);
-            count = this.result.FreeSpinCount - 1;
+                this.normalResult.FreeSpinCount);
+            count = this.normalResult.FreeSpinCount - 1;
             //清空一般responseModel 的 free狀態,避免重複近來
-            this.result.FreeSpinCount = 0;
+            this.normalResult.FreeSpinCount = 0;
         }
         return count;
     }
@@ -103,22 +113,18 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
 
     public onShowAnswer(): Promise<void> {
         return new Promise(async (resolve) => {
-            if (WebResponseManager.instance.freeResult.TotalWinPoint != 0) {
-                SlotController.instance.showWinGrid(WebResponseManager.instance.freeResult.GridWin);
+            if (this.freeResult.TotalWinPoint != 0) {
+                SlotController.instance.showWinGrid(this.freeResult.GridWin);
             }
-            await this.checkWinPoint(
-                WebResponseManager.instance.freeResult.TotalWinPoint,
-            );
+            await this.checkWinPoint(this.freeResult.TotalWinPoint);
             resolve();
         });
     }
 
     public onCustomizeEnd(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (WebResponseManager.instance.freeResult.FreeToFree == 0 &&
-                WebResponseManager.instance.freeResult.Count == 0
-            ) {
-                let point = WebResponseManager.instance.freeResult.FreeSpinWin;
+            if (this.freeResult.FreeToFree == 0 && this.freeResult.Count == 0) {
+                let point = this.freeResult.FreeSpinWin;
                 await FreeEndController.instance.showFreeEnd(point, 4);
                 //關閉 free 背景
                 MainGameController.instance.closeFreeBG();
@@ -149,17 +155,17 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
                 resolve();
                 return;
             }
-            let winPoint = WebResponseManager.instance.freeResult.FreeSpinWin;
+            let winPoint = this.freeResult.FreeSpinWin;
             if (spinWin != 0 && this.freeResult.BaseLevelWin == 0) {
                 //推播 一般獎動畫事件
                 UserWinPointStateNotification.instance.notify(winPoint, 0);
                 //配合一般獎動畫時間,關閉一般獎時,更新 user 金額
                 setTimeout(() => {
-                    let userMoney = WebResponseManager.instance.result.UserPointAfter;
+                    let userMoney = this.normalResult.UserPointAfter;
                     UserMoneyChangeNotification.instance.notify(userMoney)
                     resolve();
                 }, 900);
-            } else if (WebResponseManager.instance.freeResult.BaseLevelWin > 0) {
+            } else if (this.freeResult.BaseLevelWin > 0) {
                 WinLevelController.instance.showWinAboveState(spinWin, resolve);
             }
         });

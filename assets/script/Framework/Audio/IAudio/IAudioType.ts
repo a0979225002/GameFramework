@@ -11,12 +11,12 @@ interface IAudioType {
      * @param {string} name : 資源名稱
      * @param {Map<string, any>} data : 該音樂撥放數據
      */
-    play(name: string, data: Map<string, any>);
+    play(name: string, data: Map<string, any>):void;
 
     /**
      * 停止該音樂
      * @param {string} name
      */
-    stop(name?: string);
+    stop(name?: string):void;
 
 }

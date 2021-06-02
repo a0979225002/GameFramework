@@ -51,7 +51,7 @@ export default interface IErrorManager {
      * @param{string | }message
      * @param obj
      */
-    executeError(message: string | ErrorType, obj?: any);
+    executeError(message: string | ErrorType, obj?: any):void;
 
     /**
      * 顯示錯誤視窗
@@ -59,7 +59,7 @@ export default interface IErrorManager {
      * @param {string} message  : 錯誤訊息
      * @param {string} buttonText : button文字
      */
-    serverError(permanentState: boolean, message: string, buttonText?: string)
+    serverError(permanentState: boolean, message: string, buttonText?: string):void;
 
     /**
      * 顯示警告,將會調用已保存的警告Node
@@ -67,7 +67,7 @@ export default interface IErrorManager {
      * @param {string} message  : 錯誤訊息
      * @param {string} buttonText : button文字
      */
-    warning(permanentState: boolean, message: string, buttonText?: string)
+    warning(permanentState: boolean, message: string, buttonText?: string):void;
 
     /**
      * 添加要綁定的Error組件
@@ -98,7 +98,6 @@ export default interface IErrorManager {
      */
     setWarningDelayTime(time: number): this;
 
-
     /**
      * 添加要顯示警告的Node
      * @param node
@@ -117,11 +116,4 @@ export default interface IErrorManager {
      * @return {this}
      */
     setErrorButtonLabel(label: cc.Label): this;
-
-    //    /**
-    //     * 設置是否可以回到打開返回首頁的button
-    //     * @param {boolean} isShow :強制更改狀態
-    //     * @param {null} isShow : 默認為當前是否擁有backHomeURL
-    //     */
-    //    setCanShowBackHomeButton(isShow?:boolean):this;
 }

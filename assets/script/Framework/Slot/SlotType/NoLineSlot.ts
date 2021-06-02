@@ -1,6 +1,7 @@
 import AudioManager from '../../Audio/AudioManager'
 import {GameState} from '../../Process/Enum/GameState'
 import SlotGameManager from '../../Process/SlotGameManager'
+import {ResponseType} from "../../WebResponse/Enum/ResponseType";
 import NoLineFreeResult from "../../WebResponse/Model/FreeResult/NoLineFreeResult";
 import NoLineResult from "../../WebResponse/Model/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
@@ -72,7 +73,6 @@ export default class NoLineSlot extends ASlot {
      */
     private readonly gridImg: Map<string, cc.SpriteFrame>;
     private readonly rowData: Array<number> // ["當前要跑幾個格子","當前要跑的高度"]
-
     private normalResult: NoLineResult;
     private freeResult: NoLineFreeResult
     //遊戲每列是否已經結束
@@ -81,8 +81,14 @@ export default class NoLineSlot extends ASlot {
     constructor(styleData: StyleData) {
         super(styleData)
         if (!styleData) return;
-        this.normalResult = WebResponseManager.instance.result as NoLineResult;
-        this.freeResult = WebResponseManager.instance.freeResult as NoLineFreeResult;
+        this.normalResult =
+            WebResponseManager
+                .instance<NoLineResult>()
+                .getResult(ResponseType.NORMAL);
+        this.freeResult =
+            WebResponseManager
+                .instance<NoLineFreeResult>()
+                .getResult(ResponseType.FREE);
         this.slotTurnCount = this.styleData.slotTurnCount;
         this.slotGirdSpeed = this.styleData.slotGirdSpeed;
         this.slotRowGridCount = this.styleData.slotRowGridCount;
@@ -102,16 +108,11 @@ export default class NoLineSlot extends ASlot {
     }
 
     public sineInSlot(): Promise<void> {
-
         let time = 0;
         let sineInHeight = Math.floor(this.styleData.slotGridHeight / 2);
-
         return new Promise<void>((resolve) => {
-
             let index = 0;
-
             for (let columnNode of this.slotColumnToTween) {
-
                 cc.tween(columnNode)
                     .delay(time)
                     .to((this.slotGirdSpeed * 1.5), {y: columnNode.y + sineInHeight}, {easing: 'quadOut'})

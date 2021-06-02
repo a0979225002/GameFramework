@@ -33,7 +33,10 @@ export default class ErrorManager implements IErrorManager {
         this._isShowBackHomeButton = !!this.configManager.backHomeURL;          //檢查當前是否回首頁URL,將之賦予true:false
     }
 
-    //單例
+    /**
+     *  懶漢加載
+     *  初始化,只讓一個專案產生一次該class
+     */
     public static setInstance(configManager: IConfigManager) {
         if (!this._instance) {
             this._instance = new ErrorManager(configManager);
@@ -41,7 +44,7 @@ export default class ErrorManager implements IErrorManager {
     }
 
     /**
-     * 單例模式 : 一個遊戲只能有個 ErrorManager
+     *  獲取已經初始化的靜態實例class
      */
     public static get instance(): IErrorManager {
         if (!this._instance) {

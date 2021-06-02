@@ -5,8 +5,10 @@ import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import ASlotInitializeTemplate from '../../Framework/Template/Slot/ASlotInitializeTemplate'
+import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
 import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
 import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
+import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 
 const {ccclass, property} = cc._decorator;
@@ -18,17 +20,27 @@ export default class SlotController extends ASlotInitializeTemplate {
     protected slotRow: cc.Node[] = [];
     @property(cc.AnimationClip)
     private gridAnimation: cc.AnimationClip[] = [];
-
     protected gridNodeToMap: Map<number, Array<cc.Node>>;
     protected girdSpriteToMap: Map<number, Array<cc.Sprite>>;
     private normalResult: NoLineResult;
     private freeResult: NoLineFreeResult;
+    private tableInfo:NoLineTableInfo;
     public static instance: SlotController;
 
     protected onCreate() {
         SlotController.instance = this;
-        this.normalResult = WebResponseManager.instance.result as NoLineResult;
-        this.freeResult = WebResponseManager.instance.freeResult as NoLineFreeResult;
+        this.normalResult =
+            WebResponseManager
+                .instance<NoLineResult>()
+                .getResult(ResponseType.NORMAL);
+        this.freeResult =
+            WebResponseManager
+                .instance<NoLineFreeResult>()
+                .getResult(ResponseType.FREE);
+        this.tableInfo =
+            WebResponseManager
+                .instance<NoLineTableInfo>()
+                .getResult(ResponseType.TABLE_INFO);
         this.gridNodeToMap = this.getAllGridNode();
         this.girdSpriteToMap = this.getAllGridSprite();
     }
@@ -37,7 +49,6 @@ export default class SlotController extends ASlotInitializeTemplate {
      * SlotStyle 初設定,如無符合的功能樣式 可繼承抽象類 ASlot 自定義使用
      */
     protected slotStyleSetting() {
-
         SlotStyleManager.instance
             .setSlotTemplate(NoLineSlot)                                 //執行的class
             .setSlotGirdSpeed(0.08)                                      //遊戲一般速度
@@ -87,7 +98,7 @@ export default class SlotController extends ASlotInitializeTemplate {
      */
     private updateAnswerGrid(gridIndex: number, answerIndex: number) {
         let rowIndex = Math.floor(answerIndex / 3);
-        let answer: number = WebResponseManager.instance.tableInfo.Grid[answerIndex];
+        let answer: number = this.tableInfo.Grid[answerIndex];
         this.girdSpriteToMap
             .get(rowIndex)[gridIndex]
             .spriteFrame = LoadResManager.instance.imgRes.get("gridImg").get(String(answer));
@@ -115,16 +126,12 @@ export default class SlotController extends ASlotInitializeTemplate {
      */
     protected getAllGridSprite(): Map<number, Array<cc.Sprite>> {
         let sprites: Map<number, Array<cc.Sprite>> = new Map<number, Array<cc.Sprite>>();
-
         for (let i = 0; i < this.slotRow.length; i++) {
-
             let nodes = this.slotRow[i].children;
             let spriteToArray = new Array<cc.Sprite>();
-
             for (let j = nodes.length - 1; j >= 0; j--) {
                 spriteToArray.push(nodes[j].children[0].getComponent(cc.Sprite));
             }
-
             sprites.set(i, spriteToArray);
         }
         return sprites;
@@ -133,7 +140,6 @@ export default class SlotController extends ASlotInitializeTemplate {
     private winGrid: Array<number>;
     private timer: number;
     private answerToArray: Array<number>;
-
     public showWinGrid(winGrid: Array<number>) {
         if (this.timer) clearInterval(this.timer);
         if (SlotGameManager.instance.gameState == GameState.FREEING) {

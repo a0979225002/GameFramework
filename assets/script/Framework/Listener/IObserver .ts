@@ -11,6 +11,6 @@ interface IObserver {
     /**
      * 推波通知
      */
-    pushNotification(...any);
+    pushNotification(...any):void;
 
 }

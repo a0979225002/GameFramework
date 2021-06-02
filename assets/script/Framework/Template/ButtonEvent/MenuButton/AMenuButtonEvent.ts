@@ -5,6 +5,7 @@ import UserTotalBetChangeNotification from "../../../Process/GameNotification/Us
 import AutoStateChangeObserver from "../../../Process/GameObserver/AutoStateChangeObserver";
 import UserTotalBetChangeObserver from "../../../Process/GameObserver/UserTotalBetChangeObserver";
 import SlotGameManager from '../../../Process/SlotGameManager'
+import {ResponseType} from "../../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from '../../../WebResponse/WebResponseManager'
 import OverrideComponent from "../../OverrideComponent";
 
@@ -18,41 +19,35 @@ const {ccclass} = cc._decorator;
  */
 @ccclass
 export default abstract class AMenuButtonEvent extends OverrideComponent {
-
     /**
      * 訂閱自動事件
      * @type {UserTotalBetChangeObserver}
      * @private
      */
     private userTotalBetChangeObserver: UserTotalBetChangeObserver;
-
     /**
      * 訂閱用戶更改押注時事件
      * @type {AutoStateChangeObserver}
      * @private
      */
     private autoStateChangeObserver: AutoStateChangeObserver;
-
     /**
      * 自訂義初始狀態
      * @protected
      */
     protected abstract onCreate();
-
     /**
      * 背景音樂按鈕事件
      * @param {boolean} isOnMute : 是否靜音
      * @protected
      */
     protected abstract musicEvent(isOnMute: boolean);
-
     /**
      * 效果音樂按鈕事件
      * @param {boolean} isOnMute : 是否靜音
      * @protected
      */
     protected abstract effectEvent(isOnMute: boolean);
-
     /**
      * 自動按鈕事件
      * @param {AutoType} beforeAutoCount : 點擊前的按鈕type
@@ -60,25 +55,21 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      * @protected
      */
     protected abstract autoEvent(beforeAutoCount: AutoType, afterAutoCount: AutoType);
-
     /**
      * 前往設定頁按鈕事件
      * @protected
      */
     protected abstract settingPageTouchEvent();
-
     /**
      * 前往紀錄頁按鈕事件
      * @protected
      */
     protected abstract recordPageTouchEvent();
-
     /**
      * 前往說明頁按鈕事件
      * @protected
      */
     protected abstract descriptionPageEvent();
-
     /**
      * 更換押注事件
      * @param beforeIndex
@@ -86,21 +77,27 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      * @protected
      */
     protected abstract totalBetChangeEvent(beforeIndex, afterIndex)
-
     /**
      * 返回遊戲頁面按鈕事件
      * @protected
      */
     protected abstract goBackTouchEvent();
-
     /**
      * 返回首頁按鈕監聽事件
      * @protected
      */
     protected abstract goHomeTouchEvent();
 
+    protected tableInfo:ITableInfoModel;
+
     protected onLoad() {
+        this.tableInfo =
+            WebResponseManager
+                .instance<ITableInfoModel>()
+                .getResult(ResponseType.TABLE_INFO);
+
         this.onCreate();                                                                  //自訂義初始狀態
+
         AutoStateChangeNotification                                                       //訂閱自動事件
             .instance.subscribe(this.getAutoStateChangeObserver(), true);
         UserTotalBetChangeNotification                                                    //訂閱用戶更改押注時事件
@@ -135,7 +132,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
     protected betUpEventListener() {
         let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
         let afterBetIndex = ++beforeBetIndex;
-        if (afterBetIndex > WebResponseManager.instance.tableInfo.LineBet.length - 1) {
+        if (afterBetIndex > this.tableInfo.LineBet.length - 1) {
             afterBetIndex = 0;
         }
         UserTotalBetChangeNotification.instance.notify(beforeBetIndex, afterBetIndex);
@@ -150,7 +147,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
         let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
         let afterBetIndex = --beforeBetIndex;
         if (afterBetIndex < 0) {
-            afterBetIndex = WebResponseManager.instance.tableInfo.LineBet.length - 1;
+            afterBetIndex = this.tableInfo.LineBet.length - 1;
         }
         UserTotalBetChangeNotification.instance.notify(beforeBetIndex, afterBetIndex);
     }

@@ -13,6 +13,6 @@ export default abstract class ALoadScriptType {
         this.url = url
     }
 
-    abstract loadScript();
+    abstract loadScript():void;
 
 }
