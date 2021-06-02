@@ -218,13 +218,11 @@ export default class LoadResManager implements ILoadResManager {
      * @param resName
      */
     callback(callFun: (progress: number) => void, resName?: string) {
-
         if (resName) {
             if (this.callFun.has(resName)) {
                 ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "如果拿取該資源進度,請勿重複callback");
                 return;
             }
-
             this.callFun.set(resName, callFun);
             return this;
         } else {
@@ -234,7 +232,6 @@ export default class LoadResManager implements ILoadResManager {
             }
             this.callFun.set(null, callFun);
         }
-
     }
 
     /**

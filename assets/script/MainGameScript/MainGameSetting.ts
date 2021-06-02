@@ -55,8 +55,16 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         SceneManager.instance.updateSize(SceneStyle.AUTO);
         //第一次加載,需先自行更新一次
         this.updateSceneDirection(SceneManager.instance.sceneDirection);
-        //將dialog節點放置在最後一個位置
-        this.loadingDialog.setSiblingIndex(99);
+
+        //將載入效果dialog節點放置在倒數第二個位置
+        this.loadingDialog.setSiblingIndex(98);
+
+        //將錯誤視窗dialog節點放置最後一個位置
+        let errorFrame = cc.instantiate(LoadResManager.instance.prefabRes.get("ErrorFramePrefab"));
+        this.node.parent.addChild(errorFrame);
+        errorFrame.setSiblingIndex(99)
+
+        this.useNoSleep();
         this.useNoSleep();
     }
 
@@ -85,21 +93,21 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         }
     }
 
-    private useNoSleep(){
-        if(!cc.sys.isMobile){
+    private useNoSleep() {
+        if (!cc.sys.isMobile) {
             cc.log("不是mobile");
             return;
         }
         cc.log("我是手機");
-        if(cc.sys.os == cc.sys.OS_IOS){
+        if (cc.sys.os == cc.sys.OS_IOS) {
             cc.log("我是 apple 手機 ,因為無法 noSleep 所以不執行監聽")
             return;
         }
-        if(window.screenLock != 1){
-            cc["plug"] = cc["plug"]|| {};
-            cc["plug"].noSleep = new NoSleep() ;
+        if (window.screenLock != 1) {
+            cc["plug"] = cc["plug"] || {};
+            cc["plug"].noSleep = new NoSleep();
             cc["plug"].noSleep.enable();
-            cc.log( cc["plug"].noSleep)
+            cc.log(cc["plug"].noSleep)
             cc.game.on(cc.game.EVENT_HIDE, function () {
                 // cc.log("游戏进入后台时触发的事件");
                 cc["plug"].noSleep.disable();
@@ -111,6 +119,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
             });
         }
     }
+
     /**
      * 直橫向監聽器
      */
@@ -218,6 +227,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
             .onEnd()
             .onChangeStatus();
     }
+
     /**
      * 測試:
      * @returns {SlotGameProcess}
@@ -238,7 +248,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * 實例化所有動態加載的prefab
      */
     protected prefabInstantiate() {
-
         let progress = LoadResManager.instance.secondaryLoadState.get("prefab");
         if (progress != 1) {
             LoadResManager.instance.callback((progress) => {

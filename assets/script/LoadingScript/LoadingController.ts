@@ -85,6 +85,7 @@ export default class LoadingController extends ALoadingTemplate {
             .loadAsset("MainScene", LoadType.scene, null)
             .loadAsset("gridImg", LoadType.img, "image/grid/grid")
             .loadAsset("GameIcon", LoadType.img, "image/loadLanguage", true)
+            .loadAsset("errorFromPrefab",LoadType.prefab,"prefab/ErrorFrame")
             .callback((progress) => {
                 if (progress == 1) {
                     this.intoMainGameButtonImg.spriteFrame =

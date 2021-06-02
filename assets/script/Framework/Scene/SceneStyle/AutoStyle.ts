@@ -15,7 +15,6 @@ export default class AutoStyle implements ISceneStyle {
                 let newHeight = cc.view.getFrameSize().height * (width / cc.view.getFrameSize().width);
                 cc.view.setDesignResolutionSize(width, newHeight, cc.ResolutionPolicy.FIXED_WIDTH);
             } else {
-
                 if ((cc.view.getFrameSize().width / cc.view.getFrameSize().height) >= (1000 / 1777)) {
                     let newHeight = cc.view.getFrameSize().height * (1000 / cc.view.getFrameSize().width);
                     cc.view.setDesignResolutionSize(1000, newHeight, cc.ResolutionPolicy.FIXED_HEIGHT);

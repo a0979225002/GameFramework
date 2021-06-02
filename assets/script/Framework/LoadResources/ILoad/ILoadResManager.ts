@@ -68,38 +68,42 @@ export default interface ILoadResManager {
     /**
      * 加載該資料夾底下所有資源
      * 注意: 需存放於 resources中
-     * @param name
-     * @param type
-     * @param url
-     * @param isLanguageUsed
+     * @param {string} name
+     * @param {LoadType} type
+     * @param {string} url
+     * @param {boolean} isLanguageUsed
+     * @returns {this}
      */
-    loadAsset(name : string,type : LoadType , url : string,isLanguageUsed?:boolean):void;
+    loadAsset(name : string,type : LoadType , url : string,isLanguageUsed?:boolean):this;
 
 
     /**
      * 加載該 assetBundle 底下資源
      * 使用此方法者,加載狀態存放次加載中 secondaryLoadState
      * 注意:須於UI勾選配置為Bundle資料夾
-     * @param name
-     * @param type
-     * @param url
+     * @param {string} name
+     * @param {LoadType} type
+     * @param {string} url
+     * @returns {this}
      */
-    loadBundle(name: string, type: LoadType, url: string):void;
+    loadBundle(name: string, type: LoadType, url: string):this;
 
     /**
      * 保存使用者要callback的方法,當有回傳進度時將透過 loadEventCallback方法回傳進度
-     * @param callFun
-     * @param methodName
+     * @param {(progress: number) => void} callFun
+     * @param {string} methodName
+     * @returns {this}: methodName 未使用情況,回傳 void
      */
-    callback(callFun: (progress:number)=> void,methodName?: string):void;
+    callback(callFun: (progress:number)=> void,methodName?: string):this;
 
     /**
      * 載入外部腳本
      * @param {string} name
      * @param {LoadType} type
      * @param {string} url
+     * @returns {this}
      */
-    loadExternalScript(name: string, type: LoadType, url: string):void;
+    loadExternalScript(name: string, type: LoadType, url: string):this;
 
     /**
      * 查看該資源是否已加載完畢
