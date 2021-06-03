@@ -29,7 +29,7 @@ export default class AudioFactory implements IAudioFactory {
     constructor() {
 
         this.musicVolume = SlotConfigManager.instance.musicVolume;                                           //初始音量
-        this.effectVolume = SlotConfigManager.instance.musicVolume;                                          //初始音量
+        this.effectVolume = SlotConfigManager.instance.effectVolume;                                         //初始音量
         this.canSuperimpose = false;                                                                         //初始無Loop的音樂是否可以疊加
         this.musicOnMute = SlotConfigManager.instance.isMusicOnMute;                                         //初始音樂是否打開
         this.effectOnMute = SlotConfigManager.instance.isEffectOnMute;                                       //初始效果音是否打開

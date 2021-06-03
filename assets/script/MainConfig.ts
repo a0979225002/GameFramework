@@ -4,6 +4,8 @@ import SlotConfigManager from "./Framework/Config/SlotConfigManager";
 import ASlotConfig from "./Framework/Template/Config/ASlotConfig";
 import {ResponseType} from "./Framework/WebResponse/Enum/ResponseType";
 import NoLineFreeResult from "./Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
+import ExtendHasLineResult from "./Framework/WebResponse/Model/NormalResult/ExtendHasLineResult";
+import HasLineResult from "./Framework/WebResponse/Model/NormalResult/HasLineResult";
 import NoLineResult from "./Framework/WebResponse/Model/NormalResult/NoLineResult";
 import NoLineTableInfo from "./Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
 import ResponseHandler from "./Framework/WebResponse/ResponseHandler";
@@ -18,8 +20,8 @@ import {WebResponseManager} from "./Framework/WebResponse/WebResponseManager";
 @ccclass
 export default class MainConfig extends ASlotConfig {
 
-    protected onCreat() {}
-
+    protected onCreat() {
+    }
     /**
      * 初始化當前遊戲
      */
@@ -32,8 +34,8 @@ export default class MainConfig extends ASlotConfig {
             .setMusicOnMute(false)                              //是否關閉背景音
             .setEffectOnMute(false)                             //是否關閉效果音
             .setGameNumber(84)                                  //遊戲名稱
-            .setMusicVolume(1)                                  //初始背景音量
-            .setEffectVolume(1)                                 //初始音效音量
+            .setMusicVolume(1)                                  //初始默認背景音量
+            .setEffectVolume(1)                                 //初始默認效果音量
             .setLanguage(LanguageType.America)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
             .setExternallyLoadURL("http://10.10.0.47/games")    //同上
             .setFrameWorkDebug(true)                            //正式上線時關閉
@@ -41,16 +43,16 @@ export default class MainConfig extends ASlotConfig {
     }
 
     /**
-     * 遊戲network response module;
+     * 遊戲network response model;
      */
     protected networkModuleSetting() {
 
-        //初始化一般狀態json接收保存module
+        //初始化一般狀態json接收保存model
         let normalResponse = new ResponseHandler<NoLineResult>(NoLineResult);
-        //初始化免費狀態json接收保存module
+        //初始化免費狀態json接收保存model
         let freeResponse = new ResponseHandler<NoLineFreeResult>(NoLineFreeResult);
-        //初始化遊戲初始資訊json接收保存module
-        let tableInfoResponse = new ResponseHandler<NoLineTableInfo>(NoLineTableInfo);
+        //初始化遊戲初始資訊json接收保存model
+        let tableInfoResponse = new ResponseHandler(NoLineTableInfo);
 
         WebResponseManager
             .instance<NoLineResult>()

@@ -140,9 +140,7 @@ export default class AudioManager implements IAudioManager {
      * 停止所有音效
      */
     public effectStopAll() {
-
         this.factory.effectStopAll();
-
     }
 
     /**
@@ -151,9 +149,7 @@ export default class AudioManager implements IAudioManager {
      * @return {Map<string, string | boolean | number>} : 撥放設定參數
      */
     public getMusicState(name: string): Map<string, string | boolean | number> {
-
         return this.factory.getMusicState(name);
-
     }
 
     /**
@@ -162,9 +158,7 @@ export default class AudioManager implements IAudioManager {
      * @return {Map<string, string | AudioStateType |boolean | number>} : 撥放設定參數
      */
     public getEffectState(name: string): Map<string, string | AudioStateType | boolean | number> {
-
         return this.factory.getEffectState(name);
-
     }
 
     /**
@@ -172,13 +166,9 @@ export default class AudioManager implements IAudioManager {
      * @return {boolean} 當前是否靜音
      */
     public updateEffectOnMute(): boolean {
-
         this._effectOnMute = !this._effectOnMute;
-
         if (this._effectOnMute) {
-
             this.factory.effectStopAll();
-
         }
         return this._effectOnMute;
     }
@@ -188,13 +178,10 @@ export default class AudioManager implements IAudioManager {
      * @return {boolean} 當前是否靜音
      */
     public updateMusicOnMute(): boolean {
-
         this._musicOnMute = !this._musicOnMute;
-
         if (this._musicOnMute) {
             this.musicPause();
         }
-
         return this._musicOnMute;
     }
 
@@ -203,9 +190,7 @@ export default class AudioManager implements IAudioManager {
      * @returns {boolean}
      */
     public get effectOnMute(): boolean {
-
         return this._effectOnMute
-
     }
 
     /**
@@ -213,9 +198,7 @@ export default class AudioManager implements IAudioManager {
      * @returns {boolean}
      */
     public get musicOnMute(): boolean {
-
         return this._musicOnMute
-
     }
 }
 
@@ -226,7 +209,7 @@ export default class AudioManager implements IAudioManager {
  * @returns {(target: any, key: string, descriptor: PropertyDescriptor) => void}
  * @constructor
  */
-function Music(name) {
+export function Music(name) {
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
         descriptor.enumerable = true;
         const method = descriptor.value;
@@ -243,19 +226,13 @@ function Music(name) {
  * @returns {(target: any, key: string, descriptor: PropertyDescriptor) => void}
  * @constructor
  */
-function MusicStop() {
-
+export function MusicStop() {
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
-
         descriptor.enumerable = true;
         const method = descriptor.value;
-
         descriptor.value = function (...any) {
-
             method.call(this, ...any);
-
             return AudioManager.instance.musicStop();
-
         }
     }
 }
@@ -267,19 +244,14 @@ function MusicStop() {
  * @returns {(target: any, key: string, descriptor: PropertyDescriptor) => void}
  * @constructor
  */
-function Effect(...name: string[]) {
-
+export function Effect(...name: string[]) {
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
-
         descriptor.enumerable = true;
         const method = descriptor.value;
-
         descriptor.value = function (...any) {
-
             name.forEach((name: string) => {
                 AudioManager.instance.effectPlay(name);
             })
-
             return method.call(this, ...any);
         }
     }
@@ -292,22 +264,15 @@ function Effect(...name: string[]) {
  * @returns {(target: any, key: string, descriptor: PropertyDescriptor) => void}
  * @constructor
  */
-function EffectStop(...name: string[]) {
-
+export function EffectStop(...name: string[]) {
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
-
         descriptor.enumerable = true;
         const method = descriptor.value;
-
         descriptor.value = function (...any) {
-
             name.forEach((name: string) => {
                 AudioManager.instance.effectStop(name);
             })
-
             return method.call(this, ...any);
         }
     }
 }
-
-export {Effect, Music, EffectStop, MusicStop};

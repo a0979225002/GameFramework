@@ -4,6 +4,7 @@ import {ErrorType} from '../../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../../Error/ErrorManager'
 import {ServerEventType} from '../../Listener/Enum/ServerEventType'
 import EventManager from '../../Listener/EventManager'
+import UserMoneyChangeNotification from "../../Process/GameNotification/UserMoneyChangeNotification";
 import {ResponseType} from "../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 import OverrideComponent from "../OverrideComponent";
@@ -14,6 +15,7 @@ const {ccclass} = cc._decorator;
 export default abstract class ALoadingTemplate extends OverrideComponent implements ILoadTemplate {
 
     private _canPlayGame: boolean;
+    protected tableInfo: ITableInfoModel;
 
     /**
      * 執行個人自定義設定
@@ -51,6 +53,10 @@ export default abstract class ALoadingTemplate extends OverrideComponent impleme
     }
 
     protected onLoad() {
+        this.tableInfo =
+            WebResponseManager
+                .instance<ITableInfoModel>()
+                .getResult(ResponseType.TABLE_INFO);
         this._canPlayGame = false;          //由 Server TableInfo Event 改變狀態
         this.tableInfoEvent.apply(this);    //TableInfo Event 事件
         socketJS.SFSLoad(SlotConfigManager.instance.gameNumber);
@@ -80,21 +86,26 @@ export default abstract class ALoadingTemplate extends OverrideComponent impleme
         this.loadAssetBundle();             //次資源
         this.updateProgressText();          //更新讀取條文字
     }
+
     /**
      * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
      */
     private tableInfoEvent() {
         EventManager.instance.serverEventListener(
             ServerEventType.TABLE_INFO, (target) => {
-                let tableInfo = WebResponseManager.instance<ITableInfoModel>().getResult(ResponseType.TABLE_INFO);
                 for (let name of Object.keys(target)) {
-                    if (tableInfo[name] === undefined) {
-                        ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${name} 無此參數,請更換 TableInfo Type`)
+                    if (this.tableInfo[name] === undefined) {
+                        try {
+                            ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `無 ${name} 參數,請更換 TableInfo Type`)
+                        } catch (e) {
+                            console.log(e);
+                        }
                     } else {
-                        tableInfo[name] = target[name];
+                        this.tableInfo[name] = target[name];
                     }
                 }
-                cc.log(WebResponseManager.instance<ITableInfoModel>().getResult(ResponseType.TABLE_INFO))
+                cc.log(this.tableInfo);
+                UserMoneyChangeNotification.instance.notify(this.tableInfo.UserPoint);
                 this._canPlayGame = true;
             }, true);
     }

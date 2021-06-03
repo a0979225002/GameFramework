@@ -8,6 +8,7 @@ import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotificati
 import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import ALoadingTemplate from '../Framework/Template/Loading/ALoadingTemplate'
 import SocketSetting from '../Socket/SocketSetting'
+import NoSleep = require('../Socket/NoSleep');
 
 const {ccclass, property} = cc._decorator;
 
@@ -35,6 +36,7 @@ export default class LoadingController extends ALoadingTemplate {
      * 自定義初始
      */
     public onCreat() {
+
         this.isLogoAnimaEnd = false;                                    //初始化尚未結束logo動畫
         this.progressNum = 0;                                           //初始進度條為0;
         this.progressBar.progress = this.progressNum;                   //初始UI進度條為0
@@ -50,13 +52,35 @@ export default class LoadingController extends ALoadingTemplate {
             this
         );
         this.intoMainGameButton.node.active = false;                    //初始關閉進入主遊戲Button顯示,等待進度載入完成後才顯示
-        LanguageMethod.instance
+        LanguageMethod.instance                                         //初始載入條的說明文字樣式
             .updateLabelStyle(this.loadTextToArray[0])
             .updateLabelStyle(this.loadTextToArray[1])
-        SceneDirectionChangeNotification
-            .instance.subscribe(this.getSceneDirectionChangeObserver(), true);
+
+        SceneDirectionChangeNotification                                //初始第一次當前分辨率,自動移除監聽
+            .instance.subscribe(this.getSceneDirectionChangeObserver(), false);
+
+        cc.view.on("canvas-resize",this.changeLoadingBG,this)      //持續間當前遊戲長寬,如果有變更,不管是否更換方向都會更新bg大小
     }
 
+    /**
+     * 持續間當前遊戲長寬,如果有變更,不管是否更換方向都會更新bg大小
+     */
+    changeLoadingBG() {
+        if (cc.view.getFrameSize().width < cc.view.getFrameSize().height) {
+            let newHeight = 1000 / cc.view.getFrameSize().width * cc.view.getFrameSize().height;
+            let newWidth = newHeight / 9 * 16;
+            this.loadBG.height = newHeight;
+            this.loadBG.width = newWidth;
+        } else {
+            this.loadBG.height = 960;
+            this.loadBG.width = 1560;
+        }
+    }
+
+    /**
+     * 螢幕方向事件觀察員
+     * @returns {SceneDirectionChangeObserver}
+     */
     getSceneDirectionChangeObserver(): SceneDirectionChangeObserver {
         if (!this._sceneDirectionChangeObserver) {
             this._sceneDirectionChangeObserver =
@@ -169,8 +193,37 @@ export default class LoadingController extends ALoadingTemplate {
      * 進入主遊戲按鈕點擊事件
      */
     private intoMainGameButtonEventListener() {
+        this.useNoSleep();
         SceneManager.instance.changeScene("MainScene");
         SceneManager.instance.removeScene(this);
+    }
+
+    private useNoSleep() {
+        if (!cc.sys.isMobile) {
+            cc.log("不是mobile");
+            return;
+        }
+        cc.log("我是手機");
+        if (cc.sys.os == cc.sys.OS_IOS) {
+            cc.log("我是 apple 手機 ,因為無法 noSleep 所以不執行監聽")
+            return;
+        }
+        if (window.screenLock != 1) {
+            cc["plug"] = cc["plug"] || {};
+            cc["plug"].noSleep = new NoSleep();
+            cc["plug"].noSleep.enable();
+            cc.log(cc["plug"].noSleep)
+            cc.game.on(cc.game.EVENT_HIDE, function () {
+                // cc.log("游戏进入后台时触发的事件");
+                cc["plug"].noSleep.disable();
+            });
+            cc.game.on(cc.game.EVENT_SHOW, function () {
+                cc.log("近來搂")
+                // cc.log("游戏进入前台运行时触发的事件");
+                cc["plug"].noSleep = new NoSleep();
+                cc["plug"].noSleep.enable();
+            });
+        }
     }
 
     /**
@@ -217,7 +270,6 @@ export default class LoadingController extends ALoadingTemplate {
     }
 
     protected onDestroy() {
-        SceneDirectionChangeNotification
-            .instance.unsubscribe(this.getSceneDirectionChangeObserver());
+        cc.view.off("canvas-resize",this.changeLoadingBG,this);
     }
 }

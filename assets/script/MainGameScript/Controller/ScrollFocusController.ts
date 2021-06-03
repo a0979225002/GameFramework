@@ -1,6 +1,5 @@
 import {Effect, EffectStop} from '../../Framework/Audio/AudioManager'
 import ALookAtTemplate from '../../Framework/Template/LookAtFrame/ALookAtTemplate'
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -15,7 +14,6 @@ export default class ScrollFocusController extends ALookAtTemplate {
         for (let effect of this.allLookAtEffect) {
             effect.node.active = false;
         }
-
     }
 
     @EffectStop("slottrunFast")

@@ -57,9 +57,7 @@ export default class SceneManager implements ISceneManager {
      * @return {this}
      */
     setDesignWidth(width: number): this {
-
         this._designWidth = width;
-
         return this;
     }
 
@@ -69,9 +67,7 @@ export default class SceneManager implements ISceneManager {
      * @return {this}
      */
     setDesignHeight(height: number): this {
-
         this._designHeight = height;
-
         return this;
     }
 
@@ -134,11 +130,9 @@ export default class SceneManager implements ISceneManager {
      * @private
      */
     private getSceneChangeDirectionObserver(): SceneDirectionChangeObserver {
-
         this.sceneChangeDirectionObserver = new SceneDirectionChangeObserver((type => {
             this.updateSceneDirection(type);
         }), true);
-
         return this.sceneChangeDirectionObserver;
     }
 

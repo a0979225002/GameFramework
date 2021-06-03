@@ -1,10 +1,10 @@
 /**
  * @Author XIAO-LI-PIN
- * @Description 無線類遊戲資訊
+ * @Description 有線類遊戲資訊
  * @Date 2021-06-03 下午 12:01
  * @Version 1.0
  */
-export default class NoLineTableInfo implements INoLineTableInfoModule {
+export default class HasLineTableInfo implements IHasLineTableInfoModule {
     /**
      * 是否為線遊戲(0:無線 1:有線)
      * @type {number}
@@ -26,6 +26,11 @@ export default class NoLineTableInfo implements INoLineTableInfoModule {
      */
     private _PayTable: object;
     /**
+     * 賠率表
+     * @type {Object}
+     */
+    private _LineGridPos: Object;
+    /**
      * 每線押注[0.1、0.2、0.3、0.4、0.5、1、2、3、4、5]
      * @type {Array<number>}
      */
@@ -36,7 +41,7 @@ export default class NoLineTableInfo implements INoLineTableInfoModule {
      */
     private _LineTotalBet: Array<number>;
     /**
-     * 15格的資料 顯示用
+     * 是否為線遊戲(0:無線 1:有線)
      * @type {Array<number>}
      */
     private _Grid: Array<number>;
@@ -50,33 +55,20 @@ export default class NoLineTableInfo implements INoLineTableInfoModule {
      * @type {Array<number>}
      */
     private _LevelWinPoint: Array<number>;
-    /**
-     * 活動模式 0 沒有 11 轉盤
-     * @type {number}
-     */
-    private _EventMode: number;
-    /**
-     * 活動轉數需求
-     * @type {number}
-     */
-    private _EventRequire: number;
 
     constructor() {
         this._IsLines = 0;
         this._BetTimes = 0;
         this._Line = "";
         this._PayTable = {};
+        this._LineGridPos = {};
         this._LineBet = new Array<number>();
         this._LineTotalBet = new Array<number>();
         this._Grid = new Array<number>();
         this._UserPoint = 0;
         this._LevelWinPoint = new Array<number>();
-        this._EventMode = 0;
-        this._EventRequire = 0;
         Object.preventExtensions(this);
     }
-
-
     get IsLines(): number {
         return this._IsLines;
     }
@@ -107,6 +99,14 @@ export default class NoLineTableInfo implements INoLineTableInfoModule {
 
     set PayTable(value: object) {
         this._PayTable = value;
+    }
+
+    get LineGridPos(): Object {
+        return this._LineGridPos;
+    }
+
+    set LineGridPos(value: Object) {
+        this._LineGridPos = value;
     }
 
     get LineBet(): Array<number> {
@@ -147,21 +147,5 @@ export default class NoLineTableInfo implements INoLineTableInfoModule {
 
     set LevelWinPoint(value: Array<number>) {
         this._LevelWinPoint = value;
-    }
-
-    get EventMode(): number {
-        return this._EventMode;
-    }
-
-    set EventMode(value: number) {
-        this._EventMode = value;
-    }
-
-    get EventRequire(): number {
-        return this._EventRequire;
-    }
-
-    set EventRequire(value: number) {
-        this._EventRequire = value;
     }
 }

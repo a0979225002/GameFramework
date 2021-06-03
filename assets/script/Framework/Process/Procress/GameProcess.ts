@@ -11,7 +11,7 @@ export default class GameProcess implements IGameProcess {
      * @type {Set<Function>}
      * @private
      */
-    private readonly process: Set<() => Promise<void>>;
+    private readonly process: Set<() => Promise<void>|void>;
 
     /**
      * 流程執行

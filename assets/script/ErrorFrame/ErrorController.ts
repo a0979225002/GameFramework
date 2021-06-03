@@ -16,7 +16,6 @@ class ErrorController extends AErrorFrameTemplate {
     protected errorButton : cc.Button = null;
     
     public onCreat() {
-        cc.game.addPersistRootNode(this.node);
         this.node.active = false;
         ErrorManager
             .instance

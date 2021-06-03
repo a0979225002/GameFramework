@@ -15,7 +15,7 @@ import AMainGameSettingTemplate from '../Framework/Template/Setting/AMainGameSet
 import SocketSetting from "../Socket/SocketSetting";
 import MainGameFreeProcess from './GameProcess/MainGameFreeProcess'
 import MainGameNormalProcess from "./GameProcess/MainGameNormalProcess";
-import NoSleep = require('../Socket/NoSleep');
+
 
 const {ccclass, property} = cc._decorator;
 
@@ -63,9 +63,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         let errorFrame = cc.instantiate(LoadResManager.instance.prefabRes.get("ErrorFramePrefab"));
         this.node.parent.addChild(errorFrame);
         errorFrame.setSiblingIndex(99)
-
-        this.useNoSleep();
-        this.useNoSleep();
     }
 
     /**
@@ -93,32 +90,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         }
     }
 
-    private useNoSleep() {
-        if (!cc.sys.isMobile) {
-            cc.log("不是mobile");
-            return;
-        }
-        cc.log("我是手機");
-        if (cc.sys.os == cc.sys.OS_IOS) {
-            cc.log("我是 apple 手機 ,因為無法 noSleep 所以不執行監聽")
-            return;
-        }
-        if (window.screenLock != 1) {
-            cc["plug"] = cc["plug"] || {};
-            cc["plug"].noSleep = new NoSleep();
-            cc["plug"].noSleep.enable();
-            cc.log(cc["plug"].noSleep)
-            cc.game.on(cc.game.EVENT_HIDE, function () {
-                // cc.log("游戏进入后台时触发的事件");
-                cc["plug"].noSleep.disable();
-            });
-            cc.game.on(cc.game.EVENT_SHOW, function () {
-                // cc.log("游戏进入前台运行时触发的事件");
-                cc["plug"].noSleep = new NoSleep();
-                cc["plug"].noSleep.enable();
-            });
-        }
-    }
+
 
     /**
      * 直橫向監聽器
@@ -211,7 +183,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      */
     private getTestProcess(): GameProcess {
         // setTimeout(() => {
-        //     cc.log("UserMoneyChangeNotification", UserMoneyChangeNotification.instance.getAllSubscribe());
+        //     cc.log("", UserMoneyChangeNotification.instance.getAllSubscribe());
         //     cc.log("UserTotalBetChangeNotification", UserTotalBetChangeNotification.instance.getAllSubscribe());
         //     cc.log("UserWinPointStateNotification", UserWinPointStateNotification.instance.getAllSubscribe());
         //     cc.log("SceneDirectionChangeNotification", SceneDirectionChangeNotification.instance.getAllSubscribe());

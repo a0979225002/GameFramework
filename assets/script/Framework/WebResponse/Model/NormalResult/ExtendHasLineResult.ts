@@ -1,10 +1,10 @@
 /**
  * @Author XIAO-LI-PIN
- * @Description 無線一般狀態封包
- * @Date 2021-05-31 下午 01:41
+ * @Description 擴展類有線一般狀態封包
+ * @Date 2021-06-03 下午 04:50
  * @Version 1.0
  */
-export default class NoLineResult implements INoLineResultModel {
+export default class ExtendHasLineResult implements IExtendHasLineResult{
 
     /**
      * 0: 押注成功 1:遊戲狀態不符 2:超過
@@ -19,23 +19,31 @@ export default class NoLineResult implements INoLineResultModel {
      */
     private _Grid: Array<number>;
     /**
-     * 是否有鬼牌擴展 0:沒有 1:有
+     * 是否有神秘寶箱 0:沒有 1:有
      * @type {number}
-     * @private
      */
-    private _ChangeState: number;
+    private _SecretState: number;
     /**
-     * 15格的資料 換圖 0:不換 1:換
+     * 神秘寶箱位置 0:沒有 1:有神秘寶箱位置 0:沒有 1:有
+     * @type {Array<number>}
+     */
+    private _SecretChange: Array<number>;
+    /**
+     * 神秘寶箱格子圖案
+     */
+    private _SecretSymbol: number;
+    /**
+     * 每條線贏分
      * @type {Array<number>}
      * @private
      */
-    private _Change: Array<number>;
+    private _LineWin: Array<number>;
     /**
-     * 哪幾格贏 0:沒贏 1:贏
+     * 每條線贏幾格
      * @type {Array<number>}
      * @private
      */
-    private _GridWin: Array<number>;
+    private _LineGrid: Array<number>;
     /**
      * 總贏得金額 (0:輸了 大於0:贏了 )
      * @type {number}
@@ -73,12 +81,6 @@ export default class NoLineResult implements INoLineResultModel {
      */
     private _UserPointBefore: number;
     /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _LevelWin: number;
-    /**
      * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
      * @type {number}
      * @private
@@ -86,24 +88,23 @@ export default class NoLineResult implements INoLineResultModel {
     private _BaseLevelWin: number;
     /**
      * 活動轉數
-     * @type {number}
-     * @private
      */
     private _BonusEventCount: number;
 
     constructor() {
         this._State = 0;
         this._Grid = new Array<number>();
-        this._ChangeState = 0;
-        this._Change = new Array<number>();
-        this._GridWin = new Array<number>();
+        this._SecretState = 0;
+        this._SecretChange = new Array<number>();
+        this._SecretSymbol = 0;
+        this._LineWin = new Array<number>();
+        this._LineGrid = new Array<number>();
         this._TotalWinPoint = 0;
         this._UserPointAfter = 0;
         this._GameState = 0;
         this._FreeSpinCount = 0;
         this._LookAt = new Array<number>();
         this._UserPointBefore = 0;
-        this._LevelWin = 0;
         this._BaseLevelWin = 0;
         this._BonusEventCount = 0;
         Object.preventExtensions(this);
@@ -125,28 +126,44 @@ export default class NoLineResult implements INoLineResultModel {
         this._Grid = value;
     }
 
-    get ChangeState(): number {
-        return this._ChangeState;
+    get SecretState(): number {
+        return this._SecretState;
     }
 
-    set ChangeState(value: number) {
-        this._ChangeState = value;
+    set SecretState(value: number) {
+        this._SecretState = value;
     }
 
-    get Change(): Array<number> {
-        return this._Change;
+    get SecretChange(): Array<number> {
+        return this._SecretChange;
     }
 
-    set Change(value: Array<number>) {
-        this._Change = value;
+    set SecretChange(value: Array<number>) {
+        this._SecretChange = value;
     }
 
-    get GridWin(): Array<number> {
-        return this._GridWin;
+    get SecretSymbol(): number {
+        return this._SecretSymbol;
     }
 
-    set GridWin(value: Array<number>) {
-        this._GridWin = value;
+    set SecretSymbol(value: number) {
+        this._SecretSymbol = value;
+    }
+
+    get LineWin(): Array<number> {
+        return this._LineWin;
+    }
+
+    set LineWin(value: Array<number>) {
+        this._LineWin = value;
+    }
+
+    get LineGrid(): Array<number> {
+        return this._LineGrid;
+    }
+
+    set LineGrid(value: Array<number>) {
+        this._LineGrid = value;
     }
 
     get TotalWinPoint(): number {
@@ -195,14 +212,6 @@ export default class NoLineResult implements INoLineResultModel {
 
     set UserPointBefore(value: number) {
         this._UserPointBefore = value;
-    }
-
-    get LevelWin(): number {
-        return this._LevelWin;
-    }
-
-    set LevelWin(value: number) {
-        this._LevelWin = value;
     }
 
     get BaseLevelWin(): number {

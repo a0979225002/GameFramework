@@ -1,13 +1,13 @@
 /**
  * @Author XIAO-LI-PIN
- * @Description 無線一般狀態封包
- * @Date 2021-05-31 下午 01:41
+ * @Description 有線免費狀態封包
+ * @Date 2021-06-03 下午 12:04
  * @Version 1.0
  */
-export default class NoLineResult implements INoLineResultModel {
+export default class HasLineFreeResult implements IHasLineFreeResultModule {
 
     /**
-     * 0: 押注成功 1:遊戲狀態不符 2:超過
+     * 0: 押注成功 1: 非免費時間押注
      * @type {number}
      * @private
      */
@@ -19,7 +19,7 @@ export default class NoLineResult implements INoLineResultModel {
      */
     private _Grid: Array<number>;
     /**
-     * 是否有鬼牌擴展 0:沒有 1:有
+     * 是否有鬼牌 0:沒有 1:有
      * @type {number}
      * @private
      */
@@ -30,12 +30,19 @@ export default class NoLineResult implements INoLineResultModel {
      * @private
      */
     private _Change: Array<number>;
+
     /**
-     * 哪幾格贏 0:沒贏 1:贏
+     * 每條線贏分
      * @type {Array<number>}
-     * @private
      */
-    private _GridWin: Array<number>;
+    private _LineWin: Array<number>;
+
+    /**
+     * 每條線贏幾格
+     * @type {Array<number>}
+     */
+    private _LineGrid: Array<number>;
+
     /**
      * 總贏得金額 (0:輸了 大於0:贏了 )
      * @type {number}
@@ -55,11 +62,17 @@ export default class NoLineResult implements INoLineResultModel {
      */
     private _GameState: number;
     /**
-     * 免費遊戲次數 (0:沒有 1~99次)
+     * 剩餘免費遊戲次數 (0:沒有 1~99次)
      * @type {number}
      * @private
      */
-    private _FreeSpinCount: number;
+    private _Count: number;
+    /**
+     * 免費遊戲累計贏分
+     * @type {number}
+     * @private
+     */
+    private _FreeSpinWin: number;
     /**
      * 瞇牌0:不用 1:瞇牌效果
      * @type {Array<number>}
@@ -67,45 +80,48 @@ export default class NoLineResult implements INoLineResultModel {
      */
     private _LookAt: Array<number>;
     /**
-     * 玩家現有金額(押注後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointBefore: number;
-    /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
+     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
      * @type {number}
      * @private
      */
     private _LevelWin: number;
     /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+     * 再中免費遊戲次數 0:無 1~99:次
      * @type {number}
      * @private
      */
-    private _BaseLevelWin: number;
+    private _FreeToFree: number;
     /**
-     * 活動轉數
+     * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
      * @type {number}
      * @private
      */
-    private _BonusEventCount: number;
+    private _BaseLevelWin: number
+    /**
+     * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+     * @type {number}
+     * @private
+     */
+    private _FreeLevelWin: number;
 
     constructor() {
+
         this._State = 0;
         this._Grid = new Array<number>();
         this._ChangeState = 0;
         this._Change = new Array<number>();
-        this._GridWin = new Array<number>();
+        this._LineWin = new Array<number>();
+        this._LineGrid = new Array<number>();
         this._TotalWinPoint = 0;
         this._UserPointAfter = 0;
         this._GameState = 0;
-        this._FreeSpinCount = 0;
+        this._Count = 0;
+        this._FreeSpinWin = 0;
         this._LookAt = new Array<number>();
-        this._UserPointBefore = 0;
         this._LevelWin = 0;
+        this._FreeToFree = 0;
         this._BaseLevelWin = 0;
-        this._BonusEventCount = 0;
+        this._FreeLevelWin = 0;
         Object.preventExtensions(this);
     }
 
@@ -141,12 +157,20 @@ export default class NoLineResult implements INoLineResultModel {
         this._Change = value;
     }
 
-    get GridWin(): Array<number> {
-        return this._GridWin;
+    get LineWin(): Array<number> {
+        return this._LineWin;
     }
 
-    set GridWin(value: Array<number>) {
-        this._GridWin = value;
+    set LineWin(value: Array<number>) {
+        this._LineWin = value;
+    }
+
+    get LineGrid(): Array<number> {
+        return this._LineGrid;
+    }
+
+    set LineGrid(value: Array<number>) {
+        this._LineGrid = value;
     }
 
     get TotalWinPoint(): number {
@@ -173,12 +197,20 @@ export default class NoLineResult implements INoLineResultModel {
         this._GameState = value;
     }
 
-    get FreeSpinCount(): number {
-        return this._FreeSpinCount;
+    get Count(): number {
+        return this._Count;
     }
 
-    set FreeSpinCount(value: number) {
-        this._FreeSpinCount = value;
+    set Count(value: number) {
+        this._Count = value;
+    }
+
+    get FreeSpinWin(): number {
+        return this._FreeSpinWin;
+    }
+
+    set FreeSpinWin(value: number) {
+        this._FreeSpinWin = value;
     }
 
     get LookAt(): Array<number> {
@@ -189,20 +221,20 @@ export default class NoLineResult implements INoLineResultModel {
         this._LookAt = value;
     }
 
-    get UserPointBefore(): number {
-        return this._UserPointBefore;
-    }
-
-    set UserPointBefore(value: number) {
-        this._UserPointBefore = value;
-    }
-
     get LevelWin(): number {
         return this._LevelWin;
     }
 
     set LevelWin(value: number) {
         this._LevelWin = value;
+    }
+
+    get FreeToFree(): number {
+        return this._FreeToFree;
+    }
+
+    set FreeToFree(value: number) {
+        this._FreeToFree = value;
     }
 
     get BaseLevelWin(): number {
@@ -213,11 +245,11 @@ export default class NoLineResult implements INoLineResultModel {
         this._BaseLevelWin = value;
     }
 
-    get BonusEventCount(): number {
-        return this._BonusEventCount;
+    get FreeLevelWin(): number {
+        return this._FreeLevelWin;
     }
 
-    set BonusEventCount(value: number) {
-        this._BonusEventCount = value;
+    set FreeLevelWin(value: number) {
+        this._FreeLevelWin = value;
     }
 }

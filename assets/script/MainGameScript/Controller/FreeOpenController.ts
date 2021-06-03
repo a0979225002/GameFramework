@@ -22,7 +22,7 @@ export default class FreeOpenController extends AGenericTemplate {
     private resolve: (value: (PromiseLike<void> | void)) => void
     private timer: number;
     private CLOSING : boolean;
-    private freeResult:NoLineFreeResult;
+    private freeResult:INoLineFreeResultModel;
     public static instance: FreeOpenController;
 
     public onCreate() {

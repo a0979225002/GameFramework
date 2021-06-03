@@ -131,7 +131,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      */
     protected betUpEventListener() {
         let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
-        let afterBetIndex = ++beforeBetIndex;
+        let afterBetIndex = beforeBetIndex+1;
         if (afterBetIndex > this.tableInfo.LineBet.length - 1) {
             afterBetIndex = 0;
         }
@@ -145,7 +145,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      */
     protected betDownEventListener() {
         let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
-        let afterBetIndex = --beforeBetIndex;
+        let afterBetIndex = beforeBetIndex-1;
         if (afterBetIndex < 0) {
             afterBetIndex = this.tableInfo.LineBet.length - 1;
         }

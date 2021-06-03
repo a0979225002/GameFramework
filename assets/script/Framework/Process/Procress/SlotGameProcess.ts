@@ -10,7 +10,7 @@ export default class SlotGameProcess implements ISlotGameProcess {
      * @type {Set<Function>}
      * @private
      */
-    private readonly process: Set<() => Promise<void>>;
+    private readonly process: Set<() => Promise<void>|void>;
     /**
      * 流程執行
      * @type {ISlotProcedureExecutionContainer}
@@ -65,9 +65,7 @@ export default class SlotGameProcess implements ISlotGameProcess {
     }
 
     onChangeStatus(): this {
-
         this.process.add(this._executionContainer.onChangeStatus);
-
         return this;
     }
 

@@ -9,9 +9,7 @@ cc.Class({
     extends: cc.Component,
 
     onLoad: function () {
-
         socketJS = this.node.getComponent("Socket");
-
         if (socketSetting.setboolean === true) {
             return;
         }

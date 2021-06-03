@@ -1,21 +1,35 @@
-interface INoLineResultModel extends ISlotResultModel{
+/**
+ * @Author XIAO-LI-PIN
+ * @Description TODO
+ * @Date 2021-06-03 下午 04:58
+ * @Version 1.0
+ */
+interface IExtendHasLineResult extends ISlotResultModel {
 
     /**
      * 15格的資料
      */
     Grid: Array<number>;
     /**
-     * 是否有鬼牌擴展 0:沒有 1:有
+     * 是否有神秘寶箱 0:沒有 1:有
      */
-    ChangeState: number;
+    SecretState: number;
     /**
-     * 15格的資料 換圖 0:不換 1:換
+     * 神秘寶箱位置 0:沒有 1:有
      */
-    Change: Array<number>;
+    SecretChange: Array<number>;
     /**
-     * 哪幾格贏 0:沒贏 1:贏
+     * 神秘寶箱格子圖案
      */
-    GridWin: Array<number>;
+    SecretSymbol:number;
+    /**
+     * 每條線贏分
+     */
+    LineWin: Array<number>;
+    /**
+     * 每條線贏幾格
+     */
+    LineGrid: Array<number>;
     /**
      * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
      */
@@ -35,5 +49,5 @@ interface INoLineResultModel extends ISlotResultModel{
     /**
      * 活動轉數
      */
-    BonusEventCount: number;
+    BonusEventCount:number;
 }

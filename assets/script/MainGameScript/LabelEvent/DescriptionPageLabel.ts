@@ -75,7 +75,7 @@ export default class DescriptionPageLabel extends AGenericTemplate {
     private page3ExampleAnswerV: cc.Label = null;
 
     private gridImg: Map<string, cc.SpriteFrame>;
-    private payTable: Map<number, Map<number, number>>;
+    private payTable: object;
     protected tableInfo: NoLineTableInfo;
 
     protected onCreate() {

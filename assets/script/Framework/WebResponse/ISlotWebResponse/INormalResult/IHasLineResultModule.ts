@@ -1,4 +1,10 @@
-interface INoLineResultModel extends ISlotResultModel{
+/**
+ * @Author XIAO-LI-PIN
+ * @Description TODO
+ * @Date 2021-05-31 下午 03:46
+ * @Version 1.0
+ */
+interface IHasLineResultModule extends ISlotResultModel{
 
     /**
      * 15格的資料
@@ -13,9 +19,13 @@ interface INoLineResultModel extends ISlotResultModel{
      */
     Change: Array<number>;
     /**
-     * 哪幾格贏 0:沒贏 1:贏
+     * 每條線贏分
      */
-    GridWin: Array<number>;
+    LineWin:Array<number>;
+    /**
+     * 每條線贏幾格
+     */
+    LineGrid:Array<number>;
     /**
      * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
      */
@@ -32,8 +42,4 @@ interface INoLineResultModel extends ISlotResultModel{
      * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
      */
     BaseLevelWin: number;
-    /**
-     * 活動轉數
-     */
-    BonusEventCount: number;
 }

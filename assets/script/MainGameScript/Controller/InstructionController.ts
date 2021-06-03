@@ -108,6 +108,8 @@ export default class InstructionController extends AGenericTemplate {
         this.node.destroy();
     }
 
+
+
     private sceneDirectionObserverListener(): SceneDirectionChangeObserver {
 
         return new SceneDirectionChangeObserver((type) => {

@@ -92,16 +92,13 @@ export default class MainGameLabel extends AGenericTemplate {
         this.gameLineLabelH.string = "243";
         this.gameLineLabelV.string = "243";
 
-        //初始更新user 金額,接收tableInfo參數時,尚未實例化該類,因此初始更新USER TOTAL BET 失效
+        //初始化 userConfig設定的初始user下注金額
         this.userTotalBetLabelH.string =
             String(this.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet]);
-
-        //初始化 userConfig設定的初始user下注金額
         this.userTotalBetLabelV.string =
             String(this.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet]);
 
         //初始更新user 金額,接收tableInfo參數時,尚未實例化該類,因此初始更新USER MONEY 失效
-        //需手動更新
         let numberFormat = new Intl.NumberFormat().format(SlotGameManager.instance.userMoney);
         this.userMoneyLabelV.string = String(numberFormat);
         this.userMoneyLabelH.string = String(numberFormat);
@@ -167,7 +164,6 @@ export default class MainGameLabel extends AGenericTemplate {
 
     private getUserWinPointStateObserver(): UserWinPointStateObserver {
         return new UserWinPointStateObserver((winPoint, level) => {
-            cc.log(winPoint, level);
             let numberFormat = new Intl.NumberFormat().format(winPoint);
             this.winPointLabelV.string = String(numberFormat);
             this.winPointLabelH.string = String(numberFormat);

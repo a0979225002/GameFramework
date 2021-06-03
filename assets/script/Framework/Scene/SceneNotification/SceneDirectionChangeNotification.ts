@@ -30,6 +30,11 @@ export default class SceneDirectionChangeNotification implements INotificationMa
         return this._instance;
     }
 
+    /**
+     * 添加scene,更換方向時,推播事件
+     * @param {SceneDirectionChangeObserver} observer : 推撥對象
+     * @param {boolean} isPermanent
+     */
     subscribe(observer: SceneDirectionChangeObserver, isPermanent: boolean) {
         if (this.observer.has(observer)) {
             ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該類已註冊過該scene方向更改監聽事件,請檢察`)

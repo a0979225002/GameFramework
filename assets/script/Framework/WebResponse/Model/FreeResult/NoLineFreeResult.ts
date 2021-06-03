@@ -1,159 +1,239 @@
-export default class NoLineFreeResult implements ISlotFreeResultModel{
-    
-    private _BaseLevelWin : number
-    private _Change : Array<number>;
-    private _ChangeState : number;
-    private _Count : number;
-    private _FreeLevelWin : number;
-    private _FreeSpinWin : number;
-    private _FreeToFree : number;
-    private _GameState : number;
-    private _Grid : Array<number>;
-    private _GridWin : Array<number>;
-    private _LevelWin : number;
-    private _LookAt : Array<number>;
-    private _State : number;
-    private _TotalWinPoint : number;
-    private _UserPointAfter : number;
-    
+/**
+ * @Author XIAO-LI-PIN
+ * @Description 無線免費狀態封包
+ * @Date 2021-06-03 下午 12:04
+ * @Version 1.0
+ */
+export default class NoLineFreeResult implements INoLineFreeResultModel {
+
+    /**
+     * 0: 押注成功 1: 非免費時間押注
+     * @type {number}
+     * @private
+     */
+    private _State: number;
+    /**
+     * 15格的資料
+     * @type {Array<number>}
+     * @private
+     */
+    private _Grid: Array<number>;
+    /**
+     * 是否有鬼牌 0:沒有 1:有
+     * @type {number}
+     * @private
+     */
+    private _ChangeState: number;
+    /**
+     * 15格的資料 換圖 0:不換 1:換
+     * @type {Array<number>}
+     * @private
+     */
+    private _Change: Array<number>;
+    /**
+     * 哪幾格贏 0:沒贏 1:贏
+     * @type {Array<number>}
+     * @private
+     */
+    private _GridWin: Array<number>;
+    /**
+     * 總贏得金額 (0:輸了 大於0:贏了 )
+     * @type {number}
+     * @private
+     */
+    private _TotalWinPoint: number;
+    /**
+     * 玩家現有金額(贏分後)
+     * @type {number}
+     * @private
+     */
+    private _UserPointAfter: number;
+    /**
+     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
+     * @type {number}
+     * @private
+     */
+    private _GameState: number;
+    /**
+     * 剩餘免費遊戲次數 (0:沒有 1~99次)
+     * @type {number}
+     * @private
+     */
+    private _Count: number;
+    /**
+     * 免費遊戲累計贏分
+     * @type {number}
+     * @private
+     */
+    private _FreeSpinWin: number;
+    /**
+     * 瞇牌0:不用 1:瞇牌效果
+     * @type {Array<number>}
+     * @private
+     */
+    private _LookAt: Array<number>;
+    /**
+     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
+     * @type {number}
+     * @private
+     */
+    private _LevelWin: number;
+    /**
+     * 再中免費遊戲次數 0:無 1~99:次
+     * @type {number}
+     * @private
+     */
+    private _FreeToFree: number;
+    /**
+     * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+     * @type {number}
+     * @private
+     */
+    private _BaseLevelWin: number
+    /**
+     * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+     * @type {number}
+     * @private
+     */
+    private _FreeLevelWin: number;
+
     constructor() {
-        
-        this._BaseLevelWin = 0;
-        this._Change = new Array<number>();
-        this._ChangeState = 0;
-        this._Count = 0;
-        this._FreeLevelWin = 0;
-        this._FreeSpinWin = 0;
-        this._FreeToFree = 0;
-        this._GameState = 0;
-        this._Grid = new Array<number>();
-        this._GridWin = new Array<number>();
-        this._LevelWin = 0;
-        this._LookAt = new Array<number>();
+
         this._State = 0;
+        this._Grid = new Array<number>();
+        this._ChangeState = 0;
+        this._Change = new Array<number>();
+        this._GridWin = new Array<number>();
         this._TotalWinPoint = 0;
         this._UserPointAfter = 0;
-        
+        this._GameState = 0;
+        this._Count = 0;
+        this._FreeSpinWin = 0;
+        this._LookAt = new Array<number>();
+        this._LevelWin = 0;
+        this._FreeToFree = 0;
+        this._BaseLevelWin = 0;
+        this._FreeLevelWin = 0;
         Object.preventExtensions(this);
     }
-    
-    public get BaseLevelWin() : number {
-        return this._BaseLevelWin
+
+    get State(): number {
+        return this._State;
     }
-    
-    public set BaseLevelWin(value : number) {
-        this._BaseLevelWin = value
+
+    set State(value: number) {
+        this._State = value;
     }
-    
-    public get Change() : Array<number> {
-        return this._Change
+
+    get Grid(): Array<number> {
+        return this._Grid;
     }
-    
-    public set Change(value : Array<number>) {
-        this._Change = value
+
+    set Grid(value: Array<number>) {
+        this._Grid = value;
     }
-    
-    public get ChangeState() : number {
-        return this._ChangeState
+
+    get ChangeState(): number {
+        return this._ChangeState;
     }
-    
-    public set ChangeState(value : number) {
-        this._ChangeState = value
+
+    set ChangeState(value: number) {
+        this._ChangeState = value;
     }
-    
-    public get Count() : number {
-        return this._Count
+
+    get Change(): Array<number> {
+        return this._Change;
     }
-    
-    public set Count(value : number) {
-        this._Count = value
+
+    set Change(value: Array<number>) {
+        this._Change = value;
     }
-    
-    public get FreeLevelWin() : number {
-        return this._FreeLevelWin
+
+    get GridWin(): Array<number> {
+        return this._GridWin;
     }
-    
-    public set FreeLevelWin(value : number) {
-        this._FreeLevelWin = value
+
+    set GridWin(value: Array<number>) {
+        this._GridWin = value;
     }
-    
-    public get FreeSpinWin() : number {
-        return this._FreeSpinWin
+
+    get TotalWinPoint(): number {
+        return this._TotalWinPoint;
     }
-    
-    public set FreeSpinWin(value : number) {
-        this._FreeSpinWin = value
+
+    set TotalWinPoint(value: number) {
+        this._TotalWinPoint = value;
     }
-    
-    public get FreeToFree() : number {
-        return this._FreeToFree
+
+    get UserPointAfter(): number {
+        return this._UserPointAfter;
     }
-    
-    public set FreeToFree(value : number) {
-        this._FreeToFree = value
+
+    set UserPointAfter(value: number) {
+        this._UserPointAfter = value;
     }
-    
-    public get GameState() : number {
-        return this._GameState
+
+    get GameState(): number {
+        return this._GameState;
     }
-    
-    public set GameState(value : number) {
-        this._GameState = value
+
+    set GameState(value: number) {
+        this._GameState = value;
     }
-    
-    public get Grid() : Array<number> {
-        return this._Grid
+
+    get Count(): number {
+        return this._Count;
     }
-    
-    public set Grid(value : Array<number>) {
-        this._Grid = value
+
+    set Count(value: number) {
+        this._Count = value;
     }
-    
-    public get GridWin() : Array<number> {
-        return this._GridWin
+
+    get FreeSpinWin(): number {
+        return this._FreeSpinWin;
     }
-    
-    public set GridWin(value : Array<number>) {
-        this._GridWin = value
+
+    set FreeSpinWin(value: number) {
+        this._FreeSpinWin = value;
     }
-    
-    public get LevelWin() : number {
-        return this._LevelWin
+
+    get LookAt(): Array<number> {
+        return this._LookAt;
     }
-    
-    public set LevelWin(value : number) {
-        this._LevelWin = value
+
+    set LookAt(value: Array<number>) {
+        this._LookAt = value;
     }
-    
-    public get LookAt() : Array<number> {
-        return this._LookAt
+
+    get LevelWin(): number {
+        return this._LevelWin;
     }
-    
-    public set LookAt(value : Array<number>) {
-        this._LookAt = value
+
+    set LevelWin(value: number) {
+        this._LevelWin = value;
     }
-    
-    public get State() : number {
-        return this._State
+
+    get FreeToFree(): number {
+        return this._FreeToFree;
     }
-    
-    public set State(value : number) {
-        this._State = value
+
+    set FreeToFree(value: number) {
+        this._FreeToFree = value;
     }
-    
-    public get TotalWinPoint() : number {
-        return this._TotalWinPoint
+
+    get BaseLevelWin(): number {
+        return this._BaseLevelWin;
     }
-    
-    public set TotalWinPoint(value : number) {
-        this._TotalWinPoint = value
+
+    set BaseLevelWin(value: number) {
+        this._BaseLevelWin = value;
     }
-    
-    public get UserPointAfter() : number {
-        return this._UserPointAfter
+
+    get FreeLevelWin(): number {
+        return this._FreeLevelWin;
     }
-    
-    public set UserPointAfter(value : number) {
-        this._UserPointAfter = value
+
+    set FreeLevelWin(value: number) {
+        this._FreeLevelWin = value;
     }
 }

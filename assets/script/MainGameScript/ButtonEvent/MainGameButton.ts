@@ -379,7 +379,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
      */
     @Effect("BtnClick")
     private updateTotalBetEvent(beforeIndex: number, afterIndex: number) {
-
+        cc.log(beforeIndex,afterIndex,this.betButtonToArray)
         let beforeBetNode = this.betButtonToArray[beforeIndex].getComponent(cc.Button);
         let afterBetNode = this.betButtonToArray[afterIndex].getComponent(cc.Button);
 

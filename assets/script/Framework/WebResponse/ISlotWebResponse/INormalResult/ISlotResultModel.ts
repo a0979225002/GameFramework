@@ -1,7 +1,8 @@
+
 /**
  * @Author XIAO-LI-PIN
- * @Description TODO
- * @Date 2021-05-17 上午 11:56
+ * @Description (介面)所有類型Slot一般狀態接收封包的父類
+ * @Date 2021-05-31 下午 03:45
  * @Version 1.0
  */
 interface ISlotResultModel {

@@ -14,7 +14,6 @@ import {socketJS} from "../../Socket/Socket";
 import SocketSetting from "../../Socket/SocketSetting";
 import MenuPageButton from "./MenuPageButton";
 
-
 interface GetGameHistory {
     Day: number,         //要拿取的紀錄天數
     Page: number,        //當前在第幾頁
@@ -81,7 +80,7 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
     protected progressTextV: cc.Label = null;
 
     //日期存放
-    private dateToArray: Array<number> = [1, 5, 10];
+    private readonly dateToArray: Array<number> = [1, 5, 10];
     //Response server的紀錄物件
     private getGameHistoryH: GetGameHistory;
     //Response server的紀錄物件
@@ -92,18 +91,15 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
     private getHistoryDetailV: GetHistoryDetail;
 
     //紀錄頁使用顏色
-    private color: { RED: cc.Color; GRAY: cc.Color; WHITE: cc.Color; BLUE: cc.Color; DARK_YELLOW: cc.Color; DARK_RED: cc.Color; BLACK: cc.Color; YELLOW: cc.Color; DARK_GRAY: cc.Color; DARK_BLUE: cc.Color };
+    private readonly color: { RED: cc.Color; GRAY: cc.Color; WHITE: cc.Color; BLUE: cc.Color; DARK_YELLOW: cc.Color; DARK_RED: cc.Color; BLACK: cc.Color; YELLOW: cc.Color; DARK_GRAY: cc.Color; DARK_BLUE: cc.Color };
     public static instance: RecordPageButton;
     private timer: number;
     private delayTime: number;
     private gameHistoryData: GameHistoryData;
     private nowDay: DayType;
 
-
-    protected onCreate() {
-
-        RecordPageButton.instance = this;
-
+    constructor() {
+        super();
         this.color = {
             DARK_BLUE: cc.color().fromHEX("#226565"),
             BLUE: cc.color().fromHEX("#30a2a2"),
@@ -115,7 +111,11 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
             DARK_GRAY: cc.color().fromHEX("#313131"),
             GRAY: cc.color().fromHEX("#777777"),
             WHITE: cc.color().fromHEX("#FFFFFF"),
-        }
+        };
+    }
+
+    protected onCreate() {
+        RecordPageButton.instance = this;
         this.showDetailEventListener();                                                     //顯示祥單監聽器
         this.addListViewItemTouchEventListener();                                           //ListView 內的Item 按鈕監聽
 
@@ -381,10 +381,8 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
      * @private
      */
     private updateNullDataState(listViewItemNode: cc.Node, text: string) {
-
         let colorBg: cc.Color;
         let colorText: cc.Color;
-        cc.log(this.color);
         switch (this.nowDay) {
             case DayType.ONE_DAY:
                 colorBg = this.color.DARK_BLUE;
@@ -428,7 +426,6 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
             }
 
         } else {
-
             //確認能否更動下一頁按鈕樣式
             if (dataAmount >= 10) {
                 this.nextRecordButtonV.node.color = this.color.WHITE;

@@ -22,8 +22,8 @@ export default class SlotController extends ASlotInitializeTemplate {
     private gridAnimation: cc.AnimationClip[] = [];
     protected gridNodeToMap: Map<number, Array<cc.Node>>;
     protected girdSpriteToMap: Map<number, Array<cc.Sprite>>;
-    private normalResult: NoLineResult;
-    private freeResult: NoLineFreeResult;
+    protected normalResult: NoLineResult;
+    protected freeResult: NoLineFreeResult;
     private tableInfo:NoLineTableInfo;
     public static instance: SlotController;
 

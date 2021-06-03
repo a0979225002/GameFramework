@@ -14,6 +14,7 @@ import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from './MainGameButton'
 import RecordPageButton from "./RecordPageButton";
+
 const {ccclass, property} = cc._decorator;
 
 enum UserNowPage {
@@ -261,6 +262,9 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
             this.effectIconH.color = this.color.YELLOW;
             this.effectIconV.color = this.color.YELLOW;
         }
+
+        //初始化自動模式按鈕樣式
+        this.checkAutoNode(SlotGameManager.instance.autoType,true);
 
         //拿取初始的押住index
         let betIndex = SlotGameManager.instance.userBetPoint.LineBet;

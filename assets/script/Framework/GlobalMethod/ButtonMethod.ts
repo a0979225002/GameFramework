@@ -9,7 +9,6 @@ export default class ButtonMethod {
      */
     static addButtonEvent(buttonNode: cc.Button, methodName: string, self: any, customEventData?: any) {
         //手動添加監聽事件
-
         let thisNode = self.node;
         let scriptName = cc.js.getClassName(self);
         let click_event = new cc.Component.EventHandler(); //給予一個事件

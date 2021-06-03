@@ -1,13 +1,13 @@
 /**
  * @Author XIAO-LI-PIN
- * @Description 有線一般狀態封包
- * @Date 2021-05-31 下午 01:41
+ * @Description 擴展類有線免費狀態封包
+ * @Date 2021-06-03 下午 04:51
  * @Version 1.0
  */
-export default class HasLineResult implements IHasLineResultModule {
+export default class ExtendHasLineFreeResult implements IExtendHasLineFreeResult{
 
     /**
-     * 0: 押注成功 1:遊戲狀態不符 2:超過
+     * 0: 押注成功 1: 非免費時間押注
      * @type {number}
      * @private
      */
@@ -18,30 +18,31 @@ export default class HasLineResult implements IHasLineResultModule {
      * @private
      */
     private _Grid: Array<number>;
+
     /**
-     * 是否有鬼牌擴展 0:沒有 1:有
-     * @type {Array<number>}
-     * @private
-     */
-    private _Change: Array<number>;
-    /**
-     * 15格的資料 換圖 0:不換 1:換
+     * 黏性圖標編號
      * @type {number}
-     * @private
      */
-    private _ChangeState: number;
+    private _StickySymbol: number;
+
+    /**
+     * 黏性圖標位置
+     * @type {Array<number>}
+     */
+    private _StickyChange: Array<number>;
+
     /**
      * 每條線贏分
      * @type {Array<number>}
-     * @private
      */
     private _LineWin: Array<number>;
+
     /**
      * 每條線贏幾格
      * @type {Array<number>}
-     * @private
      */
     private _LineGrid: Array<number>;
+
     /**
      * 總贏得金額 (0:輸了 大於0:贏了 )
      * @type {number}
@@ -61,44 +62,61 @@ export default class HasLineResult implements IHasLineResultModule {
      */
     private _GameState: number;
     /**
-     * 免費遊戲次數 (0:沒有 1~99次)
+     * 剩餘免費遊戲次數 (0:沒有 1~99次)
      * @type {number}
      * @private
      */
-    private _FreeSpinCount: number;
+    private _Count: number;
+    /**
+     * 免費遊戲累計贏分
+     * @type {number}
+     * @private
+     */
+    private _FreeSpinWin: number;
     /**
      * 瞇牌0:不用 1:瞇牌效果
      * @type {Array<number>}
      * @private
      */
     private _LookAt: Array<number>;
+
     /**
-     * 玩家現有金額(押注後)
+     * 再中免費遊戲次數 0:無 1~99:次
      * @type {number}
      * @private
      */
-    private _UserPointBefore: number;
+    private _FreeToFree: number;
     /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+     * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
      * @type {number}
      * @private
      */
-    private _BaseLevelWin: number;
+    private _BaseLevelWin: number
+    /**
+     * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+     * @type {number}
+     * @private
+     */
+    private _FreeLevelWin: number;
 
     constructor() {
+
         this._State = 0;
         this._Grid = new Array<number>();
-        this._Change = new Array<number>();
-        this._ChangeState = 0;
+        this._StickySymbol = 0;
+        this._StickyChange = new Array<number>();
         this._LineWin = new Array<number>();
         this._LineGrid = new Array<number>();
         this._TotalWinPoint = 0;
         this._UserPointAfter = 0;
         this._GameState = 0;
-        this._FreeSpinCount = 0;
+        this._Count = 0;
+        this._FreeSpinWin = 0;
         this._LookAt = new Array<number>();
-        this._UserPointBefore = 0;
+
+        this._FreeToFree = 0;
         this._BaseLevelWin = 0;
+        this._FreeLevelWin = 0;
         Object.preventExtensions(this);
     }
 
@@ -119,20 +137,20 @@ export default class HasLineResult implements IHasLineResultModule {
         this._Grid = value;
     }
 
-    get Change(): Array<number> {
-        return this._Change;
+    get StickySymbol(): number {
+        return this._StickySymbol;
     }
 
-    set Change(value: Array<number>) {
-        this._Change = value;
+    set StickySymbol(value: number) {
+        this._StickySymbol = value;
     }
 
-    get ChangeState(): number {
-        return this._ChangeState;
+    get StickyChange(): Array<number> {
+        return this._StickyChange;
     }
 
-    set ChangeState(value: number) {
-        this._ChangeState = value;
+    set StickyChange(value: Array<number>) {
+        this._StickyChange = value;
     }
 
     get LineWin(): Array<number> {
@@ -175,12 +193,20 @@ export default class HasLineResult implements IHasLineResultModule {
         this._GameState = value;
     }
 
-    get FreeSpinCount(): number {
-        return this._FreeSpinCount;
+    get Count(): number {
+        return this._Count;
     }
 
-    set FreeSpinCount(value: number) {
-        this._FreeSpinCount = value;
+    set Count(value: number) {
+        this._Count = value;
+    }
+
+    get FreeSpinWin(): number {
+        return this._FreeSpinWin;
+    }
+
+    set FreeSpinWin(value: number) {
+        this._FreeSpinWin = value;
     }
 
     get LookAt(): Array<number> {
@@ -191,12 +217,12 @@ export default class HasLineResult implements IHasLineResultModule {
         this._LookAt = value;
     }
 
-    get UserPointBefore(): number {
-        return this._UserPointBefore;
+    get FreeToFree(): number {
+        return this._FreeToFree;
     }
 
-    set UserPointBefore(value: number) {
-        this._UserPointBefore = value;
+    set FreeToFree(value: number) {
+        this._FreeToFree = value;
     }
 
     get BaseLevelWin(): number {
@@ -205,5 +231,13 @@ export default class HasLineResult implements IHasLineResultModule {
 
     set BaseLevelWin(value: number) {
         this._BaseLevelWin = value;
+    }
+
+    get FreeLevelWin(): number {
+        return this._FreeLevelWin;
+    }
+
+    set FreeLevelWin(value: number) {
+        this._FreeLevelWin = value;
     }
 }
