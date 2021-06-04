@@ -1,6 +1,5 @@
 import ccclass = cc._decorator.ccclass;
 import OverrideComponent from "../OverrideComponent";
-
 /**
  * @Author XIAO-LI-PIN
  * @Description 遊戲初始scene加載前,需優先執行
