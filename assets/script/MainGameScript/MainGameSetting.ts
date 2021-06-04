@@ -1,3 +1,4 @@
+import FreeOpenProcessTest from "../../Test/GameProcess/FreeOpenProcess.test";
 import FreeProcessTest from "../../Test/GameProcess/FreeProcessTest";
 import NormalBigWinProcessTest from "../../Test/GameProcess/NormalBigWinProcess.test";
 import AudioManager from '../Framework/Audio/AudioManager'
@@ -91,7 +92,6 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
     }
 
 
-
     /**
      * 直橫向監聽器
      */
@@ -169,11 +169,14 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         SlotGameManager.instance
             .setProcess(GameType.FREE, freeP)
             .setProcess(GameType.NORMAL, normalP)
+            .setProcess(GameType.NORMAL,this.getFreeStateProcess())
+            .setProcess("FreeOpenTest",this.getFreeOpenTestProcess())
+            .setProcess("BigWinTest",this.getBigWinTestProcess())
             // .setProcess(GameType.NORMAL, this.getTestProcess())
-            // .setProcess("Test2", this.getTestProcess2())
+            // .setProcess("BigWinTest", this.getTestProcess2())
             // .setInitialProcess(normalP);
+            // .setInitialProcess(GameType.NORMAL);
             .setInitialProcess(GameType.NORMAL);
-        // .setInitialProcess(this.getTestProcess2());
     }
 
     /**
@@ -181,7 +184,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * @returns {GameProcess}
      * @private
      */
-    private getTestProcess(): GameProcess {
+    private getFreeStateProcess(): GameProcess {
         // setTimeout(() => {
         //     cc.log("", UserMoneyChangeNotification.instance.getAllSubscribe());
         //     cc.log("UserTotalBetChangeNotification", UserTotalBetChangeNotification.instance.getAllSubscribe());
@@ -204,7 +207,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
      * 測試:
      * @returns {SlotGameProcess}
      */
-    getTestProcess2(): SlotGameProcess {
+    getBigWinTestProcess(): SlotGameProcess {
         let testContainer = new NormalBigWinProcessTest();
         let testProcess = new SlotGameProcess(testContainer);
         return testProcess
@@ -213,6 +216,20 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
             .onRunning()
             .onShowAnswer()
             .onCustomizeEnd()
+            .onChangeStatus();
+    }
+
+    /**
+     * 測試:
+     * @returns {SlotGameProcess}
+     */
+    getFreeOpenTestProcess(): GameProcess {
+        let testContainer = new FreeOpenProcessTest();
+        let testProcess = new GameProcess(testContainer);
+        return testProcess
+            .onCreate()
+            .onExecution()
+            .onEnd()
             .onChangeStatus();
     }
 

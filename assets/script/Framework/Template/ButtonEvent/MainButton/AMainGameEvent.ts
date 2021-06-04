@@ -146,7 +146,6 @@ export default abstract class AMainGameEvent extends OverrideComponent {
         }
         this.scheduleOnce(this.longTouchTimer, 0.5);
     }
-
     /**
      * 長壓計時器事件,如果當前非auto狀態,將會開啟auto 並開始遊戲
      * @returns {Promise<void>}

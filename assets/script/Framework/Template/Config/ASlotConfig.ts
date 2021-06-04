@@ -1,4 +1,6 @@
 import ccclass = cc._decorator.ccclass;
+import OverrideComponent from "../OverrideComponent";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 遊戲初始scene加載前,需優先執行
@@ -6,7 +8,7 @@ import ccclass = cc._decorator.ccclass;
  * @Version 1.0
  */
 @ccclass
-export default abstract class ASlotConfig extends cc.Component {
+export default abstract class ASlotConfig extends OverrideComponent{
 
     /**
      * 自訂義

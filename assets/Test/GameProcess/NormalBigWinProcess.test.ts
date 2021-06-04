@@ -34,7 +34,6 @@ export default class NormalBigWinProcessTest implements ISlotProcedureExecutionC
 
         return new Promise<void>(async (resolve) => {
             this.onCreate();
-
             socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
             //測試BigWin
             WinLevelController.instance.showWinAboveState(1580, resolve);

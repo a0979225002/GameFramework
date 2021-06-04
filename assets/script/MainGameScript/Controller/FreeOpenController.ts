@@ -114,13 +114,13 @@ export default class FreeOpenController extends AGenericTemplate {
      */
     @Music("FBS")
     private removeFreeOpeningAnimation() {
-        this.unscheduleAllCallbacks();
+        this.unschedule(this.removeFreeOpeningAnimation);
+        cc.log(this.getScheduleTag());
         this.freeAnimation.node.off(cc.Node.EventType.TOUCH_END, this.removeFreeOpeningAnimation, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardEvent, this);
         cc.tween(this.node)
             .to(0.4, {opacity: 0})
             .call(() => {
-                cc.log("removeFreeOpeningAnimationCallBack")
                 this.initialFreeOpen();
                 this.resolve();
             })

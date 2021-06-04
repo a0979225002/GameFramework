@@ -29,7 +29,6 @@ export default class MainGameNormalProcess implements ISlotProcedureExecutionCon
             this.slotStyle = SlotStyleManager.instance.slot as NoLineSlot;
         }
     }
-
     public onCustomizeStart(): Promise<void> {
         this.onCreate();
         return new Promise(async (resolve) => {

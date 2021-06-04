@@ -1,63 +1,129 @@
 /**
  * @Author XIAO-LI-PIN
- * @Description (Override)計時器方法,讓該class保存當前被計時器綁定且尚未釋放的方法
+ * @Description (Override)擴展計時器方法,讓該class保存當前被計時器綁定且尚未釋放的方法
  * @Date 2021-05-28 上午 10:11
  * @Version 1.0
  */
-
 export default class OverrideComponent extends cc.Component {
-
+    /**
+     * 保存當前使用中的計時器方法,如果該計時器執行完,會自動清空該方法
+     * @type {Array<Function>}
+     * @private
+     */
     private readonly scheduleTag: Array<Function>;
-
     constructor() {
         super();
         this.scheduleTag = new Array<Function>();
     }
 
+    /**
+     * 獲取當前使用中的計時器
+     * @returns {Array<Function>}
+     */
     getScheduleTag(): Array<Function> {
         return this.scheduleTag;
     }
 
+    /**
+     * 獲取當前還尚未釋放的計時器數量
+     * @returns {number}
+     */
     getScheduleAmount(): number {
         return this.scheduleTag.length;
     }
 
+    /**
+     * 可選循環次數計時器,額外新增增加保存使用中的計時器方法,與原版cocos使用上並無差別
+     * @param {Function} callback : 返回方法
+     * @param {number} interval : 間格時間
+     * @param {number} repeat : 重複次數
+     * @param {number} delay : 延遲時間
+     */
     schedule(callback: Function, interval?: number, repeat?: number, delay?: number) {
-        super.schedule(callback, interval, repeat, delay);
+        super.schedule(this.checkScheduleRepeat(callback,repeat), interval, repeat, delay);
         this.scheduleTag.push(callback);
     }
 
-    @Callback()
+    /**
+     * 確認當前計時器是否有使用重複次數
+     * @protected
+     */
+    protected checkScheduleRepeat(callback, repeat):Function{
+        if(repeat>0){
+            callback.prototype = ()=>{
+                repeat--;
+                if(repeat<0)this.unschedule(callback);
+                callback.apply(this);
+            }
+        }else {
+            return callback;
+        }
+        return callback.prototype;
+    }
+
+    /**
+     * 單次計時器,額外新增增加保存使用中的計時器方法,與原版cocos使用上並無差別
+     * @param {Function} callback : 返回方法
+     * @param {number} delay : 延遲時間
+     */
     scheduleOnce(callback: Function, delay?: number) {
-        this.schedule(callback, 0, 0, delay);
+        callback.prototype = ()=>{
+            this.unschedule(callback.prototype);
+            callback.apply(this);
+        }
+        this.schedule(callback.prototype, 0, 0, delay);
     }
 
-
-    unschedule(callback_fn: Function) {
-        super.unschedule(callback_fn);
-        let index = this.scheduleTag.indexOf(callback_fn);
-        this.scheduleTag.splice(index, 1);
+    /**
+     * 清除單個計時器方法,額外新增刪除使用中的計時器紀錄,與原版cocos使用上並無差別
+     * @param {Function} callback
+     */
+    unschedule(callback: Function) {
+        super.unschedule(this.checkScheduleTag(callback));
+        let index = this.checkScheduleCallFunIndex(callback);
+        if(index>-1){
+            this.scheduleTag.splice(index, 1);
+        }
     }
 
+    /**
+     * 判斷當前方法是否正在等待計時器callback中
+     * @param {Function} callback :以綁定計時器的方法
+     * @returns {number} : 返回當前this.getScheduleTag[]執行中的index位置,如果該陣列內無該方法,返回-1
+     * @protected
+     */
+    protected checkScheduleCallFunIndex(callback:Function):number{
+        let index :number;
+        if(this.getScheduleTag().indexOf(callback)!=-1){
+            index = this.scheduleTag.indexOf(callback);
+        }else if(this.getScheduleTag().indexOf(callback.prototype)!=-1){
+            index = this.scheduleTag.indexOf(callback.prototype);
+        }else {
+            return -1;
+        }
+        return index;
+    }
 
+    /**
+     * 確認當前該方法以甚麼形式執行的,原型練 or 基礎方法
+     * @param {Function} callback
+     * @returns {Function} : 返回當前this.getScheduleTag[]內的該方法,如果該陣列內無該方法,返回undefined
+     * @protected
+     */
+    protected checkScheduleTag(callback:Function):Function{
+        let fun:Function = undefined;
+        let index = this.checkScheduleCallFunIndex(callback);
+        if(index>-1){
+            fun = this.scheduleTag[index];
+        }
+        return fun;
+    }
+
+    /**
+     * 清除當前所有使用中的計時器,額外新增清空計時器數量方法,與原版cocos使用上並無差別
+     */
     unscheduleAllCallbacks() {
         super.unscheduleAllCallbacks();
         this.scheduleTag.length = 0;
-    }
-}
-
-function Callback(){
-    return function (target: any, key: string, descriptor: PropertyDescriptor) {
-        descriptor.enumerable = true;
-        const method = descriptor.value;
-        descriptor.value = function (...any) {
-            let i : Function;
-            for(let fun of any){
-                if(typeof fun === "function"){
-
-                    break;
-                }
-            }
-        }
     }
 }

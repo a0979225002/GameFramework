@@ -4,8 +4,6 @@ import SlotConfigManager from "./Framework/Config/SlotConfigManager";
 import ASlotConfig from "./Framework/Template/Config/ASlotConfig";
 import {ResponseType} from "./Framework/WebResponse/Enum/ResponseType";
 import NoLineFreeResult from "./Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
-import ExtendHasLineResult from "./Framework/WebResponse/Model/NormalResult/ExtendHasLineResult";
-import HasLineResult from "./Framework/WebResponse/Model/NormalResult/HasLineResult";
 import NoLineResult from "./Framework/WebResponse/Model/NormalResult/NoLineResult";
 import NoLineTableInfo from "./Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
 import ResponseHandler from "./Framework/WebResponse/ResponseHandler";
@@ -19,7 +17,6 @@ import {WebResponseManager} from "./Framework/WebResponse/WebResponseManager";
  */
 @ccclass
 export default class MainConfig extends ASlotConfig {
-
     protected onCreat() {
     }
     /**
@@ -53,7 +50,6 @@ export default class MainConfig extends ASlotConfig {
         let freeResponse = new ResponseHandler<NoLineFreeResult>(NoLineFreeResult);
         //初始化遊戲初始資訊json接收保存model
         let tableInfoResponse = new ResponseHandler(NoLineTableInfo);
-
         WebResponseManager
             .instance<NoLineResult>()
             .setResponseModule(ResponseType.NORMAL, normalResponse);
