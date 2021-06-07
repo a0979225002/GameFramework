@@ -1,7 +1,7 @@
 import {GameState, GameType} from "../../script/Framework/Process/Enum/GameState";
 import SlotGameManager from "../../script/Framework/Process/SlotGameManager";
 import {ResponseType} from "../../script/Framework/WebResponse/Enum/ResponseType";
-import NoLineResult from "../../script/Framework/WebResponse/Model/NormalResult/NoLineResult";
+import NoLineResult from "../../script/Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from "../../script/Framework/WebResponse/WebResponseManager";
 import {socketJS} from "../../script/Socket/Socket";
 

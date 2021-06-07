@@ -9,7 +9,7 @@ import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/Sc
 import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/MenuButton/AMenuDoubleButtonTemplate'
 import WebRequestManager from '../../Framework/WebRequest/WebRequestManager'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
+import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from './MainGameButton'

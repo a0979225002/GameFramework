@@ -4,9 +4,9 @@ import UserMoneyChangeNotification from "../../Framework/Process/GameNotificatio
 import UserWinPointStateNotification from "../../Framework/Process/GameNotification/UserWinPointStateNotification";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
-import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
-import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
+import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
 

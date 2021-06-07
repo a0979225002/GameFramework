@@ -1,8 +1,9 @@
-let data: { [x: string]: any; } | null;
+import {SmartFox, SFSObject} from "../../../sfs2x-api-1.7.17";
 
+let data: { [x: string]: any; } | null;
 export default class SocketSetting {
 
-    static serverSfs = {} //Socket連線用
+    private static _serverSfs : SmartFox //Socket連線用
     static setBoolean = false;//讓設定值只設定一次
     static ServerReturnData = {}//Server回傳所有參數
 
@@ -27,7 +28,7 @@ export default class SocketSetting {
         loadLanguageDefaultURL: string,
         loadLanguage: string,
         loadLanguageCount: string,
-        LoginData: string,
+        LoginData: SFSObject,
         UserLanguage: string,
         WarningText: string
         Ratio: number,
@@ -53,7 +54,7 @@ export default class SocketSetting {
         loadLanguageDefaultURL: "",
         loadLanguage: "",
         loadLanguageCount: "",
-        LoginData: "",
+        LoginData: undefined,
         UserLanguage: "",
         WarningText: "",
         Ratio: 0,
@@ -76,5 +77,14 @@ export default class SocketSetting {
             return option;
         }
         return data[option] == null ? option : data[option];
+    }
+
+    static get serverSfs(): SmartFox {
+        return this._serverSfs;
+    }
+
+    static set serverSfs(value: SmartFox) {
+        cc.log(value);
+        this._serverSfs = value;
     }
 }

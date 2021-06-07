@@ -3,10 +3,10 @@ import {AutoType, LanguageType} from "./Framework/Config/Enum/ConfigEnum";
 import SlotConfigManager from "./Framework/Config/SlotConfigManager";
 import ASlotConfig from "./Framework/Template/Config/ASlotConfig";
 import {ResponseType} from "./Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "./Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
-import NoLineResult from "./Framework/WebResponse/Model/NormalResult/NoLineResult";
-import NoLineTableInfo from "./Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
 import ResponseHandler from "./Framework/WebResponse/ResponseHandler";
+import NoLineFreeResult from "./Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "./Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineTableInfo from "./Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from "./Framework/WebResponse/WebResponseManager";
 
 /**
@@ -19,6 +19,7 @@ import {WebResponseManager} from "./Framework/WebResponse/WebResponseManager";
 export default class MainConfig extends ASlotConfig {
     protected onCreat() {
     }
+
     /**
      * 初始化當前遊戲
      */
@@ -35,21 +36,22 @@ export default class MainConfig extends ASlotConfig {
             .setEffectVolume(1)                                 //初始默認效果音量
             .setLanguage(LanguageType.America)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
             .setExternallyLoadURL("http://10.10.0.47/games")    //同上
-            .setFrameWorkDebug(false)                            //正式上線時關閉
+            .setFrameWorkDebug(false)                           //正式上線時關閉
             .builder();
     }
 
     /**
      * 遊戲network response model;
      */
-    protected networkModuleSetting() {
+    protected ResponseDataModelSetting() {
 
         //初始化一般狀態json接收保存model
         let normalResponse = new ResponseHandler<NoLineResult>(NoLineResult);
         //初始化免費狀態json接收保存model
         let freeResponse = new ResponseHandler<NoLineFreeResult>(NoLineFreeResult);
         //初始化遊戲初始資訊json接收保存model
-        let tableInfoResponse = new ResponseHandler(NoLineTableInfo);
+        let tableInfoResponse = new ResponseHandler<NoLineTableInfo>(NoLineTableInfo);
+
         WebResponseManager
             .instance<NoLineResult>()
             .setResponseModule(ResponseType.NORMAL, normalResponse);

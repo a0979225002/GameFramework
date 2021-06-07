@@ -21,7 +21,6 @@ export enum GameState {
 }
 
 export enum GameType {
-
     FREE = 'FREE',
     NORMAL = 'NORMAL',
 }

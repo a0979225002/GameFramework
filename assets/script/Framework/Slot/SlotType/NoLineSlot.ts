@@ -2,8 +2,8 @@ import AudioManager from '../../Audio/AudioManager'
 import {GameState} from '../../Process/Enum/GameState'
 import SlotGameManager from '../../Process/SlotGameManager'
 import {ResponseType} from "../../WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../WebResponse/Model/FreeResult/NoLineFreeResult";
-import NoLineResult from "../../WebResponse/Model/NormalResult/NoLineResult";
+import NoLineFreeResult from "../../WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../WebResponse/SeverDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 import ASlot from '../ASlot'
 import ScrollFocusStateNotification from "../SlotNotifivation/ScrollFocusStateNotification";

@@ -6,9 +6,9 @@ import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import ASlotInitializeTemplate from '../../Framework/Template/Slot/ASlotInitializeTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
-import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
-import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
+import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 
 const {ccclass, property} = cc._decorator;

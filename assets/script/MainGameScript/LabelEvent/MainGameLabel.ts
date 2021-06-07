@@ -12,8 +12,8 @@ import UserWinPointStateObserver from "../../Framework/Process/GameObserver/User
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
-import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
+import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
+import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
 

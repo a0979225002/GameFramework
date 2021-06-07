@@ -1,5 +1,6 @@
 import ccclass = cc._decorator.ccclass;
 import OverrideComponent from "../OverrideComponent";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 遊戲初始scene加載前,需優先執行
@@ -23,12 +24,11 @@ export default abstract class ASlotConfig extends OverrideComponent{
     /**
      * 遊戲network response module;
      */
-    protected abstract networkModuleSetting();
+    protected abstract ResponseDataModelSetting();
 
     protected onLoad() {
+        this.configSetting();                   //所有動作中需最先執行,遊戲初始設定
+        this.ResponseDataModelSetting();        //遊戲初始接收module 創建
         this.onCreat();
-        this.configSetting();               //遊戲初始設定
-        this.networkModuleSetting();        //遊戲初始接收module 創建
     }
-
 }

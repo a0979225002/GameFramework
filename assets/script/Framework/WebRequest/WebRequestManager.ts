@@ -1,6 +1,4 @@
 import {IConfigManager} from "../Config/IConfig/IConfigManager";
-import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
-import ErrorManager from "../Error/ErrorManager";
 
 export default class WebRequestManager implements IWebRequestManager {
 
@@ -64,7 +62,7 @@ export default class WebRequestManager implements IWebRequestManager {
      *  懶漢加載
      *  初始化,只讓一個專案產生一次該class
      */
-    public static setInstance(configManager:IConfigManager){
+    public static setInstance(configManager: IConfigManager) {
         //TODO
     }
 

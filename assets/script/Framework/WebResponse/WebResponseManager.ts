@@ -2,8 +2,8 @@ import {ISlotConfigManager} from "../Config/IConfig/ISlotConfigManager";
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
 import {ResponseType} from "./Enum/ResponseType";
-import IResponseHandler from "./ISlotWebResponse/IResponseHandler";
-import {IWebResponseManager} from "./ISlotWebResponse/IWebResponseManager";
+import IResponseHandler from "./ISeverDataModel/IResponseHandler";
+import {IWebResponseManager} from "./ISeverDataModel/IWebResponseManager";
 
 export class WebResponseManager<T> implements IWebResponseManager<T> {
 

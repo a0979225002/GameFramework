@@ -7,9 +7,10 @@ import AutoStateChangeNotification from "../../Framework/Process/GameNotificatio
 import UserTotalBetChangeNotification from "../../Framework/Process/GameNotification/UserTotalBetChangeNotification";
 import UserTotalBetChangeObserver from "../../Framework/Process/GameObserver/UserTotalBetChangeObserver";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
-import AMainGameDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/MainButton/AMainGameDoubleButtonTemplate'
+import AMainGameDoubleButtonTemplate
+    from '../../Framework/Template/ButtonEvent/MainButton/AMainGameDoubleButtonTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
+import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
 import SlotController from '../Controller/SlotController'

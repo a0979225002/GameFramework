@@ -5,7 +5,7 @@ import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
+import NoLineResult from "../../Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import SlotController from '../Controller/SlotController'

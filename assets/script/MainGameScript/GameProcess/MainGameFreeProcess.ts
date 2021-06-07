@@ -7,8 +7,8 @@ import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/Model/FreeResult/NoLineFreeResult";
-import NoLineResult from "../../Framework/WebResponse/Model/NormalResult/NoLineResult";
+import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from '../ButtonEvent/MainGameButton'

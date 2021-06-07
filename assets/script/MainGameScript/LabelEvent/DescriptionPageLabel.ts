@@ -2,7 +2,7 @@ import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
 import LoadResManager from '../../Framework/LoadResources/LoadResManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineTableInfo from "../../Framework/WebResponse/Model/TableInfo/NoLineTableInfo";
+import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from "../../Framework/WebResponse/WebResponseManager";
 import SocketSetting from '../../Socket/SocketSetting'
 

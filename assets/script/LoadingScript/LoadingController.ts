@@ -1,3 +1,4 @@
+import SlotConfigManager from "../Framework/Config/SlotConfigManager";
 import ButtonMethod from '../Framework/GlobalMethod/ButtonMethod'
 import LanguageMethod from "../Framework/GlobalMethod/LanguageMethod";
 import {LoadType} from '../Framework/LoadResources/Enum/LoadEnum'
@@ -7,6 +8,7 @@ import SceneManager from '../Framework/Scene/SceneManager'
 import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
 import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
 import ALoadingTemplate from '../Framework/Template/Loading/ALoadingTemplate'
+import {socketJS} from "../Socket/Socket";
 import SocketSetting from '../Socket/SocketSetting'
 import NoSleep = require('../Socket/NoSleep');
 
@@ -36,7 +38,7 @@ export default class LoadingController extends ALoadingTemplate {
      * 自定義初始
      */
     public onCreat() {
-
+        socketJS.SFSLoad(SlotConfigManager.instance.gameNumber);
         this.isLogoAnimaEnd = false;                                    //初始化尚未結束logo動畫
         this.progressNum = 0;                                           //初始進度條為0;
         this.progressBar.progress = this.progressNum;                   //初始UI進度條為0

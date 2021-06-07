@@ -7,32 +7,30 @@ let socketJS = null;
 let obj_socket = {};
 cc.Class({
     extends: cc.Component,
-
     onLoad: function () {
-        socketJS = this.node.getComponent("Socket");
         if (socketSetting.setboolean === true) {
             return;
         }
+        socketJS = this.node.getComponent("Socket");
         cc.game.addPersistRootNode(this.node);
         socketSetting.setboolean = true;
         obj_socket.self = this;
         socketSetting.ClientSetObject.serverhost = "210.241.243.206";//serverIP //210.241.243.206
         // socketSetting.ClientSetObject.serverhost = "210.241.243.206";//serverIP //210.241.243.206
         socketSetting.ClientSetObject.serverport = 8080;
-        socketSetting.ClientSetObject.account = "ppg018";//ppg015~020
+        socketSetting.ClientSetObject.account = "";//ppg015~020
         // socketSetting.ClientSetObject.account                = "ppg018";//ppg015~020
         socketSetting.ClientSetObject.password = "123456";//123456
-        socketSetting.ClientSetObject.CocosDebug = true;
-        socketSetting.ClientSetObject.CocosDebug2 = 1;
+        socketSetting.ClientSetObject.CocosDebug = true;//--------!!!-------//
+        socketSetting.ClientSetObject.CocosDebug2 = 1;//--------!!!-------//
         socketSetting.ClientSetObject.LoginState = "2"; // 0註冊 1登入 2遊客 3 測試人員記錄測試
         // socketSetting.ClientSetObject.LoginState             = "3"; // 0註冊 1登入 2遊客 3 測試人員記錄測試
         socketSetting.ClientSetObject.whereRoom = "lobby";
         socketSetting.ClientSetObject.serverZone = "H5Game";//server的樓
-
         socketSetting.ClientSetObject.usercode = "";
         socketSetting.ClientSetObject.userchannel_id = "0";
         socketSetting.ClientSetObject.usergame_id = "";
-        socketSetting.ClientSetObject.usertoken = "a142045002b621dee235f7982d0da78d33742ef781ad74aaf6cce0a14a0d88a6561f36ae070e9383dc35545b472c0e49bce2661618553526";
+        socketSetting.ClientSetObject.usertoken = "ef673226f18053130fa2bbe10f7aaf25fcb26297001309a15a76b3f2ef8cc076861815d15c0da724aca66c684ed96e46135c7e6cc1a7337f";
         // socketSetting.ClientSetObject.usertoken              = "69190146c53e471b0029411571d09dffbb04cdef508904c8d07ec504241372ea183003e4fb67461185f4ffe69affed098aeeca1097b239c7";
         socketSetting.ClientSetObject.userlang = "";
         socketSetting.ClientSetObject.usergameMaker = "";
@@ -41,15 +39,14 @@ cc.Class({
         // socketSetting.ClientSetObject.loadLanguageDefaultURL = "http://210.241.243.206/VAWebsite/game/ce_game_h5/lib/language/";
         socketSetting.ClientSetObject.loadLanguageDefaultURL = "http://10.10.0.47/games/lib/language/";
         socketSetting.ClientSetObject.loadLanguage = socketSetting.ClientSetObject.loadLanguageDefaultURL;
-        socketSetting.ClientSetObject.loadLanguageCount = 0;
-        socketSetting.ClientSetObject.LoginData = "";
+        socketSetting.ClientSetObject.loadLanguageCount = 0;//--------!!!-------//
+        socketSetting.ClientSetObject.LoginData = "";//--------!!!-------//
         socketSetting.ClientSetObject.UserLanguage = LanguageType.Chinese;//語言
 
         //TODO
         WebRequestManager.instance.serverHost = socketSetting.ClientSetObject.serverhost;
         WebRequestManager.instance.UserLanguage = socketSetting.ClientSetObject.UserLanguage;
         WebRequestManager.instance.backHomeURL = socketSetting.ClientSetObject.backHomeURL;
-
 
         // API參數
         cc.log("測試打包文件參數:", window.GameServerSocket);
@@ -83,22 +80,12 @@ cc.Class({
         socketSetting.ClientSetObject.serverGameGroupID = "";//server的桌
         socketSetting.ClientSetObject.RoomName = "";//房間名稱
         socketSetting.ClientSetObject.RoomBetRange = 0;//房間區間
-
-        socketSetting.ClientSetObject.musicpoint = 0.5;
-        socketSetting.ClientSetObject.effectspoint = 0.5;
-        socketSetting.ClientSetObject.effectID = 0;
-        socketSetting.ClientSetObject.musicID = 0;
-        socketSetting.ClientSetObject.musicPlayVal = {};
-        socketSetting.ClientSetObject.soundBoolean = true;//所有音樂(效)
-        socketSetting.ClientSetObject.musicBoolean = true;//所有音樂
-        socketSetting.ClientSetObject.effectsBoolean = true;//所有音效
         socketSetting.ClientSetObject.WarningText = "";//底層警告文字
         socketSetting.ClientSetObject.WarningBoolean = false;//底層警告文字是否常駐
         socketSetting.ClientSetObject.WarningBtnBoolean = true;//警告文字的按鈕是否顯示
 
         socketSetting.ClientSetObject.Ratio = 100;//比值
         socketSetting.ClientSetObject.PingPong = 0;//Ping參數
-        socketSetting.ClientSetObject.sliderpoint = 0.00001;//預設進入音效為靜音
         socketSetting.ClientSetObject.SFSLoadStart = false;//是否已呼過
 
         socketSetting.ClientSetObject.languageLoaded = false;
@@ -155,6 +142,7 @@ cc.Class({
         } else {
             socketSetting.ClientSetObject.serverport = (config.useSSL = 'https:' == document.location.protocol) ? 8443 : 8080;
         }
+
         config.host = socketSetting.ClientSetObject.serverhost;
         config.port = socketSetting.ClientSetObject.serverport;
         config.zone = socketSetting.ClientSetObject.serverZone;
@@ -175,7 +163,7 @@ cc.Class({
         socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.OBJECT_MESSAGE, this.onObjectMessage, this);//單幣別廣播(Zone)
         socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.MODERATOR_MESSAGE, this.onModeratorMessage, this);//單幣別廣播(Zone)
         //下注監聽器
-        socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this.SFSBuffer);
+        socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this.SFSBuffer,this);
         socketSetting.serverSfs.connect();
     },
     //連線成功
@@ -254,46 +242,10 @@ cc.Class({
     },
     //SmartFox Login 登入
     SFSLogin: function () {
-        // console.log("password:",socketSetting.ClientSetObject.password);
-        // console.log("password:",typeof socketSetting.ClientSetObject.password);
-        //
-        // console.log("usercode:",socketSetting.ClientSetObject.usercode);
-        // console.log("usercode:",typeof socketSetting.ClientSetObject.usercode);
-        //
-        // console.log("userchannel_id:",socketSetting.ClientSetObject.userchannel_id);
-        // console.log("userchannel_id:",typeof socketSetting.ClientSetObject.userchannel_id);
-        //
-        // console.log("usergame_id:",socketSetting.ClientSetObject.usergame_id);
-        // console.log("usergame_id:",typeof socketSetting.ClientSetObject.usergame_id);
-        //
-        // console.log("usertoken:",socketSetting.ClientSetObject.usertoken);
-        // console.log("usertoken:",typeof socketSetting.ClientSetObject.usertoken);
-        //
-        // console.log("userlang:",socketSetting.ClientSetObject.userlang);
-        // console.log("userlang:",typeof socketSetting.ClientSetObject.userlang);
-        //
-        // console.log("usergameMaker:",socketSetting.ClientSetObject.usergameMaker);
-        // console.log("usergameMaker:",typeof socketSetting.ClientSetObject.usergameMaker);
-        //
-        // console.log("password:",socketSetting.ClientSetObject.password);
-        // console.log("password:",typeof socketSetting.ClientSetObject.password);
-        //
-        // console.log("socketSetting.ClientSetObject.account",socketSetting.ClientSetObject.account);
-        // console.log("socketSetting.ClientSetObject.account",typeof socketSetting.ClientSetObject.account);
-        //
-        // console.log("socketSetting.ClientSetObject.password",socketSetting.ClientSetObject.password);
-        // console.log("socketSetting.ClientSetObject.password",typeof socketSetting.ClientSetObject.password);
-        //
-        // console.log("socketSetting.ClientSetObject.LoginData",socketSetting.ClientSetObject.LoginData);
-        // console.log("socketSetting.ClientSetObject.LoginData",typeof socketSetting.ClientSetObject.LoginData);
-        //
-        // console.log("socketSetting.ClientSetObject.serverZon",socketSetting.ClientSetObject.serverZone);
-        // console.log("socketSetting.ClientSetObject.serverZon",typeof socketSetting.ClientSetObject.serverZone);
-
-
         socketSetting.ClientSetObject.LoginData = new SFS2X.SFSObject();
         socketSetting.ClientSetObject.LoginData.putUtfString("LoginState", socketSetting.ClientSetObject.LoginState);
         if (socketSetting.ClientSetObject.LoginState == "0") {
+
             socketSetting.ClientSetObject.LoginData.putUtfString("CreatAccount", socketSetting.Creat.CreatAccount);
             socketSetting.ClientSetObject.LoginData.putUtfString("CreatPassword", socketSetting.Creat.CreatPassword);
             socketSetting.ClientSetObject.LoginData.putUtfString("CreatNickName", socketSetting.Creat.CreatNickName);
@@ -319,6 +271,7 @@ cc.Class({
                 socketSetting.serverSfs.send(new SFS2X.LoginRequest(null, null, socketSetting.ClientSetObject.LoginData, socketSetting.serverZone));
             }
         }
+        cc.log("ddddd",socketSetting.ClientSetObject.LoginState);
     },
     //登入成功
     onLogin: function (event) {
@@ -421,7 +374,6 @@ cc.Class({
         var paramskeyArray = params.getKeysArray();
         socketSetting.ServerReturnData[cmd] = {};
         obj_socket.self.BufferParsing(socketSetting.ServerReturnData[cmd], params, paramskeyArray);
-
         switch (cmd) {
             //=======================================================大廳用封包====================================================
             case "LobbyInfo":
@@ -438,11 +390,10 @@ cc.Class({
                 obj_socket.self.SFSToServer("GameLobbyInfo", buf);
                 if (window.windows != 1) {
                     try {
-                        // cc.log("windows:"+window.windows);
                         window.CocosLoadEnd();
                     } catch (e) {
+                        console.log(e);
                     }
-
                 }
                 break;
             case "GameLobbyInfoResult":
@@ -601,7 +552,7 @@ cc.Class({
     onAdminMessage: function (event) {
         //console.log("onAdminMessage",event.message);
         socketSetting.ServerReturnData.Message = "<color=#ffffff><b>" + event.message + "</b></c>";
-        ResultSortOut.instanceSFSToGame("Marquee");
+        ResultSortOut.instance.SFSToGame("Marquee");
     },
     onObjectMessage: function (event) {
         //console.log("onObjectMessage",event.message);
@@ -804,7 +755,6 @@ function loadScript(url, callback, callBackError) {
     script.src = url;
     document.body.appendChild(script);
 }
-
 export {socketJS};
 
 // module.exports = {
