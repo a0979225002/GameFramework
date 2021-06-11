@@ -1,4 +1,4 @@
-import {IConfigManager} from "../Config/IConfig/IConfigManager";
+import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import ASlot from './ASlot'
@@ -31,7 +31,6 @@ export default class SlotStyleManager implements ISlotStyleManager {
         this.configManager = configManager;
 
         this.style = {
-
             slotTemplate: null,
             slotTurnCount: null,
             slotRowGridCount: null,
@@ -44,9 +43,9 @@ export default class SlotStyleManager implements ISlotStyleManager {
             gridNodeToMap: null,
             gridSpriteToMap: null,
             gridImg: null,
-
         };
     }
+
     /**
      *  懶漢加載
      *  初始化,只讓一個專案產生一次該class
@@ -74,9 +73,7 @@ export default class SlotStyleManager implements ISlotStyleManager {
      * @return {this}
      */
     public setSlotTemplate<T extends new(styleData: StyleData) => ASlot>(slotTemplate: T): this {
-
         this.style.slotTemplate = slotTemplate;
-
         return this;
     }
 
@@ -86,9 +83,7 @@ export default class SlotStyleManager implements ISlotStyleManager {
      * @return {this}
      */
     setSlotTurnCount(count: number): this {
-
         this.style.slotTurnCount = count;
-
         return this
     }
 
@@ -98,9 +93,7 @@ export default class SlotStyleManager implements ISlotStyleManager {
      * @return {this}
      */
     setSlotSpeedUpTurnCount(count: number): this {
-
         this.style.slotSpeedUpTurnCount = count;
-
         return this;
     }
 

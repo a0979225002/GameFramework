@@ -1,8 +1,7 @@
-import ScrollFocusStateNotification from "../../Slot/SlotNotifivation/ScrollFocusStateNotification";
-import ScrollFocusStateObserver from "../../Slot/SlotObserver/ScrollFocusStateObserver";
+import ScrollFocusStateNotification
+    from "../../Listener/NotificationType/GameNotification/ScrollFocusStateNotification";
+import ScrollFocusStateObserver from "../../Listener/ObserverType/GameObserver/ScrollFocusStateObserver";
 import OverrideComponent from "../OverrideComponent";
-
-const {ccclass} = cc._decorator;
 
 /**
  * @Author XIAO-LI-PIN
@@ -10,7 +9,6 @@ const {ccclass} = cc._decorator;
  * @Date 2021-05-26 下午 17:24
  * @Version 1.1
  */
-@ccclass
 export default abstract class ALookAtTemplate extends OverrideComponent {
 
     protected abstract allLookAtEffect: Array<cc.Animation>;

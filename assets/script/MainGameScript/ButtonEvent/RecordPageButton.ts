@@ -1,14 +1,20 @@
 import ccclass = cc._decorator.ccclass;
 import property = cc._decorator.property;
 import {Effect} from "../../Framework/Audio/AudioManager";
-import ButtonMethod from "../../Framework/GlobalMethod/ButtonMethod";
+import Button from "../../Framework/Global/Button";
 import {ServerEventType} from "../../Framework/Listener/Enum/ServerEventType";
 import EventManager from "../../Framework/Listener/EventManager";
 import {SceneDirectionType} from "../../Framework/Scene/Enum/SceneStyle";
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification
+    from "../../Framework/Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver
+    from "../../Framework/Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
 import SceneManager from "../../Framework/Scene/SceneManager";
-import {DayType, GameHistoryData, PageChange} from "../../Framework/Template/ButtonEvent/RecordButton/ARecordButtonEvent";
+import {
+    DayType,
+    GameHistoryData,
+    PageChange
+} from "../../Framework/Template/ButtonEvent/RecordButton/ARecordButtonEvent";
 import ARecordDoubleButtonTemplate from "../../Framework/Template/ButtonEvent/RecordButton/ARecordDoubleButtonTemplate";
 import {socketJS} from "../../Socket/Socket";
 import SocketSetting from "../../Socket/SocketSetting";
@@ -179,14 +185,14 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
         let indexH = 0;
         for (let node of listViewItemsH) {
             let button = node.getComponent(cc.Button);
-            ButtonMethod.addButtonEvent(button, "listViewItemTouchEventH", this, indexH);
+            Button.addButtonEvent(button, "listViewItemTouchEventH", this, indexH);
             indexH++;
         }
 
         let indexV = 0;
         for (let node of listViewItemsV) {
             let button = node.getComponent(cc.Button);
-            ButtonMethod.addButtonEvent(button, "listViewItemTouchEventV", this, indexV);
+            Button.addButtonEvent(button, "listViewItemTouchEventV", this, indexV);
             indexV++;
         }
     }

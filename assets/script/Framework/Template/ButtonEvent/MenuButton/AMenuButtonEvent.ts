@@ -1,15 +1,15 @@
 import AudioManager from '../../../Audio/AudioManager'
 import {AutoType} from '../../../Config/Enum/ConfigEnum'
-import AutoStateChangeNotification from "../../../Process/GameNotification/AutoStateChangeNotification";
-import UserTotalBetChangeNotification from "../../../Process/GameNotification/UserTotalBetChangeNotification";
-import AutoStateChangeObserver from "../../../Process/GameObserver/AutoStateChangeObserver";
-import UserTotalBetChangeObserver from "../../../Process/GameObserver/UserTotalBetChangeObserver";
+import AutoStateChangeNotification
+    from "../../../Listener/NotificationType/GameNotification/AutoStateChangeNotification";
+import UserTotalBetChangeNotification
+    from "../../../Listener/NotificationType/GameNotification/UserTotalBetChangeNotification";
+import AutoStateChangeObserver from "../../../Listener/ObserverType/GameObserver/AutoStateChangeObserver";
+import UserTotalBetChangeObserver from "../../../Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
 import SlotGameManager from '../../../Process/SlotGameManager'
 import {ResponseType} from "../../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from '../../../WebResponse/WebResponseManager'
 import OverrideComponent from "../../OverrideComponent";
-
-const {ccclass} = cc._decorator;
 
 /**
  * @Author XIAO-LI-PIN
@@ -17,7 +17,6 @@ const {ccclass} = cc._decorator;
  * @Date 2021-05-26 上午 15:59
  * @Version 1.1
  */
-@ccclass
 export default abstract class AMenuButtonEvent extends OverrideComponent {
     /**
      * 訂閱自動事件
@@ -31,23 +30,27 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      * @private
      */
     private autoStateChangeObserver: AutoStateChangeObserver;
+
     /**
      * 自訂義初始狀態
      * @protected
      */
     protected abstract onCreate();
+
     /**
      * 背景音樂按鈕事件
      * @param {boolean} isOnMute : 是否靜音
      * @protected
      */
     protected abstract musicEvent(isOnMute: boolean);
+
     /**
      * 效果音樂按鈕事件
      * @param {boolean} isOnMute : 是否靜音
      * @protected
      */
     protected abstract effectEvent(isOnMute: boolean);
+
     /**
      * 自動按鈕事件
      * @param {AutoType} beforeAutoCount : 點擊前的按鈕type
@@ -55,21 +58,25 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      * @protected
      */
     protected abstract autoEvent(beforeAutoCount: AutoType, afterAutoCount: AutoType);
+
     /**
      * 前往設定頁按鈕事件
      * @protected
      */
     protected abstract settingPageTouchEvent();
+
     /**
      * 前往紀錄頁按鈕事件
      * @protected
      */
     protected abstract recordPageTouchEvent();
+
     /**
      * 前往說明頁按鈕事件
      * @protected
      */
     protected abstract descriptionPageEvent();
+
     /**
      * 更換押注事件
      * @param beforeIndex
@@ -77,18 +84,20 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      * @protected
      */
     protected abstract totalBetChangeEvent(beforeIndex, afterIndex)
+
     /**
      * 返回遊戲頁面按鈕事件
      * @protected
      */
     protected abstract goBackTouchEvent();
+
     /**
      * 返回首頁按鈕監聽事件
      * @protected
      */
     protected abstract goHomeTouchEvent();
 
-    protected tableInfo:ITableInfoModel;
+    protected tableInfo: ITableInfoModel;
 
     protected onLoad() {
         this.tableInfo =
@@ -131,7 +140,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      */
     protected betUpEventListener() {
         let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
-        let afterBetIndex = beforeBetIndex+1;
+        let afterBetIndex = beforeBetIndex + 1;
         if (afterBetIndex > this.tableInfo.LineBet.length - 1) {
             afterBetIndex = 0;
         }
@@ -145,7 +154,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      */
     protected betDownEventListener() {
         let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
-        let afterBetIndex = beforeBetIndex-1;
+        let afterBetIndex = beforeBetIndex - 1;
         if (afterBetIndex < 0) {
             afterBetIndex = this.tableInfo.LineBet.length - 1;
         }

@@ -1,9 +1,11 @@
 import {Music} from "../../Framework/Audio/AudioManager";
-import ButtonMethod from '../../Framework/GlobalMethod/ButtonMethod'
-import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
+import Button from '../../Framework/Global/Button'
+import Language from "../../Framework/Global/Language";
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification
+    from "../../Framework/Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver
+    from "../../Framework/Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
 import SceneManager from '../../Framework/Scene/SceneManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
@@ -55,13 +57,13 @@ export default class InstructionController extends AGenericTemplate {
                 break;
         }
 
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.pageH.getComponent(cc.Button),
             "pageTouchListener",
             this
         );
 
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.pageV.getComponent(cc.Button),
             "pageTouchListener",
             this
@@ -84,7 +86,7 @@ export default class InstructionController extends AGenericTemplate {
         this.speedTextH.string = SocketSetting.t("HELP_004");
         this.speedTextV.string = SocketSetting.t("HELP_004");
 
-        LanguageMethod.instance
+        Language.instance
             .updateLabelStyle(this.userMoneyTextH)
             .updateLabelStyle(this.userMoneyTextV)
             .updateLabelStyle(this.menuTextH)

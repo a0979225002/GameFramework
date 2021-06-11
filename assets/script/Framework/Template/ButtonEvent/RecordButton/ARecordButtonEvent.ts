@@ -3,8 +3,6 @@ import EventManager from "../../../Listener/EventManager";
 import {SceneDirectionType} from "../../../Scene/Enum/SceneStyle";
 import OverrideComponent from "../../OverrideComponent";
 
-const {ccclass} = cc._decorator;
-
 enum PageChange {
     NEXT = "NEXT",
     PREVIOUS = "PREVIOUS"
@@ -37,7 +35,6 @@ export interface GameHistoryData {
  * @Date 2021-05-10 下午 02:20
  * @Version 1.0
  */
-@ccclass
 export default abstract class ARecordButtonEvent extends OverrideComponent {
 
     protected isResultOK: boolean;

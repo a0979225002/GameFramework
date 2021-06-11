@@ -1,10 +1,11 @@
 import {AutoType} from '../Config/Enum/ConfigEnum'
 import {UserBetPoint} from "../Config/IConfig/ISlotConfigManager";
 import {GameState, GameType} from "./Enum/GameState";
-import AutoStateChangeObserver from "./GameObserver/AutoStateChangeObserver";
-import SpeedStateChangeObserver from "./GameObserver/SpeedStateChangeObserver";
-import UserMoneyChangeObserver from "./GameObserver/UserMoenyChangeObserver";
-import UserTotalBetChangeObserver from "./GameObserver/UserTotalBetChangeObserver";
+import AutoStateChangeObserver from "../Listener/ObserverType/GameObserver/AutoStateChangeObserver";
+import SpeedStateChangeObserver from "../Listener/ObserverType/GameObserver/SpeedStateChangeObserver";
+import UserMoneyChangeObserver from "../Listener/ObserverType/GameObserver/UserMoenyChangeObserver";
+import UserTotalBetChangeObserver from "../Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description (介面)遊戲管理器,管理當前流程,遊戲當前狀態
@@ -49,11 +50,6 @@ export default interface ISlotGameManager {
     userBetPoint: UserBetPoint;
 
     /**
-     * 是否Server有回傳
-     */
-    isResultOk: boolean;
-
-    /**
      * 執行設定好的流程
      */
     play(): Promise<void>;
@@ -70,13 +66,13 @@ export default interface ISlotGameManager {
      * 更換流程
      * @param {GameType} gameType
      */
-    changeProcess(gameType: GameType | string):void;
+    changeProcess(gameType: GameType | string): void;
 
     /**
      * 設定初始流程
      * @param processName
      */
-    setInitialProcess(processName: string | GameType):void;
+    setInitialProcess(processName: string | GameType): void;
 
 
     /**
@@ -113,7 +109,7 @@ export default interface ISlotGameManager {
      * @param {number} betIndex
      * @returns {UserBetPoint} : 當前用戶押注的回傳server物件狀態
      */
-    updateUserBetPoint(betIndex: number):UserBetPoint;
+    updateUserBetPoint(betIndex: number): UserBetPoint;
 
     /**
      * 更新當前auto次數
@@ -121,7 +117,7 @@ export default interface ISlotGameManager {
      * @param {AutoType} autoType
      * @returns {AutoType} : 當前auto類型
      */
-    updateAutoCount(autoType: AutoType):AutoType;
+    updateAutoCount(autoType: AutoType): AutoType;
 
     /**
      * 更動當前自動狀態
@@ -130,7 +126,7 @@ export default interface ISlotGameManager {
      * 如果需要同步所有auto狀態,建議綁定推播事件更新
      * @returns {boolean} : 是否需要自動
      */
-    updateAuto():boolean;
+    updateAuto(): boolean;
 
     /**
      * 更新當前速度
@@ -139,12 +135,12 @@ export default interface ISlotGameManager {
      * 如果需要同步所有auto狀態,建議綁定推播事件更新
      * @returns {boolean} : 是否需要加速
      */
-    updateSpeed():boolean;
+    updateSpeed(): boolean;
 
     /**
      * 清除堵塞狀態
      * 注意:清除該狀態後,該次的流程即使尚未執行完,也能執行下次流程
      */
-    remake():void;
+    remake(): void;
 
 }

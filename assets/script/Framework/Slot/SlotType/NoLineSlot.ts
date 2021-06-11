@@ -2,11 +2,12 @@ import AudioManager from '../../Audio/AudioManager'
 import {GameState} from '../../Process/Enum/GameState'
 import SlotGameManager from '../../Process/SlotGameManager'
 import {ResponseType} from "../../WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
-import NoLineResult from "../../WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineFreeResult from "../../WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../WebResponse/ServerDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 import ASlot from '../ASlot'
-import ScrollFocusStateNotification from "../SlotNotifivation/ScrollFocusStateNotification";
+import ScrollFocusStateNotification
+    from "../../Listener/NotificationType/GameNotification/ScrollFocusStateNotification";
 import {StyleData} from '../SlotStyleManager'
 
 export default class NoLineSlot extends ASlot {
@@ -38,6 +39,12 @@ export default class NoLineSlot extends ASlot {
      * @private
      */
     private readonly slotGridHeight: number;
+
+    /**
+     * 確認該軸是否有 free 圖標
+     * @param index
+     */
+    private freeIconCount: number;
 
     /**
      * 加速倍率
@@ -157,45 +164,34 @@ export default class NoLineSlot extends ASlot {
      * @param numberOfTimes 監聽當前跑了幾輪,sever回傳答案後才開始計算圈數
      */
     private makeSlotAnimation(index: number, resolve?: () => void, numberOfTimes: number = 0) {
-
         //緩動時間 = 當前一個格子的跑速 * 有幾個格子 * 當前是否加速(無加速 = 1)
         let duration = this.slotGirdSpeed * this.slotRowGridCount / this.speed;
-
         let node = this.slotColumnToTween[index];
-
         //跑老虎機的每列
         cc.tween(node)
             .to(duration, {y: node.y - this.rowData[1]})
             .call(() => {
                 //更新被Mask的Grid,將之移動到原位子
-
                 this.updateGridPosition(this.gridNodeToMap.get(index), index);
-
                 //如果server有回傳答案,將可進入停軸判斷
-                if (SlotGameManager.instance.isResultOk) {
-
+                if (WebResponseManager.instance().isResultOk) {
                     numberOfTimes++;
-
                     // 假如當前需要即停,將直接停止slot
                     if (this.isCanStop(index, resolve)) return;
-
-                    //如果當前是第一列,將判斷是否已達到需轉動的次數
                     if (index == 0 && numberOfTimes == this.checkSlotTurnCount(index)) {
-
+                        //如果當前是第一列,將判斷是否已達到需轉動的次數
                         this.showAnswer(index);
                         this.isSlotEnd[index] = true;
-
                     } else if (
                         index != 0 &&
                         this.isSlotEnd[index - 1] &&
                         numberOfTimes == this.checkSlotTurnCount(index)
                     ) {
-
+                        //如果當前不是第一列,且上一列已經停止時,將判斷該列是否已達到需轉動的次數
                         this.showAnswer(index, resolve);
                         this.isSlotEnd[index] = true;
                         this.setLookAtEventNotify(false, index);
                         AudioManager.instance.effectPlay("SlotStop");
-
                     } else {
                         this.makeSlotAnimation(index, resolve, numberOfTimes);
                     }
@@ -204,22 +200,19 @@ export default class NoLineSlot extends ASlot {
                 }
             })
             .start();
-
     }
 
     private checkSlotTurnCount(index): number {
-
         let count: number;
-
         if (this.isSpeedUp) {
             count = this.slotTurnCount;
         } else if (this.checkLookAt(index)) {
+            //瞇排增加的數量
             count = index * 4 + this.slotTurnCount;
             this.setLookAtEventNotify(true, index);
         } else {
             count = this.slotTurnCount + index;
         }
-
         return count;
     }
 
@@ -233,12 +226,10 @@ export default class NoLineSlot extends ASlot {
      * 檢查是否可以即停
      */
     isCanStop(index: number, resolve: () => void): boolean {
-
         if (this.isSlotImmediateStop) {
             this.showAnswer(index, resolve);
             this.isSlotEnd[index] = true;
             this.setLookAtEventNotify(false, index);
-
             return true;
         }
         return false;
@@ -250,35 +241,26 @@ export default class NoLineSlot extends ASlot {
      * @param columnIndex 當前是第幾列
      */
     private updateGridPosition(rowNodes: Array<cc.Node>, columnIndex: number) {
-
         let rowLength = rowNodes.length - 1;
         let random: number;
         let lastSprite: cc.Sprite;
         let end = this.rowData[0];
-
         for (let i = rowLength; i > end; i--) {
-
             lastSprite = this.gridSpriteToMap.get(columnIndex)[rowLength];
-
             //將該列的陣列中的最後一個sprite 節點 更新到該陣列的第一個位置
             this.gridSpriteToMap.get(columnIndex).unshift(lastSprite);
-
             //刪除陣列中的最後一個 sprite 節點
             this.gridSpriteToMap.get(columnIndex).pop();
-
             //隨機一個數字
             random = Math.floor(Math.random() * this.gridImg.size)
-
             this.gridSpriteToMap.get(columnIndex)[0].spriteFrame =
                 this.gridImg.get(String(random));
-
             //重新給予最後一個陣列中的node 更新 y 位置
             rowNodes[rowLength].y = rowNodes[0].y + this.slotGridHeight;
             //將該列的陣列中的最後一個node 節點 更新到該陣列的第一個位置
             rowNodes.unshift(rowNodes[rowLength]);
             //刪除陣列中的最後一個 node 節點
             rowNodes.pop();
-
         }
     }
 
@@ -292,7 +274,6 @@ export default class NoLineSlot extends ASlot {
         //緩動時間 = 當前一個格子的跑速 * 有幾個格子 * 當前是否加速(無加速 = 1)
         let duration = this.slotGirdSpeed * this.rowData[0] / this.speed;
         let node = this.slotColumnToTween[index];
-
         //跑老虎機的每列
         cc.tween(node)
             .to(duration, {y: node.y - this.rowData[1]})
@@ -311,20 +292,15 @@ export default class NoLineSlot extends ASlot {
      * @private
      */
     private checkLookAt(index: number): boolean {
-
         let lookAt: Array<number>;
         let isShowLookAt: boolean;
-
         if (SlotGameManager.instance.gameState === GameState.FREEING) {
             lookAt = this.freeResult.LookAt;
         } else {
             lookAt = this.normalResult.LookAt;
         }
-
         isShowLookAt = !!lookAt[index];
-
         return isShowLookAt;
-
     }
 
     /**
@@ -333,24 +309,19 @@ export default class NoLineSlot extends ASlot {
      * @param resolve{()=>void} : 當所有列都顯示答案且回彈效果完畢時,通知可以進行下一步
      */
     private sineOutAnimation(index: number, resolve: () => void) {
-
         if ((this.isSpeedUp || this.isSlotImmediateStop) &&
             index == this.slotColumnToTween.length - 1) {
-
             AudioManager.instance.effectPlay("SlotStop");
         } else if (!this.isSpeedUp) {
             AudioManager.instance.effectPlay("SlotStop");
         }
-
         let sineOutHeight = Math.floor(this.styleData.slotGridHeight / 2);
         let node = this.slotColumnToTween[index];
         cc.tween(node)
             .to((this.slotGirdSpeed), {y: node.y - sineOutHeight})
             .by(this.slotGirdSpeed * 6, {y: +sineOutHeight}, {easing: 'bounceOut'})
             .call(() => {
-
                 this.checkFreeIcon(index);
-
                 if (index === this.slotColumnToTween.length - 1) {
                     AudioManager.instance.effectStop("SlotTrun");
                     resolve();
@@ -359,25 +330,15 @@ export default class NoLineSlot extends ASlot {
             .start();
     }
 
-    /**
-     * 確認該軸是否有 free 圖標
-     * @param index
-     */
-    private freeIconCount: number;
-
     checkFreeIcon(index) {
-
         let gridAnswer: Array<number>;
-
         if (SlotGameManager.instance.gameState === GameState.FREEING) {
             gridAnswer = this.freeResult.Grid;
         } else {
             gridAnswer = this.normalResult.Grid;
         }
-
         let start = index * 3;
         let end = start + 3;
-
         for (start; start < end; start++) {
             if (gridAnswer[start] == 10) {
                 this.freeIconCount++;
@@ -405,26 +366,19 @@ export default class NoLineSlot extends ASlot {
      * @private
      */
     private updateGridAnswer(index: number) {
-
         let gridAnswer: Array<number>;
-
         if (SlotGameManager.instance.gameState === GameState.FREEING) {
             gridAnswer = this.freeResult.Grid;
         } else {
             gridAnswer = this.normalResult.Grid;
         }
-
         let start = index * this.slotRowGridCount;
         let end = start + this.slotRowGridCount;
         let gridIndex = 0;
-
         for (start; start < end; start++) {
-
             let answer = gridAnswer[start];
-
             this.gridSpriteToMap.get(index)[gridIndex].spriteFrame
                 = this.gridImg.get(String(answer));
-
             gridIndex++;
         }
     }
@@ -433,13 +387,9 @@ export default class NoLineSlot extends ASlot {
      * 初始化該輪所有狀態
      */
     public initializeState() {
-
         this.isSlotImmediateStop = false;
-
         this.isSpeedUp = this.speed > 1;
-
         this.freeIconCount = 0;
-
         if (!this.isSlotEnd) {
             for (let i = 0; i < this.slotColumnToTween.length; i++) {
                 this.isSlotEnd.push(false);

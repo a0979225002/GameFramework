@@ -1,4 +1,3 @@
-import ccclass = cc._decorator.ccclass;
 import OverrideComponent from "../OverrideComponent";
 
 /**
@@ -7,8 +6,7 @@ import OverrideComponent from "../OverrideComponent";
  * @Date 2021-06-01 下午 04:49
  * @Version 1.0
  */
-@ccclass
-export default abstract class ASlotConfig extends OverrideComponent{
+export default abstract class ASlotConfig extends OverrideComponent {
 
     /**
      * 自訂義

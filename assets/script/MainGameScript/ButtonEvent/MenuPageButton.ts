@@ -1,21 +1,23 @@
 import AudioManager, {Effect, Music} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
-import ButtonMethod from "../../Framework/GlobalMethod/ButtonMethod";
+import Button from "../../Framework/Global/Button";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification
+    from "../../Framework/Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver
+    from "../../Framework/Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
 import AMenuDoubleButtonTemplate from '../../Framework/Template/ButtonEvent/MenuButton/AMenuDoubleButtonTemplate'
 import WebRequestManager from '../../Framework/WebRequest/WebRequestManager'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
+import NoLineTableInfo from "../../Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from './MainGameButton'
 import RecordPageButton from "./RecordPageButton";
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 enum UserNowPage {
 
@@ -198,15 +200,15 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
     setDescriptionButtonListener() {
 
         //上一頁按鈕
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.gameInfoPreviousPageButtonH, "descriptionButtonEvent", this, "previous");
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.gameInfoPreviousPageButtonV, "descriptionButtonEvent", this, "previous");
 
         //下一頁按鈕
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.gameInfoNextPageButtonH, "descriptionButtonEvent", this, "next");
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.gameInfoNextPageButtonV, "descriptionButtonEvent", this, "next");
     }
 

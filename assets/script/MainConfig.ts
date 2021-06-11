@@ -4,9 +4,9 @@ import SlotConfigManager from "./Framework/Config/SlotConfigManager";
 import ASlotConfig from "./Framework/Template/Config/ASlotConfig";
 import {ResponseType} from "./Framework/WebResponse/Enum/ResponseType";
 import ResponseHandler from "./Framework/WebResponse/ResponseHandler";
-import NoLineFreeResult from "./Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
-import NoLineResult from "./Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
-import NoLineTableInfo from "./Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
+import NoLineFreeResult from "./Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "./Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
+import NoLineTableInfo from "./Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from "./Framework/WebResponse/WebResponseManager";
 
 /**
@@ -36,6 +36,7 @@ export default class MainConfig extends ASlotConfig {
             .setEffectVolume(1)                                 //初始默認效果音量
             .setLanguage(LanguageType.America)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
             .setExternallyLoadURL("http://10.10.0.47/games")    //同上
+            .setCocosDebug(cc.debug.DebugMode.INFO)             //cocos 框架 debug設定
             .setFrameWorkDebug(false)                           //正式上線時關閉
             .builder();
     }

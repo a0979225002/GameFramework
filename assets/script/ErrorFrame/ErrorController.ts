@@ -1,4 +1,4 @@
-import LanguageMethod from "../Framework/GlobalMethod/LanguageMethod";
+import Language from "../Framework/Global/Language";
 import AErrorFrameTemplate from '../Framework/Template/Error/AErrorFrameTemplate'
 import {socketJS} from '../Socket/Socket'
 import ErrorManager from "../Framework/Error/ErrorManager";
@@ -28,7 +28,7 @@ class ErrorController extends AErrorFrameTemplate {
 
     protected languageSetting() {
 
-        LanguageMethod.instance
+        Language.instance
             .updateLabelStyle(this.errorButtonLabel)
             .updateLabelStyle(this.errorLabel);
     }

@@ -1,4 +1,4 @@
-import ButtonMethod from '../../../GlobalMethod/ButtonMethod'
+import Button from '../../../Global/Button'
 import AMenuButtonEvent from './AMenuButtonEvent'
 
 /**
@@ -27,7 +27,7 @@ export default abstract class AMenuButtonTemplate extends AMenuButtonEvent {
 
     protected onLoad() {
 
-        ButtonMethod.addButtonEvent(this.musicButton, "musicEvent", this);
+        Button.addButtonEvent(this.musicButton, "musicEvent", this);
 
     }
 

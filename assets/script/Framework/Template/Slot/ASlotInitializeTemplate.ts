@@ -2,14 +2,12 @@ import {ErrorType} from "../../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../../Error/ErrorManager";
 import {ServerEventType} from "../../Listener/Enum/ServerEventType";
 import EventManager from "../../Listener/EventManager";
-import SlotGameManager from "../../Process/SlotGameManager";
 import {ResponseType} from "../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from "../../WebResponse/WebResponseManager";
 import OverrideComponent from "../OverrideComponent";
+import ResponseResultNotification
+    from "../../Listener/NotificationType/ResponseNotifivation/ResponseResultNotification";
 
-const {ccclass} = cc._decorator;
-
-@ccclass
 export default abstract class ASlotInitializeTemplate extends OverrideComponent {
 
     //slot 的列
@@ -54,12 +52,10 @@ export default abstract class ASlotInitializeTemplate extends OverrideComponent 
         this.freeResultEvenResponse();
     }
 
-
     /**
      * 一般狀態回傳事件接收器
      */
     private normalResultResponse(): void {
-
         EventManager.instance.serverEventListener(ServerEventType.BET_RESULT, (target: object) => {
             for (let name of Object.keys(target)) {
                 if (this.normalResult[name] === undefined) {
@@ -72,8 +68,7 @@ export default abstract class ASlotInitializeTemplate extends OverrideComponent 
                     this.normalResult[name] = target[name];
                 }
             }
-            cc.log(this.normalResult);
-            SlotGameManager.instance.isResultOk = true;
+            ResponseResultNotification.instance.notify(true);
         }, false);
     }
 
@@ -95,7 +90,7 @@ export default abstract class ASlotInitializeTemplate extends OverrideComponent 
                 }
             }
             cc.log(this.freeResult);
-            SlotGameManager.instance.isResultOk = true;
+            ResponseResultNotification.instance.notify(true);
         }, false);
     }
 

@@ -1,4 +1,4 @@
-import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
+import Language from "../../Framework/Global/Language";
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
 
@@ -70,7 +70,7 @@ export default class MenuSettingLabel extends AGenericTemplate {
         this.autoTextH.string = SocketSetting.t("S_1001");
         this.autoTextV.string = SocketSetting.t("S_1001");
 
-        LanguageMethod.instance
+        Language.instance
             .updateLabelStyle(this.musicTextH)
             .updateLabelStyle(this.musicTextV)
             .updateLabelStyle(this.effectTextH)

@@ -9,7 +9,7 @@ interface IProcess {
     /**
      * 更換流程
      */
-    onChangeStatus():this;
+    onChangeStatus(): this;
 
     /**
      * 開始執行

@@ -4,7 +4,7 @@
  * @Date 2021-05-31 下午 03:47
  * @Version 1.0
  */
-interface IHasLineTableInfoModule extends ITableInfoModel{
+interface IHasLineTableInfoModule extends ITableInfoModel {
     /**
      * 是否為線遊戲(0:無線 1:有線)
      */
@@ -16,7 +16,7 @@ interface IHasLineTableInfoModule extends ITableInfoModel{
     /**
      * 線位置
      */
-    LineGridPos:Object;
+    LineGridPos: Object;
     /**
      * 15格的資料 顯示用
      */

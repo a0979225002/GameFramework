@@ -1,18 +1,20 @@
 import SlotConfigManager from "../Framework/Config/SlotConfigManager";
-import ButtonMethod from '../Framework/GlobalMethod/ButtonMethod'
-import LanguageMethod from "../Framework/GlobalMethod/LanguageMethod";
-import {LoadType} from '../Framework/LoadResources/Enum/LoadEnum'
-import LoadResManager from '../Framework/LoadResources/LoadResManager'
+import Button from '../Framework/Global/Button'
+import Language from "../Framework/Global/Language";
+import {LoadType} from '../Framework/Load/Enum/LoadEnum'
+import LoadResManager from '../Framework/Load/LoadResManager'
 import {SceneStyle, SceneDirectionType} from '../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../Framework/Scene/SceneManager'
-import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification
+    from "../Framework/Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver
+    from "../Framework/Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
 import ALoadingTemplate from '../Framework/Template/Loading/ALoadingTemplate'
 import {socketJS} from "../Socket/Socket";
 import SocketSetting from '../Socket/SocketSetting'
 import NoSleep = require('../Socket/NoSleep');
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 export default class LoadingController extends ALoadingTemplate {
@@ -39,6 +41,7 @@ export default class LoadingController extends ALoadingTemplate {
      */
     public onCreat() {
         socketJS.SFSLoad(SlotConfigManager.instance.gameNumber);
+
         this.isLogoAnimaEnd = false;                                    //初始化尚未結束logo動畫
         this.progressNum = 0;                                           //初始進度條為0;
         this.progressBar.progress = this.progressNum;                   //初始UI進度條為0
@@ -48,20 +51,20 @@ export default class LoadingController extends ALoadingTemplate {
         ];
         this.loadTextToArray[0].string                                  //初始第一條進度條文字
             = SocketSetting.t("DES_00" + 1);
-        ButtonMethod.addButtonEvent(                                    //添加進入主遊戲Button監聽事件
+        Button.addButtonEvent(                                    //添加進入主遊戲Button監聽事件
             this.intoMainGameButton,
             "intoMainGameButtonEventListener",
             this
         );
         this.intoMainGameButton.node.active = false;                    //初始關閉進入主遊戲Button顯示,等待進度載入完成後才顯示
-        LanguageMethod.instance                                         //初始載入條的說明文字樣式
+        Language.instance                                         //初始載入條的說明文字樣式
             .updateLabelStyle(this.loadTextToArray[0])
             .updateLabelStyle(this.loadTextToArray[1])
 
         SceneDirectionChangeNotification                                //初始第一次當前分辨率,自動移除監聽
             .instance.subscribe(this.getSceneDirectionChangeObserver(), false);
 
-        cc.view.on("canvas-resize",this.changeLoadingBG,this)      //持續間當前遊戲長寬,如果有變更,不管是否更換方向都會更新bg大小
+        cc.view.on("canvas-resize", this.changeLoadingBG, this)      //持續間聽當前遊戲長寬,如果有變更,不管是否更換方向都會更新bg大小
     }
 
     /**
@@ -111,7 +114,7 @@ export default class LoadingController extends ALoadingTemplate {
             .loadAsset("MainScene", LoadType.scene, null)
             .loadAsset("gridImg", LoadType.img, "image/grid/grid")
             .loadAsset("GameIcon", LoadType.img, "image/loadLanguage", true)
-            .loadAsset("errorFromPrefab",LoadType.prefab,"prefab/ErrorFrame")
+            .loadAsset("errorFromPrefab", LoadType.prefab, "prefab/ErrorFrame")
             .callback((progress) => {
                 if (progress == 1) {
                     this.intoMainGameButtonImg.spriteFrame =
@@ -189,7 +192,6 @@ export default class LoadingController extends ALoadingTemplate {
             .updateSize(SceneStyle.AUTO)
             .designSceneSizeListenerAutoStart(100);
     }
-
 
     /**
      * 進入主遊戲按鈕點擊事件
@@ -272,6 +274,6 @@ export default class LoadingController extends ALoadingTemplate {
     }
 
     protected onDestroy() {
-        cc.view.off("canvas-resize",this.changeLoadingBG,this);
+        cc.view.off("canvas-resize", this.changeLoadingBG, this);
     }
 }

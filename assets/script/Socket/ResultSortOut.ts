@@ -1,7 +1,8 @@
 import ErrorManager from '../Framework/Error/ErrorManager'
 import {ServerEventType} from '../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../Framework/Listener/EventManager'
-import UserMoneyChangeNotification from "../Framework/Process/GameNotification/UserMoneyChangeNotification";
+import UserMoneyChangeNotification
+    from "../Framework/Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
 import PublicSetUp from "./PublicSetUp";
 import {socketJS} from './Socket'
 import SocketSetting from "./SocketSetting";
@@ -23,21 +24,16 @@ export default class ResultSortOut extends cc.Component {
                 PublicSetUp.Ratio = SocketSetting.ClientSetObject.Ratio;
                 break;
             case "GameLobbyInfoResult":
-
                 PublicSetUp.GameLobbyName = SocketSetting.ServerReturnData[_cmd].GameLobbyName;
-
                 break;
             case "GameLobby":  // 底層進大廳 通知遊戲顯示大廳
-
                 PublicSetUp.SlotTableInfo["GameID"] = SocketSetting.ClientSetObject.serverGameGroupID;
                 PublicSetUp.SlotTableInfo["BetLobby"] = "1";
                 socketJS.SFSToServer("SlotTableInfo", PublicSetUp.SlotTableInfo);
                 break;
             case "SlotTableInfoResult":
-
                 PublicSetUp.JoinRoom = SocketSetting.ServerReturnData[_cmd].TableName;
                 socketJS.SFSJoinRoom(PublicSetUp.JoinRoom);
-
                 break;
             case "CanPlayGame": // 底層進遊戲 通知GameLoading.js 可以顯示主遊戲場景
                 socketJS.SFSToServer("Table", "");

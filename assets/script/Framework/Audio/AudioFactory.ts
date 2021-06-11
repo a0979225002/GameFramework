@@ -1,9 +1,9 @@
-import SlotConfigManager from '../Config/SlotConfigManager'
-import AudioManager from './AudioManager'
 import Effect from './AudioType/EffectTypeController'
 import Music from './AudioType/MusicTypeController'
 import {AudioStateType} from "./Enum/AudioStateType";
 import IAudioFactory from "./IAudio/IAudioFactory";
+import IAudioManager from "./IAudio/IAudioManager";
+import IConfigManager from "../Config/IConfig/IConfigManager";
 
 /**
  * @Author XIAO-LI-PIN
@@ -21,18 +21,21 @@ export default class AudioFactory implements IAudioFactory {
     private readonly loop: boolean;
     private readonly musicData: Map<string, Map<string, string | boolean | number>>;
     private readonly effectData: Map<string, Map<string, string | AudioStateType | boolean | number>>;
-    private musicNormalData : Map<string, string | boolean | number>;
+    private musicNormalData: Map<string, string | boolean | number>;
     private effectNormalData: Map<string, string | AudioStateType | boolean | number>;
     private music: Music
     private effect: Effect
+    private audioManager: IAudioManager;
+    private configManager: IConfigManager;
 
-    constructor() {
-
-        this.musicVolume = SlotConfigManager.instance.musicVolume;                                           //初始音量
-        this.effectVolume = SlotConfigManager.instance.effectVolume;                                         //初始音量
+    constructor(audioManager: IAudioManager, configManager: IConfigManager) {
+        this.audioManager = audioManager;
+        this.configManager = configManager;
+        this.musicVolume = this.configManager.musicVolume;                                           //初始音量
+        this.effectVolume = this.configManager.effectVolume;                                         //初始音量
         this.canSuperimpose = false;                                                                         //初始無Loop的音樂是否可以疊加
-        this.musicOnMute = SlotConfigManager.instance.isMusicOnMute;                                         //初始音樂是否打開
-        this.effectOnMute = SlotConfigManager.instance.isEffectOnMute;                                       //初始效果音是否打開
+        this.musicOnMute = this.configManager.isMusicOnMute;                                         //初始音樂是否打開
+        this.effectOnMute = this.configManager.isEffectOnMute;                                       //初始效果音是否打開
         this.loop = false;                                                                                   //初始音樂循環
         this.musicData = new Map<string, Map<string, string | boolean | number>>();                          //初始享元模式的音樂
         this.effectData = new Map<string, Map<string, string | AudioStateType | boolean | number>>();        //初始享元模式的效果音效
@@ -44,17 +47,17 @@ export default class AudioFactory implements IAudioFactory {
     /**
      * 初始化享元預設撥放模式
      */
-    initializeData(){
+    initializeData() {
 
         this.musicNormalData = new Map<string, string | boolean | number>();
         this.effectNormalData = new Map<string, string | AudioStateType | boolean | number>();
 
-        this.musicNormalData.set("volume",this.musicVolume);
-        this.musicNormalData.set("loop",this.loop);
+        this.musicNormalData.set("volume", this.musicVolume);
+        this.musicNormalData.set("loop", this.loop);
 
-        this.effectNormalData.set("canSuperimpose",AudioStateType.CLEAR_TO_REPLAY);
-        this.effectNormalData.set("volume",this.effectVolume);
-        this.effectNormalData.set("loop",this.loop);
+        this.effectNormalData.set("canSuperimpose", AudioStateType.CLEAR_TO_REPLAY);
+        this.effectNormalData.set("volume", this.effectVolume);
+        this.effectNormalData.set("loop", this.loop);
 
     }
 
@@ -102,7 +105,7 @@ export default class AudioFactory implements IAudioFactory {
      */
     musicPlay(name: string) {
         if (!name.trim()) return;                           //檔名空值判斷
-        if (AudioManager.instance.musicOnMute) return;      //如果當前為靜音模式
+        if (this.audioManager.musicOnMute) return;      //如果當前為靜音模式
         if (!this.musicData.has(name)) {                    //判斷是否該音樂有撥放資料
             this.musicData.set(name, this.musicNormalData); //保存預設資料
             this.music.play(name, this.musicNormalData);
@@ -118,7 +121,7 @@ export default class AudioFactory implements IAudioFactory {
      */
     effectPlay(name: string) {
         if (!name.trim()) return;                              //檔名空值判斷
-        if (AudioManager.instance.effectOnMute) return;        //如果當前為靜音模式
+        if (this.audioManager.effectOnMute) return;        //如果當前為靜音模式
         if (!this.effectData.has(name)) {                      //判斷是否該音樂有撥放資料
             this.effectData.set(name, this.effectNormalData);  //保存預設資料
             this.effect.play(name, this.effectNormalData);

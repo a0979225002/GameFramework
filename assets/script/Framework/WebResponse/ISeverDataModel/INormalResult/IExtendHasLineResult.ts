@@ -21,7 +21,7 @@ interface IExtendHasLineResult extends ISlotResultModel {
     /**
      * 神秘寶箱格子圖案
      */
-    SecretSymbol:number;
+    SecretSymbol: number;
     /**
      * 每條線贏分
      */
@@ -49,5 +49,5 @@ interface IExtendHasLineResult extends ISlotResultModel {
     /**
      * 活動轉數
      */
-    BonusEventCount:number;
+    BonusEventCount: number;
 }

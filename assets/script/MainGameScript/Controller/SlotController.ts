@@ -1,14 +1,14 @@
 import {Effect} from '../../Framework/Audio/AudioManager'
-import LoadResManager from '../../Framework/LoadResources/LoadResManager'
+import LoadResManager from '../../Framework/Load/LoadResManager'
 import {GameState} from '../../Framework/Process/Enum/GameState'
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import ASlotInitializeTemplate from '../../Framework/Template/Slot/ASlotInitializeTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
-import NoLineResult from "../../Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
-import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
+import NoLineFreeResult from "../../Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
+import NoLineTableInfo from "../../Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 
 const {ccclass, property} = cc._decorator;

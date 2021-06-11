@@ -1,11 +1,10 @@
-
 /**
  * @Author XIAO-LI-PIN
  * @Description (介面)有線類免費狀態封包
  * @Date 2021-05-31 下午 03:45
  * @Version 1.0
  */
-interface IHasLineFreeResultModule extends ISlotFreeResultModel{
+interface IHasLineFreeResultModule extends ISlotFreeResultModel {
 
     /**
      * 15格的資料
@@ -30,7 +29,7 @@ interface IHasLineFreeResultModule extends ISlotFreeResultModel{
     /**
      * 每條線贏幾格
      */
-    LineGrid : Array<number>;
+    LineGrid: Array<number>;
 
     /**
      * 瞇牌0:不用 1:瞇牌效果

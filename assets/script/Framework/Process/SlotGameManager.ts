@@ -3,17 +3,22 @@ import {UserBetPoint, ISlotConfigManager} from "../Config/IConfig/ISlotConfigMan
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import {GameState, GameType} from './Enum/GameState'
-import AutoStateChangeNotification from "./GameNotification/AutoStateChangeNotification";
-import SpeedStateChangeNotification from "./GameNotification/SpeedStateChangeNotification";
-import UserMoneyChangeNotification from "./GameNotification/UserMoneyChangeNotification";
-import UserTotalBetChangeNotification from "./GameNotification/UserTotalBetChangeNotification";
-import AutoStateChangeObserver from "./GameObserver/AutoStateChangeObserver";
-import SpeedStateChangeObserver from "./GameObserver/SpeedStateChangeObserver";
-import UserMoneyChangeObserver from "./GameObserver/UserMoenyChangeObserver";
-import UserTotalBetChangeObserver from "./GameObserver/UserTotalBetChangeObserver";
+// import AutoStateChangeNotification from "../Listener/NotificationType/GameNotification/AutoStateChangeNotification";
+// import SpeedStateChangeNotification from "../Listener/NotificationType/GameNotification/SpeedStateChangeNotification";
+// import UserMoneyChangeNotification from "../Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
+// import UserTotalBetChangeNotification from "../Listener/NotificationType/GameNotification/UserTotalBetChangeNotification";
+// import AutoStateChangeObserver from "../Listener/ObserverType/GameObserver/AutoStateChangeObserver";
+// import SpeedStateChangeObserver from "../Listener/ObserverType/GameObserver/SpeedStateChangeObserver";
+// import UserMoneyChangeObserver from "../Listener/ObserverType/GameObserver/UserMoneyChangeObserver";
+// import UserTotalBetChangeObserver from "../Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
 import GameProcessFactory from "./GameProcessFactory";
 import {IGameProcessFactory} from "./IGameProcessFactory";
 import ISlotGameManager from './ISlotGameManager'
+import ResponseResultNotification from "../Listener/NotificationType/ResponseNotifivation/ResponseResultNotification";
+import UserTotalBetChangeObserver from "../Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
+import AutoStateChangeObserver from "../Listener/ObserverType/GameObserver/AutoStateChangeObserver";
+import UserMoneyChangeObserver from "../Listener/ObserverType/GameObserver/UserMoenyChangeObserver";
+import SpeedStateChangeObserver from "../Listener/ObserverType/GameObserver/SpeedStateChangeObserver";
 
 /**
  * @Author XIAO-LI-PIN
@@ -32,8 +37,7 @@ export default class SlotGameManager implements ISlotGameManager {
     private _automaticRemainingCount: number;
     private _userMoney: number;
     private readonly _userBetPoint: UserBetPoint;
-    private _isResultOk: boolean;
-    private inExecution: boolean
+    private hasExecution: boolean
     private gameProcessFactory: IGameProcessFactory;
     private userMoneyChangeObserver: UserMoneyChangeObserver;
     private userTotalBetChangeObserver: UserTotalBetChangeObserver;
@@ -43,23 +47,23 @@ export default class SlotGameManager implements ISlotGameManager {
     private constructor(configManager: ISlotConfigManager) {
 
         this.configManager = configManager;                                                             //獲取ConfigManger,雙向綁定
-        this.gameProcessFactory = new GameProcessFactory(this);                                         //初始化流程工廠
+        this.gameProcessFactory = new GameProcessFactory(this);                             //初始化流程工廠
         this._gameState = GameState.STANDBY;                                                            //初始遊戲狀態
         this._autoType = this.configManager.autoCount;                                                  //初始自動次數
         this._isAutoState = this.configManager.isAuto;                                                  //初始自否自動
         this._isSpeedUp = this.configManager.isSpeedUp;                                                 //初始是否加速
         this._automaticRemainingCount = this.configManager.autoCount;                                   //初始自動剩餘次數
         this._userBetPoint = this.configManager.userBet;                                                //初始玩家押住
-        this._isResultOk = false;                                                                       //初始尚未獲取server 該局資料
-        this.inExecution = false;                                                                       //初始尚未開使執行流程
-        UserMoneyChangeNotification                                                                     //訂閱用戶更新金額時,回傳推播事件
-            .instance.subscribe(this.getUserMoneyChangeObserver(), true);
-        UserTotalBetChangeNotification                                                                  //訂閱用戶更新更換押注時,回傳推播事件
-            .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
-        AutoStateChangeNotification                                                                     //訂閱用戶更動自動狀態時,回傳推播事件
-            .instance.subscribe(this.getAutoStateChangeObserver(), true);
-        SpeedStateChangeNotification                                                                    //訂閱用戶更新自動狀態時,回傳推播事件
-            .instance.subscribe(this.getSpeedStateChangeObserver(), true);
+
+        this.hasExecution = false;                                                                      //初始當前執行流程狀態
+        // UserMoneyChangeNotification                                                                     //訂閱用戶更新金額時,回傳推播事件
+        //     .instance.subscribe(this.getUserMoneyChangeObserver(), true);
+        // UserTotalBetChangeNotification                                                                  //訂閱用戶更新更換押注時,回傳推播事件
+        //     .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
+        // AutoStateChangeNotification                                                                     //訂閱用戶更動自動狀態時,回傳推播事件
+        //     .instance.subscribe(this.getAutoStateChangeObserver(), true);
+        // SpeedStateChangeNotification                                                                    //訂閱用戶更新自動狀態時,回傳推播事件
+        //     .instance.subscribe(this.getSpeedStateChangeObserver(), true);
     }
 
     /**
@@ -99,7 +103,7 @@ export default class SlotGameManager implements ISlotGameManager {
 
     public play(): Promise<void> {
         return new Promise<void>(async (resolve) => {
-            if (!this.inExecution) {
+            if (!this.hasExecution) {
                 this.processState(true);//流程開始
                 await this.gameProcessFactory.useProcess();
                 this.processState(false);//流程循環結束
@@ -116,13 +120,8 @@ export default class SlotGameManager implements ISlotGameManager {
      * @private
      */
     private processState(state: boolean) {
-        if (state) {
-            this._isResultOk = false;
-            this.inExecution = true;
-        } else {
-            this.inExecution = false;
-            this._isResultOk = false;
-        }
+        ResponseResultNotification.instance.notify(state);
+        this.hasExecution = state;
     }
 
     /**
@@ -265,14 +264,5 @@ export default class SlotGameManager implements ISlotGameManager {
 
     public get userMoney(): number {
         return this._userMoney
-    }
-
-
-    get isResultOk(): boolean {
-        return this._isResultOk;
-    }
-
-    set isResultOk(value: boolean) {
-        this._isResultOk = value;
     }
 }

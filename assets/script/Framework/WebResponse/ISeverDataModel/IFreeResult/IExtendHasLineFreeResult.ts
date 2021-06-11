@@ -4,7 +4,7 @@
  * @Date 2021-05-31 下午 03:45
  * @Version 1.0
  */
-interface IExtendHasLineFreeResult extends ISlotFreeResultModel{
+interface IExtendHasLineFreeResult extends ISlotFreeResultModel {
 
     /**
      * 15格的資料
@@ -29,7 +29,7 @@ interface IExtendHasLineFreeResult extends ISlotFreeResultModel{
     /**
      * 每條線贏幾格
      */
-    LineGrid : Array<number>;
+    LineGrid: Array<number>;
 
     /**
      * 瞇牌0:不用 1:瞇牌效果

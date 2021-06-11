@@ -4,7 +4,7 @@
  * @Date 2021-05-31 下午 03:46
  * @Version 1.0
  */
-interface IHasLineResultModule extends ISlotResultModel{
+interface IHasLineResultModule extends ISlotResultModel {
 
     /**
      * 15格的資料
@@ -21,11 +21,11 @@ interface IHasLineResultModule extends ISlotResultModel{
     /**
      * 每條線贏分
      */
-    LineWin:Array<number>;
+    LineWin: Array<number>;
     /**
      * 每條線贏幾格
      */
-    LineGrid:Array<number>;
+    LineGrid: Array<number>;
     /**
      * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
      */

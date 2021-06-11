@@ -1,24 +1,26 @@
 import AudioManager, {Effect} from '../../Framework/Audio/AudioManager'
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
-import ButtonMethod from '../../Framework/GlobalMethod/ButtonMethod'
-import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
+import Button from '../../Framework/Global/Button'
+import Language from "../../Framework/Global/Language";
 import {GameState} from '../../Framework/Process/Enum/GameState'
-import AutoStateChangeNotification from "../../Framework/Process/GameNotification/AutoStateChangeNotification";
-import UserTotalBetChangeNotification from "../../Framework/Process/GameNotification/UserTotalBetChangeNotification";
-import UserTotalBetChangeObserver from "../../Framework/Process/GameObserver/UserTotalBetChangeObserver";
+import AutoStateChangeNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/AutoStateChangeNotification";
+import UserTotalBetChangeNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserTotalBetChangeNotification";
+import UserTotalBetChangeObserver from "../../Framework/Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AMainGameDoubleButtonTemplate
     from '../../Framework/Template/ButtonEvent/MainButton/AMainGameDoubleButtonTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
+import NoLineTableInfo from "../../Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
 import SlotController from '../Controller/SlotController'
 import WarningController from '../Controller/WarningController'
 import MainGameLabel from '../LabelEvent/MainGameLabel'
 import MenuPageButton from './MenuPageButton'
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 export default class MainGameButton extends AMainGameDoubleButtonTemplate {
@@ -70,7 +72,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
     protected tableInfo: NoLineTableInfo;
     protected autoCount: number;
     private buttonSpriteFrame: { SPEED_OFF: cc.SpriteFrame; AUTO_OFF: cc.SpriteFrame; SPEED_ON: cc.SpriteFrame; AUTO_ON: cc.SpriteFrame; STANDBY: cc.SpriteFrame; PLAYING: cc.SpriteFrame }
-    private betButtonToArray: Array<cc.Node>;//所有押注按鈕
+    private readonly betButtonToArray: Array<cc.Node>;//所有押注按鈕
     private color: { GRAY: any; WHITE: any; YELLOW: any };
     private userTotalBetChangeObserver: UserTotalBetChangeObserver;
     public static instance: MainGameButton;
@@ -84,7 +86,6 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             WHITE: cc.color().fromHEX("#FFFCFC"),
         }
     }
-//
     protected onCreate() {
         MainGameButton.instance = this;
 
@@ -107,18 +108,17 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         this.offBetFrameButtonAnimation(this.betSelectionButtonV.node.children[0]);
         this.buttonStanByAnimation(this.startButtonImgH.node);
         this.buttonStanByAnimation(this.startButtonImgV.node);
-
-        UserTotalBetChangeNotification                                                  //押注事件推播綁定
-            .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
         this.totalFrameNode.active = false;
         this.startAutoNodeH.active = false;
         this.startAutoNodeV.active = false;
+
+        UserTotalBetChangeNotification                                                  //押注事件推播綁定
+            .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
     }
 
     protected languageSetting() {
-        //請選擇下注
         this.titleText.string = SocketSetting.t("S_9016")
-        LanguageMethod.instance.updateLabelStyle(this.titleText);
+        Language.instance.updateLabelStyle(this.titleText);
     }
 
 
@@ -329,7 +329,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             containerNode.addChild(node);
             this.betButtonToArray.push(node);
             //綁定全部按鈕點擊事件
-            ButtonMethod.addButtonEvent(
+            Button.addButtonEvent(
                 node.getComponent(cc.Button),
                 "betButtonTouchEvent",
                 this,

@@ -1,4 +1,4 @@
-import ButtonMethod from '../../../GlobalMethod/ButtonMethod'
+import Button from '../../../Global/Button'
 import AMainGameEvent from "./AMainGameEvent";
 
 export default abstract class AMainGameButtonTemplate extends AMainGameEvent {
@@ -11,27 +11,27 @@ export default abstract class AMainGameButtonTemplate extends AMainGameEvent {
 
     protected onLoad() {
 
-        ButtonMethod.addButtonEvent(                        //開始按鈕監聽添加
+        Button.addButtonEvent(                        //開始按鈕監聽添加
             this.startButton,
             "startButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                        //自動按鈕監聽添加
+        Button.addButtonEvent(                        //自動按鈕監聽添加
             this.autoButton,
             "autoButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //加速按鈕監聽添加
+        Button.addButtonEvent(                         //加速按鈕監聽添加
             this.speedUpButton,
             "speedUpButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //押注金額選擇按鈕監聽添加
+        Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加
             this.betSelectionButton,
             "betSelectionButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //押注金額選擇按鈕監聽添加
+        Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加
             this.menuButton,
             "menuButtonEventListener",
             this

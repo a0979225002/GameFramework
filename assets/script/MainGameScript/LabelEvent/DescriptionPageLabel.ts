@@ -1,8 +1,8 @@
-import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
-import LoadResManager from '../../Framework/LoadResources/LoadResManager'
+import Language from "../../Framework/Global/Language";
+import LoadResManager from '../../Framework/Load/LoadResManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
+import NoLineTableInfo from "../../Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from "../../Framework/WebResponse/WebResponseManager";
 import SocketSetting from '../../Socket/SocketSetting'
 
@@ -172,7 +172,7 @@ export default class DescriptionPageLabel extends AGenericTemplate {
         this.page1WildTextH.string = SocketSetting.t("4_102");
         this.page1WildTextV.string = SocketSetting.t("4_102");
 
-        LanguageMethod.instance
+        Language
             .updateLabelStyle(this.page1FreeTextH)
             .updateLabelStyle(this.page1FreeTextV)
             .updateLabelStyle(this.page1WildTextH)
@@ -214,7 +214,7 @@ export default class DescriptionPageLabel extends AGenericTemplate {
         //獲勝符號的賠付
         this.page3WinOddsTextV.string = SocketSetting.t("243_007");
 
-        LanguageMethod.instance
+        Language.instance
             .updateLabelStyle(this.page3LineTextV)
             .updateLabelStyle(this.page3WinDescriptionTextH)
             .updateLabelStyle(this.page3WinDescriptionTextV)

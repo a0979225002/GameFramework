@@ -1,8 +1,5 @@
 import OverrideComponent from "../OverrideComponent";
 
-const {ccclass} = cc._decorator;
-
-@ccclass
 export default abstract class AMainGameSettingTemplate extends OverrideComponent {
 
     protected onLoad() {

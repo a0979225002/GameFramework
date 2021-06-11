@@ -1,8 +1,10 @@
-import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
+import Language from "../../Framework/Global/Language";
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification
+    from "../../Framework/Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver
+    from "../../Framework/Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
 
@@ -38,7 +40,7 @@ export default class WarningController extends AGenericTemplate {
         this.warningTextH.string = SocketSetting.t("S_9017");
         this.warningTextV.string = SocketSetting.t("S_9017")
 
-        LanguageMethod.instance
+        Language.instance
             .updateLabelStyle(this.warningTextH)
             .updateLabelStyle(this.warningTextV);
     }

@@ -1,11 +1,12 @@
-import {IConfigManager} from "../Config/IConfig/IConfigManager";
+import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
-import LoadResManager from '../LoadResources/LoadResManager'
+import LoadResManager from '../Load/LoadResManager'
 import {SceneStyle, SceneDirectionType} from './Enum/SceneStyle'
 import {ISceneManager} from "./IScene/ISceneManager";
-import SceneDirectionChangeNotification from "./SceneNotification/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "./SceneObserver/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification
+    from "../Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver from "../Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
 import SceneSizeChangeListener from './SceneSizeChangeListener'
 import SceneStyleHandler from './SceneStyleHandler'
 
@@ -25,7 +26,8 @@ export default class SceneManager implements ISceneManager {
         this.configManager = configManager;
         this._designWidth = 1280;                                                   //初始預設寬度
         this._designHeight = 720;                                                   //初始預設高度
-        this.sceneSizeChangeListener = new SceneSizeChangeListener();                         //實例化監聽器
+        this.sceneSizeChangeListener = new SceneSizeChangeListener();
+        //實例化監聽器
         this.sceneStyleHandler = new SceneStyleHandler();                           //實例化scene樣式導向器
         this.style = SceneStyle.Horizontal;                                         //初始預設scene畫面調整的模式
     }

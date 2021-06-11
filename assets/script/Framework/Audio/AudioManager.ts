@@ -1,4 +1,4 @@
-import {IConfigManager} from "../Config/IConfig/IConfigManager";
+import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import AudioFactory from './AudioFactory'
@@ -22,7 +22,7 @@ export default class AudioManager implements IAudioManager {
     private constructor(configManager: IConfigManager) {
 
         this.configManager = configManager;
-        this.factory = new AudioFactory();
+        this.factory = new AudioFactory(this, configManager);
         this._effectOnMute = this.configManager.isEffectOnMute;
         this._musicOnMute = this.configManager.isMusicOnMute;
 
@@ -93,9 +93,7 @@ export default class AudioManager implements IAudioManager {
      * @param {string} name : 音樂檔名
      */
     public musicPlay(name: string) {
-
         this.factory.musicPlay(name);
-
     }
 
     /**

@@ -9,7 +9,7 @@ export const enum ResponseType {
      * 一般狀態
      * @type {ResponseType.NORMAL}
      */
-    NORMAL="NORMAL",
+    NORMAL = "NORMAL",
     /**
      * 免費遊戲
      * @type {ResponseType.FREE}

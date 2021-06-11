@@ -7,6 +7,8 @@ let socketJS = null;
 let obj_socket = {};
 cc.Class({
     extends: cc.Component,
+
+    //初始客戶端參數
     onLoad: function () {
         if (socketSetting.setboolean === true) {
             return;
@@ -48,7 +50,7 @@ cc.Class({
         WebRequestManager.instance.UserLanguage = socketSetting.ClientSetObject.UserLanguage;
         WebRequestManager.instance.backHomeURL = socketSetting.ClientSetObject.backHomeURL;
 
-        // API參數
+        // 上線,獲取index.php API參數
         cc.log("測試打包文件參數:", window.GameServerSocket);
         if (window.GameServerSocket != null) {
             socketSetting.ClientSetObject.serverhost = window.GameServerSocket;
@@ -94,44 +96,69 @@ cc.Class({
         socketSetting.ClientSetObject.ErrorMessageCode = "";//錯誤訊息代號
 
 
-        cc.debug._resetDebugSetting(socketSetting.ClientSetObject.CocosDebug2);
         this.otherLang();
         socketSetting.firstLoad(socketSetting.ClientSetObject.UserLanguage);
 
     },
+    //載入語言,request 參數url/?=當前時間
     LoadLanguage: function (_language) {
         let URL_Random = new Date().getTime();
-        loadScript(socketSetting.ClientSetObject.loadLanguage + _language + ".js?=" + URL_Random, obj_socket.self.loadLanguageEnd, obj_socket.self.loadLanguageError);
+        let url = socketSetting.ClientSetObject.loadLanguage + _language + ".js?=" + URL_Random
+        loadScript(
+            url,
+            obj_socket.self.loadLanguageEnd,
+            obj_socket.self.loadLanguageError
+        );
     },
+    //載入成功,直接進入登入流程
     loadLanguageEnd() {
         socketSetting.init(socketSetting.ClientSetObject.UserLanguage);//設定語言
-        // ResultSortOut.SFSToGame('languageOnLoad');
         obj_socket.self.realSFSLoad();
     },
+    //初始載入語系失敗,以不代request參數的方式在載入一次
     loadLanguageError() {
         socketSetting.ClientSetObject.loadLanguageCount = 0;
-        loadScript(socketSetting.ClientSetObject.loadLanguageDefaultURL + socketSetting.ClientSetObject.UserLanguage + ".js", obj_socket.self.loadLanguageEnd, obj_socket.self.loadLanguageErrorAgain);
+        let url = socketSetting.ClientSetObject.loadLanguageDefaultURL + socketSetting.ClientSetObject.UserLanguage + ".js";
+        loadScript(
+            url,
+            obj_socket.self.loadLanguageEnd,
+            obj_socket.self.loadLanguageErrorAgain
+        );
     },
+    //如果第二次載入還是失敗,進入錯誤訊息狀態
     loadLanguageErrorAgain() {
         socketSetting.ClientSetObject.WarningText = socketSetting.t("S_9077");//"语言包下载失败请通知客服";
         socketSetting.ClientSetObject.WarningBtnBoolean = true;
         ResultSortOut.instance.SFSToGame("Warning");
         obj_socket.self.realSFSLoad();
     },
+
+    /**
+     * 會先載入語系,載入成功後,才與websocket連線
+     * @param GameNumber
+     * @constructor
+     */
     SFSLoad: function (GameNumber) {
         // cc.log("SFSLoad",GameNumber);
         if (socketSetting.ClientSetObject.SFSLoadStart == true) {
             return;
         }
         socketSetting.ClientSetObject.SFSLoadStart = true;
+
+        //沒作用
         socketSetting.ClientSetObject.servergameID = GameNumber;//遊戲編號
+        //沒作用???
         socketSetting.ClientSetObject.serverExtensionsClass = "com.game" + socketSetting.ClientSetObject.servergameID + ".sfs2x.Entrance";//(讀取Server的資料夾內的哪個檔)
-        socketSetting.ClientSetObject.serverGameGroupID = "game" + socketSetting.ClientSetObject.servergameID;//server的桌
+        socketSetting.ClientSetObject.serverGameGroupID = `game${GameNumber}`;//server的桌
         socketSetting.ClientSetObject.usergame_id = GameNumber.toString();
         //20190704優先載入語言包後再登入
         obj_socket.self.LoadLanguage(socketSetting.ClientSetObject.UserLanguage);
 
     },
+
+    /**
+     * 正式交握連線,並添加監聽事件
+     */
     realSFSLoad: function () {
         this.otherserver();
         var config = {};
@@ -147,7 +174,6 @@ cc.Class({
         config.port = socketSetting.ClientSetObject.serverport;
         config.zone = socketSetting.ClientSetObject.serverZone;
         socketSetting.serverSfs = new SFS2X.SmartFox(config);
-        cc.log(config);
         // Add event listeners
         socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.CONNECTION, this.onConnection, this);//連線
         socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this.onConnectionLost, this);//連線中斷
@@ -163,7 +189,7 @@ cc.Class({
         socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.OBJECT_MESSAGE, this.onObjectMessage, this);//單幣別廣播(Zone)
         socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.MODERATOR_MESSAGE, this.onModeratorMessage, this);//單幣別廣播(Zone)
         //下注監聽器
-        socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this.SFSBuffer,this);
+        socketSetting.serverSfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this.SFSBuffer, this);
         socketSetting.serverSfs.connect();
     },
     //連線成功
@@ -186,7 +212,6 @@ cc.Class({
         console.log(event);
         //http://docs2x.smartfoxserver.com/api-docs/jsdoc/symbols/SFS2X.Utils.ClientDisconnectionReason.html
         var reason = event.reason;
-
         socketSetting.ClientSetObject.WarningBoolean = true;
         socketSetting.ClientSetObject.WarningBtnBoolean = true;
 
@@ -271,7 +296,7 @@ cc.Class({
                 socketSetting.serverSfs.send(new SFS2X.LoginRequest(null, null, socketSetting.ClientSetObject.LoginData, socketSetting.serverZone));
             }
         }
-        cc.log("ddddd",socketSetting.ClientSetObject.LoginState);
+        cc.log("ddddd", socketSetting.ClientSetObject.LoginState);
     },
     //登入成功
     onLogin: function (event) {
@@ -365,9 +390,9 @@ cc.Class({
     },
     //伺服器回傳接收器
     SFSBuffer: function (event) {
-        // console.log("=========收=========");
-        // console.log(event);
-        // console.log("=========收=========");
+        console.log("=========收=========");
+        console.log(event);
+        console.log("=========收=========");
         // 第一層
         var cmd = event.cmd;
         var params = event.params;
@@ -648,80 +673,6 @@ cc.Class({
         window.open('', '_self', '');
         window.close();
     },
-    // 音效
-    setEffectVolume(_volume) {
-        socketSetting.ClientSetObject.effectspoint = _volume;
-    },
-    switchEffect() {
-        cc.audioEngine.stop(socketSetting.ClientSetObject.effectID);
-        socketSetting.ClientSetObject.effectsBoolean = !socketSetting.ClientSetObject.effectsBoolean;
-        return socketSetting.ClientSetObject.effectsBoolean;
-    },
-    getEffect() {
-        return socketSetting.ClientSetObject.effectsBoolean;
-    },
-    effectPlay(_effectName, _playLoop = false, _volume = socketSetting.ClientSetObject.effectspoint) {
-
-        if (socketSetting.ClientSetObject.effectsBoolean == false || !cc.isValid(_effectName)) return;
-        socketSetting.ClientSetObject.effectID = cc.audioEngine.playEffect(_effectName, _playLoop, _volume);
-        return socketSetting.ClientSetObject.effectID;
-    },
-    effectStopThenPlay(_effectName, _playLoop = false, _effectID, _volume = socketSetting.ClientSetObject.effectspoint) {
-        if (socketSetting.ClientSetObject.effectsBoolean == false) return;
-
-        cc.audioEngine.stop(_effectID);
-
-        socketSetting.ClientSetObject.effectID = cc.audioEngine.playEffect(_effectName, _playLoop, _volume);
-        return socketSetting.ClientSetObject.effectID;
-    },
-    effectStop(_effectID) {
-        cc.log("停止音樂:", _effectID);
-        cc.audioEngine.stop(_effectID);
-    },
-    // 音樂音量設定
-    setMusicVolume(_volume) {
-        if (!socketSetting.ClientSetObject.musicBoolean) return;
-        socketSetting.ClientSetObject.musicpoint = _volume;
-        cc.audioEngine.setMusicVolume(socketSetting.ClientSetObject.musicpoint);
-    },
-    switchMusic() {
-        socketSetting.ClientSetObject.musicBoolean = !socketSetting.ClientSetObject.musicBoolean;
-        cc.audioEngine.setMusicVolume(socketSetting.ClientSetObject.musicBoolean ? socketSetting.ClientSetObject.musicpoint : 0);
-        return socketSetting.ClientSetObject.musicBoolean;
-    },
-    getMusic() {
-        return socketSetting.ClientSetObject.musicBoolean;
-    },
-    musicPlay(_musicName, _playLoop = true, _volume = socketSetting.ClientSetObject.musicpoint) {
-        if (socketSetting.ClientSetObject.musicBoolean == false || !cc.isValid(_musicName)) return;
-        socketSetting.ClientSetObject.musicPlayVal.musicName = _musicName;
-        socketSetting.ClientSetObject.musicPlayVal.playLoop = _playLoop;
-        socketSetting.ClientSetObject.musicPlayVal.volume = _volume;
-        cc.audioEngine.stopMusic();
-        socketSetting.ClientSetObject.musicID = cc.audioEngine.playMusic(_musicName, _playLoop);
-        cc.audioEngine.setMusicVolume(socketSetting.ClientSetObject.musicBoolean ? socketSetting.ClientSetObject.musicpoint : 0);
-        return socketSetting.ClientSetObject.musicID;
-    },
-    musicStop() {
-        cc.audioEngine.stopMusic();
-    },
-    // 音樂+音效
-    switchAllSound() {
-        socketSetting.ClientSetObject.soundBoolean = !socketSetting.ClientSetObject.soundBoolean;
-
-        if (socketSetting.ClientSetObject.soundBoolean) {
-            socketSetting.ClientSetObject.effectsBoolean = true;
-            socketSetting.ClientSetObject.musicBoolean = true;
-            cc.audioEngine.setMusicVolume(socketSetting.ClientSetObject.musicpoint);
-            obj_socket.self.musicPlay(socketSetting.ClientSetObject.musicPlayVal.musicName, socketSetting.ClientSetObject.musicPlayVal.playLoop, socketSetting.ClientSetObject.musicPlayVal.volume);
-        } else {
-            socketSetting.ClientSetObject.effectsBoolean = false;
-            socketSetting.ClientSetObject.musicBoolean = false;
-            cc.audioEngine.stopAll();
-            cc.audioEngine.setMusicVolume(0);
-        }
-        return socketSetting.ClientSetObject.soundBoolean;
-    },
 });
 
 function loadScript(url, callback, callBackError) {
@@ -730,16 +681,23 @@ function loadScript(url, callback, callBackError) {
     // if(socketSetting.ClientSetObject.loadLanguageCount == "error"){
     //     return;
     // }
+
     if (typeof (callback) != "undefined") {
+        cc.log("0", script.readyState, script)
         if (script.readyState) {
+            cc.log("1")
+            document.onreadystatechange
             script.onreadystatechange = function () {
                 if (script.readyState == "loaded" || script.readyState == "complete") {
+                    cc.log("2")
                     script.onreadystatechange = null;
                     callback();
                 }
             };
         } else {
+            cc.log("3")
             script.onload = function () {
+                cc.log("4")
                 callback();
             };
             script.onerror = function () {
@@ -753,35 +711,7 @@ function loadScript(url, callback, callBackError) {
         }
     }
     script.src = url;
+    cc.log(script)
     document.body.appendChild(script);
 }
 export {socketJS};
-
-// module.exports = {
-//
-//     /**
-//      * 回傳登入
-//      * @param GameNumber
-//      * @constructor
-//      */
-//     SFSLoad : function (GameNumber){
-//         module_Socket.SFSLoad(GameNumber);
-//     },
-//
-//     /**
-//      * //給客端呼叫送值給server
-//      * @param PackName(String)  回傳哪個資訊
-//      * @param DataObject(Object) 回傳資料
-//      * @constructor
-//      */
-//     SFSToServer : function (PackName,DataObject){
-//         module_Socket.SFSToServer(PackName,DataObject);
-//     },
-//
-//     /**
-//      *  // 回官網
-//      */
-//     backHome:function(){
-//         module_Socket.backHome();
-//     },
-// }

@@ -1,4 +1,4 @@
-import ButtonMethod from "../../../GlobalMethod/ButtonMethod";
+import Button from "../../../Global/Button";
 import {SceneDirectionType} from "../../../Scene/Enum/SceneStyle";
 import ARecordButtonEvent, {DayType, PageChange} from "./ARecordButtonEvent";
 
@@ -20,44 +20,44 @@ export default abstract class ARecordDoubleButtonTemplate extends ARecordButtonE
     protected onLoad() {
 
         //反回上一頁按鈕事件綁定
-        ButtonMethod
+        Button
             .addButtonEvent(this.goBackButtonH, "goBackTouchEvent", this, SceneDirectionType.LANDSCAPE);
-        ButtonMethod
+        Button
             .addButtonEvent(this.goBackButtonV, "goBackTouchEvent", this, SceneDirectionType.PORTRAIT);
 
-        ButtonMethod
+        Button
             .addButtonEvent(this.oneDayRecordButtonH, "daysRecordTouchEvent", this, DayType.ONE_DAY);
-        ButtonMethod
+        Button
             .addButtonEvent(this.oneDayRecordButtonV, "daysRecordTouchEvent", this, DayType.ONE_DAY);
 
         //獲取一日內紀錄按鈕事件綁定
-        ButtonMethod
+        Button
             .addButtonEvent(this.oneDayRecordButtonH, "daysRecordTouchEventH", this, DayType.ONE_DAY);
-        ButtonMethod
+        Button
             .addButtonEvent(this.oneDayRecordButtonV, "daysRecordTouchEventV", this, DayType.ONE_DAY);
 
         //獲取五日內紀錄按鈕事件綁定
-        ButtonMethod
+        Button
             .addButtonEvent(this.fiveDayRecordButtonH, "daysRecordTouchEventH", this, DayType.FIVE_DAY);
-        ButtonMethod
+        Button
             .addButtonEvent(this.fiveDayRecordButtonV, "daysRecordTouchEventV", this, DayType.FIVE_DAY);
 
         //獲取十日內紀錄按鈕事件綁定
-        ButtonMethod
+        Button
             .addButtonEvent(this.tenDayRecordButtonH, "daysRecordTouchEventH", this, DayType.TEN_DAY);
-        ButtonMethod
+        Button
             .addButtonEvent(this.tenDayRecordButtonV, "daysRecordTouchEventV", this, DayType.TEN_DAY);
 
         //前往下一頁紀錄按鈕事件綁定
-        ButtonMethod
+        Button
             .addButtonEvent(this.nextRecordButtonH, "nextAndLastButtonTouchEvent", this, PageChange.NEXT);
-        ButtonMethod
+        Button
             .addButtonEvent(this.nextRecordButtonV, "nextAndLastButtonTouchEvent", this, PageChange.NEXT);
 
         //前往下一頁紀錄按鈕事件綁定
-        ButtonMethod
+        Button
             .addButtonEvent(this.previousRecordButtonH, "nextAndLastButtonTouchEvent", this, PageChange.PREVIOUS);
-        ButtonMethod
+        Button
             .addButtonEvent(this.previousRecordButtonV, "nextAndLastButtonTouchEvent", this, PageChange.PREVIOUS);
 
         this.isResultOK = false;

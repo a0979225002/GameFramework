@@ -51,7 +51,7 @@ export default interface IErrorManager {
      * @param{string | }message
      * @param obj
      */
-    executeError(message: string | ErrorType, obj?: any):void;
+    executeError(message: string | ErrorType, obj?: any): void;
 
     /**
      * 顯示錯誤視窗
@@ -59,7 +59,7 @@ export default interface IErrorManager {
      * @param {string} message  : 錯誤訊息
      * @param {string} buttonText : button文字
      */
-    serverError(permanentState: boolean, message: string, buttonText?: string):void;
+    serverError(permanentState: boolean, message: string, buttonText?: string): void;
 
     /**
      * 顯示警告,將會調用已保存的警告Node
@@ -67,7 +67,7 @@ export default interface IErrorManager {
      * @param {string} message  : 錯誤訊息
      * @param {string} buttonText : button文字
      */
-    warning(permanentState: boolean, message: string, buttonText?: string):void;
+    warning(permanentState: boolean, message: string, buttonText?: string): void;
 
     /**
      * 添加要綁定的Error組件

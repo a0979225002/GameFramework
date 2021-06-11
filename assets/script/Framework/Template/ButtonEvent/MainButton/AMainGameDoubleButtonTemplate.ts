@@ -1,9 +1,6 @@
-import ButtonMethod from '../../../GlobalMethod/ButtonMethod'
+import Button from '../../../Global/Button'
 import AMainGameEvent from "./AMainGameEvent";
 
-const {ccclass} = cc._decorator;
-
-@ccclass
 export default abstract class AMainGameDoubleButtonTemplate extends AMainGameEvent {
 
     protected abstract startButtonH: cc.Button;          //開始遊戲按鈕
@@ -24,42 +21,42 @@ export default abstract class AMainGameDoubleButtonTemplate extends AMainGameEve
 
     protected onLoad() {
         super.onLoad();
-        ButtonMethod.addButtonEvent(                        //自動按鈕監聽添加
+        Button.addButtonEvent(                        //自動按鈕監聽添加
             this.autoButtonH,
             "autoButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                        //自動按鈕監聽添加
+        Button.addButtonEvent(                        //自動按鈕監聽添加
             this.autoButtonV,
             "autoButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //加速按鈕監聽添加
+        Button.addButtonEvent(                         //加速按鈕監聽添加
             this.speedUpButtonH,
             "speedUpButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //加速按鈕監聽添加
+        Button.addButtonEvent(                         //加速按鈕監聽添加
             this.speedUpButtonV,
             "speedUpButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //押注金額選擇按鈕監聽添加
+        Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加
             this.betSelectionButtonH,
             "totalBetFrameTouchEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //押注金額選擇按鈕監聽添加
+        Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加
             this.betSelectionButtonV,
             "totalBetFrameTouchEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //押注金額選擇按鈕監聽添加
+        Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加
             this.menuButtonH,
             "menuButtonEventListener",
             this
         );
-        ButtonMethod.addButtonEvent(                         //押注金額選擇按鈕監聽添加
+        Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加
             this.menuButtonV,
             "menuButtonEventListener",
             this

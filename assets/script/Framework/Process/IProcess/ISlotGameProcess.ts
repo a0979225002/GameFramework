@@ -4,7 +4,7 @@
  * @Date 2021-05-14 下午 03:07
  * @Version 1.0
  */
-interface ISlotGameProcess extends IProcess{
+interface ISlotGameProcess extends IProcess {
 
     /**
      * 自訂開始遊戲前的效果(按鈕,背景....)

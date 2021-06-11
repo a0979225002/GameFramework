@@ -2,11 +2,13 @@ import SocketSetting from "../../../../Socket/SocketSetting";
 import {AutoType} from "../../../Config/Enum/ConfigEnum";
 import ErrorManager from "../../../Error/ErrorManager";
 import {GameState} from "../../../Process/Enum/GameState";
-import AutoStateChangeNotification from "../../../Process/GameNotification/AutoStateChangeNotification";
-import SpeedStateChangeNotification from "../../../Process/GameNotification/SpeedStateChangeNotification";
-import AutoStateChangeObserver from "../../../Process/GameObserver/AutoStateChangeObserver";
+import AutoStateChangeNotification
+    from "../../../Listener/NotificationType/GameNotification/AutoStateChangeNotification";
+import SpeedStateChangeNotification
+    from "../../../Listener/NotificationType/GameNotification/SpeedStateChangeNotification";
+import AutoStateChangeObserver from "../../../Listener/ObserverType/GameObserver/AutoStateChangeObserver";
 import SlotGameManager from "../../../Process/SlotGameManager";
-import StopNowStateNotification from "../../../Slot/SlotNotifivation/StopNowStateNotification";
+import StopNowStateNotification from "../../../Listener/NotificationType/GameNotification/StopNowStateNotification";
 import {ResponseType} from "../../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from "../../../WebResponse/WebResponseManager";
 import OverrideComponent from "../../OverrideComponent";
@@ -146,6 +148,7 @@ export default abstract class AMainGameEvent extends OverrideComponent {
         }
         this.scheduleOnce(this.longTouchTimer, 0.5);
     }
+
     /**
      * 長壓計時器事件,如果當前非auto狀態,將會開啟auto 並開始遊戲
      * @returns {Promise<void>}
@@ -249,17 +252,14 @@ export default abstract class AMainGameEvent extends OverrideComponent {
             //判斷當前是金額足夠
             let nowUserBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
             let userBet = this.tableInfo.LineTotalBet[nowUserBetIndex];
-
             //如果用戶金額不足的情況
             if (SlotGameManager.instance.userMoney - userBet < 0) {
                 ErrorManager.instance.serverError(false, SocketSetting.t("S_9003"));
                 return;
             }
-
             this.startEvent();
             await SlotGameManager.instance.play();
             this.endEvent();
-
         } while (SlotGameManager.instance.isAutoState || SlotGameManager.instance.gameState === GameState.FREEING);
     }
 

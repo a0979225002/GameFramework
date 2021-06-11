@@ -1,7 +1,7 @@
 import {LanguageType} from "../Enum/ConfigEnum";
 
 
-export interface IConfigManager {
+export default interface IConfigManager {
 
     /**
      * 載入外部資源URL(只有開發模式中有效)
@@ -66,6 +66,11 @@ export interface IConfigManager {
      */
     isFrameworkDebug: boolean;
 
+    /**
+     * cocos 框架 debug設定
+     * @default : INFO
+     */
+    cocosDebugSetting: cc.debug.DebugMode;
 
     /**
      * 添加遊戲名稱
@@ -127,6 +132,14 @@ export interface IConfigManager {
     setFrameWorkDebug(use: boolean): this;
 
     /**
+     * cocos 框架 debug設定
+     * @param {cc.debug.DebugMode} type - debug 樣式
+     * @default : INFO
+     * @return {this}
+     */
+    setCocosDebug(type: cc.debug.DebugMode): this;
+
+    /**
      * 返回首頁URL
      * @param {string} url
      * @returns {this}
@@ -136,6 +149,6 @@ export interface IConfigManager {
     /**
      * 實例化所有Manager class;
      */
-    builder():void;
+    builder(): void;
 
 }

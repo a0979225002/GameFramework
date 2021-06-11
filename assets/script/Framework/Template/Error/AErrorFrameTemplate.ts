@@ -1,9 +1,6 @@
-import ButtonMethod from '../../GlobalMethod/ButtonMethod'
+import Button from '../../Global/Button'
 import OverrideComponent from "../OverrideComponent";
 
-const {ccclass} = cc._decorator;
-
-@ccclass
 export default abstract class AErrorFrameTemplate extends OverrideComponent {
 
     protected abstract errorLabel: cc.Label;
@@ -19,7 +16,7 @@ export default abstract class AErrorFrameTemplate extends OverrideComponent {
     protected onLoad() {
 
         this.onCreat();
-        ButtonMethod.addButtonEvent(this.errorButton, "errorButtonTouchEvent", this);
+        Button.addButtonEvent(this.errorButton, "errorButtonTouchEvent", this);
 
     }
 

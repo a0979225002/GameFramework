@@ -1,4 +1,3 @@
-import {GameEventType} from './Enum/gameEventType'
 import {ServerEventType} from './Enum/ServerEventType'
 
 export default interface IEventManager {
@@ -11,7 +10,7 @@ export default interface IEventManager {
     /**
      * 當前正在監聽那些事件;
      */
-    eventsCurrentlyBeing: Map<string, ServerEventType | GameEventType>;
+    eventsCurrentlyBeing: Map<string, ServerEventType | string>;
 
     /**
      * 添加事件
@@ -19,7 +18,7 @@ export default interface IEventManager {
      * @param {string} eventName
      * @param {any} any : 要回傳的物件
      */
-    setEvent(eventTarget: cc.EventTarget, eventName: ServerEventType | GameEventType, ...any: any):void;
+    setEvent(eventTarget: cc.EventTarget, eventName: ServerEventType | string, ...any: any): void;
 
     /**
      * game接收監聽事件
@@ -27,7 +26,7 @@ export default interface IEventManager {
      * @param {Function} callFun
      * @param {boolean} isOnce : 是否使用一次性監聽
      */
-    gameEventListener(eventName: GameEventType, callFun: (...target: any) => void, isOnce: boolean):void;
+    gameEventListener(eventName: string, callFun: (...target: any) => void, isOnce: boolean): void;
 
     /**
      * server監聽回傳接收
@@ -35,7 +34,7 @@ export default interface IEventManager {
      * @param {Function} callFun
      * @param {boolean} isOnce : 是否使用一次性監聽
      */
-    serverEventListener(eventName: ServerEventType, callFun: (target?: any) => void, isOnce: boolean):void;
+    serverEventListener(eventName: ServerEventType, callFun: (target?: any) => void, isOnce: boolean): void;
 
     /**
      * 刪除事件,綁定的回傳也一並刪除
@@ -44,7 +43,7 @@ export default interface IEventManager {
      * @param callFun
      * @param target
      */
-    destroyEvent(eventName: ServerEventType | GameEventType, eventTarget: cc.EventTarget, callFun?: Function, target?: Object):void;
+    destroyEvent(eventName: ServerEventType | string, eventTarget: cc.EventTarget, callFun?: Function, target?: Object): void;
 
     /**
      * 該事件是否持續監聽中
@@ -52,6 +51,6 @@ export default interface IEventManager {
      * @param eventTarget
      * @return {boolean}
      */
-    hasListening(eventName: ServerEventType | GameEventType, eventTarget): boolean;
+    hasListening(eventName: ServerEventType | string, eventTarget): boolean;
 
 }

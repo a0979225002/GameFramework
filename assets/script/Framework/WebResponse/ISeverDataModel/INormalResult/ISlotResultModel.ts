@@ -1,4 +1,3 @@
-
 /**
  * @Author XIAO-LI-PIN
  * @Description (介面)所有類型Slot一般狀態接收封包的父類

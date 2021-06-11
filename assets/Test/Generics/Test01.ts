@@ -1,4 +1,4 @@
-import NoLineResult from "../../script/Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineResult from "../../script/Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
 
 /**
  * @Author XIAO-LI-PIN

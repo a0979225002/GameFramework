@@ -1,6 +1,6 @@
 import {ErrorType} from '../../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../../Error/ErrorManager'
-import LoadResManager from '../../LoadResources/LoadResManager'
+import LoadResManager from '../../Load/LoadResManager'
 import {AudioStateType} from "../Enum/AudioStateType";
 
 /**

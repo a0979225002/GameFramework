@@ -1,11 +1,13 @@
 import {GameState, GameType} from '../../Framework/Process/Enum/GameState'
-import UserMoneyChangeNotification from "../../Framework/Process/GameNotification/UserMoneyChangeNotification";
-import UserWinPointStateNotification from "../../Framework/Process/GameNotification/UserWinPointStateNotification";
+import UserMoneyChangeNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
+import UserWinPointStateNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserWinPointStateNotification";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineResult from "../../Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineResult from "../../Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import SlotController from '../Controller/SlotController'

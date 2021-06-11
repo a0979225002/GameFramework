@@ -3,7 +3,7 @@ import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
+import NoLineFreeResult from "../../Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
 

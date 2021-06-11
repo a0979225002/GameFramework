@@ -27,7 +27,7 @@ export default class SceneStyleHandler {
                 this.verticalStyle.executionStyle(width, height);
                 break;
             default :
-                sceneStyle.executionStyle(width,height);
+                sceneStyle.executionStyle(width, height);
         }
     }
 }

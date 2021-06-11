@@ -1,14 +1,14 @@
 import {AutoType} from '../../../Config/Enum/ConfigEnum'
-import ButtonMethod from '../../../GlobalMethod/ButtonMethod'
+import Button from '../../../Global/Button'
 import AMenuButtonEvent from './AMenuButtonEvent'
-const {ccclass} = cc._decorator;
+
 /**
  * @Author XIAO-LI-PIN
  * @Description (抽象類)MENU主頁面,場景方向雙向,按鈕事件監聽綁定(H and V 頁面 兩倍按鈕)
  * @Date 2021-05-26 上午 15:59
  * @Version 1.1
  */
-@ccclass
+
 export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonEvent {
 
     protected abstract musicButtonH: cc.Button;
@@ -45,64 +45,64 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonEvent
     protected onLoad() {
         super.onLoad();
         //音樂按鈕
-        ButtonMethod.addButtonEvent(this.musicButtonH, "musicEventListener", this);
-        ButtonMethod.addButtonEvent(this.musicButtonV, "musicEventListener", this);
+        Button.addButtonEvent(this.musicButtonH, "musicEventListener", this);
+        Button.addButtonEvent(this.musicButtonV, "musicEventListener", this);
 
         //效果音按鈕
-        ButtonMethod.addButtonEvent(this.effectButtonH, "effectEventListener", this);
-        ButtonMethod.addButtonEvent(this.effectButtonV, "effectEventListener", this);
+        Button.addButtonEvent(this.effectButtonH, "effectEventListener", this);
+        Button.addButtonEvent(this.effectButtonV, "effectEventListener", this);
 
         //押住按鈕
-        ButtonMethod.addButtonEvent(this.betUpButtonH, "betUpEventListener", this);
-        ButtonMethod.addButtonEvent(this.betUpButtonV, "betUpEventListener", this);
-        ButtonMethod.addButtonEvent(this.betDownButtonH, "betDownEventListener", this);
-        ButtonMethod.addButtonEvent(this.betDownButtonV, "betDownEventListener", this);
+        Button.addButtonEvent(this.betUpButtonH, "betUpEventListener", this);
+        Button.addButtonEvent(this.betUpButtonV, "betUpEventListener", this);
+        Button.addButtonEvent(this.betDownButtonH, "betDownEventListener", this);
+        Button.addButtonEvent(this.betDownButtonV, "betDownEventListener", this);
 
         //自動按鈕
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.auto50ButtonH, "autoButtonEventListener", this, AutoType.auto50);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.auto50ButtonV, "autoButtonEventListener", this, AutoType.auto50);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.auto100ButtonH, "autoButtonEventListener", this, AutoType.auto100);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.auto100ButtonV, "autoButtonEventListener", this, AutoType.auto100);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.auto500ButtonH, "autoButtonEventListener", this, AutoType.auto500);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.auto500ButtonV, "autoButtonEventListener", this, AutoType.auto500);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.auto1000ButtonH, "autoButtonEventListener", this, AutoType.auto1000);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.auto1000ButtonV, "autoButtonEventListener", this, AutoType.auto1000);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.autoFreeEndButtonH, "autoButtonEventListener", this, AutoType.freeEnd);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.autoFreeEndButtonV, "autoButtonEventListener", this, AutoType.freeEnd);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.autoButtonH, "autoButtonEventListener", this, AutoType.auto);
-        ButtonMethod.addButtonEvent(
+        Button.addButtonEvent(
             this.autoButtonV, "autoButtonEventListener", this, AutoType.auto);
 
         //返回上一頁按鈕
-        ButtonMethod.addButtonEvent(this.goBackButtonH, "goBackTouchEvent", this);
-        ButtonMethod.addButtonEvent(this.goBackButtonV, "goBackTouchEvent", this);
+        Button.addButtonEvent(this.goBackButtonH, "goBackTouchEvent", this);
+        Button.addButtonEvent(this.goBackButtonV, "goBackTouchEvent", this);
 
         //返回首頁
-        ButtonMethod.addButtonEvent(this.goHomeButtonH, "goHomeTouchEvent", this);
-        ButtonMethod.addButtonEvent(this.goHomeButtonV, "goHomeTouchEvent", this);
+        Button.addButtonEvent(this.goHomeButtonH, "goHomeTouchEvent", this);
+        Button.addButtonEvent(this.goHomeButtonV, "goHomeTouchEvent", this);
 
         //紀錄頁按鈕
-        ButtonMethod.addButtonEvent(this.recordButtonH, "recordPageTouchEvent", this);
-        ButtonMethod.addButtonEvent(this.recordButtonV, "recordPageTouchEvent", this);
+        Button.addButtonEvent(this.recordButtonH, "recordPageTouchEvent", this);
+        Button.addButtonEvent(this.recordButtonV, "recordPageTouchEvent", this);
 
         //設定頁按鈕
-        ButtonMethod.addButtonEvent(this.settingButtonH, "settingPageTouchEvent", this);
-        ButtonMethod.addButtonEvent(this.settingButtonV, "settingPageTouchEvent", this);
+        Button.addButtonEvent(this.settingButtonH, "settingPageTouchEvent", this);
+        Button.addButtonEvent(this.settingButtonV, "settingPageTouchEvent", this);
 
         //說明頁按鈕
-        ButtonMethod.addButtonEvent(this.descriptionPageButtonH, "descriptionPageEvent", this);
-        ButtonMethod.addButtonEvent(this.descriptionPageButtonV, "descriptionPageEvent", this);
+        Button.addButtonEvent(this.descriptionPageButtonH, "descriptionPageEvent", this);
+        Button.addButtonEvent(this.descriptionPageButtonV, "descriptionPageEvent", this);
     }
 
 }

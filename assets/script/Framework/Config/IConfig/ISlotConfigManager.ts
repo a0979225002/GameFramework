@@ -5,7 +5,7 @@
  * @Version 1.0
  */
 import {AutoType} from "../Enum/ConfigEnum";
-import {IConfigManager} from "./IConfigManager";
+import IConfigManager from "./IConfigManager";
 
 export interface UserBetPoint {
     LineBet: number

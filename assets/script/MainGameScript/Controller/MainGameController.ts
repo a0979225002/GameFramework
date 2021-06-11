@@ -2,8 +2,11 @@ import {GameState} from '../../Framework/Process/Enum/GameState'
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
-import SceneDirectionChangeNotification from "../../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification
+    from "../../Framework/Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver
+    from "../../Framework/Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
+
 const {ccclass, property} = cc._decorator;
 
 

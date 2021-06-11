@@ -91,5 +91,5 @@ export default interface ISlotStyleManager {
     /**
      * 初始所有操作,並實例化  綁定的 slot Class
      */
-    build():void;
+    build(): void;
 }

@@ -1,7 +1,7 @@
 import AudioManager from '../Audio/AudioManager'
 import ErrorManager from '../Error/ErrorManager'
 import EventManager from '../Listener/EventManager'
-import LoadResManager from '../LoadResources/LoadResManager'
+import LoadResManager from '../Load/LoadResManager'
 import SlotGameManager from '../Process/SlotGameManager'
 import SceneManager from '../Scene/SceneManager'
 import SlotStyleManager from '../Slot/SlotStyleManager'
@@ -110,6 +110,12 @@ export default class SlotConfigManager implements ISlotConfigManager {
      */
     private _isFrameworkDebug: boolean;
 
+    /**
+     * cocos 框架 debug設定
+     * @default : INFO
+     */
+    private _cocosDebugSetting: cc.debug.DebugMode;
+
     private constructor() {
 
         this._gameNumber = null;                                //該遊戲名稱
@@ -124,6 +130,7 @@ export default class SlotConfigManager implements ISlotConfigManager {
         this._userBet = {LineBet: 0};                           //初始user倍率
         this._language = LanguageType.Chinese                   //初始當前語系,將依據該語系,載入所有耦合圖檔
         this._backHomeURL = undefined                           //初始返回首頁URL
+        this._cocosDebugSetting = cc.debug.DebugMode.INFO       //設置cocos debug 模式
         this._isFrameworkDebug = false;                         //是否要開啟框架的Debug模式
 
     }
@@ -284,16 +291,32 @@ export default class SlotConfigManager implements ISlotConfigManager {
         return this;
     }
 
+    /**
+     * cocos 框架 debug設定
+     * @param {cc.debug.DebugMode} type
+     * @default : INFO
+     * @return {this}
+     */
+    setCocosDebug(type: cc.debug.DebugMode): this {
+        this._cocosDebugSetting = type;
+        return this;
+    }
+
+    /**
+     * 返回首頁URL
+     * @param {string} url
+     * @returns {this}
+     */
     setBackHomeURL(url: string): this {
         this._backHomeURL = url;
         return this;
     }
 
-
     /**
      * 實例化所有Manager class;
      */
     public builder() {
+        cc.debug["_resetDebugSetting"](this._cocosDebugSetting);
         AudioManager.setInstance(this);
         ErrorManager.setInstance(this);
         EventManager.setInstance(this);
@@ -304,6 +327,7 @@ export default class SlotConfigManager implements ISlotConfigManager {
         WebResponseManager.setInstance(this);
         WebRequestManager.setInstance(this);
     }
+
 
 // get -----------------------------------------------------------------
 
@@ -358,5 +382,9 @@ export default class SlotConfigManager implements ISlotConfigManager {
 
     get backHomeURL(): string {
         return this._backHomeURL;
+    }
+
+    get cocosDebugSetting(): cc.debug.DebugMode {
+        return this._cocosDebugSetting;
     }
 }

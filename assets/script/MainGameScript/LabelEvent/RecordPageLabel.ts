@@ -1,6 +1,6 @@
 import ccclass = cc._decorator.ccclass;
 import property = cc._decorator.property;
-import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
+import Language from "../../Framework/Global/Language";
 import AGenericTemplate from "../../Framework/Template/AGenericTemplate";
 import SocketSetting from "../../Socket/SocketSetting";
 
@@ -91,7 +91,7 @@ export default class RecordPageLabel extends AGenericTemplate {
         this.loadingTextH.string = SocketSetting.t("LOAD_000");
         this.loadingTextV.string = SocketSetting.t("LOAD_000");
 
-        LanguageMethod.instance
+        Language.instance
             .updateLabelStyle(this.dateTextH)
             .updateLabelStyle(this.dateTextV)
             .updateLabelStyle(this.betNumberTextH)

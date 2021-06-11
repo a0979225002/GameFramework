@@ -1,10 +1,8 @@
 import OverrideComponent from "./OverrideComponent";
-const {ccclass} = cc._decorator;
 
 /**
  * 通用模板
  */
-@ccclass
 export default abstract class AGenericTemplate extends OverrideComponent {
 
     /**

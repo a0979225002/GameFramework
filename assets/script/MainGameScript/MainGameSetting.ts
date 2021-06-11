@@ -3,15 +3,17 @@ import FreeProcessTest from "../../Test/GameProcess/FreeProcessTest";
 import NormalBigWinProcessTest from "../../Test/GameProcess/NormalBigWinProcess.test";
 import AudioManager from '../Framework/Audio/AudioManager'
 import {AudioStateType} from "../Framework/Audio/Enum/AudioStateType";
-import LoadResManager from '../Framework/LoadResources/LoadResManager'
+import LoadResManager from '../Framework/Load/LoadResManager'
 import {GameType} from '../Framework/Process/Enum/GameState'
 import GameProcess from "../Framework/Process/Procress/GameProcess";
 import SlotGameProcess from '../Framework/Process/Procress/SlotGameProcess'
 import SlotGameManager from '../Framework/Process/SlotGameManager'
 import {SceneDirectionType, SceneStyle} from '../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../Framework/Scene/SceneManager'
-import SceneDirectionChangeNotification from "../Framework/Scene/SceneNotification/SceneDirectionChangeNotification";
-import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/SceneDirectionChangeObserver";
+import SceneDirectionChangeNotification
+    from "../Framework/Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeObserver
+    from "../Framework/Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
 import AMainGameSettingTemplate from '../Framework/Template/Setting/AMainGameSettingTemplate'
 import SocketSetting from "../Socket/SocketSetting";
 import MainGameFreeProcess from './GameProcess/MainGameFreeProcess'

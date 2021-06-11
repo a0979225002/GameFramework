@@ -1,3 +1,7 @@
+/**
+ * 所有自動狀態
+ * return number
+ */
 export enum AutoType {
     /**
      * 無限AUTO
@@ -36,6 +40,10 @@ export enum AutoType {
     auto1000 = 1000
 }
 
+/**
+ * 各國語系
+ * return : string
+ */
 export enum LanguageType {
     /**
      * 台灣

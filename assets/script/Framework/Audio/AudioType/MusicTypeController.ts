@@ -1,8 +1,8 @@
 import {ErrorType} from '../../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../../Error/ErrorManager'
-import LoadResManager from '../../LoadResources/LoadResManager'
+import LoadResManager from '../../Load/LoadResManager'
 
-enum MusicStateType{
+enum MusicStateType {
     STOP = -1,      //無撥放
     PLAYING = 1,    //撥放中
     PAUSE = 2,      //暫停中
@@ -47,7 +47,7 @@ export default class MusicTypeController implements IAudioType {
         }
 
         //如果上一首背景音樂正在撥放,先暫停
-        if(state == MusicStateType.PLAYING){
+        if (state == MusicStateType.PLAYING) {
             this.stop();
         }
 

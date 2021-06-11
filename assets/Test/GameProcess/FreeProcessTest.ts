@@ -1,7 +1,7 @@
 import {GameState, GameType} from "../../script/Framework/Process/Enum/GameState";
 import SlotGameManager from "../../script/Framework/Process/SlotGameManager";
 import {ResponseType} from "../../script/Framework/WebResponse/Enum/ResponseType";
-import NoLineResult from "../../script/Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineResult from "../../script/Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from "../../script/Framework/WebResponse/WebResponseManager";
 import {socketJS} from "../../script/Socket/Socket";
 
@@ -26,7 +26,8 @@ export default class FreeProcessTest implements IGameProcedureExecutionContainer
         return new Promise(resolve => {
             socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
             let a = setInterval(() => {
-                if (SlotGameManager.instance.isResultOk) {
+                if (WebResponseManager.instance().isResultOk) {
+
                     clearInterval(a);
                     resolve();
                 }

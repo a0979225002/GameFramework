@@ -1,5 +1,5 @@
 interface ISceneStyle {
 
-    executionStyle(width: number, height: number):void;
+    executionStyle(width: number, height: number): void;
 
 }

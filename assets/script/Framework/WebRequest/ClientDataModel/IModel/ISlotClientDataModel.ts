@@ -108,7 +108,7 @@ export interface ISlotClientDataModel extends IClientDataModel {
     setServerPort(serverPort: number): this;
 
     /**
-     * 測試使用 : 帳號 " ppg015~020"
+     * 測試使用 : 測試帳號 " ppg015~020"
      * @param {string} account
      * @returns {this}
      */

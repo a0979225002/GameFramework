@@ -1,28 +1,51 @@
 interface IWebRequestManager {
 
-    serverHost: string,                //serverIP 210.241.243.206
-    serverPort: number,                //"8080"
-    account: string,                   //ppg015~020
-    password: string,                  //123456
-    CocosDebug: boolean,
-    CocosDebug2: number,
-    LoginState: string,                // 0註冊 1登入 2遊客 3 測試人員記錄測試
-    whereRoom: string,                 //房間名稱
-    serverZone: string,                //server的樓
-    userCode: string,
-    userChannel_Id: string,
-    userGame_id: string,
-    userToken: string,
-    userLang: string,
-    userGameMaker: string,
-    backHomeURL: string,
-    loadLanguageDefaultURL: string,
-    loadLanguage: string,
-    loadLanguageCount: string,
-    LoginData: string,
-    UserLanguage: string,
-    WarningText: string
-    Ratio: number,
-    serverGameGroupID: string,
+    /**
+     * 添加ClientModel
+     * 測試環境:可自行添加參數測試
+     * 正式環境:會蓋過測試環境資料
+     * @param {IClientDataModel} clientModel
+     */
+    setClientModel(clientModel: IClientDataModel): this;
 
+    /**
+     * 載入語系
+     */
+    loadingLanguage(): this;
+
+    /**
+     * 添加連線監聽事件
+     */
+    addNetWorkEventListener(fun: () => void): this;
+
+    /**
+     * 正式與websocket交握連線
+     */
+    smartFoxConnect(): this;
+
+    /**
+     * SmartFox Login 登入
+     * @return {this}
+     */
+    smartFoxLogin(): this;
+
+    /**
+     * 向server獲取資料
+     * @param {string} key - 回傳 server 的 key
+     * @param data - 傳給server 的 資料
+     */
+    request(key: string, data: any);
+
+    /**
+     * 執行連線流程
+     */
+    build();
+
+    /**
+     * 返回首頁
+     */
+
+    /**
+     *
+     */
 }

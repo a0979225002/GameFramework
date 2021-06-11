@@ -1,12 +1,14 @@
 import AudioManager, {Effect, Music, EffectStop} from '../../Framework/Audio/AudioManager'
 import {GameState} from '../../Framework/Process/Enum/GameState'
-import UserMoneyChangeNotification from "../../Framework/Process/GameNotification/UserMoneyChangeNotification";
-import UserWinPointStateNotification from "../../Framework/Process/GameNotification/UserWinPointStateNotification";
+import UserMoneyChangeNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
+import UserWinPointStateNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserWinPointStateNotification";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
-import NoLineResult from "../../Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
-import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
+import NoLineFreeResult from "../../Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
+import NoLineTableInfo from "../../Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {Loading} from "./LoadingDialogController";
 

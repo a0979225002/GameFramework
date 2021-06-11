@@ -1,19 +1,22 @@
 import {Effect} from '../../Framework/Audio/AudioManager'
-import LanguageMethod from "../../Framework/GlobalMethod/LanguageMethod";
+import Language from "../../Framework/Global/Language";
 import {ServerEventType} from '../../Framework/Listener/Enum/ServerEventType'
 import EventManager from '../../Framework/Listener/EventManager'
 import {GameState} from '../../Framework/Process/Enum/GameState'
-import UserMoneyChangeNotification from "../../Framework/Process/GameNotification/UserMoneyChangeNotification";
-import UserTotalBetChangeNotification from "../../Framework/Process/GameNotification/UserTotalBetChangeNotification";
-import UserWinPointStateNotification from "../../Framework/Process/GameNotification/UserWinPointStateNotification";
-import UserMoneyChangeObserver from "../../Framework/Process/GameObserver/UserMoenyChangeObserver";
-import UserTotalBetChangeObserver from "../../Framework/Process/GameObserver/UserTotalBetChangeObserver";
-import UserWinPointStateObserver from "../../Framework/Process/GameObserver/UserWinPointStateObserver";
+import UserMoneyChangeNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
+import UserTotalBetChangeNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserTotalBetChangeNotification";
+import UserWinPointStateNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserWinPointStateNotification";
+import UserMoneyChangeObserver from "../../Framework/Listener/ObserverType/GameObserver/UserMoenyChangeObserver";
+import UserTotalBetChangeObserver from "../../Framework/Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
+import UserWinPointStateObserver from "../../Framework/Listener/ObserverType/GameObserver/UserWinPointStateObserver";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
-import NoLineTableInfo from "../../Framework/WebResponse/SeverDataModel/TableInfo/NoLineTableInfo";
+import NoLineFreeResult from "../../Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
+import NoLineTableInfo from "../../Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
 
@@ -130,7 +133,7 @@ export default class MainGameLabel extends AGenericTemplate {
         this.winPointTextH.string = SocketSetting.t("4_004");
         this.winPointTextV.string = SocketSetting.t("4_004");
 
-        LanguageMethod.instance
+        Language.instance
             .updateLabelStyle(this.gameLineTextH)
             .updateLabelStyle(this.gameLineTextV)
             .updateLabelStyle(this.userTotalBetTextH)

@@ -1,7 +1,6 @@
-import ccclass = cc._decorator.ccclass;
 import {ErrorType} from "../../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../../Error/ErrorManager";
-import LoadResManager from "../../LoadResources/LoadResManager";
+import LoadResManager from "../../Load/LoadResManager";
 import OverrideComponent from "../OverrideComponent";
 
 /**
@@ -10,7 +9,6 @@ import OverrideComponent from "../OverrideComponent";
  * @Date 2021-05-11 下午 05:41
  * @Version 1.0
  */
-@ccclass
 export default abstract class ALoadingDialogTemplate extends OverrideComponent {
 
     protected abstract loadingDialogNode: cc.Node;
@@ -20,6 +18,9 @@ export default abstract class ALoadingDialogTemplate extends OverrideComponent {
     protected timeOut: number;
     protected addProgressValue;
     private timer: number;
+
+    protected abstract onCreate();
+
     protected onLoad() {
         this.loadingInitialize();
         this.onCreate();
@@ -37,26 +38,19 @@ export default abstract class ALoadingDialogTemplate extends OverrideComponent {
         this.progressValue = 0;                 //初始進度條 = 0;
         this.timeOut = 50;                      //初始每跑一次的停留時間
         this.addProgressValue = 0.005           //初始每跑一次初始進度值
-
     }
 
     public runProgress(resName: string): Promise<void> {
-
         this.loadingInitialize();
-
         return new Promise<void>(resolve => {
-
             if (!this.checkHasRes(resName, resolve)) return;
-
             this.progressTimer("", resName, resolve);
-
         })
     }
 
     private progressTimer(progressText: string, resName: string, resolve: (value: (PromiseLike<void> | void)) => void) {
 
         this.timer = window.setInterval(() => {
-
             if (this.progressValue > 1) {
                 this.progressValue = 0;
             }
@@ -71,15 +65,11 @@ export default abstract class ALoadingDialogTemplate extends OverrideComponent {
             progressText += ".";
 
             if (LoadResManager.instance.secondaryLoadState.get(resName) == 1) {
-
                 if (this.progressValue >= 1) {
-
                     this.closeLoadingDiaLog(resolve);
                 }
-
                 if (this.addProgressValue != 0.1) this.addProgressValue = 0.05;
             }
-
         }, this.timeOut)
     }
 
@@ -117,5 +107,4 @@ export default abstract class ALoadingDialogTemplate extends OverrideComponent {
         return true;
     }
 
-    protected abstract onCreate();
 }

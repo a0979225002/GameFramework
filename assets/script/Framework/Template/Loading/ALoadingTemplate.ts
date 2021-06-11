@@ -3,15 +3,12 @@ import {ErrorType} from '../../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../../Error/ErrorManager'
 import {ServerEventType} from '../../Listener/Enum/ServerEventType'
 import EventManager from '../../Listener/EventManager'
-import UserMoneyChangeNotification from "../../Process/GameNotification/UserMoneyChangeNotification";
+import UserMoneyChangeNotification from "../../Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
 import {ResponseType} from "../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from '../../WebResponse/WebResponseManager'
 import OverrideComponent from "../OverrideComponent";
 
-const {ccclass} = cc._decorator;
-
-@ccclass
-export default abstract class ALoadingTemplate extends OverrideComponent implements ILoadTemplate {
+export default abstract class ALoadingTemplate extends OverrideComponent {
 
     private _canPlayGame: boolean;
     protected tableInfo: ITableInfoModel;
@@ -56,10 +53,10 @@ export default abstract class ALoadingTemplate extends OverrideComponent impleme
             WebResponseManager
                 .instance<ITableInfoModel>()
                 .getResult(ResponseType.TABLE_INFO);
-        this._canPlayGame = false;          //由 Server TableInfo Event 改變狀態
-        this.tableInfoEvent.apply(this);    //TableInfo Event 事件
-        ALoadingTemplate.updateUserIp();    //如果是正式上線,將自動更新拿取外部資源的IP
-        this.onCreat();                     //自訂義初始 例:拿取node...
+        this._canPlayGame = false;                          //由 Server TableInfo Event 改變狀態
+        this.tableInfoEvent.apply(this);             //TableInfo Event 事件
+        ALoadingTemplate.updateUserIp();                    //如果是正式上線,將自動更新拿取外部資源的IP
+        this.onCreat();                                     //自訂義初始 例:拿取node...
     }
 
     /**

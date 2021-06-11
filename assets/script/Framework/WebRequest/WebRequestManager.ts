@@ -1,8 +1,8 @@
-import {IConfigManager} from "../Config/IConfig/IConfigManager";
+import IConfigManager from "../Config/IConfig/IConfigManager";
 
-export default class WebRequestManager implements IWebRequestManager {
+export default class WebRequestManager {
 
-    private static _instance: IWebRequestManager;
+    private static _instance: WebRequestManager;
     private configManager: IConfigManager;
     private _CocosDebug: boolean;
     private _CocosDebug2: number;
@@ -32,30 +32,6 @@ export default class WebRequestManager implements IWebRequestManager {
 
     constructor() {
 
-        // this.serverHost = "10.10.0.48";
-        // this.CocosDebug = ;
-        // this.CocosDebug2 = CocosDebug2;
-        // this.LoginData = LoginData;
-        // this.LoginState = LoginState;
-        // this.Ratio = Ratio;
-        // this.UserLanguage = UserLanguage;
-        // this.WarningText = WarningText;
-        // this.account = account;
-        // this.backHomeURL = backHomeURL;
-        // this.loadLanguage = loadLanguage;
-        // this.loadLanguageCount = loadLanguageCount;
-        // this.loadLanguageDefaultURL = loadLanguageDefaultURL;
-        // this.password = password;
-        // this.serverGameGroupID = serverGameGroupID;
-        // this.serverPort = serverPort;
-        // this.serverZone = serverZone;
-        // this.userChannel_Id = userChannel_Id;
-        // this.userCode = userCode;
-        // this.userGameMaker = userGameMaker;
-        // this.userGame_id = userGame_id;
-        // this.userLang = userLang;
-        // this.userToken = userToken;
-        // this.whereRoom = whereRoom;
     }
 
     /**
@@ -69,7 +45,7 @@ export default class WebRequestManager implements IWebRequestManager {
     /**
      *  獲取已經初始化的靜態實例class
      */
-    public static get instance(): IWebRequestManager {
+    public static get instance(): WebRequestManager {
         if (!this._instance) {
             this._instance = new WebRequestManager();
         }

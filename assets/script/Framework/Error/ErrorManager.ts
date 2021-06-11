@@ -1,4 +1,4 @@
-import {IConfigManager} from "../Config/IConfig/IConfigManager";
+import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from "./Enum/ErrorManagerEnum";
 import ErrorHandler from "./ErrorHandler";
 import IErrorHandler from "./IErrorHandler";

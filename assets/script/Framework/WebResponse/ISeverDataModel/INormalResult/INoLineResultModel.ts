@@ -1,4 +1,4 @@
-interface INoLineResultModel extends ISlotResultModel{
+interface INoLineResultModel extends ISlotResultModel {
 
     /**
      * 15格的資料

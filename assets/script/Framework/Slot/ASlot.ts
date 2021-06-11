@@ -1,8 +1,8 @@
-import SpeedStateChangeNotification from "../Process/GameNotification/SpeedStateChangeNotification";
-import SpeedStateChangeObserver from "../Process/GameObserver/SpeedStateChangeObserver";
+import SpeedStateChangeNotification from "../Listener/NotificationType/GameNotification/SpeedStateChangeNotification";
+import SpeedStateChangeObserver from "../Listener/ObserverType/GameObserver/SpeedStateChangeObserver";
 import SlotGameManager from '../Process/SlotGameManager'
-import StopNowStateNotification from "./SlotNotifivation/StopNowStateNotification";
-import StopNowStateObserver from "./SlotObserver/StopNowStateObserver";
+import StopNowStateNotification from "../Listener/NotificationType/GameNotification/StopNowStateNotification";
+import StopNowStateObserver from "../Listener/ObserverType/GameObserver/StopNowStateObserver";
 import {StyleData} from './SlotStyleManager'
 
 export default abstract class ASlot implements ISlot {

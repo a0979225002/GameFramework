@@ -33,7 +33,6 @@ export default class SocketSetting {
         WarningText: string
         Ratio: number,
         serverGameGroupID: string,
-
     } = {
         serverhost: "",
         serverport: 0,
@@ -84,7 +83,6 @@ export default class SocketSetting {
     }
 
     static set serverSfs(value: SmartFox) {
-        cc.log(value);
         this._serverSfs = value;
     }
 }

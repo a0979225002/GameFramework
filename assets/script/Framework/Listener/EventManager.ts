@@ -1,14 +1,15 @@
-import {IConfigManager} from "../Config/IConfig/IConfigManager";
+import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
-import {GameEventType} from './Enum/gameEventType'
 import {ServerEventType} from './Enum/ServerEventType'
 import IEventManager from './IEventManager'
 
 export default class EventManager implements IEventManager {
 
     private static _instance: IEventManager;
+
     private configManager: IConfigManager;
+
     /**
      * 事件總數量
      */
@@ -26,16 +27,14 @@ export default class EventManager implements IEventManager {
     /**
      * 當前正在監聽那些事件;
      */
-    private readonly _eventsCurrentlyBeing: Map<string, ServerEventType | GameEventType>
+    private readonly _eventsCurrentlyBeing: Map<string, ServerEventType | string>
 
     private constructor(configManager: IConfigManager) {
-
         this.configManager = configManager;
         this._eventCount = 0;
-        this._eventsCurrentlyBeing = new Map<string, ServerEventType | GameEventType>();
+        this._eventsCurrentlyBeing = new Map<string, ServerEventType | string>();
         EventManager.serverTarget = new cc.EventTarget();
         EventManager.gameTarget = new cc.EventTarget();
-
     }
 
     /**
@@ -52,25 +51,11 @@ export default class EventManager implements IEventManager {
      *  獲取已經初始化的靜態實例class
      */
     public static get instance(): IEventManager {
-
         if (!this._instance) {
             ErrorManager.instance.executeError(ErrorType.ListenerFW, "該類尚未實例化");
             return;
         }
-
         return this._instance;
-    }
-
-    public get eventCount(): number {
-
-        return this._eventCount
-
-    }
-
-    public get eventsCurrentlyBeing(): Map<string, ServerEventType | GameEventType> {
-
-        return this._eventsCurrentlyBeing
-
     }
 
     /**
@@ -79,10 +64,8 @@ export default class EventManager implements IEventManager {
      * @param {string} eventName
      * @param {any} any : 要回傳的物件
      */
-    public setEvent(eventTarget: cc.EventTarget, eventName: ServerEventType | GameEventType, ...any: any) {
-
+    public setEvent(eventTarget: cc.EventTarget, eventName: ServerEventType | string, ...any: any) {
         any ? eventTarget.emit(eventName, ...any) : eventTarget.emit(eventName);
-
     }
 
     /**
@@ -91,11 +74,9 @@ export default class EventManager implements IEventManager {
      * @param {Function} callFun
      * @param isOnce
      */
-    public gameEventListener(eventName: GameEventType, callFun: (...target: any) => void, isOnce: boolean) {
-
+    public gameEventListener(eventName: string, callFun: (...target: any) => void, isOnce: boolean) {
         this._eventCount += 1;
         this._eventsCurrentlyBeing.set("gameEvent", eventName);
-
         if (isOnce) {
             EventManager.gameTarget.once(eventName, callFun);
         } else {
@@ -110,10 +91,8 @@ export default class EventManager implements IEventManager {
      * @param isOnce
      */
     public serverEventListener(eventName: ServerEventType, callFun: (...target: any) => void, isOnce: boolean) {
-
         this._eventCount += 1;
         this._eventsCurrentlyBeing.set("severEvent", eventName);
-
         if (isOnce) {
             EventManager.serverTarget.once(eventName, callFun);
         } else {
@@ -128,18 +107,22 @@ export default class EventManager implements IEventManager {
      * @param callFun?{Function} : 要刪除的方法,如果未傳參數,將默認全部相關的callFun一並刪除
      * @param target?{Object}:調用回調的目標（此對象），如果未指定，則僅刪除沒有目標的回調
      */
-    public destroyEvent(eventName: ServerEventType | GameEventType, eventTarget: cc.EventTarget, callFun?: Function, target?: Object) {
-
+    public destroyEvent(eventName: ServerEventType | string, eventTarget: cc.EventTarget, callFun?: Function, target?: Object) {
         eventTarget.off(eventName, callFun, target);
-
     }
 
     /**
      * 是否該事件持續監聽中
      */
-    public hasListening(eventName: ServerEventType | GameEventType, eventTarget: cc.EventTarget): boolean {
-
+    public hasListening(eventName: ServerEventType | string, eventTarget: cc.EventTarget): boolean {
         return eventTarget.hasEventListener(eventName);
+    }
 
+    public get eventCount(): number {
+        return this._eventCount
+    }
+
+    public get eventsCurrentlyBeing(): Map<string, ServerEventType | string> {
+        return this._eventsCurrentlyBeing
     }
 }

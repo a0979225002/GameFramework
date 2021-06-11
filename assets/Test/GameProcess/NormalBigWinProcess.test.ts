@@ -3,7 +3,7 @@ import SlotGameManager from '../../script/Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../script/Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../script/Framework/Slot/SlotType/NoLineSlot'
 import {ResponseType} from "../../script/Framework/WebResponse/Enum/ResponseType";
-import NoLineResult from "../../script/Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineResult from "../../script/Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../script/Framework/WebResponse/WebResponseManager'
 import WinLevelController from "../../script/MainGameScript/Controller/WinLevelController";
 import {socketJS} from '../../script/Socket/Socket'

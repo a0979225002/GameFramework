@@ -1,6 +1,7 @@
 import {SceneDirectionType} from '../Enum/SceneStyle'
 import SceneManager from '../SceneManager'
-import SceneDirectionChangeNotification from "../SceneNotification/SceneDirectionChangeNotification";
+import SceneDirectionChangeNotification
+    from "../../Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification";
 
 export default class AutoStyle implements ISceneStyle {
 

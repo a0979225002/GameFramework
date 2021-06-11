@@ -1,14 +1,17 @@
 import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
 import {GameState, GameType} from '../../Framework/Process/Enum/GameState'
-import AutoStateChangeNotification from "../../Framework/Process/GameNotification/AutoStateChangeNotification";
-import UserMoneyChangeNotification from "../../Framework/Process/GameNotification/UserMoneyChangeNotification";
-import UserWinPointStateNotification from "../../Framework/Process/GameNotification/UserWinPointStateNotification";
+import AutoStateChangeNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/AutoStateChangeNotification";
+import UserMoneyChangeNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
+import UserWinPointStateNotification
+    from "../../Framework/Listener/NotificationType/GameNotification/UserWinPointStateNotification";
 import SlotGameManager from '../../Framework/Process/SlotGameManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
-import NoLineFreeResult from "../../Framework/WebResponse/SeverDataModel/FreeResult/NoLineFreeResult";
-import NoLineResult from "../../Framework/WebResponse/SeverDataModel/NormalResult/NoLineResult";
+import NoLineFreeResult from "../../Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
+import NoLineResult from "../../Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import {socketJS} from '../../Socket/Socket'
 import MainGameButton from '../ButtonEvent/MainGameButton'
@@ -26,12 +29,10 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
     private freeResult: NoLineFreeResult;
 
     constructor() {
-
         this.normalResult =
             WebResponseManager
                 .instance<NoLineResult>()
                 .getResult(ResponseType.NORMAL);
-
         this.freeResult =
             WebResponseManager
                 .instance<NoLineFreeResult>()
@@ -45,9 +46,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
     }
 
     public onCustomizeStart(): Promise<void> {
-
         this.onCreate();
-
         return new Promise<void>(async (resolve) => {
             this.slotStyle.initializeState();
             SlotController.instance.closeWinGrid();

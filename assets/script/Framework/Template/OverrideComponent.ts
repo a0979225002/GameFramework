@@ -11,6 +11,7 @@ export default class OverrideComponent extends cc.Component {
      * @private
      */
     private readonly scheduleTag: Array<Function>;
+
     constructor() {
         super();
         this.scheduleTag = new Array<Function>();
@@ -40,7 +41,7 @@ export default class OverrideComponent extends cc.Component {
      * @param {number} delay : 延遲時間
      */
     schedule(callback: Function, interval?: number, repeat?: number, delay?: number) {
-        super.schedule(this.checkScheduleRepeat(callback,repeat), interval, repeat, delay);
+        super.schedule(this.checkScheduleRepeat(callback, repeat), interval, repeat, delay);
         this.scheduleTag.push(callback);
     }
 
@@ -48,14 +49,14 @@ export default class OverrideComponent extends cc.Component {
      * 確認當前計時器是否有使用重複次數
      * @protected
      */
-    protected checkScheduleRepeat(callback, repeat):Function{
-        if(repeat>0){
-            callback.prototype = ()=>{
+    protected checkScheduleRepeat(callback, repeat): Function {
+        if (repeat > 0) {
+            callback.prototype = () => {
                 repeat--;
-                if(repeat<0)this.unschedule(callback);
+                if (repeat < 0) this.unschedule(callback);
                 callback.apply(this);
             }
-        }else {
+        } else {
             return callback;
         }
         return callback.prototype;
@@ -67,7 +68,7 @@ export default class OverrideComponent extends cc.Component {
      * @param {number} delay : 延遲時間
      */
     scheduleOnce(callback: Function, delay?: number) {
-        callback.prototype = ()=>{
+        callback.prototype = () => {
             this.unschedule(callback.prototype);
             callback.apply(this);
         }
@@ -81,7 +82,7 @@ export default class OverrideComponent extends cc.Component {
     unschedule(callback: Function) {
         super.unschedule(this.checkScheduleTag(callback));
         let index = this.checkScheduleCallFunIndex(callback);
-        if(index>-1){
+        if (index > -1) {
             this.scheduleTag.splice(index, 1);
         }
     }
@@ -92,13 +93,13 @@ export default class OverrideComponent extends cc.Component {
      * @returns {number} : 返回當前this.getScheduleTag[]執行中的index位置,如果該陣列內無該方法,返回-1
      * @protected
      */
-    protected checkScheduleCallFunIndex(callback:Function):number{
-        let index :number;
-        if(this.getScheduleTag().indexOf(callback)!=-1){
+    protected checkScheduleCallFunIndex(callback: Function): number {
+        let index: number;
+        if (this.getScheduleTag().indexOf(callback) != -1) {
             index = this.scheduleTag.indexOf(callback);
-        }else if(this.getScheduleTag().indexOf(callback.prototype)!=-1){
+        } else if (this.getScheduleTag().indexOf(callback.prototype) != -1) {
             index = this.scheduleTag.indexOf(callback.prototype);
-        }else {
+        } else {
             return -1;
         }
         return index;
@@ -110,10 +111,10 @@ export default class OverrideComponent extends cc.Component {
      * @returns {Function} : 返回當前this.getScheduleTag[]內的該方法,如果該陣列內無該方法,返回undefined
      * @protected
      */
-    protected checkScheduleTag(callback:Function):Function{
-        let fun:Function = undefined;
+    protected checkScheduleTag(callback: Function): Function {
+        let fun: Function = undefined;
         let index = this.checkScheduleCallFunIndex(callback);
-        if(index>-1){
+        if (index > -1) {
             fun = this.scheduleTag[index];
         }
         return fun;
