@@ -10,8 +10,8 @@ import SceneManager from '../../Framework/Scene/SceneManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
 import MainGameButton from '../ButtonEvent/MainGameButton'
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 export default class InstructionController extends AGenericTemplate {
@@ -86,17 +86,17 @@ export default class InstructionController extends AGenericTemplate {
         this.speedTextH.string = SocketSetting.t("HELP_004");
         this.speedTextV.string = SocketSetting.t("HELP_004");
 
-        Language.instance
-            .updateLabelStyle(this.userMoneyTextH)
-            .updateLabelStyle(this.userMoneyTextV)
-            .updateLabelStyle(this.menuTextH)
-            .updateLabelStyle(this.menuTextV)
-            .updateLabelStyle(this.startButtonAutoTextH)
-            .updateLabelStyle(this.startButtonAutoTextV)
-            .updateLabelStyle(this.autoTextH)
-            .updateLabelStyle(this.autoTextV)
-            .updateLabelStyle(this.speedTextH)
-            .updateLabelStyle(this.speedTextV)
+        Language
+            .setLabel(this.userMoneyTextH)
+            .setLabel(this.userMoneyTextV)
+            .setLabel(this.menuTextH)
+            .setLabel(this.menuTextV)
+            .setLabel(this.startButtonAutoTextH)
+            .setLabel(this.startButtonAutoTextV)
+            .setLabel(this.autoTextH)
+            .setLabel(this.autoTextV)
+            .setLabel(this.speedTextH)
+            .setLabel(this.speedTextV)
 
     }
 

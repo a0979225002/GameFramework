@@ -5,8 +5,8 @@ import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
 import NoLineTableInfo from "../../Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from "../../Framework/WebResponse/WebResponseManager";
 import SocketSetting from '../../Socket/SocketSetting'
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 export default class DescriptionPageLabel extends AGenericTemplate {
@@ -173,10 +173,10 @@ export default class DescriptionPageLabel extends AGenericTemplate {
         this.page1WildTextV.string = SocketSetting.t("4_102");
 
         Language
-            .updateLabelStyle(this.page1FreeTextH)
-            .updateLabelStyle(this.page1FreeTextV)
-            .updateLabelStyle(this.page1WildTextH)
-            .updateLabelStyle(this.page1WildTextV);
+            .setLabel(this.page1FreeTextH)
+            .setLabel(this.page1FreeTextV)
+            .setLabel(this.page1WildTextH)
+            .setLabel(this.page1WildTextV);
     }
 
     private page3Language() {
@@ -214,22 +214,22 @@ export default class DescriptionPageLabel extends AGenericTemplate {
         //獲勝符號的賠付
         this.page3WinOddsTextV.string = SocketSetting.t("243_007");
 
-        Language.instance
-            .updateLabelStyle(this.page3LineTextV)
-            .updateLabelStyle(this.page3WinDescriptionTextH)
-            .updateLabelStyle(this.page3WinDescriptionTextV)
-            .updateLabelStyle(this.page3WinTextH)
-            .updateLabelStyle(this.page3WinTextV)
-            .updateLabelStyle(this.page3NotWinTextH)
-            .updateLabelStyle(this.page3NotWinTextV)
-            .updateLabelStyle(this.page3WinningCalculationH)
-            .updateLabelStyle(this.page3WinningCalculationV)
-            .updateLabelStyle(this.page3ExampleTextH)
-            .updateLabelStyle(this.page3ExampleTextV)
-            .updateLabelStyle(this.page3ExampleText2V)
-            .updateLabelStyle(this.page3ExampleAnswerH)
-            .updateLabelStyle(this.page3ExampleAnswerV)
-            .updateLabelStyle(this.page3WinOddsTextV);
+        Language
+            .setLabel(this.page3LineTextV)
+            .setLabel(this.page3WinDescriptionTextH)
+            .setLabel(this.page3WinDescriptionTextV)
+            .setLabel(this.page3WinTextH)
+            .setLabel(this.page3WinTextV)
+            .setLabel(this.page3NotWinTextH)
+            .setLabel(this.page3NotWinTextV)
+            .setLabel(this.page3WinningCalculationH)
+            .setLabel(this.page3WinningCalculationV)
+            .setLabel(this.page3ExampleTextH)
+            .setLabel(this.page3ExampleTextV)
+            .setLabel(this.page3ExampleText2V)
+            .setLabel(this.page3ExampleAnswerH)
+            .setLabel(this.page3ExampleAnswerV)
+            .setLabel(this.page3WinOddsTextV);
 
     }
 

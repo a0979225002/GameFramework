@@ -94,7 +94,7 @@ export default abstract class ALoadingDialogTemplate extends OverrideComponent {
     private checkHasRes(resName: string, resolve: (value: (PromiseLike<void> | void)) => void): boolean {
 
         if (!LoadResManager.instance.secondaryLoadState.has(resName)) {
-            ErrorManager.instance.executeError(ErrorType.UndefinedFW, `${resName}該無該資源`);
+            ErrorManager.instance.executeError(ErrorType.UNDEFINED_FW, `${resName}該無該資源`);
             this.loadingDialogNode.active = false;
             resolve();
             return false;

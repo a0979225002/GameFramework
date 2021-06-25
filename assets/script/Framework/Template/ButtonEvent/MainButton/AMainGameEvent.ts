@@ -1,5 +1,5 @@
 import SocketSetting from "../../../../Socket/SocketSetting";
-import {AutoType} from "../../../Config/Enum/ConfigEnum";
+import {AutoType} from "../../../Config/Enum/AutoType";
 import ErrorManager from "../../../Error/ErrorManager";
 import {GameState} from "../../../Process/Enum/GameState";
 import AutoStateChangeNotification
@@ -7,7 +7,7 @@ import AutoStateChangeNotification
 import SpeedStateChangeNotification
     from "../../../Listener/NotificationType/GameNotification/SpeedStateChangeNotification";
 import AutoStateChangeObserver from "../../../Listener/ObserverType/GameObserver/AutoStateChangeObserver";
-import SlotGameManager from "../../../Process/SlotGameManager";
+import SlotProcessManager from "../../../Process/SlotProcessManager";
 import StopNowStateNotification from "../../../Listener/NotificationType/GameNotification/StopNowStateNotification";
 import {ResponseType} from "../../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from "../../../WebResponse/WebResponseManager";
@@ -141,9 +141,9 @@ export default abstract class AMainGameEvent extends OverrideComponent {
     protected startButtonOnTouchStart() {
         this.unschedule(this.longTouchTimer);//清除計時器事件
         //如果該遊戲正在自動模式,將先取消自動狀態
-        if (SlotGameManager.instance.isAutoState) {
+        if (SlotProcessManager.instance.isAutoState) {
             //推播auto事件
-            this.autoNotify(false, SlotGameManager.instance.autoType);
+            this.autoNotify(false, SlotProcessManager.instance.autoType);
             return;
         }
         this.scheduleOnce(this.longTouchTimer, 0.5);
@@ -156,8 +156,8 @@ export default abstract class AMainGameEvent extends OverrideComponent {
      */
     private async longTouchTimer() {
         //推播auto事件
-        this.autoNotify(true, SlotGameManager.instance.autoType);
-        if (SlotGameManager.instance.isAutoState) {
+        this.autoNotify(true, SlotProcessManager.instance.autoType);
+        if (SlotProcessManager.instance.isAutoState) {
             await this.startButtonEvent();
         }
     }
@@ -244,23 +244,23 @@ export default abstract class AMainGameEvent extends OverrideComponent {
                 return;
             }
             //如果遊戲為執行中狀態,將可以即停操作
-            if (SlotGameManager.instance.gameState != GameState.STANDBY && SlotGameManager.instance.gameState != GameState.FREEING) {
+            if (SlotProcessManager.instance.gameState != GameState.STANDBY && SlotProcessManager.instance.gameState != GameState.FREEING) {
                 //推播即停事件
                 StopNowStateNotification.instance.notify();
                 return;
             }
             //判斷當前是金額足夠
-            let nowUserBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
+            let nowUserBetIndex = SlotProcessManager.instance.userBetPoint.LineBet;
             let userBet = this.tableInfo.LineTotalBet[nowUserBetIndex];
             //如果用戶金額不足的情況
-            if (SlotGameManager.instance.userMoney - userBet < 0) {
+            if (SlotProcessManager.instance.userMoney - userBet < 0) {
                 ErrorManager.instance.serverError(false, SocketSetting.t("S_9003"));
                 return;
             }
             this.startEvent();
-            await SlotGameManager.instance.play();
+            await SlotProcessManager.instance.play();
             this.endEvent();
-        } while (SlotGameManager.instance.isAutoState || SlotGameManager.instance.gameState === GameState.FREEING);
+        } while (SlotProcessManager.instance.isAutoState || SlotProcessManager.instance.gameState === GameState.FREEING);
     }
 
     /**
@@ -277,8 +277,8 @@ export default abstract class AMainGameEvent extends OverrideComponent {
             this.totalBetFrameTouchEvent(false);
             return;
         }
-        let isAuto = SlotGameManager.instance.isAutoState;
-        this.autoNotify(!isAuto, SlotGameManager.instance.autoType);
+        let isAuto = SlotProcessManager.instance.isAutoState;
+        this.autoNotify(!isAuto, SlotProcessManager.instance.autoType);
     }
 
     /**
@@ -287,11 +287,11 @@ export default abstract class AMainGameEvent extends OverrideComponent {
      */
     protected speedUpButtonEventListener() {
 
-        let isSpeedUp = SlotGameManager.instance.isSpeedUp;
+        let isSpeedUp = SlotProcessManager.instance.isSpeedUp;
 
         SpeedStateChangeNotification.instance.notify(!isSpeedUp);
 
-        this.speedUpEvent(SlotGameManager.instance.isSpeedUp);
+        this.speedUpEvent(SlotProcessManager.instance.isSpeedUp);
 
     }
 
@@ -302,7 +302,7 @@ export default abstract class AMainGameEvent extends OverrideComponent {
      */
     protected totalBetFrameTouchEventListener() {
         //如果當前在遊戲中,將無法打開總押注視窗
-        if (SlotGameManager.instance.gameState != GameState.STANDBY) {
+        if (SlotProcessManager.instance.gameState != GameState.STANDBY) {
             this.warningEvent();
             return;
         }
@@ -316,7 +316,7 @@ export default abstract class AMainGameEvent extends OverrideComponent {
      * @protected
      */
     protected menuButtonEventListener() {
-        if (SlotGameManager.instance.gameState != GameState.STANDBY) {
+        if (SlotProcessManager.instance.gameState != GameState.STANDBY) {
             this.warningEvent();
             return;
         }

@@ -1,4 +1,3 @@
-import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
 import {ServerEventType} from './Enum/ServerEventType'
@@ -52,7 +51,7 @@ export default class EventManager implements IEventManager {
      */
     public static get instance(): IEventManager {
         if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.ListenerFW, "該類尚未實例化");
+            ErrorManager.instance.executeError(ErrorType.LISTENER_FW, "該類尚未實例化");
             return;
         }
         return this._instance;

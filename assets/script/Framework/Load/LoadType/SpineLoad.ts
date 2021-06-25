@@ -13,7 +13,7 @@ export default class SpineLoad extends ALoadType {
     setResToManager(key: string, asset: Array<sp.SkeletonData>) {
 
         if (LoadResManager.instance.spineRes.has(key)) {
-            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "請檢察資源是否以載入過,鍵值重複");
+            ErrorManager.instance.executeError(ErrorType.LOAD_FW, "請檢察資源是否以載入過,鍵值重複");
         }
 
         LoadResManager.instance.spineRes.set(key, asset[0]);
@@ -34,7 +34,7 @@ export default class SpineLoad extends ALoadType {
                         spineToMap.set(spineName, spineName);
                     } else {
                         if (spineToMap.has(spineNameToNumber)) {
-                            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `${spineName} spine動畫取number有誤,請檢查該spine Animetion是否有重複數字情況`);
+                            ErrorManager.instance.executeError(ErrorType.LOAD_FW, `${spineName} spine動畫取number有誤,請檢查該spine Animetion是否有重複數字情況`);
                         }
                         spineToMap.set(spineNameToNumber, spineName);
                     }

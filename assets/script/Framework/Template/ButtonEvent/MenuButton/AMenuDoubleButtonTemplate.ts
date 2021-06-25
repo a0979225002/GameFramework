@@ -1,4 +1,4 @@
-import {AutoType} from '../../../Config/Enum/ConfigEnum'
+import {AutoType} from '../../../Config/Enum/AutoType'
 import Button from '../../../Global/Button'
 import AMenuButtonEvent from './AMenuButtonEvent'
 
@@ -60,29 +60,29 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonEvent
 
         //自動按鈕
         Button.addButtonEvent(
-            this.auto50ButtonH, "autoButtonEventListener", this, AutoType.auto50);
+            this.auto50ButtonH, "autoButtonEventListener", this, AutoType.AUTO_50);
         Button.addButtonEvent(
-            this.auto50ButtonV, "autoButtonEventListener", this, AutoType.auto50);
+            this.auto50ButtonV, "autoButtonEventListener", this, AutoType.AUTO_50);
         Button.addButtonEvent(
-            this.auto100ButtonH, "autoButtonEventListener", this, AutoType.auto100);
+            this.auto100ButtonH, "autoButtonEventListener", this, AutoType.AUTO_100);
         Button.addButtonEvent(
-            this.auto100ButtonV, "autoButtonEventListener", this, AutoType.auto100);
+            this.auto100ButtonV, "autoButtonEventListener", this, AutoType.AUTO_100);
         Button.addButtonEvent(
-            this.auto500ButtonH, "autoButtonEventListener", this, AutoType.auto500);
+            this.auto500ButtonH, "autoButtonEventListener", this, AutoType.AUTO_500);
         Button.addButtonEvent(
-            this.auto500ButtonV, "autoButtonEventListener", this, AutoType.auto500);
+            this.auto500ButtonV, "autoButtonEventListener", this, AutoType.AUTO_500);
         Button.addButtonEvent(
-            this.auto1000ButtonH, "autoButtonEventListener", this, AutoType.auto1000);
+            this.auto1000ButtonH, "autoButtonEventListener", this, AutoType.AUTO_1000);
         Button.addButtonEvent(
-            this.auto1000ButtonV, "autoButtonEventListener", this, AutoType.auto1000);
+            this.auto1000ButtonV, "autoButtonEventListener", this, AutoType.AUTO_1000);
         Button.addButtonEvent(
-            this.autoFreeEndButtonH, "autoButtonEventListener", this, AutoType.freeEnd);
+            this.autoFreeEndButtonH, "autoButtonEventListener", this, AutoType.FREE_END);
         Button.addButtonEvent(
-            this.autoFreeEndButtonV, "autoButtonEventListener", this, AutoType.freeEnd);
+            this.autoFreeEndButtonV, "autoButtonEventListener", this, AutoType.FREE_END);
         Button.addButtonEvent(
-            this.autoButtonH, "autoButtonEventListener", this, AutoType.auto);
+            this.autoButtonH, "autoButtonEventListener", this, AutoType.AUTO);
         Button.addButtonEvent(
-            this.autoButtonV, "autoButtonEventListener", this, AutoType.auto);
+            this.autoButtonV, "autoButtonEventListener", this, AutoType.AUTO);
 
         //返回上一頁按鈕
         Button.addButtonEvent(this.goBackButtonH, "goBackTouchEvent", this);

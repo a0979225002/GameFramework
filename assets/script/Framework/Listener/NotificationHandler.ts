@@ -59,7 +59,7 @@ export default class NotificationHandler<T extends IBaseNotification> implements
         if (this.notificationToMap.has(type)) {
             return this.notificationToMap.get(type);
         } else {
-            ErrorManager.instance.executeError(ErrorType.ListenerFW, `${type} :  該key尚未加入推撥事件中,你需先執行 setNotification(type:IBaseNotification)方法`)
+            ErrorManager.instance.executeError(ErrorType.LISTENER_FW, `${type} :  該key尚未加入推撥事件中,你需先執行 setNotification(type:IBaseNotification)方法`)
             // throw new Error(`${type} :  該class尚未加入推撥事件中,你需先執行 setNotification(IBaseNotification)方法`);
             return undefined;
         }

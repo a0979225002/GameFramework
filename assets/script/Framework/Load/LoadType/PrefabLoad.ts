@@ -16,7 +16,7 @@ export default class PrefabLoad extends ALoadType {
 
             if (LoadResManager.instance.prefabRes.has(prefab.name)) {
 
-                ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `${prefab.name} prefab名稱重複,請檢查是否有相同名稱prefab`)
+                ErrorManager.instance.executeError(ErrorType.LOAD_FW, `${prefab.name} prefab名稱重複,請檢查是否有相同名稱prefab`)
                 return;
             } else {
                 LoadResManager.instance.prefabRes.set(prefab.name, prefab);

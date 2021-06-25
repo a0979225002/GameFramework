@@ -1,4 +1,4 @@
-import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
+import {AutoType} from '../../Framework/Config/Enum/AutoType'
 import {GameState, GameType} from '../../Framework/Process/Enum/GameState'
 import AutoStateChangeNotification
     from "../../Framework/Listener/NotificationType/GameNotification/AutoStateChangeNotification";
@@ -6,7 +6,7 @@ import UserMoneyChangeNotification
     from "../../Framework/Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
 import UserWinPointStateNotification
     from "../../Framework/Listener/NotificationType/GameNotification/UserWinPointStateNotification";
-import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import SlotProcessManager from '../../Framework/Process/SlotProcessManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
@@ -131,10 +131,10 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
                 MainGameLabel.instance.closeFreeTitle();
                 //打開一般模式所有按鈕
                 MainGameButton.instance.switchButton(true);
-                SlotGameManager.instance.gameState = GameState.STANDBY;
+                SlotProcessManager.instance.gameState = GameState.STANDBY;
                 //如果是自動狀態是free結束,將在結束時關閉auto狀態
-                if (SlotGameManager.instance.autoType == AutoType.freeEnd && SlotGameManager.instance.isAutoState) {
-                    let autoType = SlotGameManager.instance.autoType;
+                if (SlotProcessManager.instance.autoType == AutoType.FREE_END && SlotProcessManager.instance.isAutoState) {
+                    let autoType = SlotProcessManager.instance.autoType;
                     AutoStateChangeNotification.instance.notify(false, autoType, autoType)
                 }
             }
@@ -144,7 +144,7 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
 
     onChangeStatus() {
         if (this.freeResult.FreeToFree == 0 && this.freeResult.Count == 0) {
-            SlotGameManager.instance.changeProcess(GameType.NORMAL);
+            SlotProcessManager.instance.changeProcess(GameType.NORMAL);
         }
     }
 

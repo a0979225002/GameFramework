@@ -1,12 +1,12 @@
 import AudioManager from '../../../Audio/AudioManager'
-import {AutoType} from '../../../Config/Enum/ConfigEnum'
+import {AutoType} from '../../../Config/Enum/AutoType'
 import AutoStateChangeNotification
     from "../../../Listener/NotificationType/GameNotification/AutoStateChangeNotification";
 import UserTotalBetChangeNotification
     from "../../../Listener/NotificationType/GameNotification/UserTotalBetChangeNotification";
 import AutoStateChangeObserver from "../../../Listener/ObserverType/GameObserver/AutoStateChangeObserver";
 import UserTotalBetChangeObserver from "../../../Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
-import SlotGameManager from '../../../Process/SlotGameManager'
+import SlotProcessManager from '../../../Process/SlotProcessManager'
 import {ResponseType} from "../../../WebResponse/Enum/ResponseType";
 import {WebResponseManager} from '../../../WebResponse/WebResponseManager'
 import OverrideComponent from "../../OverrideComponent";
@@ -139,7 +139,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      * @protected
      */
     protected betUpEventListener() {
-        let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
+        let beforeBetIndex = SlotProcessManager.instance.userBetPoint.LineBet;
         let afterBetIndex = beforeBetIndex + 1;
         if (afterBetIndex > this.tableInfo.LineBet.length - 1) {
             afterBetIndex = 0;
@@ -153,7 +153,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      * @protected
      */
     protected betDownEventListener() {
-        let beforeBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
+        let beforeBetIndex = SlotProcessManager.instance.userBetPoint.LineBet;
         let afterBetIndex = beforeBetIndex - 1;
         if (afterBetIndex < 0) {
             afterBetIndex = this.tableInfo.LineBet.length - 1;
@@ -198,7 +198,7 @@ export default abstract class AMenuButtonEvent extends OverrideComponent {
      * @protected
      */
     protected autoButtonEventListener(event, callbackType: AutoType) {
-        let beforeAutoType = SlotGameManager.instance.autoType;
+        let beforeAutoType = SlotProcessManager.instance.autoType;
         AutoStateChangeNotification
             .instance.notify(true, beforeAutoType, callbackType);
     }

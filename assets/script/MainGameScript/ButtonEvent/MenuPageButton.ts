@@ -1,7 +1,7 @@
 import AudioManager, {Effect, Music} from '../../Framework/Audio/AudioManager'
-import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
+import {AutoType} from '../../Framework/Config/Enum/AutoType'
 import Button from "../../Framework/Global/Button";
-import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import SlotProcessManager from '../../Framework/Process/SlotProcessManager'
 import {SceneDirectionType} from '../../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../../Framework/Scene/SceneManager'
 import SceneDirectionChangeNotification
@@ -266,10 +266,10 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         //初始化自動模式按鈕樣式
-        this.checkAutoNode(SlotGameManager.instance.autoType,true);
+        this.checkAutoNode(SlotProcessManager.instance.autoType,true);
 
         //拿取初始的押住index
-        let betIndex = SlotGameManager.instance.userBetPoint.LineBet;
+        let betIndex = SlotProcessManager.instance.userBetPoint.LineBet;
 
         //更新當前押注倍率
         this.lineBetLabelH.string =
@@ -364,7 +364,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
     private checkAutoNode(autoType: AutoType, isOpen: boolean) {
 
         switch (autoType) {
-            case AutoType.auto:
+            case AutoType.AUTO:
                 isOpen ? this.updateAutoImg(this.autoButtonH, this.autoIcon.LONG_OPEN, true) :
                     this.updateAutoImg(this.autoButtonH, this.autoIcon.LONG_CLOSE, false);
                 isOpen ? this.updateAutoImg(this.autoButtonV, this.autoIcon.LONG_OPEN, true) :
@@ -373,7 +373,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         switch (autoType) {
-            case AutoType.auto50:
+            case AutoType.AUTO_50:
                 isOpen ? this.updateAutoImg(this.auto50ButtonH, this.autoIcon.SHORT_OPEN, true) :
                     this.updateAutoImg(this.auto50ButtonH, this.autoIcon.SHORT_CLOSE, false);
                 isOpen ? this.updateAutoImg(this.auto50ButtonV, this.autoIcon.SHORT_OPEN, true) :
@@ -382,7 +382,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         switch (autoType) {
-            case AutoType.auto100:
+            case AutoType.AUTO_100:
                 isOpen ? this.updateAutoImg(this.auto100ButtonH, this.autoIcon.SHORT_OPEN, true) :
                     this.updateAutoImg(this.auto100ButtonH, this.autoIcon.SHORT_CLOSE, false);
                 isOpen ? this.updateAutoImg(this.auto100ButtonV, this.autoIcon.SHORT_OPEN, true) :
@@ -391,7 +391,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         switch (autoType) {
-            case AutoType.auto500:
+            case AutoType.AUTO_500:
                 isOpen ? this.updateAutoImg(this.auto500ButtonH, this.autoIcon.SHORT_OPEN, true) :
                     this.updateAutoImg(this.auto500ButtonH, this.autoIcon.SHORT_CLOSE, false);
                 isOpen ? this.updateAutoImg(this.auto500ButtonV, this.autoIcon.SHORT_OPEN, true) :
@@ -400,7 +400,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         switch (autoType) {
-            case AutoType.auto1000:
+            case AutoType.AUTO_1000:
                 isOpen ? this.updateAutoImg(this.auto1000ButtonH, this.autoIcon.SHORT_OPEN, true) :
                     this.updateAutoImg(this.auto1000ButtonH, this.autoIcon.SHORT_CLOSE, false);
                 isOpen ? this.updateAutoImg(this.auto1000ButtonV, this.autoIcon.SHORT_OPEN, true) :
@@ -409,7 +409,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         switch (autoType) {
-            case AutoType.freeEnd:
+            case AutoType.FREE_END:
                 isOpen ? this.updateAutoImg(this.autoFreeEndButtonH, this.autoIcon.LONG_OPEN, true) :
                     this.updateAutoImg(this.autoFreeEndButtonH, this.autoIcon.LONG_CLOSE, false);
                 isOpen ? this.updateAutoImg(this.autoFreeEndButtonV, this.autoIcon.LONG_OPEN, true) :

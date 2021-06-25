@@ -1,5 +1,5 @@
 import AudioManager, {Effect} from '../../Framework/Audio/AudioManager'
-import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
+import {AutoType} from '../../Framework/Config/Enum/AutoType'
 import Button from '../../Framework/Global/Button'
 import Language from "../../Framework/Global/Language";
 import {GameState} from '../../Framework/Process/Enum/GameState'
@@ -8,7 +8,7 @@ import AutoStateChangeNotification
 import UserTotalBetChangeNotification
     from "../../Framework/Listener/NotificationType/GameNotification/UserTotalBetChangeNotification";
 import UserTotalBetChangeObserver from "../../Framework/Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
-import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import SlotProcessManager from '../../Framework/Process/SlotProcessManager'
 import AMainGameDoubleButtonTemplate
     from '../../Framework/Template/ButtonEvent/MainButton/AMainGameDoubleButtonTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
@@ -95,7 +95,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
                 .getResult(ResponseType.TABLE_INFO);
 
         this.startButtonDisable();
-        this.autoCount = SlotGameManager.instance.autoType;
+        this.autoCount = SlotProcessManager.instance.autoType;
         this.buttonSpriteFrame = {
             SPEED_ON: this.buttonSpriteAtlas.getSpriteFrame("FastOn"),
             SPEED_OFF: this.buttonSpriteAtlas.getSpriteFrame("FastOff"),
@@ -117,8 +117,12 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
     }
 
     protected languageSetting() {
-        this.titleText.string = SocketSetting.t("S_9016")
-        Language.instance.updateLabelStyle(this.titleText);
+
+        //請選擇下注:
+        this.titleText.string = SocketSetting.t("S_9016");
+        Language
+            .setLabel(this.titleText)
+            .updateStyle();
     }
 
 
@@ -148,7 +152,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             this.startAutoNodeH.active = false;
             this.startAutoNodeV.active = false;
 
-            if (SlotGameManager.instance.gameState == GameState.PLAYING) {
+            if (SlotProcessManager.instance.gameState == GameState.PLAYING) {
                 this.startButtonImgH.spriteFrame = this.buttonSpriteFrame.PLAYING;
                 this.startButtonImgV.spriteFrame = this.buttonSpriteFrame.PLAYING;
             }
@@ -163,13 +167,13 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         this.startButtonImgV.node.active = false;
 
         switch (autoType) {
-            case AutoType.auto:
+            case AutoType.AUTO:
                 this.startAutoCountH.node.active = false;
                 this.startAutoCountV.node.active = false;
                 this.startAutoIconH.active = true;
                 this.startAutoIconV.active = true;
                 break;
-            case AutoType.freeEnd:
+            case AutoType.FREE_END:
                 this.startAutoCountH.node.active = false;
                 this.startAutoCountV.node.active = false;
                 this.startAutoIconH.active = false;
@@ -202,7 +206,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
     }
 
     //旋轉180度 下上方式持續跳動
-    protected showBetFrameButtonAnimation(node: cc.Node) {
+    private showBetFrameButtonAnimation(node: cc.Node) {
         cc.Tween.stopAllByTarget(node)
         node.y = 0;
         cc.tween(node)
@@ -215,7 +219,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
     }
 
     //轉正0度 上下方式持續跳動
-    protected offBetFrameButtonAnimation(node: cc.Node) {
+    private offBetFrameButtonAnimation(node: cc.Node) {
         cc.Tween.stopAllByTarget(node);
         node.y = 0;
         cc.tween(node)
@@ -256,7 +260,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         cc.Tween.stopAllByTarget(this.startButtonImgH.node);
 
         //如果該局狀態不是auto狀態,才給予按鈕聲音
-        if (!SlotGameManager.instance.isAutoState) {
+        if (!SlotProcessManager.instance.isAutoState) {
             this.startButtonImgH.spriteFrame = this.buttonSpriteFrame.PLAYING;
             this.startButtonImgV.spriteFrame = this.buttonSpriteFrame.PLAYING;
             AudioManager.instance.effectPlay("BtnClick");
@@ -264,9 +268,9 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
         }
 
         //如果當前auto狀態是有次數的,將減去該局次數
-        if (SlotGameManager.instance.isAutoState &&
-            SlotGameManager.instance.autoType != AutoType.auto &&
-            SlotGameManager.instance.autoType != AutoType.freeEnd
+        if (SlotProcessManager.instance.isAutoState &&
+            SlotProcessManager.instance.autoType != AutoType.AUTO &&
+            SlotProcessManager.instance.autoType != AutoType.FREE_END
         ) {
             this.autoCount--;
             this.startAutoCountH.string = String(this.autoCount);
@@ -279,11 +283,11 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
      * @protected
      */
     protected endEvent() {
-        if (SlotGameManager.instance.isAutoState && this.autoCount == 0) {
-            let autoType = SlotGameManager.instance.autoType;
+        if (SlotProcessManager.instance.isAutoState && this.autoCount == 0) {
+            let autoType = SlotProcessManager.instance.autoType;
             AutoStateChangeNotification.instance.notify(false, autoType, autoType);
         }
-        if (!SlotGameManager.instance.isAutoState) {
+        if (!SlotProcessManager.instance.isAutoState) {
             this.buttonStanByAnimation(this.startButtonImgV.node);
             this.buttonStanByAnimation(this.startButtonImgH.node);
         }
@@ -337,7 +341,7 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             );
         }
 
-        let nowBetIndex = SlotGameManager.instance.userBetPoint.LineBet;
+        let nowBetIndex = SlotProcessManager.instance.userBetPoint.LineBet;
         let initialBetImg = this.betButtonToArray[nowBetIndex].getComponent(cc.Button);
 
         initialBetImg.normalColor = this.color.YELLOW;
@@ -353,8 +357,8 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
      * @param callback
      */
     @Effect("BtnClick")
-    protected betButtonTouchEvent(event, callback: number) {
-        let beforeIndex = SlotGameManager.instance.userBetPoint.LineBet;
+    private betButtonTouchEvent(event, callback: number) {
+        let beforeIndex = SlotProcessManager.instance.userBetPoint.LineBet;
         UserTotalBetChangeNotification.instance.notify(beforeIndex, callback);
     }
 

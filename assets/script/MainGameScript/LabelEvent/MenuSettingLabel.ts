@@ -1,8 +1,8 @@
 import Language from "../../Framework/Global/Language";
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 export default class MenuSettingLabel extends AGenericTemplate {
@@ -70,21 +70,21 @@ export default class MenuSettingLabel extends AGenericTemplate {
         this.autoTextH.string = SocketSetting.t("S_1001");
         this.autoTextV.string = SocketSetting.t("S_1001");
 
-        Language.instance
-            .updateLabelStyle(this.musicTextH)
-            .updateLabelStyle(this.musicTextV)
-            .updateLabelStyle(this.effectTextH)
-            .updateLabelStyle(this.effectTextV)
-            .updateLabelStyle(this.betSettingTextH)
-            .updateLabelStyle(this.betSettingTextV)
-            .updateLabelStyle(this.lineTextH)
-            .updateLabelStyle(this.lineTextV)
-            .updateLabelStyle(this.betMoneyTextH)
-            .updateLabelStyle(this.betMoneyTextV)
-            .updateLabelStyle(this.autoFreeTextH)
-            .updateLabelStyle(this.autoFreeTextV)
-            .updateLabelStyle(this.autoTextH)
-            .updateLabelStyle(this.autoTextV);
+        Language
+            .setLabel(this.musicTextH)
+            .setLabel(this.musicTextV)
+            .setLabel(this.effectTextH)
+            .setLabel(this.effectTextV)
+            .setLabel(this.betSettingTextH)
+            .setLabel(this.betSettingTextV)
+            .setLabel(this.lineTextH)
+            .setLabel(this.lineTextV)
+            .setLabel(this.betMoneyTextH)
+            .setLabel(this.betMoneyTextV)
+            .setLabel(this.autoFreeTextH)
+            .setLabel(this.autoFreeTextV)
+            .setLabel(this.autoTextH)
+            .setLabel(this.autoTextV);
     }
 
 }

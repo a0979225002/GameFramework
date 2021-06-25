@@ -1,4 +1,4 @@
-import {AutoType} from "../../../Config/Enum/ConfigEnum";
+import {AutoType} from "../../../Config/Enum/AutoType";
 import ABaseObserver from "../../ABaseObserver";
 
 /**

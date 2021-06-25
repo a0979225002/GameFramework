@@ -20,7 +20,7 @@ export default class ScriptLoad extends ALoadScriptType {
         let url = `${SlotConfigManager.instance.externallyLoadURL}/${this.url}/${this.scriptName}.js`;
 
         if (LoadResManager.instance.scriptRes.has(url)) {
-            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `請勿重複加載已有的外部腳本 : ${url}`)
+            ErrorManager.instance.executeError(ErrorType.LOAD_FW, `請勿重複加載已有的外部腳本 : ${url}`)
         }
 
         this.linkElem.type = this.type;

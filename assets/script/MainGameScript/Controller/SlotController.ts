@@ -1,7 +1,7 @@
 import {Effect} from '../../Framework/Audio/AudioManager'
 import LoadResManager from '../../Framework/Load/LoadResManager'
 import {GameState} from '../../Framework/Process/Enum/GameState'
-import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import SlotProcessManager from '../../Framework/Process/SlotProcessManager'
 import SlotStyleManager from '../../Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../Framework/Slot/SlotType/NoLineSlot'
 import ASlotInitializeTemplate from '../../Framework/Template/Slot/ASlotInitializeTemplate'
@@ -142,7 +142,7 @@ export default class SlotController extends ASlotInitializeTemplate {
     private answerToArray: Array<number>;
     public showWinGrid(winGrid: Array<number>) {
         if (this.timer) clearInterval(this.timer);
-        if (SlotGameManager.instance.gameState == GameState.FREEING) {
+        if (SlotProcessManager.instance.gameState == GameState.FREEING) {
             this.answerToArray = this.freeResult.Grid;
         } else {
             this.answerToArray = this.normalResult.Grid;

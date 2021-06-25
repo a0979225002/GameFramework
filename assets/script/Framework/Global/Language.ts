@@ -1,12 +1,7 @@
-import {LanguageType} from "../Config/Enum/ConfigEnum";
 import WebRequestManager from "../WebRequest/WebRequestManager";
+import {LanguageType} from "../Config/Enum/LanguageType";
 
-/**
- * @Author XIAO-LI-PIN
- * @Description TODO
- * @Date 2021-05-12 下午 01:50
- * @Version 1.0
- */
+
 export interface ILanguageParameter {
     CNY: ILanguageStyle;
     NTD: ILanguageStyle;
@@ -26,10 +21,18 @@ export interface ILanguageStyle {
     fontFamily: string;
 }
 
+/**
+ * @Author XIAO-LI-PIN
+ * @Description (工具類)各語系樣式變更設定
+ * @Date 2021-05-12 下午 01:50
+ * @Version 1.0
+ */
 export default class Language {
 
+    private static labelNodeToArray: Array<cc.Label> = new Array<cc.Label>();
+
     //初始化該語系狀態
-    static languageParameters: ILanguageParameter = {
+    private static languageParameters: ILanguageParameter = {
         CNY: {
             fontSize: 36,
             lineHeight: 46,
@@ -82,24 +85,46 @@ export default class Language {
         }
     }
 
-    private static getLanguageParameter(language: string): ILanguageStyle {
+    /**
+     * 獲取該語系樣式參數
+     * @param {string} language - 語系
+     * @return {ILanguageStyle}
+     * @private
+     */
+    public static getLanguageParameter(language: string): ILanguageStyle {
         return this.languageParameters[language];
     }
 
     /**
-     * 更新當前語系Label樣式,只需傳入需匹配的label即可
-     * @param {cc.Label} label
+     * 添加需要更改語系樣式的label
+     * @param {cc.Label} label - 需更換Style 的 label 組件
      * @returns {this}
      */
-    public static updateLabelStyle(label: cc.Label) {
+    public static setLabel(label: cc.Label): typeof Language{
+        this.labelNodeToArray.push(label);
+        return this;
+    }
+
+    /**
+     * 更新所有以綁定的Label匹配的語系樣式
+     */
+    public static updateStyle(): void {
+
         let language: string = WebRequestManager.instance.UserLanguage;
+
         if (!this.languageParameters[language]) {
-            language = LanguageType.America;
+            language = LanguageType.AMERICA;
         }
 
-        label.fontFamily = this.getLanguageParameter(language).fontFamily;
-        label.fontSize = this.getLanguageParameter(language).fontSize;
-        label.lineHeight = this.getLanguageParameter(language).lineHeight;
-        return this;
+        const fontFamily: string = this.getLanguageParameter(language).fontFamily;
+        const fontSize: number = this.getLanguageParameter(language).fontSize;
+        const lineHeight: number = this.getLanguageParameter(language).lineHeight;
+
+        for (let label of this.labelNodeToArray) {
+            label.fontFamily = fontFamily;
+            label.fontSize = fontSize;
+            label.lineHeight = lineHeight;
+        }
+        this.labelNodeToArray.length = 0;
     }
 }

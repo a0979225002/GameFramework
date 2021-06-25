@@ -45,7 +45,7 @@ export default abstract class ABaseNotification implements IBaseNotification {
      */
     public subscribe(observer: IBaseObserver, isPermanent: boolean): void {
         if (this.observer.has(observer)) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, `${observer} 該IBaseObserver已註冊過自動狀態改變時事件,請檢查`)
+            ErrorManager.instance.executeError(ErrorType.SCENE_FW, `${observer} 該IBaseObserver已註冊過自動狀態改變時事件,請檢查`)
             return;
         }
         observer.isPermanent = isPermanent;
@@ -60,7 +60,7 @@ export default abstract class ABaseNotification implements IBaseNotification {
         if (this.observer.has(observer)) {
             this.observer.delete(observer);
         } else {
-            ErrorManager.instance.executeError(ErrorType.GameProcessFW, `${observer} : 該觀察類尚未綁定過,無須移除觀察對象`);
+            ErrorManager.instance.executeError(ErrorType.PROCESS_FW, `${observer} : 該觀察類尚未綁定過,無須移除觀察對象`);
         }
     };
 

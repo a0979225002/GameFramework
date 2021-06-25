@@ -37,9 +37,9 @@ export default abstract class ALoadType implements ILoadType {
 
     private loadResCallBack(error: Error, assets: [] | cc.SceneAsset) {
         if (error) {
-            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, error);
+            ErrorManager.instance.executeError(ErrorType.LOAD_FW, error);
         } else if (!(assets instanceof cc.SceneAsset) && assets.length == 0) {
-            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `無載入任何資源 ${this.url} `);
+            ErrorManager.instance.executeError(ErrorType.LOAD_FW, `無載入任何資源 ${this.url} `);
         }
 
         this.setResToManager(this.dataName, assets);
@@ -49,7 +49,7 @@ export default abstract class ALoadType implements ILoadType {
     private loadResProgress(complete: number, TotalAmount: number) {
 
         //獲取百分比
-        let progress = Util.myFloor((complete / TotalAmount), 2);
+        let progress = Util.roundDown((complete / TotalAmount), 2);
 
         if (progress > this.beforeProgress) {
 

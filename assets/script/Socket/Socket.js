@@ -1,7 +1,7 @@
 import socketSetting from './SocketSetting';
 import ResultSortOut from "./ResultSortOut";
 import WebRequestManager from "../Framework/WebRequest/WebRequestManager";
-import {LanguageType} from "../Framework/Config/Enum/ConfigEnum";
+import {LanguageType} from "../Framework/Config/Enum/LanguageType";
 
 let socketJS = null;
 let obj_socket = {};
@@ -43,7 +43,7 @@ cc.Class({
         socketSetting.ClientSetObject.loadLanguage = socketSetting.ClientSetObject.loadLanguageDefaultURL;
         socketSetting.ClientSetObject.loadLanguageCount = 0;//--------!!!-------//
         socketSetting.ClientSetObject.LoginData = "";//--------!!!-------//
-        socketSetting.ClientSetObject.UserLanguage = LanguageType.Chinese;//語言
+        socketSetting.ClientSetObject.UserLanguage = LanguageType.CHINESE;//語言
 
         //TODO
         WebRequestManager.instance.serverHost = socketSetting.ClientSetObject.serverhost;

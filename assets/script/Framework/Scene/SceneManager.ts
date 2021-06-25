@@ -1,4 +1,3 @@
-import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import LoadResManager from '../Load/LoadResManager'
@@ -47,7 +46,7 @@ export default class SceneManager implements ISceneManager {
      */
     public static get instance(): ISceneManager {
         if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, "該類尚未實例化");
+            ErrorManager.instance.executeError(ErrorType.SCENE_FW, "該類尚未實例化");
             return;
         }
         return this._instance;
@@ -152,7 +151,7 @@ export default class SceneManager implements ISceneManager {
      * 如果需求更動樣式,須先更新 updateSize()
      * @param {number} time : 更新的頻率 單位毫秒 ms
      */
-    designSceneSizeListenerAutoStart(time: number) {
+    startListener(time: number) {
         this.sceneSizeChangeListener.designSceneEventListener(time);
     }
 
@@ -162,7 +161,7 @@ export default class SceneManager implements ISceneManager {
      */
     changeScene(name: string) {
         if (!LoadResManager.instance.sceneRes.has(name)) {
-            ErrorManager.instance.executeError(ErrorType.SceneFW, "加載不到你的Scene資源,請檢查該資源名是否正確");
+            ErrorManager.instance.executeError(ErrorType.SCENE_FW, "加載不到你的Scene資源,請檢查該資源名是否正確");
         }
         cc.director.runScene(LoadResManager.instance.sceneRes.get(name));
     }

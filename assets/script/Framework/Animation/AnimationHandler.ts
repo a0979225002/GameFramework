@@ -1,6 +1,10 @@
-import AnimationManager from './AnimationManager'
-
 export default class AnimationHandler implements IAnimationHandler {
+
+    private readonly animationManager: IAnimationManager;
+
+    constructor(animationManager: IAnimationManager) {
+        this.animationManager = animationManager;
+    }
 
     /**
      * 更新動畫管理器內的spineName數據
@@ -10,11 +14,9 @@ export default class AnimationHandler implements IAnimationHandler {
      */
     updateSpineAnimationName(resName: string, keyName: string, spineName: string) {
 
-        AnimationManager
-            .instance
-            .spineName
-            .set(resName,
-                new Map<string, string>().set(keyName, spineName))
+        const spineMap: Map<string, string> = new Map<string, string>();
+        spineMap.set(keyName, spineName);
 
+        this.animationManager.spineName.set(resName, spineMap);
     }
 }

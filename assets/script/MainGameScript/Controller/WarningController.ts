@@ -7,8 +7,8 @@ import SceneDirectionChangeObserver
     from "../../Framework/Listener/ObserverType/SceneObserver/SceneDirectionChangeObserver";
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import SocketSetting from '../../Socket/SocketSetting'
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 export default class WarningController extends AGenericTemplate {
@@ -40,9 +40,9 @@ export default class WarningController extends AGenericTemplate {
         this.warningTextH.string = SocketSetting.t("S_9017");
         this.warningTextV.string = SocketSetting.t("S_9017")
 
-        Language.instance
-            .updateLabelStyle(this.warningTextH)
-            .updateLabelStyle(this.warningTextV);
+        Language
+            .setLabel(this.warningTextH)
+            .setLabel(this.warningTextV);
     }
 
     public showWarning() {

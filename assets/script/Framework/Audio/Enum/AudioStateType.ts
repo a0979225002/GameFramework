@@ -23,5 +23,4 @@ export enum AudioStateType {
      * @type {AudioStateType.SUPERIMPOSE}
      */
     SUPERIMPOSE = "SUPERIMPOSE",
-
 }

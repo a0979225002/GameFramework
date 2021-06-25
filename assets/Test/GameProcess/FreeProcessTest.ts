@@ -1,5 +1,5 @@
 import {GameState, GameType} from "../../script/Framework/Process/Enum/GameState";
-import SlotGameManager from "../../script/Framework/Process/SlotGameManager";
+import SlotProcessManager from "../../script/Framework/Process/SlotProcessManager";
 import {ResponseType} from "../../script/Framework/WebResponse/Enum/ResponseType";
 import NoLineResult from "../../script/Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
 import {WebResponseManager} from "../../script/Framework/WebResponse/WebResponseManager";
@@ -24,7 +24,7 @@ export default class FreeProcessTest implements IGameProcedureExecutionContainer
 
     onCreate(): Promise<void> {
         return new Promise(resolve => {
-            socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
+            socketJS.SFSToServer("Bet", SlotProcessManager.instance.userBetPoint);
             let a = setInterval(() => {
                 if (WebResponseManager.instance().isResultOk) {
 
@@ -46,8 +46,8 @@ export default class FreeProcessTest implements IGameProcedureExecutionContainer
     onChangeStatus() {
         //如果一般模式中response的免費次數不等於0,進入free狀態
         if (this.normalResult.FreeSpinCount > 0) {
-            SlotGameManager.instance.gameState = GameState.FREEING;
-            SlotGameManager.instance.changeProcess(GameType.FREE);
+            SlotProcessManager.instance.gameState = GameState.FREEING;
+            SlotProcessManager.instance.changeProcess(GameType.FREE);
             return;
         }
     }

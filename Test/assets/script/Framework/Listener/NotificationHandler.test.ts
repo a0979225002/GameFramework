@@ -14,7 +14,7 @@ import AutoStateChangeNotification
     from "../../../../../assets/script/Framework/Listener/NotificationType/GameNotification/AutoStateChangeNotification";
 import AutoStateChangeObserver
     from "../../../../../assets/script/Framework/Listener/ObserverType/GameObserver/AutoStateChangeObserver";
-import {AutoType} from "../../../../../assets/script/Framework/Config/Enum/ConfigEnum";
+import {AutoType} from "../../../../../assets/script/Framework/Config/Enum/AutoType";
 
 /**
  * @Author XIAO-LI-PIN
@@ -95,7 +95,7 @@ test("推播事件測試", () => {
     NotificationHandler
         .instance<AutoStateChangeNotification>()
         .getNotification(NotificationType.AUTO_CHANGE)
-        .notify(false, AutoType.freeEnd, AutoType.auto100);
+        .notify(false, AutoType.FREE_END, AutoType.AUTO_100);
 
     console.log(
         NotificationHandler

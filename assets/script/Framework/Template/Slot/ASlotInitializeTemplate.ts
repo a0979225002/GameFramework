@@ -60,7 +60,7 @@ export default abstract class ASlotInitializeTemplate extends OverrideComponent 
             for (let name of Object.keys(target)) {
                 if (this.normalResult[name] === undefined) {
                     try {
-                        ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換BetResultModule Type`)
+                        ErrorManager.instance.executeError(ErrorType.WEB_RESPONESE_FW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換BetResultModule Type`)
                     } catch (e) {
                         console.log(e);
                     }
@@ -81,7 +81,7 @@ export default abstract class ASlotInitializeTemplate extends OverrideComponent 
             for (let name of Object.keys(target)) {
                 if (this.freeResult[name] === undefined) {
                     try {
-                        ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換FreeResultModule Type`);
+                        ErrorManager.instance.executeError(ErrorType.WEB_RESPONESE_FW, `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換FreeResultModule Type`);
                     } catch (e) {
                         console.log(e);
                     }

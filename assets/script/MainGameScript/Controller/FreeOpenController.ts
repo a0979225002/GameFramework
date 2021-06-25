@@ -1,6 +1,6 @@
 import {Music, Effect} from '../../Framework/Audio/AudioManager'
-import {AutoType} from '../../Framework/Config/Enum/ConfigEnum'
-import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import {AutoType} from '../../Framework/Config/Enum/AutoType'
+import SlotProcessManager from '../../Framework/Process/SlotProcessManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
 import NoLineFreeResult from "../../Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
@@ -66,7 +66,7 @@ export default class FreeOpenController extends AGenericTemplate {
     @Effect("GetWin")
     private freeCountAnimation() {
         cc.log("freeCountAnimation")
-        if (SlotGameManager.instance.isAutoState && SlotGameManager.instance.autoType != AutoType.freeEnd) {
+        if (SlotProcessManager.instance.isAutoState && SlotProcessManager.instance.autoType != AutoType.FREE_END) {
             this.timer = 3;
         } else {
             this.timer = 10;

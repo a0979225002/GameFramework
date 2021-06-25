@@ -1,4 +1,3 @@
-import IConfigManager from "../Config/IConfig/IConfigManager";
 
 export default class WebRequestManager {
 

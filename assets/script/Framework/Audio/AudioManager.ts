@@ -1,13 +1,13 @@
-import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import AudioFactory from './AudioFactory'
-import {AudioStateType} from "./Enum/AudioStateType";
 import IAudioManager from "./IAudio/IAudioManager";
+import {AudioStateType} from "./Enum/AudioStateType";
+
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 音樂管理器,由Config類 實例化該類,直到程式死亡前,永久存活
+ * @Description 音樂管理器,由Config類實例化,直到程式死亡前,永久存活
  * @Date 2021-05-13 上午 10:24
  * @Version 1.1
  */
@@ -43,7 +43,7 @@ export default class AudioManager implements IAudioManager {
      */
     public static get instance(): IAudioManager {
         if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.MusicFW, "該類尚未實例化");
+            ErrorManager.instance.executeError(ErrorType.AUDIO_FW, "該類尚未實例化");
             return;
         }
         return this._instance;
@@ -79,7 +79,7 @@ export default class AudioManager implements IAudioManager {
     public settingEffect(name: string, canSuperimpose?: AudioStateType, volume?: number, loop?: boolean): this {
 
         if (canSuperimpose === AudioStateType.SUPERIMPOSE && loop) {
-            ErrorManager.instance.executeError(ErrorType.MusicFW, `${name} 使用疊加效果時不建議使用循環撥放`);
+            ErrorManager.instance.executeError(ErrorType.AUDIO_FW, `${name} 使用疊加效果時不建議使用循環撥放`);
         }
 
         this.factory.settingEffect(name, canSuperimpose, volume, loop)
@@ -212,8 +212,8 @@ export function Music(name) {
         descriptor.enumerable = true;
         const method = descriptor.value;
         descriptor.value = function (...any) {
-            method.call(this, ...any);
             AudioManager.instance.musicPlay(name);
+            return  method.call(this, ...any);
         }
     }
 }
@@ -229,8 +229,8 @@ export function MusicStop() {
         descriptor.enumerable = true;
         const method = descriptor.value;
         descriptor.value = function (...any) {
-            method.call(this, ...any);
-            return AudioManager.instance.musicStop();
+            AudioManager.instance.musicStop();
+            return method.call(this, ...any);
         }
     }
 }

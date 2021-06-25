@@ -1,5 +1,5 @@
 import ccclass = cc._decorator.ccclass;
-import {AutoType, LanguageType} from "./Framework/Config/Enum/ConfigEnum";
+import {AutoType} from "./Framework/Config/Enum/AutoType";
 import SlotConfigManager from "./Framework/Config/SlotConfigManager";
 import ASlotConfig from "./Framework/Template/Config/ASlotConfig";
 import {ResponseType} from "./Framework/WebResponse/Enum/ResponseType";
@@ -8,6 +8,7 @@ import NoLineFreeResult from "./Framework/WebResponse/ServerDataModel/FreeResult
 import NoLineResult from "./Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
 import NoLineTableInfo from "./Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from "./Framework/WebResponse/WebResponseManager";
+import {LanguageType} from "./Framework/Config/Enum/LanguageType";
 
 /**
  * @Author XIAO-LI-PIN
@@ -18,6 +19,7 @@ import {WebResponseManager} from "./Framework/WebResponse/WebResponseManager";
 @ccclass
 export default class MainConfig extends ASlotConfig {
     protected onCreat() {
+        cc.log(Type.GameEventType.TEST);
     }
 
     /**
@@ -25,7 +27,7 @@ export default class MainConfig extends ASlotConfig {
      */
     protected configSetting() {
         SlotConfigManager.instance
-            .setAutoCont(AutoType.auto)                         //初始自動次數 AutoType Enum
+            .setAutoCont(AutoType.AUTO)                         //初始自動次數 AutoType Enum
             .setAutoState(false)                                //自動開關
             .setUserBet(0)                                      //初始玩家押注倍率
             .setSpeedState(false)                               //加速開關
@@ -34,11 +36,11 @@ export default class MainConfig extends ASlotConfig {
             .setGameNumber(84)                                  //遊戲名稱
             .setMusicVolume(1)                                  //初始默認背景音量
             .setEffectVolume(1)                                 //初始默認效果音量
-            .setLanguage(LanguageType.America)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
+            .setLanguage(LanguageType.AMERICA)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
             .setExternallyLoadURL("http://10.10.0.47/games")    //同上
             .setCocosDebug(cc.debug.DebugMode.INFO)             //cocos 框架 debug設定
-            .setFrameWorkDebug(false)                           //正式上線時關閉
-            .builder();
+            .setFrameWorkDebug(true)                            //正式上線時關閉
+            .build();
     }
 
     /**
@@ -62,5 +64,9 @@ export default class MainConfig extends ASlotConfig {
         WebResponseManager
             .instance<NoLineTableInfo>()
             .setResponseModule(ResponseType.TABLE_INFO, tableInfoResponse);
+    }
+
+    protected NotificationEventSetting(){
+
     }
 }

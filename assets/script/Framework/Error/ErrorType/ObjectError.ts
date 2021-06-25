@@ -5,10 +5,8 @@ export default class ObjectError {
 
     private frameWorkError: FrameWorkError;
 
-    constructor() {
-
-        this.frameWorkError = new FrameWorkError();
-
+    constructor(configManager:IConfigManager) {
+        this.frameWorkError = new FrameWorkError(configManager);
     }
 
     checkErrorType(message: string | ErrorType, obj?: any) {

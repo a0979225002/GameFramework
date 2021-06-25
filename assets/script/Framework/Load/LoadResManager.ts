@@ -1,4 +1,3 @@
-import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from "../Error/Enum/ErrorManagerEnum";
 import ErrorManager from "../Error/ErrorManager";
 import Util from "../Global/Util";
@@ -94,7 +93,7 @@ export default class LoadResManager implements ILoadResManager {
      */
     public static get instance(): ILoadResManager {
         if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "該類尚未實例化");
+            ErrorManager.instance.executeError(ErrorType.LOAD_FW, "該類尚未實例化");
             return;
         }
         return this._instance;
@@ -126,12 +125,12 @@ export default class LoadResManager implements ILoadResManager {
 
             //預防多個重複進度回傳
             //判斷與上一個進度是一樣的話,將不執行回傳,等待有新進度近來
-            if (Util.myFloor(this.beforeProgress, 2) == Util.myFloor(this.allProgress, 2)) {
+            if (Util.roundDown(this.beforeProgress, 2) == Util.roundDown(this.allProgress, 2)) {
                 return
             } else {
                 this.beforeProgress = this.allProgress;
                 //回傳當前進度,將精度將低為小數點後兩位
-                this.callFun.get(null)(Util.myFloor(this.allProgress, 2));
+                this.callFun.get(null)(Util.roundDown(this.allProgress, 2));
                 if (this.allProgress >= 1) {
                     //當全部加載完後,清除當前加載多少件東西的計數
                     this.count = 0;
@@ -220,14 +219,14 @@ export default class LoadResManager implements ILoadResManager {
     callback(callFun: (progress: number) => void, resName?: string) {
         if (resName) {
             if (this.callFun.has(resName)) {
-                ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "如果拿取該資源進度,請勿重複callback");
+                ErrorManager.instance.executeError(ErrorType.LOAD_FW, "如果拿取該資源進度,請勿重複callback");
                 return;
             }
             this.callFun.set(resName, callFun);
             return this;
         } else {
             if (this.callFun.has(null)) {
-                ErrorManager.instance.executeError(ErrorType.LoadErrorFW, "如果拿取總進度,請勿在之前資源尚未加載完前,重複callback");
+                ErrorManager.instance.executeError(ErrorType.LOAD_FW, "如果拿取總進度,請勿在之前資源尚未加載完前,重複callback");
                 return;
             }
             this.callFun.set(null, callFun);

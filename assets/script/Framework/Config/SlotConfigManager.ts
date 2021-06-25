@@ -2,13 +2,14 @@ import AudioManager from '../Audio/AudioManager'
 import ErrorManager from '../Error/ErrorManager'
 import EventManager from '../Listener/EventManager'
 import LoadResManager from '../Load/LoadResManager'
-import SlotGameManager from '../Process/SlotGameManager'
+import SlotProcessManager from '../Process/SlotProcessManager'
 import SceneManager from '../Scene/SceneManager'
 import SlotStyleManager from '../Slot/SlotStyleManager'
 import WebRequestManager from '../WebRequest/WebRequestManager'
 import {WebResponseManager} from '../WebResponse/WebResponseManager'
-import {AutoType, LanguageType} from "./Enum/ConfigEnum";
-import {ISlotConfigManager, UserBetPoint} from "./IConfig/ISlotConfigManager";
+import {AutoType} from "./Enum/AutoType";
+import {ISlotConfigManager} from "./IConfig/ISlotConfigManager";
+import {LanguageType} from "./Enum/LanguageType";
 
 /**
  * @Author XIAO-LI-PIN
@@ -88,7 +89,7 @@ export default class SlotConfigManager implements ISlotConfigManager {
      * @type {UserBetPoint}
      * @private
      */
-    private _userBet: UserBetPoint;
+    private _userBet: IUserBetPoint;
 
     /**
      * 初始當前語系(只有開發模式中有效)
@@ -117,18 +118,17 @@ export default class SlotConfigManager implements ISlotConfigManager {
     private _cocosDebugSetting: cc.debug.DebugMode;
 
     private constructor() {
-
         this._gameNumber = null;                                //該遊戲名稱
         this._externallyLoadURL = ""                            //預設測試使用
         this._isAuto = false;                                   //是否自動
         this._isSpeedUp = false;                                //是否加速
-        this._autoCount = AutoType.auto;                        //初始自動狀態
+        this._autoCount = AutoType.AUTO;                        //初始自動狀態
         this._musicVolume = 1;                                  //遊戲音量
         this._effectVolume = 1;                                 //效果音量
         this._isMusicOnMute = false                             //是否打開背景音效
         this._isEffectOnMute = false                            //是否打開效果音校
         this._userBet = {LineBet: 0};                           //初始user倍率
-        this._language = LanguageType.Chinese                   //初始當前語系,將依據該語系,載入所有耦合圖檔
+        this._language = LanguageType.CHINESE                   //初始當前語系,將依據該語系,載入所有耦合圖檔
         this._backHomeURL = undefined                           //初始返回首頁URL
         this._cocosDebugSetting = cc.debug.DebugMode.INFO       //設置cocos debug 模式
         this._isFrameworkDebug = false;                         //是否要開啟框架的Debug模式
@@ -167,7 +167,6 @@ export default class SlotConfigManager implements ISlotConfigManager {
      */
     setMusicVolume(number: number) {
         this._musicVolume = number
-
         return this;
     }
 
@@ -186,7 +185,7 @@ export default class SlotConfigManager implements ISlotConfigManager {
      * @param {UserBetPoint | number} lineBet : 參數可以直接使用倍率的index or 給予 實例化的UserBetPoint Object
      * @returns {this}
      */
-    setUserBet(lineBet: UserBetPoint | number) {
+    setUserBet(lineBet: IUserBetPoint | number) {
 
         if (lineBet instanceof Object) {
 
@@ -315,13 +314,13 @@ export default class SlotConfigManager implements ISlotConfigManager {
     /**
      * 實例化所有Manager class;
      */
-    public builder() {
+    public build() {
         cc.debug["_resetDebugSetting"](this._cocosDebugSetting);
-        AudioManager.setInstance(this);
         ErrorManager.setInstance(this);
+        AudioManager.setInstance(this);
         EventManager.setInstance(this);
         LoadResManager.setInstance(this);
-        SlotGameManager.setInstance(this);
+        SlotProcessManager.setInstance(this);
         SceneManager.setInstance(this);
         SlotStyleManager.setInstance(this);
         WebResponseManager.setInstance(this);
@@ -331,7 +330,7 @@ export default class SlotConfigManager implements ISlotConfigManager {
 
 // get -----------------------------------------------------------------
 
-    get userBet(): UserBetPoint {
+    get userBet(): IUserBetPoint {
 
         return this._userBet;
     }

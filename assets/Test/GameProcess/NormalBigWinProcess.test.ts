@@ -1,5 +1,5 @@
 import {GameState, GameType} from '../../script/Framework/Process/Enum/GameState'
-import SlotGameManager from '../../script/Framework/Process/SlotGameManager'
+import SlotProcessManager from '../../script/Framework/Process/SlotProcessManager'
 import SlotStyleManager from '../../script/Framework/Slot/SlotStyleManager'
 import NoLineSlot from '../../script/Framework/Slot/SlotType/NoLineSlot'
 import {ResponseType} from "../../script/Framework/WebResponse/Enum/ResponseType";
@@ -34,7 +34,7 @@ export default class NormalBigWinProcessTest implements ISlotProcedureExecutionC
 
         return new Promise<void>(async (resolve) => {
             this.onCreate();
-            socketJS.SFSToServer("Bet", SlotGameManager.instance.userBetPoint);
+            socketJS.SFSToServer("Bet", SlotProcessManager.instance.userBetPoint);
             //測試BigWin
             WinLevelController.instance.showWinAboveState(1580, resolve);
         });
@@ -59,8 +59,8 @@ export default class NormalBigWinProcessTest implements ISlotProcedureExecutionC
     onChangeStatus() {
         //如果一般模式中response的免費次數不等於0,進入free狀態
         if (this.normalResult.FreeSpinCount > 0) {
-            SlotGameManager.instance.gameState = GameState.FREEING;
-            SlotGameManager.instance.changeProcess(GameType.FREE);
+            SlotProcessManager.instance.gameState = GameState.FREEING;
+            SlotProcessManager.instance.changeProcess(GameType.FREE);
             return;
         }
     }

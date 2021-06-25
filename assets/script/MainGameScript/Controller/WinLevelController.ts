@@ -4,7 +4,7 @@ import UserMoneyChangeNotification
     from "../../Framework/Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
 import UserWinPointStateNotification
     from "../../Framework/Listener/NotificationType/GameNotification/UserWinPointStateNotification";
-import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import SlotProcessManager from '../../Framework/Process/SlotProcessManager'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
 import NoLineFreeResult from "../../Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
 import NoLineResult from "../../Framework/WebResponse/ServerDataModel/NormalResult/NoLineResult";
@@ -83,7 +83,7 @@ export default class WinLevelController extends cc.Component {
     initializeSpine() {
         this.resolve = null;
         //當前獲獎分數
-        this.userNowBet = this.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet];
+        this.userNowBet = this.tableInfo.LineTotalBet[SlotProcessManager.instance.userBetPoint.LineBet];
         this.startNum = 0;                      //當前開始跑分的初始分數
         this.pointSplitIndex = 0;               //當前尋訪第幾個Level
         this.isNumberRun = false;               //當前是否能開始跑分
@@ -234,15 +234,15 @@ export default class WinLevelController extends cc.Component {
      * @param point
      */
     userMoneyEventEmit(point) {
-        if (SlotGameManager.instance.gameState === GameState.PLAYING) {
+        if (SlotProcessManager.instance.gameState === GameState.PLAYING) {
             let level = this.freeResult.BaseLevelWin
             UserWinPointStateNotification.instance.notify(point, level);
-        } else if (SlotGameManager.instance.gameState == GameState.FREEING) {
+        } else if (SlotProcessManager.instance.gameState == GameState.FREEING) {
             let point = this.freeResult.FreeSpinWin;
             let level = this.freeResult.BaseLevelWin
             UserWinPointStateNotification.instance.notify(point, level);
         }
-        if (SlotGameManager.instance.gameState != GameState.FREEING) {
+        if (SlotProcessManager.instance.gameState != GameState.FREEING) {
             UserMoneyChangeNotification.instance.notify(this.normalResult.UserPointAfter);
         }
     }
@@ -263,7 +263,7 @@ export default class WinLevelController extends cc.Component {
             this.isMegaWinOpen = false;
             this.isSuperWinOpen = false;
             this.node.active = false;
-            if (SlotGameManager.instance.gameState == GameState.FREEING) {
+            if (SlotProcessManager.instance.gameState == GameState.FREEING) {
                 AudioManager.instance.musicPlay("FBS");
             } else {
                 AudioManager.instance.musicPlay("NBS")

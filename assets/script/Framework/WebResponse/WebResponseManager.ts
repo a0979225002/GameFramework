@@ -38,7 +38,7 @@ export class WebResponseManager<T> implements IWebResponseManager<T> {
      */
     public static instance<T>(): IWebResponseManager<T> {
         if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, "該類尚未實例化");
+            ErrorManager.instance.executeError(ErrorType.WEB_RESPONESE_FW, "該類尚未實例化");
             return;
         }
         return this._instance;
@@ -73,7 +73,7 @@ export class WebResponseManager<T> implements IWebResponseManager<T> {
      */
     public getResult(type: ResponseType): T {
         if (!this._handlerToMap.has(type)) {
-            ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `${type} 該類型 module你尚未創建`);
+            ErrorManager.instance.executeError(ErrorType.WEB_RESPONESE_FW, `${type} 該類型 module你尚未創建`);
             return;
         }
         return this._handlerToMap.get(type).getResult();

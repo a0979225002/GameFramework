@@ -46,7 +46,7 @@ export default class GameProcessFactory implements IGameProcessFactory {
      */
     changeProcess(processName: string | GameType) {
         if (!this.processToMap.has(processName)) {
-            ErrorManager.instance.executeError(ErrorType.GameProcessFW, `${processName} 搜尋不到此流程,請檢查流程是否添加`);
+            ErrorManager.instance.executeError(ErrorType.PROCESS_FW, `${processName} 搜尋不到此流程,請檢查流程是否添加`);
             return;
         }
         this.process = this.processToMap.get(processName);

@@ -1,4 +1,3 @@
-import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from "./Enum/ErrorManagerEnum";
 import ErrorHandler from "./ErrorHandler";
 import IErrorHandler from "./IErrorHandler";
@@ -22,7 +21,7 @@ export default class ErrorManager implements IErrorManager {
     private _warningDelayTime: number;
 
     private constructor(configManager: IConfigManager) {
-        this.handler = new ErrorHandler();
+        this.handler = new ErrorHandler(configManager);
         this.configManager = configManager;
         this._errorNode = null;
         this._errorLabel = null;

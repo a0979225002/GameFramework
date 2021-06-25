@@ -1,4 +1,3 @@
-import SlotConfigManager from "../../Config/SlotConfigManager";
 import {ErrorType} from "../Enum/ErrorManagerEnum";
 import UnknownError from "./UnknownError";
 
@@ -6,54 +5,47 @@ import UnknownError from "./UnknownError";
 export default class FrameWorkError {
 
     private unknownError: UnknownError;
+    private configManager: IConfigManager;
 
-    constructor() {
-
-        this.unknownError = new UnknownError
-
+    constructor(configManager: IConfigManager) {
+        this.unknownError = new UnknownError(configManager);
+        this.configManager = configManager;
     }
 
     checkErrorType(message: string | ErrorType, obj: any) {
-
-        if (SlotConfigManager.instance.isFrameworkDebug) {
-
+        if (this.configManager.isFrameworkDebug) {
             switch (message) {
-                case ErrorType.IsRunningFW:
-                    throw new Error(`${ErrorType.IsRunningFW} ${obj}`);
-                case ErrorType.UndefinedFW:
-                    throw new Error(`${ErrorType.UndefinedFW} ${obj}`);
-                case ErrorType.TypeFW:
-                    throw new Error(`${ErrorType.TypeFW} ${obj}`);
-                case ErrorType.AnimationErrorFW:
-                    throw new Error(`${ErrorType.AnimationErrorFW} ${obj}`);
-                case ErrorType.LoadErrorFW:
-                    throw new Error(`${ErrorType.LoadErrorFW} ${obj}`);
-                case ErrorType.WebRequestErrorFW:
-                    throw new Error(`${ErrorType.WebRequestErrorFW} ${obj}`);
-                case ErrorType.PrefabFW:
-                    throw new Error(`${ErrorType.PrefabFW} ${obj}`);
-                case ErrorType.MusicFW:
-                    throw new Error(`${ErrorType.MusicFW} ${obj}`);
-                case ErrorType.WebResponseErrorFW:
-                    throw new Error(`${ErrorType.WebResponseErrorFW} ${obj}`);
-                case ErrorType.SceneFW:
-                    throw new Error(`${ErrorType.SceneFW} ${obj}`);
-                case ErrorType.ProcedureFW:
-                    throw new Error(`${ErrorType.ProcedureFW} ${obj}`);
-                case ErrorType.ListenerFW:
-                    throw new Error(`${ErrorType.ListenerFW} ${obj}`);
-                case ErrorType.GameProcessFW:
-                    throw new Error(`${ErrorType.GameProcessFW} ${obj}`);
+                case ErrorType.IS_RUNNING_FW:
+                    throw new Error(`${ErrorType.IS_RUNNING_FW} ${obj}`);
+                case ErrorType.UNDEFINED_FW:
+                    throw new Error(`${ErrorType.UNDEFINED_FW} ${obj}`);
+                case ErrorType.TYPE_FW:
+                    throw new Error(`${ErrorType.TYPE_FW} ${obj}`);
+                case ErrorType.ANIMATION_FW:
+                    throw new Error(`${ErrorType.ANIMATION_FW} ${obj}`);
+                case ErrorType.LOAD_FW:
+                    throw new Error(`${ErrorType.LOAD_FW} ${obj}`);
+                case ErrorType.WEB_REQUEST_FW:
+                    throw new Error(`${ErrorType.WEB_REQUEST_FW} ${obj}`);
+                case ErrorType.PREFAB_FW:
+                    throw new Error(`${ErrorType.PREFAB_FW} ${obj}`);
+                case ErrorType.AUDIO_FW:
+                    throw new Error(`${ErrorType.AUDIO_FW} ${obj}`);
+                case ErrorType.WEB_RESPONESE_FW:
+                    throw new Error(`${ErrorType.WEB_RESPONESE_FW} ${obj}`);
+                case ErrorType.SCENE_FW:
+                    throw new Error(`${ErrorType.SCENE_FW} ${obj}`);
+                case ErrorType.PROCESS_FW:
+                    throw new Error(`${ErrorType.PROCESS_FW} ${obj}`);
+                case ErrorType.LISTENER_FW:
+                    throw new Error(`${ErrorType.LISTENER_FW} ${obj}`);
                 case ErrorType.SlotStyleFW:
                     throw new Error(`${ErrorType.SlotStyleFW} ${obj}`);
                 default :
                     this.unknownError.checkErrorType(message);
             }
-
         } else {
-
             console.log("有例外錯誤,但你未開啟框架Debug,無法查看");
-
         }
     }
 }

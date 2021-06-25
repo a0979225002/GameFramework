@@ -2,12 +2,11 @@ import FreeOpenProcessTest from "../../Test/GameProcess/FreeOpenProcess.test";
 import FreeProcessTest from "../../Test/GameProcess/FreeProcessTest";
 import NormalBigWinProcessTest from "../../Test/GameProcess/NormalBigWinProcess.test";
 import AudioManager from '../Framework/Audio/AudioManager'
-import {AudioStateType} from "../Framework/Audio/Enum/AudioStateType";
 import LoadResManager from '../Framework/Load/LoadResManager'
 import {GameType} from '../Framework/Process/Enum/GameState'
 import GameProcess from "../Framework/Process/Procress/GameProcess";
 import SlotGameProcess from '../Framework/Process/Procress/SlotGameProcess'
-import SlotGameManager from '../Framework/Process/SlotGameManager'
+import SlotProcessManager from '../Framework/Process/SlotProcessManager'
 import {SceneDirectionType, SceneStyle} from '../Framework/Scene/Enum/SceneStyle'
 import SceneManager from '../Framework/Scene/SceneManager'
 import SceneDirectionChangeNotification
@@ -18,9 +17,9 @@ import AMainGameSettingTemplate from '../Framework/Template/Setting/AMainGameSet
 import SocketSetting from "../Socket/SocketSetting";
 import MainGameFreeProcess from './GameProcess/MainGameFreeProcess'
 import MainGameNormalProcess from "./GameProcess/MainGameNormalProcess";
-
-
-const {ccclass, property} = cc._decorator;
+import {AudioStateType} from "../Framework/Audio/Enum/AudioStateType";
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 export default class MainGameSetting extends AMainGameSettingTemplate {
@@ -168,7 +167,7 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
             .onCustomizeEnd()
             .onChangeStatus();
 
-        SlotGameManager.instance
+        SlotProcessManager.instance
             .setProcess(GameType.FREE, freeP)
             .setProcess(GameType.NORMAL, normalP)
             // .setProcess(GameType.NORMAL,this.getFreeStateProcess())

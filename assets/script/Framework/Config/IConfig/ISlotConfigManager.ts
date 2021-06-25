@@ -4,12 +4,6 @@
  * @Date 2021-05-17 上午 11:41
  * @Version 1.0
  */
-import {AutoType} from "../Enum/ConfigEnum";
-import IConfigManager from "./IConfigManager";
-
-export interface UserBetPoint {
-    LineBet: number
-}
 
 export interface ISlotConfigManager extends IConfigManager {
 
@@ -39,24 +33,24 @@ export interface ISlotConfigManager extends IConfigManager {
 
     /**
      * 初始遊戲開始前的用戶押注倍率
-     * @type {UserBetPoint}
+     * @type {IUserBetPoint}
      * @private
      */
-    userBet: UserBetPoint;
+    userBet: IUserBetPoint;
 
     /**
      * 初始遊戲最初的auto次數
      * @param {AutoType} type
      * @returns {this}
      */
-    setAutoCont(type: AutoType): this;
+    setAutoCont(type: number): this;
 
     /**
      * 設置初始User倍率
      * @param {UserBetPoint | number} lineBet : 參數可以直接使用倍率的index or 給予 實例化的UserBetPoint Object
      * @returns {this}
      */
-    setUserBet(lineBet: UserBetPoint | number): this;
+    setUserBet(lineBet: IUserBetPoint | number): this;
 
 
     /**

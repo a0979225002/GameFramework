@@ -12,15 +12,15 @@ import UserWinPointStateNotification
 import UserMoneyChangeObserver from "../../Framework/Listener/ObserverType/GameObserver/UserMoenyChangeObserver";
 import UserTotalBetChangeObserver from "../../Framework/Listener/ObserverType/GameObserver/UserTotalBetChangeObserver";
 import UserWinPointStateObserver from "../../Framework/Listener/ObserverType/GameObserver/UserWinPointStateObserver";
-import SlotGameManager from '../../Framework/Process/SlotGameManager'
+import SlotProcessManager from '../../Framework/Process/SlotProcessManager'
 import AGenericTemplate from '../../Framework/Template/AGenericTemplate'
 import {ResponseType} from "../../Framework/WebResponse/Enum/ResponseType";
 import NoLineFreeResult from "../../Framework/WebResponse/ServerDataModel/FreeResult/NoLineFreeResult";
 import NoLineTableInfo from "../../Framework/WebResponse/ServerDataModel/TableInfo/NoLineTableInfo";
 import {WebResponseManager} from '../../Framework/WebResponse/WebResponseManager'
 import SocketSetting from '../../Socket/SocketSetting'
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 export default class MainGameLabel extends AGenericTemplate {
@@ -97,12 +97,12 @@ export default class MainGameLabel extends AGenericTemplate {
 
         //初始化 userConfig設定的初始user下注金額
         this.userTotalBetLabelH.string =
-            String(this.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet]);
+            String(this.tableInfo.LineTotalBet[SlotProcessManager.instance.userBetPoint.LineBet]);
         this.userTotalBetLabelV.string =
-            String(this.tableInfo.LineTotalBet[SlotGameManager.instance.userBetPoint.LineBet]);
+            String(this.tableInfo.LineTotalBet[SlotProcessManager.instance.userBetPoint.LineBet]);
 
         //初始更新user 金額,接收tableInfo參數時,尚未實例化該類,因此初始更新USER MONEY 失效
-        let numberFormat = new Intl.NumberFormat().format(SlotGameManager.instance.userMoney);
+        let numberFormat = new Intl.NumberFormat().format(SlotProcessManager.instance.userMoney);
         this.userMoneyLabelV.string = String(numberFormat);
         this.userMoneyLabelH.string = String(numberFormat);
 
@@ -133,13 +133,13 @@ export default class MainGameLabel extends AGenericTemplate {
         this.winPointTextH.string = SocketSetting.t("4_004");
         this.winPointTextV.string = SocketSetting.t("4_004");
 
-        Language.instance
-            .updateLabelStyle(this.gameLineTextH)
-            .updateLabelStyle(this.gameLineTextV)
-            .updateLabelStyle(this.userTotalBetTextH)
-            .updateLabelStyle(this.userTotalBetTextV)
-            .updateLabelStyle(this.winPointTextH)
-            .updateLabelStyle(this.winPointTextV);
+        Language
+            .setLabel(this.gameLineTextH)
+            .setLabel(this.gameLineTextV)
+            .setLabel(this.userTotalBetTextH)
+            .setLabel(this.userTotalBetTextV)
+            .setLabel(this.winPointTextH)
+            .setLabel(this.winPointTextV);
     }
 
     private updateGroupIDEventListener() {
@@ -170,7 +170,7 @@ export default class MainGameLabel extends AGenericTemplate {
             let numberFormat = new Intl.NumberFormat().format(winPoint);
             this.winPointLabelV.string = String(numberFormat);
             this.winPointLabelH.string = String(numberFormat);
-            if (SlotGameManager.instance.gameState == GameState.FREEING && level == 0) {
+            if (SlotProcessManager.instance.gameState == GameState.FREEING && level == 0) {
                 winPoint = this.freeResult.TotalWinPoint;
                 this.winEvent(winPoint);
                 return;

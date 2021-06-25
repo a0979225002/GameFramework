@@ -19,7 +19,7 @@ export default class MusicLoad extends ALoadType {
             let key: string = value.name;
 
             if (LoadResManager.instance.musicRes.has(key))
-                ErrorManager.instance.executeError(ErrorType.LoadErrorFW, `${key} 鍵值重複,請檢查該音樂資源是否已加載過`)
+                ErrorManager.instance.executeError(ErrorType.LOAD_FW, `${key} 鍵值重複,請檢查該音樂資源是否已加載過`)
 
             LoadResManager.instance.musicRes.set(key, value);
 

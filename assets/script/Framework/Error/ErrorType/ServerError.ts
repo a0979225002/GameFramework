@@ -16,13 +16,13 @@ export default class ServerError {
 
         //確認當前有無該物件,如無該物件,將會throw中斷
         if (!ErrorManager.instance.errorNode)
-            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager errorNode為空");
+            ErrorManager.instance.executeError(ErrorType.UNDEFINED_FW, "ErrorManager errorNode為空");
 
         if (!ErrorManager.instance.errorLabel)
-            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager errorLabel為空");
+            ErrorManager.instance.executeError(ErrorType.UNDEFINED_FW, "ErrorManager errorLabel為空");
 
         if (!ErrorManager.instance.errorButton)
-            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "ErrorManager errorButton為空");
+            ErrorManager.instance.executeError(ErrorType.UNDEFINED_FW, "ErrorManager errorButton為空");
 
         ErrorManager.errorState = true;
         ErrorManager.instance.errorNode.active = true;

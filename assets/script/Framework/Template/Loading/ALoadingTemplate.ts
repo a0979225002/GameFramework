@@ -11,44 +11,53 @@ import OverrideComponent from "../OverrideComponent";
 export default abstract class ALoadingTemplate extends OverrideComponent {
 
     private _canPlayGame: boolean;
+
     protected tableInfo: ITableInfoModel;
 
     /**
      * 執行個人自定義設定
      * 注意,所有override的方法,皆不要放入這裡面
      */
-    abstract onCreat();
+    protected abstract onCreat();
 
     /**
      * 載入主資源
      */
-    abstract onLoadResources();
+    protected abstract onLoadResources();
 
     /**
      * 載入次資源
      */
-    abstract loadAssetBundle();
+    protected abstract loadAssetBundle();
 
     /**
      * 載入外部資源
      */
-    abstract loadExternalScript();
+    protected abstract loadExternalScript();
 
     /**
      * 更新讀取條文字動畫
      */
-    abstract updateProgressText();
+    protected abstract updateProgressText();
 
     /**
      * 當前scene模式,更新當前畫面是配寬高
      */
-    abstract sceneStyle();
+    protected abstract sceneStyle();
+
+    /**
+     * 更新當前語系
+     * @protected
+     */
+    protected abstract languageSetting();
 
     get canPlayGame(): boolean {
         return this._canPlayGame
     }
 
     protected onLoad() {
+
+        cc.log(WebResponseManager.instance())
         this.tableInfo =
             WebResponseManager
                 .instance<ITableInfoModel>()
@@ -63,7 +72,6 @@ export default abstract class ALoadingTemplate extends OverrideComponent {
      * 如果為上線模式,將會獲取外部IP,自動更新遊戲配置Config內的URL
      */
     private static updateUserIp() {
-
         if (!window.test) {
             let path =
                 window.libraryPath && window.libraryPath != ""
@@ -91,7 +99,7 @@ export default abstract class ALoadingTemplate extends OverrideComponent {
                 for (let name of Object.keys(target)) {
                     if (this.tableInfo[name] === undefined) {
                         try {
-                            ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `無 ${name} 參數,請更換 TableInfo Type`)
+                            ErrorManager.instance.executeError(ErrorType.WEB_RESPONESE_FW, `無 ${name} 參數,請更換 TableInfo Type`)
                         } catch (e) {
                             console.log(e);
                         }
@@ -99,7 +107,7 @@ export default abstract class ALoadingTemplate extends OverrideComponent {
                         this.tableInfo[name] = target[name];
                     }
                 }
-                cc.log(this.tableInfo);
+                console.log(this.tableInfo);
                 UserMoneyChangeNotification.instance.notify(this.tableInfo.UserPoint);
                 this._canPlayGame = true;
             }, true);

@@ -1,4 +1,4 @@
-import {AutoType} from "../../../Config/Enum/ConfigEnum";
+import {AutoType} from "../../../Config/Enum/AutoType";
 import {NotificationType} from "../../Enum/NotificationType";
 import ABaseNotification from "../../ABaseNotification";
 import AutoStateChangeObserver from "../../ObserverType/GameObserver/AutoStateChangeObserver";

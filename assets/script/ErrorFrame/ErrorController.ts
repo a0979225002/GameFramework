@@ -2,19 +2,19 @@ import Language from "../Framework/Global/Language";
 import AErrorFrameTemplate from '../Framework/Template/Error/AErrorFrameTemplate'
 import {socketJS} from '../Socket/Socket'
 import ErrorManager from "../Framework/Error/ErrorManager";
-
-const {ccclass, property} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
 
 @ccclass
 class ErrorController extends AErrorFrameTemplate {
-    
+
     @property(cc.Label)
-    protected errorLabel : cc.Label = null;
+    protected errorLabel: cc.Label = null;
     @property(cc.Label)
-    protected errorButtonLabel : cc.Label = null;
+    protected errorButtonLabel: cc.Label = null;
     @property(cc.Button)
-    protected errorButton : cc.Button = null;
-    
+    protected errorButton: cc.Button = null;
+
     public onCreat() {
         this.node.active = false;
         ErrorManager
@@ -27,12 +27,12 @@ class ErrorController extends AErrorFrameTemplate {
     }
 
     protected languageSetting() {
-
-        Language.instance
-            .updateLabelStyle(this.errorButtonLabel)
-            .updateLabelStyle(this.errorLabel);
+        Language
+            .setLabel(this.errorButtonLabel)
+            .setLabel(this.errorLabel)
+            .updateStyle();
     }
-    
+
     public errorButtonTouchEvent() {
         socketJS.backHome();
     }

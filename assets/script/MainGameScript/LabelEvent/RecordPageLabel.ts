@@ -91,25 +91,25 @@ export default class RecordPageLabel extends AGenericTemplate {
         this.loadingTextH.string = SocketSetting.t("LOAD_000");
         this.loadingTextV.string = SocketSetting.t("LOAD_000");
 
-        Language.instance
-            .updateLabelStyle(this.dateTextH)
-            .updateLabelStyle(this.dateTextV)
-            .updateLabelStyle(this.betNumberTextH)
-            .updateLabelStyle(this.betNumberTextV)
-            .updateLabelStyle(this.bettingTextH)
-            .updateLabelStyle(this.bettingTextV)
-            .updateLabelStyle(this.profitAndLossTextH)
-            .updateLabelStyle(this.profitAndLossTextV)
-            .updateLabelStyle(this.dateRangeTextH)
-            .updateLabelStyle(this.dateRangeTextV)
-            .updateLabelStyle(this.oneDayTextH)
-            .updateLabelStyle(this.oneDayTextV)
-            .updateLabelStyle(this.fiveDayTextH)
-            .updateLabelStyle(this.fiveDayTextV)
-            .updateLabelStyle(this.tenDayTextH)
-            .updateLabelStyle(this.tenDayTextV)
-            .updateLabelStyle(this.loadingTextH)
-            .updateLabelStyle(this.loadingTextV);
+        Language
+            .setLabel(this.dateTextH)
+            .setLabel(this.dateTextV)
+            .setLabel(this.betNumberTextH)
+            .setLabel(this.betNumberTextV)
+            .setLabel(this.bettingTextH)
+            .setLabel(this.bettingTextV)
+            .setLabel(this.profitAndLossTextH)
+            .setLabel(this.profitAndLossTextV)
+            .setLabel(this.dateRangeTextH)
+            .setLabel(this.dateRangeTextV)
+            .setLabel(this.oneDayTextH)
+            .setLabel(this.oneDayTextV)
+            .setLabel(this.fiveDayTextH)
+            .setLabel(this.fiveDayTextV)
+            .setLabel(this.tenDayTextH)
+            .setLabel(this.tenDayTextV)
+            .setLabel(this.loadingTextH)
+            .setLabel(this.loadingTextV);
     }
 
 

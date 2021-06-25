@@ -39,7 +39,8 @@ export default class LoadingController extends ALoadingTemplate {
     /**
      * 自定義初始
      */
-    public onCreat() {
+    protected onCreat() {
+
         socketJS.SFSLoad(SlotConfigManager.instance.gameNumber);
 
         this.isLogoAnimaEnd = false;                                    //初始化尚未結束logo動畫
@@ -49,28 +50,42 @@ export default class LoadingController extends ALoadingTemplate {
             this.loadingTextNode.children[0].getComponent(cc.Label),
             this.loadingTextNode.children[1].getComponent(cc.Label),
         ];
-        this.loadTextToArray[0].string                                  //初始第一條進度條文字
-            = SocketSetting.t("DES_00" + 1);
-        Button.addButtonEvent(                                    //添加進入主遊戲Button監聽事件
+
+        //添加進入主遊戲Button監聽事件
+        Button.addButtonEvent(
             this.intoMainGameButton,
             "intoMainGameButtonEventListener",
             this
         );
-        this.intoMainGameButton.node.active = false;                    //初始關閉進入主遊戲Button顯示,等待進度載入完成後才顯示
-        Language.instance                                         //初始載入條的說明文字樣式
-            .updateLabelStyle(this.loadTextToArray[0])
-            .updateLabelStyle(this.loadTextToArray[1])
 
-        SceneDirectionChangeNotification                                //初始第一次當前分辨率,自動移除監聽
-            .instance.subscribe(this.getSceneDirectionChangeObserver(), false);
+        //初始關閉進入主遊戲Button顯示,等待進度載入完成後才顯示
+        this.intoMainGameButton.node.active = false;
+
+        //初始第一次當前分辨率,採用監聽一次後,自動移除監聽
+        SceneDirectionChangeNotification
+            .instance
+            .subscribe(this.getSceneDirectionChangeObserver(), false);
 
         cc.view.on("canvas-resize", this.changeLoadingBG, this)      //持續間聽當前遊戲長寬,如果有變更,不管是否更換方向都會更新bg大小
+    }
+
+    protected languageSetting() {
+
+        //初始第一條進度條文字
+        this.loadTextToArray[0].string
+            = SocketSetting.t("DES_00" + 1);
+
+        //初始載入條的說明文字樣式
+        Language
+            .setLabel(this.loadTextToArray[0])
+            .setLabel(this.loadTextToArray[1])
+            .updateStyle();
     }
 
     /**
      * 持續間當前遊戲長寬,如果有變更,不管是否更換方向都會更新bg大小
      */
-    changeLoadingBG() {
+    private changeLoadingBG() {
         if (cc.view.getFrameSize().width < cc.view.getFrameSize().height) {
             let newHeight = 1000 / cc.view.getFrameSize().width * cc.view.getFrameSize().height;
             let newWidth = newHeight / 9 * 16;
@@ -86,7 +101,7 @@ export default class LoadingController extends ALoadingTemplate {
      * 螢幕方向事件觀察員
      * @returns {SceneDirectionChangeObserver}
      */
-    getSceneDirectionChangeObserver(): SceneDirectionChangeObserver {
+    private getSceneDirectionChangeObserver(): SceneDirectionChangeObserver {
         if (!this._sceneDirectionChangeObserver) {
             this._sceneDirectionChangeObserver =
                 new SceneDirectionChangeObserver((type) => {
@@ -108,7 +123,7 @@ export default class LoadingController extends ALoadingTemplate {
     /**
      * 載入主資源
      */
-    public onLoadResources() {
+    protected onLoadResources() {
         LoadResManager.instance
             .loadAsset("music", LoadType.music, "music")
             .loadAsset("MainScene", LoadType.scene, null)
@@ -135,7 +150,7 @@ export default class LoadingController extends ALoadingTemplate {
     /**
      * 載入次資源
      */
-    public loadAssetBundle() {
+    protected loadAssetBundle() {
         LoadResManager.instance
             .loadBundle("music2", LoadType.music, "music")
             .loadBundle("prefab", LoadType.prefab, "prefab")
@@ -144,7 +159,7 @@ export default class LoadingController extends ALoadingTemplate {
     /**
      * 載入外部script資源
      */
-    public loadExternalScript() {
+    protected loadExternalScript() {
         LoadResManager.instance
             .loadExternalScript("record.2.0.0", LoadType.css, "lib/for1X/css")
             .loadExternalScript("record.2.0.0", LoadType.css, "game84/css")
@@ -157,7 +172,7 @@ export default class LoadingController extends ALoadingTemplate {
      * 更新進度條說明文字,輪播顯示
      * @param {number} textIndex
      */
-    public updateProgressText(textIndex: number = 1) {
+    protected updateProgressText(textIndex: number = 1) {
 
         textIndex++;
         if (textIndex > 7) textIndex = 1;
@@ -185,12 +200,12 @@ export default class LoadingController extends ALoadingTemplate {
     /**
      * 配置該遊戲Scene適配寬高,與更新頻率
      */
-    public sceneStyle() {
+    protected sceneStyle() {
         SceneManager.instance
             .setDesignWidth(1280)
             .setDesignHeight(720)
             .updateSize(SceneStyle.AUTO)
-            .designSceneSizeListenerAutoStart(100);
+            .startListener(100);
     }
 
     /**
@@ -202,6 +217,12 @@ export default class LoadingController extends ALoadingTemplate {
         SceneManager.instance.removeScene(this);
     }
 
+    /**
+     * 開啟螢幕不自動睡眠功能
+     * 判斷只有在mobile中才開啟
+     * @warning -(2020.12.30)當前ios此功能失效,因此,額外判斷如果當前手機是ios系統,將不使用該功能
+     * @private
+     */
     private useNoSleep() {
         if (!cc.sys.isMobile) {
             cc.log("不是mobile");
@@ -218,12 +239,9 @@ export default class LoadingController extends ALoadingTemplate {
             cc["plug"].noSleep.enable();
             cc.log(cc["plug"].noSleep)
             cc.game.on(cc.game.EVENT_HIDE, function () {
-                // cc.log("游戏进入后台时触发的事件");
                 cc["plug"].noSleep.disable();
             });
             cc.game.on(cc.game.EVENT_SHOW, function () {
-                cc.log("近來搂")
-                // cc.log("游戏进入前台运行时触发的事件");
                 cc["plug"].noSleep = new NoSleep();
                 cc["plug"].noSleep.enable();
             });

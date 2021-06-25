@@ -13,12 +13,8 @@ export default class ErrorHandler implements IErrorHandler {
     private serverError: ServerError;
     private warningError: WarningError;
 
-    constructor() {
-
-        this.objectError = new ObjectError();
-        this.serverError = new ServerError();
-        this.warningError = new WarningError();
-
+    constructor(configManager:IConfigManager) {
+        this.objectError = new ObjectError(configManager);
     }
 
     checkErrorType(message: string | ErrorType, obj?: any) {

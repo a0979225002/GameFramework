@@ -33,7 +33,7 @@ export interface ISceneManager {
      * 如果需求更動樣式,須先更新 updateSize()
      * @param {number} time : 更新的頻率 單位毫秒 ms
      */
-    designSceneSizeListenerAutoStart(time: number): void;
+    startListener(time: number): void;
 
     /**
      * 更換場景

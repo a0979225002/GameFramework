@@ -1,4 +1,3 @@
-import IConfigManager from "../Config/IConfig/IConfigManager";
 import {ErrorType} from '../Error/Enum/ErrorManagerEnum'
 import ErrorManager from '../Error/ErrorManager'
 import ASlot from './ASlot'
@@ -210,7 +209,7 @@ export default class SlotStyleManager implements ISlotStyleManager {
      */
     build() {
         if (!this.style.slotTemplate) {
-            ErrorManager.instance.executeError(ErrorType.UndefinedFW, "Slot Template 未賦予,需幫定或實做一個SlotTemplate")
+            ErrorManager.instance.executeError(ErrorType.UNDEFINED_FW, "Slot Template 未賦予,需幫定或實做一個SlotTemplate")
             return;
         }
         this._slot = new this.style.slotTemplate(this.style);

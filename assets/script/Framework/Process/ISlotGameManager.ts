@@ -1,5 +1,5 @@
-import {AutoType} from '../Config/Enum/ConfigEnum'
-import {UserBetPoint} from "../Config/IConfig/ISlotConfigManager";
+import {AutoType} from '../Config/Enum/AutoType'
+
 import {GameState, GameType} from "./Enum/GameState";
 import AutoStateChangeObserver from "../Listener/ObserverType/GameObserver/AutoStateChangeObserver";
 import SpeedStateChangeObserver from "../Listener/ObserverType/GameObserver/SpeedStateChangeObserver";
@@ -47,7 +47,7 @@ export default interface ISlotGameManager {
     /**
      * 當前押注資訊,回傳server資訊
      */
-    userBetPoint: UserBetPoint;
+    userBetPoint: IUserBetPoint;
 
     /**
      * 執行設定好的流程
@@ -109,7 +109,7 @@ export default interface ISlotGameManager {
      * @param {number} betIndex
      * @returns {UserBetPoint} : 當前用戶押注的回傳server物件狀態
      */
-    updateUserBetPoint(betIndex: number): UserBetPoint;
+    updateUserBetPoint(betIndex: number): IUserBetPoint;
 
     /**
      * 更新當前auto次數
