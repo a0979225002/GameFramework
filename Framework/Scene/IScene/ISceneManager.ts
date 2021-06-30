@@ -48,15 +48,15 @@ namespace fcc {
 
             /**
              * 更換場景
-             * @param {string} name : 場景資源名稱為你Res動態加載的自訂義的scene名稱
+             * @param {string} name - 場景資源名稱為你Res動態加載的自訂義的scene名稱
              */
             changeScene(name: string): void;
 
             /**
              * 清除該scene所有動作
-             * @param scene{any} : 要清除的scene class
+             * @param scene{cc.Component} - 要清除的scene class
              */
-            removeScene(scene: any): void;
+            removeScene(scene: cc.Component): void;
 
         }
     }

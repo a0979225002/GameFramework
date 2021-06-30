@@ -1,7 +1,6 @@
 /// <reference path="../Enum/ErrorType.ts" />
 /// <reference path="./UnknownError.ts" />
 namespace fcc {
-
     /**
      * @Author XIAO-LI-PIN
      * @Description 檢測該錯誤是否為框架錯誤

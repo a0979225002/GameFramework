@@ -22,12 +22,6 @@ namespace fcc {
             CHINESE = "CNY",
 
             /**
-             * 印度
-             * @type {LanguageType.INDIA}
-             */
-            INDIA = "IND",
-
-            /**
              * 泰國
              * @type {LanguageType.THAILAND}
              */
@@ -44,6 +38,17 @@ namespace fcc {
              * @type {LanguageType.VIETNAM}
              */
             VIETNAM = "VND",
+
+            /**
+             * 印尼
+             */
+            INDONESIA = "IDR",
+
+            /**
+             * 馬來西亞
+             */
+            MALAYSIA = "MYR",
+
         }
     }
 }

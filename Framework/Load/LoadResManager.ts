@@ -1,7 +1,6 @@
 /// <reference path="../Error/Enum/ErrorType.ts" />
 /// <reference path="../Error/ErrorManager.ts" />
 /// <reference path="../Global/Util.ts" />
-/// <reference path="../WebRequest/WebRequestManager.ts" /> // TODO
 /// <reference path="./Enum/LoadEnum.ts" />
 /// <reference path="./ILoad/ILoadResManager.ts" />
 /// <reference path="./LoadTypeHandler.ts" />
@@ -9,7 +8,7 @@ namespace fcc {
 
     /**
      * @Author XIAO-LI-PIN
-     * @Description 資源管理者
+     * @Description 資源管理者 : 加載資源,保存資源,或取當前加載進度
      * @Date 2021-04-14 下午 20:24
      * @Version 1.1
      */
@@ -90,6 +89,7 @@ namespace fcc {
         public static setInstance(configManager: IF.IConfigManager) {
             if (!this._instance) {
                 this._instance = new LoadResManager(configManager);
+                loadMgr = this._instance;
             }
         }
 
@@ -190,7 +190,7 @@ namespace fcc {
         loadAsset(name: string, type: type.LoadType, url: string, isLanguageUsed?: boolean): this {
             this.count += 1;
             if (isLanguageUsed) {
-                url = `${url}/${WebRequestManager.instance.UserLanguage}`;
+                url = `${url}/${this.configManager.language}`;
             }
             this.loadTypeHandler.executeLoad(name, type, url);
             return this;
@@ -209,7 +209,7 @@ namespace fcc {
 
             if (isLanguageUsed) {
 
-                url = `${url}/${WebRequestManager.instance.UserLanguage}`
+                url = `${url}/${this.configManager.language}`
 
             }
 

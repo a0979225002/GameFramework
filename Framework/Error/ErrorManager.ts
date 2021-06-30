@@ -6,7 +6,7 @@ namespace fcc {
 
     /**
      * @Author XIAO-LI-PIN
-     * @Description 框架錯誤管理
+     * @Description 錯誤管理器 : 框架錯誤管理
      * @Date 2021-04-14 下午 20:24
      * @Version 1.1
      */
@@ -27,7 +27,7 @@ namespace fcc {
         private _warningDelayTime: number;
 
         private constructor(configManager: IF.IConfigManager) {
-            this.handler = new ErrorHandler(configManager,this);
+            this.handler = new ErrorHandler(configManager, this);
             this.configManager = configManager;
             this._errorNode = null;
             this._errorLabel = null;
@@ -45,6 +45,7 @@ namespace fcc {
         public static setInstance(configManager: IF.IConfigManager) {
             if (!this._instance) {
                 this._instance = new ErrorManager(configManager);
+                errorMgr = this._instance;
             }
         }
 
@@ -65,16 +66,14 @@ namespace fcc {
          * @param obj
          */
         executeError(message: string | type.ErrorType, obj: any) {
-
             return this.handler.checkErrorType(message, obj);
-
         }
 
         /**
          * 顯示錯誤視窗
-         * @param {boolean} permanentState : 是否常駐
-         * @param {string} message  : 錯誤訊息
-         * @param {string} buttonText : button文字
+         * @param {boolean} permanentState - 是否常駐
+         * @param {string} message  - 錯誤訊息
+         * @param {string} buttonText - button文字
          */
         serverError(permanentState: boolean, message: string, buttonText?: string) {
             this.handler.checkServerError(permanentState, message, buttonText);
@@ -82,9 +81,9 @@ namespace fcc {
 
         /**
          * 顯示警告,將會調用已保存的警告Node
-         * @param {boolean} permanentState : 是否常駐
-         * @param {string} message  : 錯誤訊息
-         * @param {string} buttonText : button文字
+         * @param {boolean} permanentState - 是否常駐
+         * @param {string} message  - 錯誤訊息
+         * @param {string} buttonText - button文字
          */
         warning(permanentState: boolean, message: string, buttonText?: string) {
 

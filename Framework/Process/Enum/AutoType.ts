@@ -1,4 +1,5 @@
 namespace fcc {
+
     export namespace type {
 
         /**

@@ -11,121 +11,134 @@ namespace fcc {
         export interface IConfigManager {
 
             /**
-             * 載入外部資源URL(只有開發模式中有效)
+             * 載入外部資源URL
              * @type {string}
+             * @default ""
              * @private
              */
-            externallyLoadURL: string;
+            readonly externallyLoadURL: string;
 
             /**
              * 當前遊戲名稱
              * @type {number}
+             * @default null
              * @private
              */
-            gameNumber: number;
+            readonly gameNumber: number;
 
             /**
              * 初始背景音樂音量(該音量將會成為AudioManager內預設音量)
              * @type {number}
+             * @default 1
              * @private
              */
-            musicVolume: number;
+            readonly musicVolume: number;
 
             /**
              * 初始將背景音樂靜音
              * @type {boolean}
+             * @default false
              * @private
              */
-            isMusicOnMute: boolean;
+            readonly isMusicOnMute: boolean;
 
             /**
              * 初始效果音量(該音量將會成為AudioManager內預設音量)
              * @type {number}
+             * @default 1
              * @private
              */
-            effectVolume: number;
+            readonly effectVolume: number;
 
             /**
              * 初始將效果音效靜音
              * @type {boolean}
+             * @default false
              * @private
              */
-            isEffectOnMute: boolean;
+            readonly isEffectOnMute: boolean;
 
             /**
-             * 初始當前語系(只有開發模式中有效)
-             * 注意:目前此方法失效
+             * 初始當前語系
              * @type {LanguageType}
+             * @default LanguageType.CHINESE
              * @private
              */
-            language: string;
+            readonly language: string | type.LanguageType;
 
             /**
              * 返回首頁URL
+             * @default null
              */
-            backHomeURL: string;
+            readonly backHomeURL: string;
 
             /**
              * 是否要開啟Framework Debug模式
              * 注意:遊戲正式上線須關閉
              * @type {boolean}
+             * @default true
              * @private
              */
-            isFrameworkDebug: boolean;
+            readonly isFrameworkDebug: boolean;
 
             /**
              * cocos 框架 debug設定
-             * @default : INFO
+             * @default - cc.debug.DebugMode.INFO
              */
-            cocosDebugSetting: cc.debug.DebugMode;
+            readonly cocosDebugSetting: cc.debug.DebugMode;
 
             /**
              * 添加遊戲名稱
-             * @param {number} name : 遊戲名稱
+             * @param {number} name - 遊戲名稱
+             * @default null
              * @returns {this}
              */
             setGameNumber(name: number): this;
 
             /**
              * 設置初始預設音量
-             * @param {number} number : 音量 0~1
+             * @param {number} number - 音量 0~1
+             * @default 1
              * @returns {this}
              */
             setMusicVolume(number: number): this;
 
             /**
              * 設置初始預設效果音量
-             * @param {number} number : 音量 0~1
+             * @param {number} number - 音量 0~1
+             * @default 1
              * @returns {this}
              */
             setEffectVolume(number: number): this;
 
             /**
              * 初始要從外部拿取資源的URL
-             * 注意:此URL為開發中生效
              * @param {string} url : 獲取外部資源的URL
+             * @default ""
              * @returns {this}
              */
             setExternallyLoadURL(url: string): this;
 
             /**
-             * 貫穿整個遊戲,到destroy前遊戲語系
-             * 注意:當前使用無效
-             * @param {LanguageType} languageType : 語系
+             * 初始語系
+             * @param {LanguageType} languageType - 語系
+             * @default LanguageType.CHINESE
              * @returns {this}
              */
-            setLanguage(languageType: string): this;
+            setLanguage(languageType: string | type.LanguageType): this;
 
             /**
              * 初始將背景音樂靜音
-             * @param {boolean} OnMute : 是否靜音
+             * @param {boolean} OnMute - 是否靜音
+             * @default false
              * @returns {this}
              */
             setMusicOnMute(OnMute: boolean): this;
 
             /**
              * 初始是否將效果音效靜音
-             * @param {boolean} OnMute : 是否靜音
+             * @param {boolean} OnMute - 是否靜音
+             * @default false
              * @returns {this}
              */
             setEffectOnMute(OnMute: boolean): this;
@@ -134,6 +147,7 @@ namespace fcc {
              * 是否要開啟Framework Debug模式
              * 注意:遊戲正式上線須關閉
              * @param {boolean} use
+             * @default true
              * @returns {this}
              */
             setFrameWorkDebug(use: boolean): this;
@@ -141,7 +155,7 @@ namespace fcc {
             /**
              * cocos 框架 debug設定
              * @param {cc.debug.DebugMode} type - debug 樣式
-             * @default : INFO
+             * @default - cc.debug.DebugMode.INFO
              * @return {this}
              */
             setCocosDebug(type: cc.debug.DebugMode): this;
@@ -149,6 +163,7 @@ namespace fcc {
             /**
              * 返回首頁URL
              * @param {string} url
+             * @default null
              * @returns {this}
              */
             setBackHomeURL(url: string): this;

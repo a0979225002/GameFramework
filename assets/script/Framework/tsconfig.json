@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "declaration": true,                          //生成相應的.d.ts文件。
+//    "declaration": true,                          //生成相應的.d.ts文件。
     "strict": false,                              //啟用所有嚴格類型檢查選項
     "module": "commonjs",                         //指定生成哪個模塊系統代
     "lib": [ "es5","es2015", "es2017", "dom"],
@@ -15,17 +15,16 @@
     "removeComments": false,                      //刪除所有註釋，除了以/!*開頭的版權信息。
     "outFile": "framework.js",                    //將輸出文件合併為一個文件。
     "types": [
-      "../@types/creator",
-      "../@types/index",
+      "../../../@types/creator",
+      "../../../@types/index",
+      "../../../@types/sfs2x-api-1.7.17",
+      "../../../@types/yargs",
       "node"
     ],
     "typeRoots": [
       "../../../node_modules/@types"
     ]
   },
-//  "files": [
-//    "../index.d.ts"
-//  ],
   "include": [
     "./**/*"
   ],

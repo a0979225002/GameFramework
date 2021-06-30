@@ -39,11 +39,3 @@ export  enum AutoType {
      */
     AUTO_1000 = 1000
 }
-//
-// /**
-//  * 各國語系
-//  * return : string
-//  */
-// export enum LanguageType {
-//
-// }

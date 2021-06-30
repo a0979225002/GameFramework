@@ -79,7 +79,9 @@ export default class AudioManager implements IAudioManager {
     public settingEffect(name: string, canSuperimpose?: AudioStateType, volume?: number, loop?: boolean): this {
 
         if (canSuperimpose === AudioStateType.SUPERIMPOSE && loop) {
-            ErrorManager.instance.executeError(ErrorType.AUDIO_FW, `${name} 使用疊加效果時不建議使用循環撥放`);
+            ErrorManager
+                .instance
+                .executeError(ErrorType.AUDIO_FW, `${name} 使用疊加效果時不建議使用循環撥放`);
         }
 
         this.factory.settingEffect(name, canSuperimpose, volume, loop)
@@ -213,7 +215,7 @@ export function Music(name) {
         const method = descriptor.value;
         descriptor.value = function (...any) {
             AudioManager.instance.musicPlay(name);
-            return  method.call(this, ...any);
+            return method.call(this, ...any);
         }
     }
 }

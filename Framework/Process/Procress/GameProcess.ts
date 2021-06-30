@@ -1,55 +1,77 @@
-/**
- * @Author XIAO-LI-PIN
- * @Description 任何遊戲皆可用流程
- * @Date 2021-05-14 下午 03:07
- * @Version 1.0
- */
-export default class GameProcess implements IGameProcess {
+namespace fcc {
 
     /**
-     * 保存使用者流程
-     * @type {Set<Function>}
-     * @private
+     * @Author XIAO-LI-PIN
+     * @Description 任何遊戲皆可用流程
+     * @Date 2021-05-14 下午 03:07
+     * @Version 1.0
      */
-    private readonly process: Set<() => Promise<void> | void>;
+    export class GameProcess implements IF.IGameProcess {
 
-    /**
-     * 流程執行
-     * @type {IGameProcedureExecutionContainer}
-     * @private
-     */
-    private readonly _executionContainer: IGameProcedureExecutionContainer;
+        /**
+         * 保存使用者綁定的流程方法
+         * @type {Set<Function>}
+         * @private
+         */
+        private readonly _process: Set<() => Promise<void> | void>;
 
-    constructor(container: IExecutionContainer) {
-        this._executionContainer = container as IGameProcedureExecutionContainer;
-        this.process = new Set<() => Promise<void>>();
-    }
+        /**
+         * 流程容器
+         * @type {IGameProcedureExecutionContainer}
+         * @private
+         */
+        private readonly _executionContainer: IF.IGameProcedureExecutionContainer;
 
-    onCreate(): this {
-        this.process.add(this._executionContainer.onCreate);
-        return this;
-    }
+        constructor(container: IF.IGameProcedureExecutionContainer) {
+            this._executionContainer = container;
+            this._process = new Set<() => Promise<void>>();
+        }
 
-    onExecution(): this {
+        /**
+         * 執行流程
+         * @return {this}
+         */
+        onExecution(): this {
 
-        this.process.add(this._executionContainer.onExecution);
+            this._process.add(this._executionContainer.onExecution);
 
-        return this;
-    }
+            return this;
+        }
 
-    onEnd(): this {
-        this.process.add(this._executionContainer.onEnd);
-        return this;
-    }
+        /**
+         * 流程結束時
+         * @return {this}
+         */
+        onEnd(): this {
+            this._process.add(this._executionContainer.onEnd);
+            return this;
+        }
 
-    onChangeStatus(): this {
-        this.process.add(this._executionContainer.onChangeStatus);
-        return this;
-    }
+        /**
+         * 更換流程
+         * @return {this}
+         */
+        onChangeStatus(): this {
+            this._process.add(this._executionContainer.onChangeStatus);
+            return this;
+        }
 
-    public async start(): Promise<void> {
-        for (let method of this.process) {
-            await method.apply(this._executionContainer);
+        /**
+         * 將所有綁定的流程方法依序執行
+         * @return {Promise<void>}
+         */
+        public async start(): Promise<void> {
+            for (let method of this._process) {
+                await method.apply(this._executionContainer);
+            }
+        }
+
+        get process(): Set<() => (Promise<void> | void)> {
+            return this._process;
+        }
+
+        get executionContainer(): fcc.IF.IGameProcedureExecutionContainer {
+            return this._executionContainer;
         }
     }
 }

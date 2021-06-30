@@ -1,6 +1,5 @@
 /// <reference path="../Error/ErrorManager.ts" />
 /// <reference path="../Error/Enum/ErrorType.ts" />
-
 namespace fcc {
 
     export namespace ABS {

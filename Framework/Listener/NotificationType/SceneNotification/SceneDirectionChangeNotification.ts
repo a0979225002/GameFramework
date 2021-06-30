@@ -2,7 +2,6 @@
 /// <reference path="../../ABaseNotification.ts" />
 /// <reference path="../../Enum/NotificationType.ts" />
 /// <reference path="../../ObserverType/SceneObserver/SceneDirectionChangeObserver.ts" />
-
 namespace fcc {
 
     /**

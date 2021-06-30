@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "declaration": true,                          //生成相應的.d.ts文件。
+    "module": "System",                         //指定生成哪個模塊系統代
+    "lib": [ "es5","es2015", "es2017", "dom"],
+    "target": "es5",                              //指定ECMAScript目標版本
+    "experimentalDecorators": true,               //打開裝飾器功能
+    "emitDecoratorMetadata": true,                //能讀取元數據,裝飾器使用
+    "forceConsistentCasingInFileNames": true,     //路徑強制區分大小寫。
+    "skipLibCheck": true,                         //忽略所有的聲明檔（）的類型檢查。*.d.ts
+    "downlevelIteration" : true,                  //允許for of 迭代
+    "isolatedModules": false,                     //將每個文件作為單獨的模塊
+//    "noImplicitAny": true,                      //在表達式和聲明上有隱含的any類型時報錯。
+    "removeComments": false,                      //刪除所有註釋，除了以/!*開頭的版權信息。
+    "outFile": "fcc-framework.js",
+    "types": [
+      "../@types/creator",
+      "../@types/index",
+      "../@types/yargs",
+      "../@types/sfs2x-api-1.7.17",
+      "node"
+    ],
+    "typeRoots": [
+      "../node_modules/@types"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "library",
+    "local",
+    "temp",
+    "build",
+    "settings"
+  ]
+}

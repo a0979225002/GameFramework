@@ -1,127 +1,115 @@
-import {ErrorType} from "../Error/Enum/ErrorType";
-import ErrorManager from "../Error/ErrorManager";
-import {ServerEventType} from './Enum/ServerEventType'
-import IEventManager from './IEventManager'
-
-export default class EventManager implements IEventManager {
-
-    private static _instance: IEventManager;
-
-    private configManager: IConfigManager;
+/// <reference path="../Error/Enum/ErrorType.ts" />
+/// <reference path="../Error/ErrorManager.ts" />
+/// <reference path="./IEventManager.ts" />
+namespace fcc {
 
     /**
-     * 事件總數量
+     * @Author XIAO-LI-PIN
+     * @Description 事件管理器,當前綁定的事件,事件數量
+     * @Date 2021-04-14 下午 20:24
+     * @Version 1.1
      */
-    private _eventCount: number
+    export class EventManager extends cc.EventTarget implements IF.IEventManager {
 
-    /**
-     * 遊戲內事件
-     */
-    public static serverTarget: cc.EventTarget
-    /**
-     * 伺服器回傳事件
-     */
-    public static gameTarget: cc.EventTarget
+        private static _instance: IF.IEventManager;
 
-    /**
-     * 當前正在監聽那些事件;
-     */
-    private readonly _eventsCurrentlyBeing: Map<string, ServerEventType | string>
+        private configManager: IF.IConfigManager;
 
-    private constructor(configManager: IConfigManager) {
-        this.configManager = configManager;
-        this._eventCount = 0;
-        this._eventsCurrentlyBeing = new Map<string, ServerEventType | string>();
-        EventManager.serverTarget = new cc.EventTarget();
-        EventManager.gameTarget = new cc.EventTarget();
-    }
+        /**
+         * 事件總數量
+         */
+        private _eventCount: number
 
-    /**
-     *  懶漢加載
-     *  初始化,只讓一個專案產生一次該class
-     */
-    public static setInstance(configManager: IConfigManager) {
-        if (!this._instance) {
-            this._instance = new EventManager(configManager);
+        /**
+         * 遊戲內事件
+         */
+        public target: cc.EventTarget
+
+        /**
+         * 當前正在監聽那些事件;
+         */
+        private readonly _eventsCurrentlyBeing: Map<string, string>
+
+        private constructor(configManager: IF.IConfigManager) {
+            super();
+            this.configManager = configManager;
+            this._eventCount = 0;
+            this._eventsCurrentlyBeing = new Map<string, string>();
+            this.target = new cc.EventTarget();
         }
-    }
 
-    /**
-     *  獲取已經初始化的靜態實例class
-     */
-    public static get instance(): IEventManager {
-        if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.LISTENER_FW, "該類尚未實例化");
-            return;
+        /**
+         *  懶漢加載
+         *  初始化,只讓一個專案產生一次該class
+         */
+        public static setInstance(configManager: IF.IConfigManager) {
+            if (!this._instance) {
+                this._instance = new EventManager(configManager);
+                eventMgr = this._instance;
+            }
         }
-        return this._instance;
-    }
 
-    /**
-     * 添加事件
-     * @param eventTarget
-     * @param {string} eventName
-     * @param {any} any : 要回傳的物件
-     */
-    public setEvent(eventTarget: cc.EventTarget, eventName: ServerEventType | string, ...any: any) {
-        any ? eventTarget.emit(eventName, ...any) : eventTarget.emit(eventName);
-    }
-
-    /**
-     * game監聽回傳接收
-     * @param {string} eventName
-     * @param {Function} callFun
-     * @param isOnce
-     */
-    public gameEventListener(eventName: string, callFun: (...target: any) => void, isOnce: boolean) {
-        this._eventCount += 1;
-        this._eventsCurrentlyBeing.set("gameEvent", eventName);
-        if (isOnce) {
-            EventManager.gameTarget.once(eventName, callFun);
-        } else {
-            EventManager.gameTarget.on(eventName, callFun);
+        /**
+         *  獲取已經初始化的靜態實例class
+         */
+        public static get instance(): IF.IEventManager {
+            if (!this._instance) {
+                ErrorManager.instance.executeError(type.ErrorType.LISTENER_FW, "該類尚未實例化");
+                return;
+            }
+            return this._instance;
         }
-    }
 
-    /**
-     * server監聽回傳接收
-     * @param {string} eventName
-     * @param {Function} callFun
-     * @param isOnce
-     */
-    public serverEventListener(eventName: ServerEventType, callFun: (...target: any) => void, isOnce: boolean) {
-        this._eventCount += 1;
-        this._eventsCurrentlyBeing.set("severEvent", eventName);
-        if (isOnce) {
-            EventManager.serverTarget.once(eventName, callFun);
-        } else {
-            EventManager.serverTarget.on(eventName, callFun);
+        /**
+         * 添加事件
+         * @param eventTarget
+         * @param {string} eventName
+         * @param {any} any : 要回傳的物件
+         */
+        public emitEvent(eventName: type.ServerEventType | string, ...any: any) {
+            any ? this.target.emit(eventName, ...any) : this.target.emit(eventName);
         }
-    }
 
-    /**
-     * 刪除之前用同類型，回調，目標或 useCapture 註冊的事件監聽器，如果只傳遞 type，將會刪除 type 類型的所有事件監聽器。
-     * @param {ServerEventType | GameEventType} eventName
-     * @param {cc.EventTarget} eventTarget
-     * @param callFun?{Function} : 要刪除的方法,如果未傳參數,將默認全部相關的callFun一並刪除
-     * @param target?{Object}:調用回調的目標（此對象），如果未指定，則僅刪除沒有目標的回調
-     */
-    public destroyEvent(eventName: ServerEventType | string, eventTarget: cc.EventTarget, callFun?: Function, target?: Object) {
-        eventTarget.off(eventName, callFun, target);
-    }
+        /**
+         * server監聽回傳接收
+         * @param {string} eventName
+         * @param {Function} callFun
+         * @param isOnce
+         */
+        public eventListener(eventName: string, callFun: (...target: any) => void, isOnce: boolean) {
+            this._eventCount += 1;
+            this._eventsCurrentlyBeing.set("severEvent", eventName);
+            if (isOnce) {
+                this.target.once(eventName, callFun);
+            } else {
+                this.target.on(eventName, callFun);
+            }
+        }
 
-    /**
-     * 是否該事件持續監聽中
-     */
-    public hasListening(eventName: ServerEventType | string, eventTarget: cc.EventTarget): boolean {
-        return eventTarget.hasEventListener(eventName);
-    }
+        /**
+         * 刪除之前用同類型，回調，目標或 useCapture 註冊的事件監聽器，如果只傳遞 type，將會刪除 type 類型的所有事件監聽器。
+         * @param {ServerEventType | GameEventType} eventName
+         * @param {cc.EventTarget} eventTarget
+         * @param callFun?{Function} : 要刪除的方法,如果未傳參數,將默認全部相關的callFun一並刪除
+         * @param target?{Object}:調用回調的目標（此對象），如果未指定，則僅刪除沒有目標的回調
+         */
+        public destroyEvent(eventName: string, callFun?: Function, target?: Object) {
+            this.target.off(eventName, callFun, target);
+        }
 
-    public get eventCount(): number {
-        return this._eventCount
-    }
+        /**
+         * 是否該事件持續監聽中
+         */
+        public hasListening(eventName: string, eventTarget: cc.EventTarget): boolean {
+            return eventTarget.hasEventListener(eventName);
+        }
 
-    public get eventsCurrentlyBeing(): Map<string, ServerEventType | string> {
-        return this._eventsCurrentlyBeing
+        public get eventCount(): number {
+            return this._eventCount
+        }
+
+        public get eventsCurrentlyBeing(): Map<string, string> {
+            return this._eventsCurrentlyBeing
+        }
     }
 }

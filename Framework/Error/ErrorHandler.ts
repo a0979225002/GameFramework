@@ -18,7 +18,7 @@ namespace fcc {
         private warningError: WarningError;
 
 
-        constructor(configManager: IF.IConfigManager,errorManager:IF.IErrorManager) {
+        constructor(configManager: IF.IConfigManager, errorManager: IF.IErrorManager) {
             this.objectError = new ObjectError(configManager);
             this.serverError = new ServerError(errorManager);
             this.warningError = new WarningError(errorManager);

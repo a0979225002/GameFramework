@@ -1,26 +1,44 @@
-export enum GameState {
+namespace fcc {
 
-    /**
-     * 無狀態,待機狀態...
-     * @type {GameState.STANDBY}
-     */
-    STANDBY = 'STANDBY',
+    export namespace type {
 
-    /**
-     * 一般狀態遊戲中....
-     * @type {GameState.PLAYING}
-     */
-    PLAYING = 'PLAYING',
+        /**
+         * @Author XIAO-LI-PIN
+         * @Description 遊戲當下狀態
+         * @Date 2021-04-14 下午 20:24
+         * @Version 1.1
+         */
+        export enum GameStateType {
 
-    /**
-     * 免費遊戲中....
-     * @type {GameState.FREEING}
-     */
-    FREEING = 'FREEING',
+            /**
+             * 無狀態,待機狀態...
+             * @type {GameStateType.STANDBY}
+             */
+            STANDBY = 'STANDBY',
 
-}
+            /**
+             * 一般狀態遊戲中....
+             * @type {GameStateType.PLAYING}
+             */
+            PLAYING = 'PLAYING',
 
-export enum GameType {
-    FREE = 'FREE',
-    NORMAL = 'NORMAL',
+            /**
+             * 免費遊戲中....
+             * @type {GameStateType.FREEING}
+             */
+            FREEING = 'FREEING',
+
+        }
+
+        /**
+         * @Author XIAO-LI-PIN
+         * @Description 框架預設的流程
+         * @Date 2021-04-14 下午 20:24
+         * @Version 1.1
+         */
+        export enum ProcessType {
+            FREE = 'FREE',
+            NORMAL = 'NORMAL',
+        }
+    }
 }

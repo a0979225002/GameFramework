@@ -7,6 +7,9 @@ interface Window{
      */
     language_Mode : object;
 
+    //當前語言
+    lang : string;
+
     /**
      * 開發時測試參數
      * @example - (true) 為本地端
@@ -23,6 +26,8 @@ interface Window{
      *
      */
     screenLock:any;
+
+
 }
 declare var window:Window;
 

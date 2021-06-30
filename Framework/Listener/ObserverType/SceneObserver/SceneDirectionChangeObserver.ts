@@ -9,7 +9,7 @@ namespace fcc {
      * @Date 2021-05-19 下午 01:46
      * @Version 1.0
      */
-    export class SceneDirectionChangeObserver implements IBaseObserver {
+    export class SceneDirectionChangeObserver implements IF.IBaseObserver {
         private _isPermanent: boolean;
         private readonly self: any;
         private readonly callFun: (type: type.SceneDirectionType) => void;

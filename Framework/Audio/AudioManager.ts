@@ -8,7 +8,7 @@ namespace fcc {
 
     /**
      * @Author XIAO-LI-PIN
-     * @Description 音樂管理器,由Config類實例化,直到程式死亡前,永久存活
+     * @Description 音樂管理器,初始設定各音樂狀態,保存當前撥放音量
      * @Date 2021-05-13 上午 10:24
      * @Version 1.1
      */
@@ -36,6 +36,7 @@ namespace fcc {
         public static setInstance(configManager: IF.IConfigManager) {
             if (!this._instance) {
                 this._instance = new AudioManager(configManager);
+                audioMgr = this._instance;
             }
         }
 
