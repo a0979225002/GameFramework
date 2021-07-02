@@ -25,13 +25,13 @@ export default class Test01<T extends ISlotResultModel> {
 
 export class Test02 {
 
-    public static module;
+    public static module : ISlotResultModel;
 
     static setResult<T extends ISlotResultModel>(module: new () => T) {
         this.module = new module();
     }
 
-    static getResult<T extends ISlotResultModel>(): T {
+    static getResult<T extends ISlotResultModel>() {
         return this.module;
     }
 }

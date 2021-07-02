@@ -1,31 +1,38 @@
 {
   "compilerOptions": {
-    "allowJs": true,                             //允許編譯javascript文件。
-    "declaration": true,                         //生成相應的.d.ts文件。
-    "strict": false,                             //啟用所有嚴格類型檢查選項
-    "module": "CommonJS",                        //指定生成哪個模塊系統代
-    "lib": [ "es2015", "es2017", "dom" ],
-    "target": "ES2015",                          //指定ECMAScript目標版本
-    "moduleResolution": "node",
-    "experimentalDecorators": true,              //打開裝飾器功能
-    "emitDecoratorMetadata": true,               //能讀取元數據,裝飾器使用
-    "forceConsistentCasingInFileNames": true,    //路徑強制區分大小寫。
-    "skipLibCheck": true,                        //忽略所有的聲明檔（）的類型檢查。*.d.ts
-    "downlevelIteration" : true,                 //允許for of 迭代
-    "noEmitHelpers" : false,
-    "sourceMap": true,
+    "allowJs": true,                             /*允許編譯javascript文件。*/
+    "strict": false,                             /*啟用所有嚴格類型檢查選項*/
+    "module": "CommonJS",                        /*指定生成哪個模塊系統代*/
+    "lib": [                                     /*TS需要引用的庫，即聲明文件*/
+      "es2015",
+      "es2017",
+      "dom",
+      "ES2019.Array",
+      "es2015.promise"
+    ],
+    "target": "ES2015",                          /*指定ECMAScript目標版本*/
+    "moduleResolution": "node",                  /*模塊解析策略，ts默認用node的解析策略，即相對的方式導入*/
+    "experimentalDecorators" : true,             /*打開裝飾器功能*/
+    "emitDecoratorMetadata": true,               /*能讀取元數據,裝飾器使用*/
+    "forceConsistentCasingInFileNames": true,    /*路徑強制區分大小寫。*/
+    "skipLibCheck": true,                        /*忽略所有的聲明檔（）的類型檢查。*.d.ts*/
+    "downlevelIteration" : true,                 /*允許for of 迭代*/
+    "noEmitHelpers" : false,                     /*完全不输出外部工具函数*/
+    "removeComments": true,                      /*刪除所有註釋，除了以/!*開頭的版權信息。*/
+    "sourceMap": true,                           /*生成目標文件的sourceMap文件*/
+    "inlineSourceMap": true,                     /*生成目標文件的inline SourceMap*/
   },
-  "types": [
+  "types": [                                     /*加載的聲明文件包*/
     "./@types/creator",
-    "./@types/index",
+    "./@types/global",
     "./@types/sfs2x-api-1.7.17",
     "./@types/fcc-framework",
     "node"
   ],
-  "typeRoots": [
+  "typeRoots": [                                 /*聲明文件目錄*/
     "./node_modules/@types"
   ],
-  "exclude": [
+  "exclude": [                                   /*指定編譯器需要排除的文件或文件夾*/
     "node_modules",
     "library",
     "local",

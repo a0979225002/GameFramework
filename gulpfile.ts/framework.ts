@@ -8,10 +8,10 @@ const browserify = require('gulp-browserify');
 const merge = require('merge2');
 const through = require('through2');
 const fs = require("fs");
-
+const uglify= require('gulp-uglify');
+const  concat =  require('gulp-concat');
 
 const VERSION = 0.3;
-
 
 /**
  * 清空资源框架
@@ -33,7 +33,7 @@ function cleanAssetFramework(cb) {
 function buildAssetFramework(cb) {
     if (fs.existsSync('Framework')) {
         console.log("buildAssetFramework");
-        let tsResult = gulp.src(['Framework/**/*.ts', '@types/creator.d.ts'])
+        let tsFrameWork = gulp.src(['Framework/**/*.ts', '@types/creator.d.ts'])
             .pipe(sourcemaps.init())
             .pipe(ts.createProject('Framework/tsconfig.json', {
                 target: "ES5",
@@ -41,8 +41,9 @@ function buildAssetFramework(cb) {
             .on("error", function (err: any) {
                 console.error(err.message);
             });
+
         return merge(
-            tsResult.js
+            tsFrameWork.js
                 .pipe(sourcemaps.write())
                 .pipe(browserify({
                     insertGlobals: true,
@@ -53,9 +54,10 @@ function buildAssetFramework(cb) {
                     chunk.contents = Buffer.from(sdata);
                     this.push(chunk)
                     callback();
+                    //fcc-framework.js
                 }))
                 .pipe(gulp.dest('dist/fcc')),
-            tsResult.dts
+            tsFrameWork.dts
                 .pipe(through.obj(function (chunk, enc, callback) {
                     let sdata = chunk.contents.toString();
                     let replace = updateVersion(sdata);
@@ -89,7 +91,6 @@ function updateVersion(library: string): string {
     );
 }
 
-
 /**
  * 建構混淆加密框架
  */
@@ -108,8 +109,15 @@ function buildPublishFramework(cb) {
             });
         return tsResult.js
             .pipe(jsobfuscator({
-                compact: true
+                compact: true,
+                controlFlowFlattening: true,
+                stringArray: true,
+                debugProtectionInterval: true,
+                disableConsoleOutput: true,
+                selfDefending: true,
+                renameGlobals: true,
             }))
+            .pipe(uglify())
             .pipe(sourcemaps.write())
             .pipe(browserify({
                 insertGlobals: true,

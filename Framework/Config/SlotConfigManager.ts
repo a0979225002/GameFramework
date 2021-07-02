@@ -1,3 +1,14 @@
+/// <reference path="../Audio/AudioManager.ts" />
+/// <reference path="../Error/ErrorManager.ts" />
+/// <reference path="../Listener/EventManager.ts" />
+/// <reference path="../Load/LoadResManager.ts" />
+/// <reference path="../Process/ProcessManager.ts" />
+/// <reference path="../Scene/SceneManager.ts" />
+/// <reference path="../Slot/SlotStyleManager.ts" />
+/// <reference path="../Process/Enum/AutoType.ts" />
+/// <reference path="./IConfig/ISlotConfigManager.ts" />
+/// <reference path="../Language/Enum/LanguageType.ts" />
+/// <reference path="../Process/Enum/AutoType.ts" />
 namespace fcc {
 
     /**

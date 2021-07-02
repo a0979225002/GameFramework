@@ -85,7 +85,8 @@ function buildPublishTemplate(cb) {
             });
         return tsResult.js
             .pipe(jsobfuscator({
-                compact: true
+                compact: true,
+                controlFlowFlattening: true
             }))
             .pipe(sourcemaps.write())
             .pipe(browserify({

@@ -116,9 +116,9 @@ namespace fcc {
      */
     export let slotStyleMgr : IF.ISlotStyleManager;
 }
-
-/**
- * 擴展至全域,cocos規定
- * @type {fcc}
- */
-global.fcc = fcc;
+//
+// /**
+//  * 擴展至全域,cocos規定
+//  * @type {fcc}
+//  */
+// globalThis.fcc = fcc;

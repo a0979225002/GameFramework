@@ -3,6 +3,8 @@
 /// <reference path="./AudioFactory.ts" />
 /// <reference path="./IAudio/IAudioManager.ts" />
 /// <reference path="./Enum/AudioStateType.ts" />
+/// <reference path="./Enum/AudioStateType.ts" />
+
 
 namespace fcc {
 
