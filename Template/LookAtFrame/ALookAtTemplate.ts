@@ -1,24 +1,29 @@
-import ScrollFocusStateNotification
-    from "../../Listener/NotificationType/GameNotification/ScrollFocusStateNotification";
-import ScrollFocusStateObserver from "../../Listener/ObserverType/GameObserver/ScrollFocusStateObserver";
-import OverrideComponent from "../BaseTemplate/OverrideComponent";
+import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
+import ScrollFocusStateObserver from "../Event/Observer/GameObserver/ScrollFocusStateObserver";
+import ScrollFocusStateNotification from "../Event/Notification/GameNotification/ScrollFocusStateNotification";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description (抽象類)瞇排模板
+ * @Description 瞇排模板
+ * @NOTE: 使用前,需先實現 ScrollFocusStateNotification 的通知綁定
  * @Date 2021-05-26 下午 17:24
  * @Version 1.1
  */
-export default abstract class ALookAtTemplate extends OverrideComponent {
-
-    protected abstract allLookAtEffect: Array<cc.Animation>;
-    private _scrollFocusStateObserver: ScrollFocusStateObserver;
+export default abstract class ALookAtTemplate extends AGenericTemplate {
 
     /**
-     * 自應義初始化
+     * 當前所有列的瞇排特效animation
+     * @type {Array<cc.Animation>}
      * @protected
      */
-    protected abstract onCreate();
+    protected abstract allLookAtEffect: Array<cc.Animation>;
+
+    /**
+     * 瞇排事件通知
+     * @type {ScrollFocusStateObserver}
+     * @private
+     */
+    private _scrollFocusStateObserver: ScrollFocusStateObserver;
 
     /**
      * 顯示瞇排特效
@@ -35,9 +40,12 @@ export default abstract class ALookAtTemplate extends OverrideComponent {
     protected abstract removeLookAtEffect(index: number);
 
     protected onLoad() {
+
+        fcc.notificationMgr<ScrollFocusStateNotification>()
+            .getNotification(fcc.type.NotificationType.SCROLL_FOCUS_STATE)
+            .subscribe(this.getScrollFocusStateObserver(),true);
+
         this.onCreate();
-        ScrollFocusStateNotification.instance
-            .subscribe(this.getScrollFocusStateObserver(), true);
     }
 
     /**
@@ -45,15 +53,18 @@ export default abstract class ALookAtTemplate extends OverrideComponent {
      * @private
      */
     private getScrollFocusStateObserver(): ScrollFocusStateObserver {
-        this._scrollFocusStateObserver = new ScrollFocusStateObserver((index, isShow) => {
-            if (isShow) {
-                if (this.allLookAtEffect[index].node.active) return;
-                this.showLookAtEffect(index);
-            } else {
-                if (!this.allLookAtEffect[index].node.active) return;
-                this.removeLookAtEffect(index);
-            }
-        }, this);
+
+        if(!this._scrollFocusStateObserver){
+            this._scrollFocusStateObserver = new ScrollFocusStateObserver((index, isShow) => {
+                if (isShow) {
+                    if (this.allLookAtEffect[index].node.active) return;
+                    this.showLookAtEffect(index);
+                } else {
+                    if (!this.allLookAtEffect[index].node.active) return;
+                    this.removeLookAtEffect(index);
+                }
+            }, this);
+        }
         return this._scrollFocusStateObserver;
     }
 }

@@ -1,34 +1,24 @@
-/// <reference path="./OverrideComponent.ts" />
-namespace tcc {
+import OverrideComponent from "./OverrideComponent";
+
+/**
+ * @Author XIAO-LI-PIN
+ * @Description 通用模板
+ * @Date 2021-04-14 下午 20:24
+ * @Version 1.1
+ */
+export default abstract class AGenericTemplate extends OverrideComponent {
 
     /**
-     * @Author XIAO-LI-PIN
-     * @Description 通用模板
-     * @Date 2021-04-14 下午 20:24
-     * @Version 1.1
+     * 自訂義初始狀態
      */
-    export abstract class AGenericTemplate extends OverrideComponent {
+    protected abstract onCreate(): void;
 
-        /**
-         * 自訂義初始狀態
-         */
-        protected abstract onCreate(): void;
+    /**
+     * 語系設置
+     */
+    protected languageSetting(): void {};
 
-        /**
-         * 語系設置
-         */
-        protected abstract languageSetting(): void;
-
-        /**
-         * 一律使用onCreate() 代替  onLoad()
-         * @protected
-         */
-        protected onLoad(): void {
-            this.onCreate();
-        }
-
-        protected start(): void {
-            this.languageSetting();
-        }
+    protected start(): void {
+        this.languageSetting();
     }
 }

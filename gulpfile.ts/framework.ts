@@ -8,10 +8,10 @@ const browserify = require('gulp-browserify');
 const merge = require('merge2');
 const through = require('through2');
 const fs = require("fs");
-const uglify= require('gulp-uglify');
-const  concat =  require('gulp-concat');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
 
-const VERSION = 0.3;
+const VERSION = "0.0.3";
 
 /**
  * 清空资源框架
@@ -56,6 +56,7 @@ function buildAssetFramework(cb) {
                     callback();
                     //fcc-framework.js
                 }))
+                .pipe(uglify())
                 .pipe(gulp.dest('dist/fcc')),
             tsFrameWork.dts
                 .pipe(through.obj(function (chunk, enc, callback) {
@@ -87,7 +88,7 @@ function updateVersion(library: string): string {
 
     return date.replace(
         /@Version [0-9]*[.][0-9]*/gm,
-        `"@Version ${VERSION}`
+        `@Version ${VERSION}`
     );
 }
 

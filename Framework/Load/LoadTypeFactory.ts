@@ -23,12 +23,23 @@ namespace fcc {
         private assetBundle: cc.AssetManager.Bundle
         private promise: Promise<unknown>
         private readonly assetMethod: Array<Function>;
+        private configManager: IF.IConfigManager;
+        private loadResManager: IF.ILoadResManager;
 
-        constructor() {
+        constructor(loadResManager: IF.ILoadResManager, configManager: IF.IConfigManager) {
             this.assetMethod = new Array<Function>();
+            this.configManager = configManager;
+            this.loadResManager = loadResManager;
         }
 
-        loadBundle(dataName: string, type: type.LoadType, url: string) :Promise<void> {
+        /**
+         * 次資源加載
+         * @param {string} dataName - 檔案名稱
+         * @param {fcc.type.LoadType} type - 檔案類型
+         * @param {string} url - 檔案位置
+         * @return {Promise<void>}
+         */
+        loadBundle(dataName: string, type: type.LoadType, url: string): Promise<void> {
 
             if (this.assetBundle) return;
             this.promise = new Promise<void>(() => {

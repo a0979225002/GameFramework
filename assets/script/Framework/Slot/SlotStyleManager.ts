@@ -60,7 +60,7 @@ export default class SlotStyleManager implements ISlotStyleManager {
      */
     public static get instance(): ISlotStyleManager {
         if (!this._instance) {
-            ErrorManager.instance.executeError(ErrorType.SlotStyleFW, "該類尚未實例化");
+            ErrorManager.instance.executeError(ErrorType.SLOT_STYLE_FW, "該類尚未實例化");
             return;
         }
         return this._instance;

@@ -13,8 +13,8 @@ namespace fcc {
     export class SlotStyleManager implements IF.ISlotStyleManager {
 
         private static _instance: IF.ISlotStyleManager;
-        private configManager: IF.IConfigManager;
-        private template: new(styleData: IF.ISlotSetting) => IF.ISlot
+        private readonly configManager: IF.IConfigManager;
+        private template: new(styleData: IF.ISlotSetting,configManager:IF.IConfigManager) => IF.ISlot
         private _slot: IF.ISlot;
 
         private constructor(configManager: IF.IConfigManager) {
@@ -37,7 +37,7 @@ namespace fcc {
          */
         public static get instance(): IF.ISlotStyleManager {
             if (!this._instance) {
-                ErrorManager.instance.executeError(type.ErrorType.SlotStyleFW, "該類尚未實例化");
+                ErrorManager.instance.executeError(type.ErrorType.SLOT_STYLE_FW, "該類尚未實例化");
                 return;
             }
             return this._instance;
@@ -48,7 +48,7 @@ namespace fcc {
          * @param {ASlot} slotTemplate
          * @return {this}
          */
-        public setSlotTemplate<T extends new(styleData: IF.ISlotSetting) => IF.ISlot>(slotTemplate: T): this {
+        public setSlotTemplate<T extends new(styleData: IF.ISlotSetting,configManager:IF.IConfigManager) => IF.ISlot>(slotTemplate: T): this {
             this.template = slotTemplate;
             return this;
         }
@@ -67,7 +67,7 @@ namespace fcc {
                     .executeError(type.ErrorType.UNDEFINED_FW,
                         "Slot Template 未賦予,需幫定或實做一個SlotTemplate")
             }
-            this._slot = new this.template(slotSetting);
+            this._slot = new this.template(slotSetting,this.configManager);
         }
 
         public get slot(): IF.ISlot {

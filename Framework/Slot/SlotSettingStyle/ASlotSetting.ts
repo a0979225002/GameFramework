@@ -9,6 +9,10 @@ namespace fcc {
          */
         export abstract class ASlotSetting implements IF.ISlotSetting {
 
+            private _normalResult: ISlotBaseResultModel;
+
+            private _freeResult: ISlotFreeBaseResultModel;
+
             private _columnIntervalTime: number;
 
             private _gridNodeToMap: Map<number, Array<cc.Node>>;
@@ -55,7 +59,7 @@ namespace fcc {
             }
 
             /**
-             * 老虎機一般狀態速度
+             * 遊戲每格格子間的速度
              * @param {number} time
              * @return {this}
              */
@@ -127,6 +131,26 @@ namespace fcc {
                 return this;
             }
 
+
+            /**
+             * server免費答案回傳結果
+             */
+            setNormalResult(normalResult: ISlotBaseResultModel): this {
+                this._normalResult = normalResult;
+                return this;
+            }
+
+            /**
+             * server一般答案回傳model
+             */
+            setFreeResult(freeResult: ISlotFreeBaseResultModel): this {
+                this._freeResult = freeResult;
+                return this;
+            }
+
+            /**
+             * 設定結束
+             */
             complete() {
                 this._slotStyleManager.build(this);
             }
@@ -165,6 +189,15 @@ namespace fcc {
 
             get slotStyleManager(): fcc.IF.ISlotStyleManager {
                 return this._slotStyleManager;
+            }
+
+
+            get freeResult(): ISlotFreeBaseResultModel  {
+                return this._freeResult;
+            }
+
+            get normalResult(): ISlotBaseResultModel{
+                return this._normalResult;
             }
         }
     }

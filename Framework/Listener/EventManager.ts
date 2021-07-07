@@ -74,15 +74,15 @@ namespace fcc {
          * server監聽回傳接收
          * @param {string} eventName
          * @param {Function} callFun
-         * @param isOnce
+         * @param isPermanent - 是否常駐
          */
-        public eventListener(eventName: string, callFun: (...target: any) => void, isOnce: boolean) {
+        public eventListener(eventName: string, callFun: (...target: any) => void, isPermanent: boolean) {
             this._eventCount += 1;
             this._eventsCurrentlyBeing.set("severEvent", eventName);
-            if (isOnce) {
-                this.target.once(eventName, callFun);
-            } else {
+            if (isPermanent) {
                 this.target.on(eventName, callFun);
+            } else {
+                this.target.once(eventName, callFun);
             }
         }
 

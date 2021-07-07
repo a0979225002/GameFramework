@@ -1,72 +1,73 @@
-import SlotConfigManager from '../../Config/SlotConfigManager'
-import {ErrorType} from '../../Error/Enum/ErrorManagerEnum'
-import ErrorManager from '../../Error/ErrorManager'
-import {ServerEventType} from '../../Listener/Enum/ServerEventType'
-import EventManager from '../../Listener/EventManager'
-import UserMoneyChangeNotification from "../../Listener/NotificationType/GameNotification/UserMoneyChangeNotification";
-import {ResponseType} from "../../WebResponse/Enum/ResponseType";
-import {WebResponseManager} from '../../WebResponse/WebResponseManager'
-import OverrideComponent from "../BaseTemplate/OverrideComponent";
+import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
+import IBaseTableInfoModel from "../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
+import UserMoneyChangeNotification from "../Event/Notification/GameNotification/UserMoneyChangeNotification";
 
-export default abstract class ALoadingTemplate extends OverrideComponent {
-
-    private _canPlayGame: boolean;
-
-    protected tableInfo: ITableInfoModel;
+/**
+ * @Author XIAO-LI-PIN
+ * @Description (模板)登入遊戲內進入主遊戲
+ * @Date 2021-07-07 上午 10:55
+ * @Version 0.0.3
+ */
+export default abstract class ALoadingTemplate extends AGenericTemplate {
 
     /**
-     * 執行個人自定義設定
-     * 注意,所有override的方法,皆不要放入這裡面
+     * 是否可以進入主遊戲,由server回傳tableInfo後此class改變狀態
+     * @type {boolean}
+     * @default false
+     * @private
      */
-    protected abstract onCreat();
+    private _canPlayGame: boolean;
+
+    /**
+     * tableInfo Model
+     * @type {IBaseTableInfoModel}
+     * @protected
+     */
+    protected abstract tableInfo: IBaseTableInfoModel;
 
     /**
      * 載入主資源
      */
-    protected abstract onLoadResources();
+    protected abstract onLoadResources(): void;
 
     /**
      * 載入次資源
      */
-    protected abstract loadAssetBundle();
+    protected abstract loadAssetBundle(): void;
 
     /**
      * 載入外部資源
      */
-    protected abstract loadExternalScript();
+    protected abstract loadExternalScript(): void;
 
     /**
      * 更新讀取條文字動畫
      */
-    protected abstract updateProgressText();
+    protected abstract updateProgressText(): void;
 
     /**
      * 當前scene模式,更新當前畫面是配寬高
      */
-    protected abstract sceneStyle();
+    protected abstract sceneStyle(): void;
 
-    /**
-     * 更新當前語系
-     * @protected
-     */
-    protected abstract languageSetting();
-
-    get canPlayGame(): boolean {
-        return this._canPlayGame
-    }
 
     protected onLoad() {
 
-        cc.log(WebResponseManager.instance())
-        this.tableInfo =
-            WebResponseManager
-                .instance<ITableInfoModel>()
-                .getResult(ResponseType.TABLE_INFO);
         this._canPlayGame = false;                          //由 Server TableInfo Event 改變狀態
         this.tableInfoEvent.apply(this);             //TableInfo Event 事件
         ALoadingTemplate.updateUserIp();                    //如果是正式上線,將自動更新拿取外部資源的IP
-        this.onCreat();                                     //自訂義初始 例:拿取node...
+        this.onCreate();                                    //自訂義初始 例:拿取node...
+
     }
+
+    protected start() {
+        this.sceneStyle();                  //當前scene模式,更新當前畫面是配寬高
+        this.loadExternalScript();          //外部資源
+        this.onLoadResources();             //載入資源方法
+        this.loadAssetBundle();             //次資源
+        this.updateProgressText();          //更新讀取條文字
+    }
+
 
     /**
      * 如果為上線模式,將會獲取外部IP,自動更新遊戲配置Config內的URL
@@ -78,38 +79,47 @@ export default abstract class ALoadingTemplate extends OverrideComponent {
                     ? window.libraryPath.replace(/\/([^\/]+\/[^\/]+)$/, "")
                     : "../..";
             // 打包與測試讀取不同路徑
-            SlotConfigManager.instance.setExternallyLoadURL(path);
+            fcc.configMgr.setExternallyLoadURL(path);
         }
-    }
-
-    protected start() {
-        this.sceneStyle();
-        this.loadExternalScript();          //外部資源
-        this.onLoadResources();             //載入資源方法
-        this.loadAssetBundle();             //次資源
-        this.updateProgressText();          //更新讀取條文字
     }
 
     /**
      * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
      */
     private tableInfoEvent() {
-        EventManager.instance.serverEventListener(
-            ServerEventType.TABLE_INFO, (target) => {
-                for (let name of Object.keys(target)) {
+        fcc.eventMgr.eventListener(
+            fcc.type.ServerEventType.TABLE_INFO, (tableInfo) => {
+                for (let name of Object.keys(tableInfo)) {
                     if (this.tableInfo[name] === undefined) {
                         try {
-                            ErrorManager.instance.executeError(ErrorType.WEB_RESPONESE_FW, `無 ${name} 參數,請更換 TableInfo Type`)
+                            fcc.errorMgr.executeError(
+                                fcc.type.ErrorType.WEB_RESPONSE_FW,
+                                `無 ${name} 參數,請更換 TableInfo Type`
+                            );
                         } catch (e) {
                             console.log(e);
                         }
                     } else {
-                        this.tableInfo[name] = target[name];
+                        this.tableInfo[name] = tableInfo[name];
                     }
                 }
-                console.log(this.tableInfo);
-                UserMoneyChangeNotification.instance.notify(this.tableInfo.UserPoint);
+                console.log(`${fcc.type.ServerEventType.TABLE_INFO} : ${this.tableInfo}`);
+
+                fcc.notificationMgr<UserMoneyChangeNotification>()
+                    .getNotification(fcc.type.NotificationType.USER_MONEY_CHANGE)
+                    .notify(this.tableInfo.UserPoint);
                 this._canPlayGame = true;
-            }, true);
+
+            }, true)
+    }
+
+    /**
+     * 是否可以進入主遊戲,由server回傳tableInfo後此class改變狀態
+     * @type {boolean}
+     * @default false
+     * @private
+     */
+    get canPlayGame(): boolean {
+        return this._canPlayGame
     }
 }

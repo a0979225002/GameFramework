@@ -123,7 +123,6 @@ namespace fcc {
             this._backHomeURL = null;                               //初始返回首頁URL
             this._cocosDebugSetting = cc.debug.DebugMode.INFO       //設置cocos debug 模式
             this._isFrameworkDebug = true;                          //是否要開啟框架的Debug模式
-
         }
 
         /**

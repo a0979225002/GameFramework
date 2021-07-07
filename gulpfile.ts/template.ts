@@ -4,9 +4,14 @@ const sourcemaps = require('gulp-sourcemaps');
 const rename = require("gulp-rename");
 const clean = require('gulp-clean');
 const jsobfuscator = require('gulp-javascript-obfuscator');
-const browserify = require('gulp-browserify');
 const merge = require('merge2');
 const through = require('through2');
+const browserify = require("browserify");
+const source = require("vinyl-source-stream");
+const tsify = require("tsify");
+const uglify = require("gulp-uglify");
+const buffer = require("vinyl-buffer");
+const concat = require('gulp-concat');
 const fs = require("fs");
 
 /**
@@ -26,39 +31,42 @@ function cleanAssetFramework(cb) {
 /**
  * 构建资源框架
  */
-function buildAssetFramework(cb) {
+function buildAssetTemplate(cb) {
     if (fs.existsSync('Template')) {
-        console.log("buildAssetFramework");
+        console.log("buildAssetTemplate");
         let tsResult = gulp.src(['Template/**/*.ts', '@types/creator.d.ts'])
             .pipe(sourcemaps.init())
-            .pipe(ts.createProject('Framework/tsconfig.json', {
-                target: "ES5",
+            .pipe(ts.createProject('Template/tsconfig.json', {
+                target: "ES2015",
             })())
             .on("error", function (err: any) {
                 console.error(err.message);
             });
         return merge(
-            tsResult.js
+            browserify({
+                basedir: "Template/BaseTemplate",
+                insertGlobals : true,
+                debug: true,
+                entries: ["AGenericTemplate.ts"],
+                cache: {},
+                packageCache: {}
+            })
+                .plugin(tsify)
+                .bundle()
+                .pipe(source('fcc-template.js'))
+                .pipe(buffer())
+                .pipe(sourcemaps.init({loadMaps: true}))
                 .pipe(sourcemaps.write())
-                .pipe(browserify({
-                    insertGlobals: true,
-                    debug: true,
-                }))
-                .pipe(through.obj(function (chunk, enc, callback) {
-                    let sdata = chunk.contents.toString();
-                    chunk.contents = Buffer.from(sdata);
-                    this.push(chunk)
-                    callback();
-                }))
-                .pipe(gulp.dest('dist/temp')),
+                .pipe(gulp.dest("dist/tcc")),
             tsResult.dts
+                .pipe(concat("fcc-template.d.ts"))
                 .pipe(through.obj(function (chunk, enc, callback) {
                     let sdata = chunk.contents.toString();
                     chunk.contents = Buffer.from(sdata);
                     this.push(chunk)
                     callback();
                 }))
-                .pipe(gulp.dest('dist/temp'))
+                .pipe(gulp.dest('dist/tcc'))
         );
     } else {
         console.error("framework not found!");
@@ -78,7 +86,7 @@ function buildPublishTemplate(cb) {
             .pipe(ts.createProject('Framework/tsconfig.json', {
                 target: "ES5",
                 outFile: "framework-production.js",
-                removeComments : true,
+                removeComments: true,
             })())
             .on("error", function (err: any) {
                 console.error(err.message);
@@ -106,5 +114,5 @@ function buildPublishTemplate(cb) {
     }
 }
 
-export const buildTemplate = gulp.series(cleanAssetFramework, buildAssetFramework);
+export const buildTemplate = gulp.series(cleanAssetFramework, buildAssetTemplate);
 export const buildTemplate2 = gulp.series(buildPublishTemplate);

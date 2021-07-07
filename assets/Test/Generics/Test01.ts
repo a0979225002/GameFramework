@@ -6,7 +6,7 @@ import NoLineResult from "../../script/Framework/WebResponse/ServerDataModel/Nor
  * @Date 2021-05-31 下午 01:37
  * @Version 1.0
  */
-export default class Test01<T extends ISlotResultModel> {
+export default class Test01<T extends ISlotBaseResultModel> {
     private _module: T;
 
     constructor() {
@@ -25,13 +25,13 @@ export default class Test01<T extends ISlotResultModel> {
 
 export class Test02 {
 
-    public static module : ISlotResultModel;
+    public static module : ISlotBaseResultModel;
 
-    static setResult<T extends ISlotResultModel>(module: new () => T) {
+    static setResult<T extends ISlotBaseResultModel>(module: new () => T) {
         this.module = new module();
     }
 
-    static getResult<T extends ISlotResultModel>() {
+    static getResult<T extends ISlotBaseResultModel>() {
         return this.module;
     }
 }

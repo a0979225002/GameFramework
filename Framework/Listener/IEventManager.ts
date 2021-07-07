@@ -31,9 +31,9 @@ namespace fcc {
              * server監聽回傳接收
              * @param {string} eventName
              * @param {Function} callFun
-             * @param {boolean} isOnce : 是否使用一次性監聽
+             * @param isPermanent - 是否常駐
              */
-            eventListener(eventName: string, callFun: (target?: any) => void, isOnce: boolean): void;
+            eventListener(eventName: string, callFun: (target?: any) => void, isPermanent: boolean): void;
 
             /**
              * 刪除事件,綁定的回傳也一並刪除

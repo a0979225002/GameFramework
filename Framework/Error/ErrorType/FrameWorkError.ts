@@ -32,8 +32,6 @@ namespace fcc {
                         throw new Error(`${type.ErrorType.LOAD_FW} ${obj}`);
                     case type.ErrorType.WEB_REQUEST_FW:
                         throw new Error(`${type.ErrorType.WEB_REQUEST_FW} ${obj}`);
-                    case type.ErrorType.PREFAB_FW:
-                        throw new Error(`${type.ErrorType.PREFAB_FW} ${obj}`);
                     case type.ErrorType.AUDIO_FW:
                         throw new Error(`${type.ErrorType.AUDIO_FW} ${obj}`);
                     case type.ErrorType.WEB_RESPONSE_FW:
@@ -44,8 +42,10 @@ namespace fcc {
                         throw new Error(`${type.ErrorType.PROCESS_FW} ${obj}`);
                     case type.ErrorType.LISTENER_FW:
                         throw new Error(`${type.ErrorType.LISTENER_FW} ${obj}`);
-                    case type.ErrorType.SlotStyleFW:
-                        throw new Error(`${type.ErrorType.SlotStyleFW} ${obj}`);
+                    case type.ErrorType.SLOT_STYLE_FW:
+                        throw new Error(`${type.ErrorType.SLOT_STYLE_FW} ${obj}`);
+                    case type.ErrorType.TEMPLATE_FW:
+                        throw new Error(`${type.ErrorType.TEMPLATE_FW} ${obj}`);
                     default :
                         this.unknownError.checkErrorType(message);
                 }

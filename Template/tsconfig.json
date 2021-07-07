@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "declaration": true,                          //生成相應的.d.ts文件。
-    "module": "System",                         //指定生成哪個模塊系統代
+    "module": "CommonJS",                         //指定生成哪個模塊系統代
     "lib": [ "es5","es2015", "es2017", "dom"],
-    "target": "es5",                              //指定ECMAScript目標版本
+    "target": "ES2015",                              //指定ECMAScript目標版本
     "experimentalDecorators": true,               //打開裝飾器功能
     "emitDecoratorMetadata": true,                //能讀取元數據,裝飾器使用
     "forceConsistentCasingInFileNames": true,     //路徑強制區分大小寫。
@@ -11,7 +11,7 @@
     "downlevelIteration" : true,                  //允許for of 迭代
     "isolatedModules": false,                     //將每個文件作為單獨的模塊
     "removeComments": false,                      //刪除所有註釋，除了以/!*開頭的版權信息。
-    "outFile": "fcc-framework.js",
+    "outDir": "js-dist/",                         //重定向輸出目錄
     "types": [
       "../@types/creator",
       "../@types/global",

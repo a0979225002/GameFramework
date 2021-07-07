@@ -1,4 +1,4 @@
-import OverrideComponent from "../BaseTemplate/OverrideComponent";
+import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 
 /**
  * @Author XIAO-LI-PIN
@@ -6,31 +6,33 @@ import OverrideComponent from "../BaseTemplate/OverrideComponent";
  * @Date 2021-06-01 下午 04:49
  * @Version 1.0
  */
-export default abstract class AConfigTemplate extends OverrideComponent {
-    /**
-     * 自訂義
-     * @protected
-     */
-    protected abstract onCreat();
+export default abstract class AConfigTemplate extends AGenericTemplate {
 
     /**
      * 初始化當前遊戲
      */
-    protected abstract configSetting();
+    protected abstract configSetting():void;
 
     /**
      * 綁定遊戲 network response module;
      */
-    protected abstract responseDataModelSetting();
+    protected abstract responseDataModelSetting():void;
 
     /**
      * 音樂撥放樣式設定
      */
-    protected abstract audioSetting();
+    protected abstract audioSetting():void;
+
+    /**
+     * 遊戲流程設定
+     * @protected
+     */
+    protected abstract processSetting():void;
 
     protected onLoad() {
         this.configSetting();                   //所有動作中需最先執行,遊戲初始設定
         this.responseDataModelSetting();        //遊戲初始接收module 創建
-        this.onCreat();
+        this.processSetting();                  //遊戲流程創建
+        this.onCreate();
     }
 }

@@ -20,7 +20,7 @@ namespace fcc {
             private beforeProgress: number;
             private assetBundle: cc.AssetManager.Bundle
 
-            protected constructor(dataName: string, type: cc.Asset, url: string, folder: string) {
+            protected constructor(dataName: string, type: cc.Asset, url: string, folder: string,) {
 
                 this.type = type;               //當前要獲取的資源類型
                 this.url = url;                 //獲取的地址

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,                          //生成相應的.d.ts文件。
-    "module": "UMD",                         //指定生成哪個模塊系統代
+    "module": "System",                           //指定生成哪個模塊系統代
     "lib": [ "es5","es2015", "es2017", "dom"],
     "target": "es5",                              //指定ECMAScript目標版本
     "experimentalDecorators": true,               //打開裝飾器功能

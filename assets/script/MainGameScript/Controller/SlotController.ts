@@ -65,7 +65,7 @@ export default class SlotController extends ASlotInitializeTemplate {
 
     /**
      * 更新所有grid 隨機圖片
-     * 如果每列的3~5格格子需要顯示 TableInfo 回傳回來的初始grid答案
+     * 每列的3~5格格子需要顯示 TableInfo 回傳回來的初始grid答案
      * @private
      */
     protected slotInitialize() {

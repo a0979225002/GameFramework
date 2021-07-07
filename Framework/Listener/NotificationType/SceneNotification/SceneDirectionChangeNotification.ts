@@ -18,36 +18,23 @@ namespace fcc {
          */
         public readonly TAG_NAME: string;
 
-        /**
-         * 懶漢加載
-         * @type {SceneDirectionChangeNotification}
-         * @private
-         */
-        private static _instance: SceneDirectionChangeNotification;
-
-        private constructor() {
+        constructor() {
             super();
             this.TAG_NAME = type.NotificationType.SCENE_DIRECTION_CHANGE
         }
 
         /**
-         * 懶漢加載,單例模式
-         * @returns {SceneDirectionChangeNotification}
+         * 訂閱該事件
+         * @param {AutoStateChangeObserver} observer - 推撥接收者
+         * @param {boolean} isPermanent - 是否常駐監聽
          */
-        public static get instance(): SceneDirectionChangeNotification {
-            if (!this._instance) {
-                this._instance = new SceneDirectionChangeNotification();
-            }
-            return this._instance;
-        }
-
         subscribe(observer: SceneDirectionChangeObserver, isPermanent: boolean) {
             super.subscribe(observer, isPermanent);
         }
 
         /**
          * 用戶更換方向時推送通知
-         * @param {SceneDirectionType} type : 當前用戶方向
+         * @param {SceneDirectionType} type - 當前用戶方向
          */
         notify(type: type.SceneDirectionType) {
             if (this.observer.size > 0) {

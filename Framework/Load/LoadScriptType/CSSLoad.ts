@@ -17,9 +17,7 @@ namespace fcc {
 
         constructor(scriptName: string, type: string, url: string) {
             super(scriptName, type, url)
-
             this.linkElem = document.createElement("link");
-
         }
 
         loadScript() {

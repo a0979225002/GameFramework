@@ -26,12 +26,6 @@ namespace fcc {
             protected readonly observer: Set<IF.IBaseObserver>;
 
             /**
-             * 推播者
-             * @type {IBaseNotification}
-             */
-            public static instance: IF.IBaseNotification;
-
-            /**
              * (抽象)推播事件,參數由子類詳細實現
              * @param any
              */

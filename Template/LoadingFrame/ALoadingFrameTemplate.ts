@@ -1,15 +1,13 @@
-import {ErrorType} from "../../Error/Enum/ErrorManagerEnum";
-import ErrorManager from "../../Error/ErrorManager";
-import LoadResManager from "../../Load/LoadResManager";
-import OverrideComponent from "../BaseTemplate/OverrideComponent";
+import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description TODO
+ * @FIXME: 程式碼須修復
+ * @Description 進度讀取diaLog模板
  * @Date 2021-05-11 下午 05:41
  * @Version 1.0
  */
-export default abstract class ALoadingFrameTemplate extends OverrideComponent {
+export default abstract class ALoadingFrameTemplate extends AGenericTemplate {
 
     protected abstract loadingDialogNode: cc.Node;
     protected abstract progressBar: cc.ProgressBar;
@@ -18,8 +16,6 @@ export default abstract class ALoadingFrameTemplate extends OverrideComponent {
     protected timeOut: number;
     protected addProgressValue;
     private timer: number;
-
-    protected abstract onCreate();
 
     protected onLoad() {
         this.loadingInitialize();
@@ -64,7 +60,7 @@ export default abstract class ALoadingFrameTemplate extends OverrideComponent {
             this.progressValue = this.progressValue + this.progressValue;
             progressText += ".";
 
-            if (LoadResManager.instance.secondaryLoadState.get(resName) == 1) {
+            if (fcc.loadMgr.secondaryLoadState.get(resName) == 1) {
                 if (this.progressValue >= 1) {
                     this.closeLoadingDiaLog(resolve);
                 }
@@ -93,18 +89,17 @@ export default abstract class ALoadingFrameTemplate extends OverrideComponent {
      */
     private checkHasRes(resName: string, resolve: (value: (PromiseLike<void> | void)) => void): boolean {
 
-        if (!LoadResManager.instance.secondaryLoadState.has(resName)) {
-            ErrorManager.instance.executeError(ErrorType.UNDEFINED_FW, `${resName}該無該資源`);
+        if (!fcc.loadMgr.secondaryLoadState.has(resName)) {
+            fcc.errorMgr.executeError(fcc.type.ErrorType.UNDEFINED_FW, `${resName}該無該資源`);
             this.loadingDialogNode.active = false;
             resolve();
             return false;
         }
-        if (LoadResManager.instance.secondaryLoadState.get(resName) == 1) {
+        if (fcc.loadMgr.secondaryLoadState.get(resName) == 1) {
             this.loadingDialogNode.active = false;
             resolve();
             return false;
         }
         return true;
     }
-
 }

@@ -21,17 +21,17 @@
     "removeComments": true,                      /*刪除所有註釋，除了以/!*開頭的版權信息。*/
     "sourceMap": true,                           /*生成目標文件的sourceMap文件*/
     "inlineSourceMap": true,                     /*生成目標文件的inline SourceMap*/
+    "types": [                                   /*加載的聲明文件包*/
+      "./@types/creator",
+      "./@types/global",
+      "./@types/sfs2x-api-1.7.17",
+      "./@types2/fcc-framework",
+      "node"
+    ],
+    "typeRoots": [                                 /*聲明文件目錄*/
+      "./node_modules/@types"
+    ]
   },
-  "types": [                                     /*加載的聲明文件包*/
-    "./@types/creator",
-    "./@types/global",
-    "./@types/sfs2x-api-1.7.17",
-    "./@types/fcc-framework",
-    "node"
-  ],
-  "typeRoots": [                                 /*聲明文件目錄*/
-    "./node_modules/@types"
-  ],
   "exclude": [                                   /*指定編譯器需要排除的文件或文件夾*/
     "node_modules",
     "library",

@@ -11,6 +11,11 @@ namespace fcc {
         export interface ISlot {
 
             /**
+             * 初始化該輪所有狀態
+             */
+            initializeState():void;
+
+            /**
              * Loop 老虎機方法
              * @return {Promise<void>}
              */

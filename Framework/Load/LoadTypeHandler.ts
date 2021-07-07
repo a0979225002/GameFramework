@@ -17,9 +17,9 @@ namespace fcc {
         private factory: LoadTypeFactory;
         private loadResManager: IF.ILoadResManager;
 
-        constructor(loadResManager: IF.ILoadResManager) {
+        constructor(loadResManager: IF.ILoadResManager,configManager: IF.IConfigManager) {
             this.loadResManager = loadResManager;
-            this.factory = new LoadTypeFactory();
+            this.factory = new LoadTypeFactory(loadResManager,configManager);
         }
 
         /**

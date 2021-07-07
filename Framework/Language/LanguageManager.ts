@@ -198,24 +198,17 @@ namespace fcc {
 
         /**
          * 獲取當前語系數據,返回該key對應的文字
-         * @param {string} key - 拿取當前緩存語系文本的某一段文字
+         * @param {string | undefined} key - 拿取當前緩存語系文本的某一段文字 |(空參數)獲取當前語系數據,返回所有數據
          * @return {string} - 返回該段文字,如果找不到鍵值,默認返回 key
          */
-        getText(key: string): string;
-
-        /**
-         * 獲取當前語系數據,返回所有數據
-         * @return {object}
-         */
-        getText(): object;
-
-        getText(key?: string): string | object {
-            if (key) {
-                return this.languageCache[key];
-            } else {
-                return this.languageCache;
-            }
+        getText(key: string): string {
+            return this.languageCache[key];
         }
+
+        getAllText(): object {
+            return this.languageCache;
+        }
+
 
         /**
          * 重新載入語系
@@ -224,7 +217,7 @@ namespace fcc {
             try {
                 this.languageCache = window.language_Mode[this.nowLang];
             } catch (e) {
-                console.log("window.language_Mode 查找不到該語系",e);
+                console.log("window.language_Mode 查找不到該語系", e);
             }
         }
 

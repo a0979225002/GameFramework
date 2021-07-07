@@ -2,7 +2,6 @@
 /// <reference path="../SceneManager.ts" />
 /// <reference path="../../Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification.ts" />
 namespace fcc {
-
     /**
      * @Author XIAO-LI-PIN
      * @Description 自動模式 : 依照玩家當前的使用方式,自動更新為橫式 or 直式
@@ -12,9 +11,19 @@ namespace fcc {
     export class AutoStyle implements IF.ISceneStyle {
 
         private sceneManager: IF.ISceneManager;
+        private readonly eventLock: boolean;    //關閉推播事件用
 
         constructor(sceneManager: IF.ISceneManager) {
             this.sceneManager = sceneManager;
+
+            if (!NotificationManager
+                .instance()
+                .hasNotification(type.NotificationType.SCENE_DIRECTION_CHANGE)) {
+                this.eventLock = true;
+                ErrorManager.instance.executeError(type.ErrorType.SCENE_FW, "你尚未綁定當遊戲方向更動時的推播事件,因此不會觸發自動推播事件")
+            } else {
+                this.eventLock = false;
+            }
         }
 
         public executionStyle(width: number, height: number) {
@@ -51,17 +60,21 @@ namespace fcc {
                 if (this.sceneManager.sceneDirection == type.SceneDirectionType.PORTRAIT) return;
                 this.sceneManager.sceneDirection = type.SceneDirectionType.PORTRAIT;
 
-                SceneDirectionChangeNotification
-                    .instance
-                    .notify(type.SceneDirectionType.PORTRAIT);
-
+                if (!this.eventLock) {
+                    NotificationManager.instance<SceneDirectionChangeNotification>()
+                        .getNotification(type.NotificationType.SCENE_DIRECTION_CHANGE)
+                        .notify(type.SceneDirectionType.PORTRAIT);
+                }
             } else {
                 //橫向
                 if (this.sceneManager.sceneDirection == type.SceneDirectionType.LANDSCAPE) return;
                 this.sceneManager.sceneDirection = type.SceneDirectionType.LANDSCAPE;
-                SceneDirectionChangeNotification
-                    .instance
-                    .notify(type.SceneDirectionType.LANDSCAPE);
+
+                if (!this.eventLock) {
+                    NotificationManager.instance<SceneDirectionChangeNotification>()
+                        .getNotification(type.NotificationType.SCENE_DIRECTION_CHANGE)
+                        .notify(type.SceneDirectionType.LANDSCAPE);
+                }
             }
         }
     }

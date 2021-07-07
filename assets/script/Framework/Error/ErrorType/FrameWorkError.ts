@@ -27,8 +27,6 @@ export default class FrameWorkError {
                     throw new Error(`${ErrorType.LOAD_FW} ${obj}`);
                 case ErrorType.WEB_REQUEST_FW:
                     throw new Error(`${ErrorType.WEB_REQUEST_FW} ${obj}`);
-                case ErrorType.PREFAB_FW:
-                    throw new Error(`${ErrorType.PREFAB_FW} ${obj}`);
                 case ErrorType.AUDIO_FW:
                     throw new Error(`${ErrorType.AUDIO_FW} ${obj}`);
                 case ErrorType.WEB_RESPONESE_FW:
@@ -39,8 +37,8 @@ export default class FrameWorkError {
                     throw new Error(`${ErrorType.PROCESS_FW} ${obj}`);
                 case ErrorType.LISTENER_FW:
                     throw new Error(`${ErrorType.LISTENER_FW} ${obj}`);
-                case ErrorType.SlotStyleFW:
-                    throw new Error(`${ErrorType.SlotStyleFW} ${obj}`);
+                case ErrorType.SLOT_STYLE_FW:
+                    throw new Error(`${ErrorType.SLOT_STYLE_FW} ${obj}`);
                 default :
                     this.unknownError.checkErrorType(message);
             }

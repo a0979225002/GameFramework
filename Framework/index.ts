@@ -8,6 +8,7 @@
 /// <reference path="./Process/ProcessManager.ts" />
 /// <reference path="./Scene/SceneManager.ts" />
 /// <reference path="./Slot/SlotStyleManager.ts" />
+/// <reference path="./Listener/NotificationManager.ts" />
 namespace fcc {
 
 
@@ -16,7 +17,7 @@ namespace fcc {
      * @return {fcc.IF.IConfigManager}
      * @private
      */
-    export let configMgr: IF.IConfigManager = SlotConfigManager.instance;
+    export let configMgr: IF.ISlotConfigManager = SlotConfigManager.instance;
     // export function configMgr(): IF.IConfigManager {
     //     return SlotConfigManager.instance;
     // }
@@ -26,7 +27,7 @@ namespace fcc {
      * @return {fcc.IF.IAnimationManager}
      * @private
      */
-    export let animationMgr :IF.IAnimationManager;
+    export let animationMgr: IF.IAnimationManager;
     //  export function animationMgr(): IF.IAnimationManager {
     //     return AnimationManager.instance;
     // }
@@ -36,7 +37,7 @@ namespace fcc {
      * @return {fcc.IF.IAudioManager}
      * @private
      */
-    export let audioMgr : IF.IAudioManager;
+    export let audioMgr: IF.IAudioManager;
     // export function audioMgr(): IF.IAudioManager {
     //     return AudioManager.instance;
     // }
@@ -114,11 +115,19 @@ namespace fcc {
     /**
      * 老虎機管理器 : 管理老虎機樣式,執行速度,效果
      */
-    export let slotStyleMgr : IF.ISlotStyleManager;
+    export let slotStyleMgr: IF.ISlotStyleManager;
+
+    /**
+     * 推撥者綁定與拿取
+     * @return {fcc.IF.INotificationManager<T>}
+     */
+    export function notificationMgr<T extends IF.IBaseNotification>(): IF.INotificationManager<T> {
+        return NotificationManager.instance<T>();
+    }
 }
-//
-// /**
-//  * 擴展至全域,cocos規定
-//  * @type {fcc}
-//  */
-// globalThis.fcc = fcc;
+
+/**
+ * 擴展至全域,cocos規定
+ * @type {fcc}
+ */
+globalThis.fcc = fcc;

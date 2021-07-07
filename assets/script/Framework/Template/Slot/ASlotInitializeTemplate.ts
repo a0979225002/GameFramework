@@ -14,8 +14,8 @@ export default abstract class ASlotInitializeTemplate extends OverrideComponent 
     protected abstract slotRow: Array<cc.Node>;
     protected abstract gridNodeToMap: Map<number, Array<cc.Node>>;
     protected abstract girdSpriteToMap: Map<number, Array<cc.Sprite>>;
-    protected normalResult: ISlotResultModel;
-    protected freeResult: ISlotFreeResultModel;
+    protected normalResult: ISlotBaseResultModel;
+    protected freeResult: ISlotFreeBaseResultModel;
 
     protected abstract onCreate();
 
@@ -38,12 +38,12 @@ export default abstract class ASlotInitializeTemplate extends OverrideComponent 
     protected onLoad() {
         this.normalResult =
             WebResponseManager
-                .instance<ISlotResultModel>()
+                .instance<ISlotBaseResultModel>()
                 .getResult(ResponseType.NORMAL);
 
         this.freeResult =
             WebResponseManager
-                .instance<ISlotFreeResultModel>()
+                .instance<ISlotFreeBaseResultModel>()
                 .getResult(ResponseType.FREE);
         this.onCreate();
         this.slotInitialize();
