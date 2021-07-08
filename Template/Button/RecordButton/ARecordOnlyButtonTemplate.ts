@@ -12,7 +12,7 @@ import ARecordButtonTemplate, {DayType, PageChangeType} from "./ARecordButtonTem
  * @Date 2021-04-14 下午 20:24
  * @Version 1.1
  */
-export default abstract class ARecordDoubleButtonTemplate extends ARecordButtonTemplate {
+export default abstract class ARecordOnlyButtonTemplate extends ARecordButtonTemplate {
 
     /**
      * 離開記錄頁按鈕

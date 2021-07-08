@@ -5,6 +5,7 @@ import StopNowStateNotification from "../../Event/Notification/GameNotification/
 import UserMoneyChangeObserver from "../../Event/Observer/GameObserver/UserMoenyChangeObserver";
 import SpeedStateChangeNotification from "../../Event/Notification/GameNotification/SpeedStateChangeNotification";
 import UserMoneyChangeNotification from "../../Event/Notification/GameNotification/UserMoneyChangeNotification";
+import IBaseTableInfoModel from "../../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
 
 /**
  * Request Server 的 object

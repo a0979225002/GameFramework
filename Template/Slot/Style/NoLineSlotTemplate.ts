@@ -1,7 +1,9 @@
-import {ASlotTemplate} from "./ASlotTemplate";
+import ASlotTemplate from "./ASlotTemplate";
 import NoLineResult from "../../NetWork/ServerDataModel/NormalResult/NoLineResult";
 import NoLineFreeResult from "../../NetWork/ServerDataModel/FreeResult/NoLineFreeResult";
 import ScrollFocusStateNotification from "../../Event/Notification/GameNotification/ScrollFocusStateNotification";
+import INoLineResultModel from "../../NetWork/ISeverDataModel/INormalResult/INoLineResultModel";
+import INoLineFreeResultModel from "../../NetWork/ISeverDataModel/IFreeResult/INoLineFreeResultModel";
 
 /**
  * @Author XIAO-LI-PIN
@@ -20,7 +22,7 @@ import ScrollFocusStateNotification from "../../Event/Notification/GameNotificat
  * @Date 2021-04-14 下午 20:24
  * @Version 1.1
  */
-export class NoLineSlotTemplate extends ASlotTemplate {
+export default class NoLineSlotTemplate extends ASlotTemplate {
 
     /**
      * 一般停止最少轉動次數
@@ -109,14 +111,14 @@ export class NoLineSlotTemplate extends ASlotTemplate {
      * @type {NoLineResult}
      * @private
      */
-    private normalResult: NoLineResult;
+    private normalResult: INoLineResultModel;
 
     /**
      * 免費結果回傳 model
      * @type {NoLineFreeResult}
      * @private
      */
-    private freeResult: NoLineFreeResult;
+    private freeResult: INoLineFreeResultModel;
 
     constructor(styleData: fcc.SlotImgSetting, configManager: fcc.IF.ISlotConfigManager) {
         super(styleData, configManager);

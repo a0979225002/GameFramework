@@ -3,14 +3,20 @@ import UserTotalBetChangeObserver from "../../Event/Observer/GameObserver/UserTo
 import AutoStateChangeObserver from "../../Event/Observer/GameObserver/AutoStateChangeObserver";
 import AutoStateChangeNotification from "../../Event/Notification/GameNotification/AutoStateChangeNotification";
 import UserTotalBetChangeNotification from "../../Event/Notification/GameNotification/UserTotalBetChangeNotification";
+import IBaseTableInfoModel from "../../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
 
 /**
  * @Author XIAO-LI-PIN
  * @Description (抽象類)MENU主頁面,所有按鈕事件
  * ```
  *      事件:
+ *          推撥 {AutoStateChangeNotification} : 訂閱自動狀態改變時
+ *          推撥 {UserTotalBetChangeNotification} : 用戶更換的押住金額事件
  *          接收 {AutoStateChangeNotification} : 訂閱自動狀態改變時
+ *              callback: this.autoEvent(beforeAutoCount, afterAutoCount);
  *          接收 {UserTotalBetChangeNotification} : 用戶更換的押住金額事件
+ *              callback: this.totalBetChangeEvent(beforeIndex, afterIndex);
+ *
  * ```
  * @Date 2021-05-26 上午 15:59
  * @Version 1.1
@@ -110,6 +116,12 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      */
     protected nowAutoType: fcc.type.AutoType;
 
+    /**
+     * 當前玩家押住
+     * @protected
+     */
+    protected abstract nowBetIndex:number;
+
     protected onLoad() {
         this.nowAutoType = fcc.configMgr.autoCount;
         this.addNotification();                         //初始化綁定監聽接收事件
@@ -158,12 +170,13 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected betUpEventListener() {
-        let beforeBetIndex = SlotProcessManager.instance.userBetPoint.LineBet;
-        let afterBetIndex = beforeBetIndex + 1;
+        let afterBetIndex = this.nowBetIndex + 1;
         if (afterBetIndex > this.tableInfo.LineBet.length - 1) {
             afterBetIndex = 0;
         }
-        UserTotalBetChangeNotification.instance.notify(beforeBetIndex, afterBetIndex);
+        fcc.notificationMgr<UserTotalBetChangeNotification>()
+            .getNotification(fcc.type.NotificationType.USER_BET_CHANGE)
+            .notify(this.nowBetIndex,afterBetIndex);
     }
 
     /**
@@ -172,12 +185,13 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected betDownEventListener() {
-        let beforeBetIndex = SlotProcessManager.instance.userBetPoint.LineBet;
-        let afterBetIndex = beforeBetIndex - 1;
+        let afterBetIndex = this.nowBetIndex - 1;
         if (afterBetIndex < 0) {
             afterBetIndex = this.tableInfo.LineBet.length - 1;
         }
-        UserTotalBetChangeNotification.instance.notify(beforeBetIndex, afterBetIndex);
+        fcc.notificationMgr<UserTotalBetChangeNotification>()
+            .getNotification(fcc.type.NotificationType.USER_BET_CHANGE)
+            .notify(this.nowBetIndex,afterBetIndex);
     }
 
     /**
@@ -189,6 +203,7 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
     protected getUserTotalBetChangeObserver(): UserTotalBetChangeObserver {
         if (!this.userTotalBetChangeObserver) {
             this.userTotalBetChangeObserver = new UserTotalBetChangeObserver((beforeIndex, afterIndex) => {
+                this.nowBetIndex = afterIndex;
                 this.totalBetChangeEvent(beforeIndex, afterIndex);
             }, this);
         }
@@ -204,6 +219,7 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
     protected getAutoStateChangeObserver(): AutoStateChangeObserver {
         if (!this.autoStateChangeObserver) {
             this.autoStateChangeObserver = new AutoStateChangeObserver((isAutomaticState, beforeAutoCount, afterAutoCount) => {
+                this.nowAutoType = afterAutoCount;
                 this.autoEvent(beforeAutoCount, afterAutoCount);
             }, this);
         }
@@ -217,8 +233,8 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected autoButtonEventListener(event, callbackType: fcc.type.AutoType) {
-        let beforeAutoType = SlotProcessManager.instance.autoType;
-        AutoStateChangeNotification
-            .instance.notify(true, beforeAutoType, callbackType);
+        fcc.notificationMgr<AutoStateChangeNotification>()
+            .getNotification(fcc.type.NotificationType.AUTO_CHANGE)
+            .notify(true,this.nowAutoType,callbackType);
     }
 }

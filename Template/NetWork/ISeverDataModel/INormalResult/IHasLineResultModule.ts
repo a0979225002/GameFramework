@@ -1,10 +1,12 @@
+import ISlotBaseResultModel from "./ISlotBaseResultModel";
+
 /**
  * @Author XIAO-LI-PIN
- * @Description TODO
+ * @Description 有線Slot遊戲狀態封包
  * @Date 2021-05-31 下午 03:46
  * @Version 1.0
  */
-interface IHasLineResultModule extends ISlotBaseResultModel {
+export default interface IHasLineResultModule extends ISlotBaseResultModel {
 
     /**
      * 15格的資料

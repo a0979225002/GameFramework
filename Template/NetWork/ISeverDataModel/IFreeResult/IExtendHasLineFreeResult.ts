@@ -1,10 +1,12 @@
+import ISlotFreeBaseResultModel from "./ISlotFreeBaseResultModel";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description (介面)擴展類有線免費狀態封包
  * @Date 2021-05-31 下午 03:45
  * @Version 1.0
  */
-interface IExtendHasLineFreeResult extends ISlotFreeBaseResultModel {
+export default interface IExtendHasLineFreeResult extends ISlotFreeBaseResultModel {
 
     /**
      * 15格的資料

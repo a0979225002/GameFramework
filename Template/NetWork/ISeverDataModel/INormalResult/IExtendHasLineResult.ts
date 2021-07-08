@@ -1,10 +1,12 @@
+import ISlotBaseResultModel from "./ISlotBaseResultModel";
+
 /**
  * @Author XIAO-LI-PIN
- * @Description TODO
+ * @Description 黏性Slot遊戲狀態封包
  * @Date 2021-06-03 下午 04:58
  * @Version 1.0
  */
-interface IExtendHasLineResult extends ISlotBaseResultModel {
+export default interface IExtendHasLineResult extends ISlotBaseResultModel {
 
     /**
      * 15格的資料

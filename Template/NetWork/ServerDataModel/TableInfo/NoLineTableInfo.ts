@@ -1,3 +1,5 @@
+import INoLineTableInfoModule from "../../ISeverDataModel/ITableInfoResult/INoLineTableInfoModule";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 無線類遊戲資訊

@@ -4,7 +4,7 @@
  * @Date 2021-05-31 下午 03:45
  * @Version 1.0
  */
-interface ISlotBaseResultModel {
+export default interface ISlotBaseResultModel {
     /**
      * 0: 押注成功 1:遊戲狀態不符 2:超過
      */

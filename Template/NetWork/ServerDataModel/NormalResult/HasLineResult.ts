@@ -1,3 +1,5 @@
+import IHasLineResultModule from "../../ISeverDataModel/INormalResult/IHasLineResultModule";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 有線一般狀態封包

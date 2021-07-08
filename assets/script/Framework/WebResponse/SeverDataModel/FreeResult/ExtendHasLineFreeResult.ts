@@ -1,6 +1,6 @@
 /**
  * @Author XIAO-LI-PIN
- * @Description 擴展類有線免費狀態封包
+ * @Description 黏性有線免費狀態封包
  * @Date 2021-06-03 下午 04:51
  * @Version 1.0
  */

@@ -1,3 +1,5 @@
+import IExtendHasLineFreeResult from "../../ISeverDataModel/IFreeResult/IExtendHasLineFreeResult";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 擴展類有線免費狀態封包

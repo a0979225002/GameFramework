@@ -1,3 +1,5 @@
+import IExtendHasLineResult from "../../ISeverDataModel/INormalResult/IExtendHasLineResult";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 擴展類有線一般狀態封包

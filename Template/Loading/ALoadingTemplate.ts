@@ -1,5 +1,6 @@
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 import UserMoneyChangeNotification from "../Event/Notification/GameNotification/UserMoneyChangeNotification";
+import IBaseTableInfoModel from "../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
 
 /**
  * @Author XIAO-LI-PIN

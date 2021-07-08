@@ -1,3 +1,5 @@
+import INoLineResultModel from "../../ISeverDataModel/INormalResult/INoLineResultModel";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 無線一般狀態封包

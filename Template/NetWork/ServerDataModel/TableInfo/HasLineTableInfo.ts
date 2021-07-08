@@ -1,3 +1,5 @@
+import IHasLineTableInfoModule from "../../ISeverDataModel/ITableInfoResult/IHasLineTableInfoModule";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 有線類遊戲資訊

@@ -38,6 +38,45 @@ export {default as AMainGameButtonTemplate} from './Button/MainButton/AMainGameB
 export {default as AMainGameOnlyButtonTemplate} from './Button/MainButton/AMainGameOnlyButtonTemplate';
 export {default as AMainGameDoubleButtonTemplate} from './Button/MainButton/AMainGameDoubleButtonTemplate';
 
+/*菜單頁按鈕 controller 模板*/
+export {default as AMenuButtonTemplate} from './Button/MenuButton/AMenuButtonTemplate';
+export {default as AMenuDoubleButtonTemplate} from './Button/MenuButton/AMenuDoubleButtonTemplate';
+export {default as AMenuOnlyButtonTemplate} from './Button/MenuButton/AMenuOnlyButtonTemplate';
+
+/*紀錄頁按鈕 controller 模板*/
+export {default as ARecordButtonTemplate} from './Button/RecordButton/ARecordButtonTemplate';
+export {default as ARecordDoubleButtonTemplate} from './Button/RecordButton/ARecordDoubleButtonTemplate';
+export {default as ARecordOnlyButtonTemplate} from './Button/RecordButton/ARecordOnlyButtonTemplate';
+
+/*錯誤提示視窗 模板*/
+export {default as AErrorFrameTemplate} from './ErrorFrame/AErrorFrameTemplate';
+
+/*載入SCENE 模板*/
+export {default as ALoadingTemplate} from './Loading/ALoadingTemplate';
+
+/*載入DIALOG框 模板*/
+export {default as ALoadingFrameTemplate} from './LoadingFrame/ALoadingFrameTemplate';
+
+/*瞇排效果 模板*/
+export {default as ALookAtTemplate} from './LookAtFrame/ALookAtTemplate';
+
+/*主遊戲進入初始化動作 模板*/
+export {default as AMainInitTemplate} from './MainInit/AMainInitTemplate';
+
+/*SLOT樣式 模板*/
+export {default as ASlotTemplate} from './Slot/Style/ASlotTemplate';
+export {default as NoLineSlotTemplate} from './Slot/Style/NoLineSlotTemplate';
+
+/*SLOT初始設定 模板*/
+export {default as ASlotInitializeTemplate} from './Slot/ASlotInitializeTemplate';
+
+/*遊戲 SERVER TABLE INFO MODEL*/
+
+
+/*遊戲 SERVER NORMAL MODEL*/
+
+
+/*遊戲 SERVER FREE MODEL*/
 
 /*當前版本號*/
-export {VERSION} ;
+globalThis.TCC_VERSION = VERSION;

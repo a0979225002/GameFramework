@@ -1,3 +1,5 @@
+import INoLineFreeResultModel from "../../ISeverDataModel/IFreeResult/INoLineFreeResultModel";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 無線免費狀態封包

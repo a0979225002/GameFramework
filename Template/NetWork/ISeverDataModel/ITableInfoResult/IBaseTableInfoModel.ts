@@ -1,4 +1,4 @@
-interface IBaseTableInfoModel {
+export default interface IBaseTableInfoModel {
     /**
      * 押注 乘以的倍數(有線版本為自己的線數 無限版本為固定倍數)
      */

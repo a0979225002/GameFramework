@@ -12,7 +12,7 @@ import ResponseResultNotification from "../../Event/Notification/ResponseNotifiv
  * @Date 2021-04-14 下午 20:24
  * @Version 1.1
  */
-export abstract class ASlotTemplate implements fcc.IF.ISlot {
+export default abstract class ASlotTemplate implements fcc.IF.ISlot {
 
     /**
      * 由 fcc.slotStyleMgr build 實現

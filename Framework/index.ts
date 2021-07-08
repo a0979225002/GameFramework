@@ -73,7 +73,7 @@ namespace fcc {
     // }
 
     /**
-     * 資源管理者 : 加載資源,保存資源,或取當前加載進度
+     * 資源管理者 : 加載資源,保存資源,獲取當前加載進度
      * @return {fcc.IF.ILoadResManager}
      * @constructor
      * @private

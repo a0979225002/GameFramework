@@ -1,10 +1,12 @@
+import IBaseTableInfoModel from "./IBaseTableInfoModel";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description TODO
  * @Date 2021-05-31 下午 03:47
  * @Version 1.0
  */
-interface IHasLineTableInfoModule extends ITableInfoModel {
+export default interface IHasLineTableInfoModule extends IBaseTableInfoModel {
     /**
      * 是否為線遊戲(0:無線 1:有線)
      */

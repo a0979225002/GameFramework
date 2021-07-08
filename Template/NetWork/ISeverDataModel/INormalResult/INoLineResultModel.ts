@@ -1,4 +1,12 @@
-interface INoLineResultModel extends ISlotBaseResultModel {
+import ISlotBaseResultModel from "./ISlotBaseResultModel";
+
+/**
+ * @Author XIAO-LI-PIN
+ * @Description 無線Slot遊戲狀態封包
+ * @Date 2021-07-01 下午 20:24
+ * @Version 0.0.3
+ */
+export default interface INoLineResultModel extends ISlotBaseResultModel {
 
     /**
      * 15格的資料

@@ -160,7 +160,7 @@ export default abstract class ARecordDoubleButtonTemplate extends ARecordButtonT
             );
 
         /*前往下一頁紀錄按鈕事件綁定*/
-       fcc.global.Button
+        fcc.global.Button
             .addButtonEvent(
                 this.nextRecordButtonH,
                 "nextAndLastButtonTouchEvent",

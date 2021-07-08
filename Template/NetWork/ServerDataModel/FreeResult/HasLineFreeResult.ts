@@ -1,3 +1,5 @@
+import IHasLineFreeResultModule from "../../ISeverDataModel/IFreeResult/IHasLineFreeResultModule";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 有線免費狀態封包

@@ -7,7 +7,7 @@ import AMenuButtonTemplate from "./AMenuButtonTemplate";
  * @Date 2021-05-26 上午 15:59
  * @Version 1.1
  */
-export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTemplate {
+export default abstract class AMenuOnlyButtonTemplate extends AMenuButtonTemplate {
 
     /**
      * 背景音樂按鈕
@@ -15,6 +15,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
      * @protected
      */
     protected abstract musicButton: cc.Button;
+
 
     /**
      * 效果音樂按鈕
