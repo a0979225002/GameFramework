@@ -1,236 +1,126 @@
+import AMenuButtonTemplate from "./AMenuButtonTemplate";
+
 /**
  * @Author XIAO-LI-PIN
- * @Description (抽象類)MENU主頁面,場景方向雙向,按鈕事件監聽綁定(H and V 頁面 兩倍按鈕)
+ * @Description (抽象類)MENU主頁面,單一按鈕配置
+ * @Example 單一方向遊戲
  * @Date 2021-05-26 上午 15:59
  * @Version 1.1
  */
-import AMenuButtonTemplate from "./AMenuButtonTemplate";
-
 export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTemplate {
 
     /**
-     * 背景音樂按鈕H
+     * 背景音樂按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract musicButtonH: cc.Button;
+    protected abstract musicButton: cc.Button;
 
     /**
-     * 背景音樂按鈕V
+     * 效果音樂按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract musicButtonV: cc.Button;
+    protected abstract effectButton: cc.Button;
 
     /**
-     * 效果音樂按鈕H
+     * 押住籌碼提高按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract effectButtonH: cc.Button;
+    protected abstract betUpButton: cc.Button;
 
     /**
-     * 效果音樂按鈕V
+     * 押住籌碼降低按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract effectButtonV: cc.Button;
+    protected abstract betDownButton: cc.Button;
 
     /**
-     * 押住籌碼提高按鈕H
+     * 自動按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract betUpButtonH: cc.Button;
+    protected abstract autoButton: cc.Button;
 
     /**
-     * 押住籌碼提高按鈕V
+     * 自動50次按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract betUpButtonV: cc.Button;
+    protected abstract auto50Button: cc.Button;
 
     /**
-     * 押住籌碼降低按鈕H
+     * 自動100次按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract betDownButtonH: cc.Button;
+    protected abstract auto100Button: cc.Button;
 
     /**
-     * 押住籌碼降低按鈕V
+     * 自動500次按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract betDownButtonV: cc.Button;
+    protected abstract auto500Button: cc.Button;
 
     /**
-     * 自動按鈕H
+     * 自動1000次按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract autoButtonH: cc.Button;
+    protected abstract auto1000Button: cc.Button;
 
     /**
-     * 自動按鈕V
+     * 自動直到免費後停止按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract autoButtonV: cc.Button;
+    protected abstract autoFreeEndButton: cc.Button;
 
     /**
-     * 自動50次按鈕H
+     * 離開菜單頁按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract auto50ButtonH: cc.Button;
+    protected abstract goBackButton: cc.Button;
 
     /**
-     * 自動50次按鈕V
+     * 離開遊戲按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract auto50ButtonV: cc.Button;
+    protected abstract goHomeButton: cc.Button;
 
     /**
-     * 自動100次按鈕H
+     * 進入紀錄頁按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract auto100ButtonH: cc.Button;
+    protected abstract recordButton: cc.Button;
 
     /**
-     * 自動100次按鈕V
+     * 進入設定頁按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract auto100ButtonV: cc.Button;
+    protected abstract settingButton: cc.Button;
 
     /**
-     * 自動500次按鈕H
+     * 進入說明頁按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract auto500ButtonH: cc.Button;
-
-    /**
-     * 自動500次按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto500ButtonV: cc.Button;
-
-    /**
-     * 自動1000次按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto1000ButtonH: cc.Button;
-
-    /**
-     * 自動1000次按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto1000ButtonV: cc.Button;
-
-    /**
-     * 自動直到免費後停止按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract autoFreeEndButtonH: cc.Button;
+    protected abstract descriptionPageButton: cc.Button;
 
 
-    /**
-     * 自動直到免費後停止按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract autoFreeEndButtonV: cc.Button;
-
-    /**
-     * 離開菜單頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goBackButtonH: cc.Button;
-
-    /**
-     * 離開菜單頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goBackButtonV: cc.Button;
-
-    /**
-     * 離開遊戲按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goHomeButtonH: cc.Button;
-
-    /**
-     * 離開遊戲按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goHomeButtonV: cc.Button;
-
-    /**
-     * 進入紀錄頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract recordButtonH: cc.Button;
-
-    /**
-     * 進入紀錄頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract recordButtonV: cc.Button;
-
-    /**
-     * 進入設定頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract settingButtonH: cc.Button;
-
-    /**
-     * 進入設定頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract settingButtonV: cc.Button;
-
-    /**
-     * 進入說明頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract descriptionPageButtonH: cc.Button;
-
-    /**
-     * 進入說明頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract descriptionPageButtonV: cc.Button;
-
-    protected onLoad() {
+    protected onLoad():void {
         super.onLoad();
         /*背景音樂按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.musicButtonH,
-                "musicEventListener",
-                this
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.musicButtonV,
+                this.musicButton,
                 "musicEventListener",
                 this
             );
@@ -238,13 +128,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*效果音樂按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.effectButtonH,
-                "effectEventListener",
-                this
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.effectButtonV,
+                this.effectButton,
                 "effectEventListener",
                 this
             );
@@ -252,13 +136,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*押住籌碼提高按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.betUpButtonH,
-                "betUpEventListener",
-                this
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.betUpButtonV,
+                this.betUpButton,
                 "betUpEventListener",
                 this
             );
@@ -266,13 +144,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*押住籌碼降低按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.betDownButtonH,
-                "betDownEventListener",
-                this
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.betDownButtonV,
+                this.betDownButton,
                 "betDownEventListener",
                 this
             );
@@ -280,14 +152,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*自動50次按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.auto50ButtonH,
-                "autoButtonEventListener",
-                this,
-                fcc.type.AutoType.AUTO_50
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.auto50ButtonV,
+                this.auto50Button,
                 "autoButtonEventListener",
                 this,
                 fcc.type.AutoType.AUTO_50
@@ -296,14 +161,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*自動100次按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.auto100ButtonH,
-                "autoButtonEventListener",
-                this,
-                fcc.type.AutoType.AUTO_100
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.auto100ButtonV,
+                this.auto100Button,
                 "autoButtonEventListener",
                 this,
                 fcc.type.AutoType.AUTO_100
@@ -312,14 +170,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*自動500次按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.auto500ButtonH,
-                "autoButtonEventListener",
-                this,
-                fcc.type.AutoType.AUTO_500
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.auto500ButtonV,
+                this.auto500Button,
                 "autoButtonEventListener",
                 this,
                 fcc.type.AutoType.AUTO_500
@@ -328,58 +179,33 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*自動1000次按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.auto1000ButtonH,
+                this.auto1000Button,
                 "autoButtonEventListener",
                 this,
                 fcc.type.AutoType.AUTO_1000
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.auto1000ButtonV,
-                "autoButtonEventListener",
-                this, fcc.type.AutoType.AUTO_1000
             );
 
         /*自動直到免費後停止按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.autoFreeEndButtonH,
+                this.autoFreeEndButton,
                 "autoButtonEventListener",
                 this, fcc.type.AutoType.FREE_END
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.autoFreeEndButtonV,
-                "autoButtonEventListener",
-                this,
-                fcc.type.AutoType.FREE_END
             );
 
         /*自動按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.autoButtonH,
+                this.autoButton,
                 "autoButtonEventListener",
                 this,
                 fcc.type.AutoType.AUTO
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.autoButtonV,
-                "autoButtonEventListener",
-                this, fcc.type.AutoType.AUTO
             );
 
         /*返回上一頁按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.goBackButtonH,
-                "goBackTouchEvent",
-                this
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.goBackButtonV,
+                this.goBackButton,
                 "goBackTouchEvent",
                 this
             );
@@ -387,13 +213,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*返回首頁事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.goHomeButtonH,
-                "goHomeTouchEvent",
-                this
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.goHomeButtonV,
+                this.goHomeButton,
                 "goHomeTouchEvent",
                 this
             );
@@ -401,13 +221,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*紀錄頁按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.recordButtonH,
-                "recordPageTouchEvent",
-                this
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.recordButtonV,
+                this.recordButton,
                 "recordPageTouchEvent",
                 this
             );
@@ -415,13 +229,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*設定頁按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.settingButtonH,
-                "settingPageTouchEvent",
-                this
-            );
-        fcc.global.Button
-            .addButtonEvent(
-                this.settingButtonV,
+                this.settingButton,
                 "settingPageTouchEvent",
                 this
             );
@@ -429,16 +237,11 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
         /*說明頁按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
-                this.descriptionPageButtonH,
+                this.descriptionPageButton,
                 "descriptionPageEvent",
                 this
             );
-        fcc.global.Button
-            .addButtonEvent(
-                this.descriptionPageButtonV,
-                "descriptionPageEvent",
-                this
-            );
+
         this.onCreate();
     }
 }

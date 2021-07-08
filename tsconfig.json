@@ -7,10 +7,8 @@
       "es2015",
       "es2017",
       "dom",
-      "ES2019.Array",
-      "es2015.promise"
     ],
-    "target": "ES2015",                          /*指定ECMAScript目標版本*/
+    "target": "es5",                            /*指定ECMAScript目標版本*/
     "moduleResolution": "node",                  /*模塊解析策略，ts默認用node的解析策略，即相對的方式導入*/
     "experimentalDecorators" : true,             /*打開裝飾器功能*/
     "emitDecoratorMetadata": true,               /*能讀取元數據,裝飾器使用*/
@@ -21,6 +19,7 @@
     "removeComments": true,                      /*刪除所有註釋，除了以/!*開頭的版權信息。*/
     "sourceMap": true,                           /*生成目標文件的sourceMap文件*/
     "inlineSourceMap": true,                     /*生成目標文件的inline SourceMap*/
+    "outDir": "temp/vscode-dist",
     "types": [                                   /*加載的聲明文件包*/
       "./@types/creator",
       "./@types/global",
@@ -38,6 +37,7 @@
     "local",
     "temp",
     "build",
-    "settings"
+    "settings",
+    "Framework"
   ]
 }

@@ -1,11 +1,11 @@
+import AMenuButtonTemplate from "./AMenuButtonTemplate";
+
 /**
  * @Author XIAO-LI-PIN
- * @Description (抽象類)MENU主頁面,場景方向雙向,按鈕事件監聽綁定(H and V 頁面 兩倍按鈕)
+ * @Description (抽象類)MENU主頁面,主遊戲雙按鈕配置
  * @Date 2021-05-26 上午 15:59
  * @Version 1.1
  */
-import AMenuButtonTemplate from "./AMenuButtonTemplate";
-
 export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTemplate {
 
     /**
@@ -439,6 +439,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
                 "descriptionPageEvent",
                 this
             );
+
         this.onCreate();
     }
 }

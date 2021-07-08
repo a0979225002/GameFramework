@@ -1,14 +1,20 @@
 import AGenericTemplate from "../../BaseTemplate/AGenericTemplate";
+import UserTotalBetChangeObserver from "../../Event/Observer/GameObserver/UserTotalBetChangeObserver";
+import AutoStateChangeObserver from "../../Event/Observer/GameObserver/AutoStateChangeObserver";
+import AutoStateChangeNotification from "../../Event/Notification/GameNotification/AutoStateChangeNotification";
+import UserTotalBetChangeNotification from "../../Event/Notification/GameNotification/UserTotalBetChangeNotification";
 
 /**
  * @Author XIAO-LI-PIN
  * @Description (抽象類)MENU主頁面,所有按鈕事件
  * ```
  *      事件:
- *
+ *          接收 {AutoStateChangeNotification} : 訂閱自動狀態改變時
+ *          接收 {UserTotalBetChangeNotification} : 用戶更換的押住金額事件
  * ```
  * @Date 2021-05-26 上午 15:59
  * @Version 1.1
+ *
  */
 export default abstract class AMenuButtonTemplate extends AGenericTemplate {
     /**
@@ -50,7 +56,7 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @param {AutoType} afterAutoCount : 更新的按鈕type
      * @protected
      */
-    protected abstract autoEvent(beforeAutoCount: AutoType, afterAutoCount: AutoType);
+    protected abstract autoEvent(beforeAutoCount: fcc.type.AutoType, afterAutoCount: fcc.type.AutoType);
 
     /**
      * 前往設定頁按鈕事件
@@ -90,20 +96,40 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      */
     protected abstract goHomeTouchEvent();
 
-    protected tableInfo: ITableInfoModel;
+    /**
+     * tableInfo model
+     * @type {IBaseTableInfoModel}
+     * @protected
+     */
+    protected abstract tableInfo: IBaseTableInfoModel;
+
+    /**
+     * 當前玩家auto的類型
+     * @type {fcc.type.AutoType}
+     * @protected
+     */
+    protected nowAutoType: fcc.type.AutoType;
 
     protected onLoad() {
-        this.tableInfo =
-            WebResponseManager
-                .instance<ITableInfoModel>()
-                .getResult(ResponseType.TABLE_INFO);
+        this.nowAutoType = fcc.configMgr.autoCount;
+        this.addNotification();                         //初始化綁定監聽接收事件
+    }
 
-        this.onCreate();                                                                  //自訂義初始狀態
+    /**
+     * 加入訂閱綁定事件
+     * @private
+     */
+    private addNotification(): void {
 
-        AutoStateChangeNotification                                                       //訂閱自動事件
-            .instance.subscribe(this.getAutoStateChangeObserver(), true);
-        UserTotalBetChangeNotification                                                    //訂閱用戶更改押注時事件
-            .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
+        /*訂閱自動狀態改變時*/
+        fcc.notificationMgr<AutoStateChangeNotification>()
+            .getNotification(fcc.type.NotificationType.AUTO_CHANGE)
+            .subscribe(this.getAutoStateChangeObserver(), true);
+
+        /*用戶更換的押住金額事件*/
+        fcc.notificationMgr<UserTotalBetChangeNotification>()
+            .getNotification(fcc.type.NotificationType.USER_BET_CHANGE)
+            .subscribe(this.getUserTotalBetChangeObserver(), true);
     }
 
     /**
@@ -112,7 +138,7 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected musicEventListener() {
-        let isOnMute = AudioManager.instance.updateMusicOnMute();
+        let isOnMute = fcc.audioMgr.updateMusicOnMute();
         this.musicEvent(isOnMute);
     }
 
@@ -122,7 +148,7 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected effectEventListener() {
-        let isOnMute = AudioManager.instance.updateEffectOnMute();
+        let isOnMute = fcc.audioMgr.updateEffectOnMute();
         this.effectEvent(isOnMute);
     }
 
@@ -190,7 +216,7 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @param {AutoType} callbackType : 哪顆類型的按鈕點擊
      * @protected
      */
-    protected autoButtonEventListener(event, callbackType: AutoType) {
+    protected autoButtonEventListener(event, callbackType: fcc.type.AutoType) {
         let beforeAutoType = SlotProcessManager.instance.autoType;
         AutoStateChangeNotification
             .instance.notify(true, beforeAutoType, callbackType);
