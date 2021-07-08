@@ -1,0 +1,47 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "SunAinmation",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 15.033333333333333,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "props": {
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 100
+        },
+        {
+          "frame": 5,
+          "value": 150
+        },
+        {
+          "frame": 10,
+          "value": 50
+        },
+        {
+          "frame": 15.016666666666667,
+          "value": 100
+        },
+        {
+          "frame": 15.033333333333333,
+          "value": 150
+        }
+      ],
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 15.033333333333333,
+          "value": -360
+        }
+      ]
+    }
+  },
+  "events": []
+}
