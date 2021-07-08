@@ -3,13 +3,20 @@ import AMainGameButtonTemplate from "./AMainGameButtonTemplate";
 /**
  * @Author XIAO-LI-PIN
  * @Description 主遊戲雙按鈕配置
+ * @Example 同時擁有直橫向方向遊戲
  * ```
- *      需擁有物件
+ *      事件:
  *          推撥 {StopNowStateNotification} : 即停的推播事件
  *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          推撥 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
+ *          推撥 {AutoStateChangeNotification} : 自動狀態更動推播事件
+ *          接收 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
+ *              callback : this.userMoney = money;
+ *          接收 {AutoStateChangeNotification} : 自動狀態更動推播事件
+ *              callback :  this.autoEvent(isAutomaticState, afterAutoCount);
+ *                          if (isAutomaticState) {
+ *                              await this.startButtonEvent();
+ *                          }
  * ```
- * @Example 同時擁有直橫向方向遊戲
  * @Date 2021-07-06 下午 16:24
  * @Version 1.0.2
  */
@@ -128,6 +135,8 @@ export default abstract class AMainGameDoubleButtonTemplate extends AMainGameBut
             "menuButtonEventListener",
             this
         );
+
+        this.onCreate();                                           //初始自訂狀態
     }
 
     /**

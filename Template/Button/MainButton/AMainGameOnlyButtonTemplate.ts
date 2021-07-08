@@ -3,13 +3,20 @@ import AMainGameButtonTemplate from "./AMainGameButtonTemplate";
 /**
  * @Author XIAO-LI-PIN
  * @Description 主遊戲單一按鈕配置
+ * @Example 單一方向遊戲
  * ```
- *      需擁有物件
+ *      事件:
  *          推撥 {StopNowStateNotification} : 即停的推播事件
  *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          推撥 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
+ *          推撥 {AutoStateChangeNotification} : 自動狀態更動推播事件
+ *          接收 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
+ *              callback : this.userMoney = money;
+ *          接收 {AutoStateChangeNotification} : 自動狀態更動推播事件
+ *              callback :  this.autoEvent(isAutomaticState, afterAutoCount);
+ *                          if (isAutomaticState) {
+ *                              await this.startButtonEvent();
+ *                          }
  * ```
- * @Example 單一方向遊戲
  * @Date 2021-07-06 下午 16:24
  * @Version 1.1
  */
@@ -73,12 +80,14 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
             "menuButtonEventListener",
             this
         )
+
+        this.onCreate();                                           //初始自訂狀態
     }
 
     /**
      * 打開開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
      */
-    public startButtonOnEnable() {
+    public startButtonOnEnable(): void {
         this.startButton.node.on(cc.Node.EventType.TOUCH_START, this.startButtonOnTouchStart, this);
         this.startButton.node.on(cc.Node.EventType.TOUCH_END, this.startButtonOnTouchEnd, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardSpaceTouchStart, this);
@@ -88,7 +97,7 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
     /**
      * 關閉開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
      */
-    public startButtonDisable() {
+    public startButtonDisable(): void {
         this.startButton.node.off(cc.Node.EventType.TOUCH_START, this.startButtonOnTouchStart, this);
         this.startButton.node.off(cc.Node.EventType.TOUCH_END, this.startButtonOnTouchEnd, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardSpaceTouchStart, this)

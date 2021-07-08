@@ -6,6 +6,9 @@ import UserMoneyChangeObserver from "../../Event/Observer/GameObserver/UserMoeny
 import SpeedStateChangeNotification from "../../Event/Notification/GameNotification/SpeedStateChangeNotification";
 import UserMoneyChangeNotification from "../../Event/Notification/GameNotification/UserMoneyChangeNotification";
 
+/**
+ * Request Server 的 object
+ */
 export interface IUserBetPoint {
     LineBet: number;
 }
@@ -14,10 +17,17 @@ export interface IUserBetPoint {
  * @Author XIAO-LI-PIN
  * @Description (抽象類)遊戲主頁面按鈕事件
  * ```
- *      需擁有物件
+ *      事件:
  *          推撥 {StopNowStateNotification} : 即停的推播事件
  *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          推撥 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
+ *          推撥 {AutoStateChangeNotification} : 自動狀態更動推播事件
+ *          接收 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
+ *              callback : this.userMoney = money;
+ *          接收 {AutoStateChangeNotification} : 自動狀態更動推播事件
+ *              callback :  this.autoEvent(isAutomaticState, afterAutoCount);
+ *                          if (isAutomaticState) {
+ *                              await this.startButtonEvent();
+ *                          }
  * ```
  * @Date 2021-05-26 上午 11:29
  * @Version 1.0
@@ -42,7 +52,6 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @private
      */
     private _autoStateChangeObserver: AutoStateChangeObserver;
-
 
     /**
      * 當前遊戲速度
@@ -99,7 +108,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     protected abstract tableInfo: IBaseTableInfoModel;
 
-    protected onLoad() {
+    protected onLoad(): void {
         this.isShowTotalBetFrame = false;                                           //當前是否開啟總押注視窗
         this.keyboardListener = false;                                              //當前是否常壓空白建
         this.nowAutoType = fcc.configMgr.autoCount;                                 //初始自動類型
@@ -107,41 +116,30 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
         this.nowSpeed = fcc.configMgr.isSpeedUp;                                    //初始當前遊戲速度
         this.addNotification();                                                     //添加玩家金額 /自動遊戲事件 監聽
         this.makeTotalBetButtonToListener();                                        //總押注視窗中按鈕監聽事件
-        this.onCreate();                                                            //初始自訂狀態
     }
-
-    protected start() {
-        this.languageSetting();             //更換字體樣式與語系
-    }
-
-    /**
-     * 如果有需要更換字體樣式與語系,請在這裡使用
-     * @protected
-     */
-    protected abstract languageSetting();
 
     /**
      * 打開開始遊戲事件監聽
      */
-    public abstract startButtonOnEnable();
+    public abstract startButtonOnEnable(): void;
 
     /**
      * 關閉開始遊戲事件監聽
      */
-    public abstract startButtonDisable();
+    public abstract startButtonDisable(): void;
 
     /**
      * 點擊 (打開或關閉) 總押注視窗按鈕
      * @param {boolean} isShowTotalBetFrame : 打開或關閉
      * @protected
      */
-    protected abstract totalBetFrameTouchEvent(isShowTotalBetFrame: boolean);
+    protected abstract totalBetFrameTouchEvent(isShowTotalBetFrame: boolean): void;
 
     /**
      * 自行添加押注視窗內所有押注按鈕監聽
      * @protected
      */
-    protected abstract makeTotalBetButtonToListener();
+    protected abstract makeTotalBetButtonToListener(): void;
 
     /**
      * 當下是否(開啟或關閉)加速狀態事件
@@ -149,7 +147,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @param {boolean} isSpeedUp : 開啟或關閉
      * @protected
      */
-    protected abstract speedUpEvent(isSpeedUp: boolean);
+    protected abstract speedUpEvent(isSpeedUp: boolean): void;
 
     /**
      * 當下是否(開啟或關閉)自動狀態事件
@@ -158,43 +156,42 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @param {AutoType} autoType
      * @protected
      */
-    protected abstract autoEvent(isAutomaticState: boolean, autoType: fcc.type.AutoType);
+    protected abstract autoEvent(isAutomaticState: boolean, autoType: fcc.type.AutoType): void;
 
     /**
      * 遊戲開始執行流程前事件
      * @protected
      */
-    protected abstract startEvent();
+    protected abstract startEvent(): void;
 
     /**
      * 遊戲開始執行流程完成後事件
      * @protected
      */
-    protected abstract endEvent();
+    protected abstract endEvent(): void;
 
     /**
      * 打開遊戲菜單
      * @protected
      */
-    protected abstract menuEvent();
+    protected abstract menuEvent(): void;
 
     /**
      * 警告事件
      * @protected
      */
-    protected abstract warningEvent();
+    protected abstract warningEvent(): void;
 
     /**
      * 添加Notification接收事件
      * @private
      */
-    private addNotification() {
+    private addNotification(): void {
 
         /*自動按鈕推播事件綁定*/
         fcc.notificationMgr<AutoStateChangeNotification>()
             .getNotification(fcc.type.NotificationType.AUTO_CHANGE)
             .subscribe(this.getAutoStateChangeObserver(), true);
-
 
         /*玩家金額更新推播事件*/
         fcc.notificationMgr<UserMoneyChangeNotification>()
@@ -207,7 +204,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * 觸控按壓時監聽
      * @private
      */
-    protected startButtonOnTouchStart() {
+    protected startButtonOnTouchStart(): void {
         this.unschedule(this.longTouchTimer);//清除計時器事件
         //如果該遊戲正在自動模式,將先取消自動狀態
         if (this.isAutoState) {
@@ -223,7 +220,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @returns {Promise<void>}
      * @private
      */
-    private async longTouchTimer() {
+    private async longTouchTimer(): Promise<void> {
         //推播auto事件
         this.autoNotify(true, this.nowAutoType);
         await this.startButtonEvent();
@@ -235,7 +232,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @param {AutoType} autoType - 當前 auto類型
      * @private
      */
-    private autoNotify(isAutoState: boolean, autoType: fcc.type.AutoType) {
+    private autoNotify(isAutoState: boolean, autoType: fcc.type.AutoType): void {
         fcc.notificationMgr<AutoStateChangeNotification>()
             .getNotification(fcc.type.NotificationType.AUTO_CHANGE)
             .notify(isAutoState, autoType, autoType);
@@ -246,7 +243,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * 取消長壓計時器事件,並進入開始遊戲事件
      * @private
      */
-    protected async startButtonOnTouchEnd() {
+    protected async startButtonOnTouchEnd(): Promise<void> {
         this.unschedule(this.longTouchTimer);
         await this.startButtonEvent();
     }
@@ -256,7 +253,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @param event
      * @private
      */
-    protected keyboardSpaceTouchStart(event) {
+    protected keyboardSpaceTouchStart(event): void {
         switch (event.keyCode) {
             case cc.macro.KEY.space:
                 if (!this.keyboardListener) {
@@ -272,7 +269,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @param event
      * @private
      */
-    protected async keyboardSpaceTouchEnd(event) {
+    protected async keyboardSpaceTouchEnd(event): Promise<void> {
         switch (event.keyCode) {
             case cc.macro.KEY.space:
                 await this.startButtonOnTouchEnd();
@@ -320,7 +317,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @returns {Promise<void>}
      * @protected
      */
-    protected async startButtonEvent() {
+    protected async startButtonEvent(): Promise<void> {
         do {
             //如果當下總押注視窗開啟中,更改為執行關閉總押注視窗
             if (this.isShowTotalBetFrame) {
@@ -358,7 +355,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * 正常情況,推播當前auto狀態事件
      * @private
      */
-    protected async autoButtonEventListener() {
+    protected async autoButtonEventListener(): Promise<void> {
         this.unschedule(this.longTouchTimer);//將長案事件失效
         //如果當前押注視窗開啟中,將更換為關閉視窗方法
         if (this.isShowTotalBetFrame) {
@@ -374,7 +371,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * 加速按鈕監聽事件
      * @protected
      */
-    protected speedUpButtonEventListener() {
+    protected speedUpButtonEventListener(): void {
 
         this.nowSpeed = !this.nowSpeed;
 
@@ -383,7 +380,6 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
             .notify(this.nowSpeed)
 
         this.speedUpEvent(this.nowSpeed);
-
     }
 
     /**
@@ -391,7 +387,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * 如果當前在遊戲中,將方法更改為顯示警告視窗
      * @protected
      */
-    protected totalBetFrameTouchEventListener() {
+    protected totalBetFrameTouchEventListener(): void {
         //如果當前在遊戲中,將無法打開總押注視窗
         if (fcc.processMgr.gameState != fcc.type.GameStateType.STANDBY) {
             this.warningEvent();
@@ -406,7 +402,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * 如果當前在遊戲中,將方法更改為顯示警告視窗
      * @protected
      */
-    protected menuButtonEventListener() {
+    protected menuButtonEventListener(): void {
         if (fcc.processMgr.gameState != fcc.type.GameStateType.STANDBY) {
             this.warningEvent();
             return;

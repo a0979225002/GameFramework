@@ -14,7 +14,7 @@ const concat = require('gulp-concat');
 const VERSION = "0.0.3";
 
 /**
- * 清空资源框架
+ * 清空資源框架
  */
 function cleanAssetFramework(cb) {
     if (fs.existsSync('dist')) {

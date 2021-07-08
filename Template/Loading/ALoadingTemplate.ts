@@ -1,5 +1,4 @@
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
-import IBaseTableInfoModel from "../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
 import UserMoneyChangeNotification from "../Event/Notification/GameNotification/UserMoneyChangeNotification";
 
 /**
@@ -61,6 +60,7 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
     }
 
     protected start() {
+        super.start();
         this.sceneStyle();                  //當前scene模式,更新當前畫面是配寬高
         this.loadExternalScript();          //外部資源
         this.onLoadResources();             //載入資源方法

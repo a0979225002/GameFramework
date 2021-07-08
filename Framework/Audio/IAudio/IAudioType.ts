@@ -22,6 +22,7 @@ namespace fcc {
              * @param {string} name
              */
             stop(name?: string): void;
+
         }
     }
 }

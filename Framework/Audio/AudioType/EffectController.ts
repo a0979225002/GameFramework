@@ -26,7 +26,7 @@ namespace fcc {
         public play(name: string, data: Map<string, any>):void {
 
             let volume: number = data.get("volume");                                    //音量
-            let canSuperimpose: type.AudioStateType = data.get("canSuperimpose");            //可否疊加撥放
+            let canSuperimpose: type.AudioStateType = data.get("canSuperimpose");       //可否疊加撥放
             let loop: boolean = data.get("loop");                                       //循環狀態
             let id = this.effectID.get(name);                                   //該音樂ID
             let state: boolean;
