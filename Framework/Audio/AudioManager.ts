@@ -53,11 +53,14 @@ namespace fcc {
 
         /**
          * 額外對該音樂做設定,可以不做設定,將會依照默認設定自動設定
-         * volume : 默認為 Config 內的音量參數
-         * loop : 默認 false
-         * @param {string} name : 音樂名稱
-         * @param {number} volume : 音量 0~1
-         * @param {boolean} loop : 是否重複撥放
+         * ```
+         *      預設參數:
+         *          volume : 默認為 Config 內的音量參數
+         *          loop : 默認 false
+         * ```
+         * @param {string} name - 音樂名稱
+         * @param {number} volume - 音量 0~1
+         * @param {boolean} loop - 是否重複撥放
          * @return {this}
          */
         public settingMusic(name: string, volume?: number, loop?: boolean): this {
@@ -69,9 +72,12 @@ namespace fcc {
 
         /**
          * 額外對該音效做設定,你可以不做設定,將會依照默認設定自動設定
-         * canSuperimpose : 默認 AudioStateType.CLEAR_TO_REPLAY
-         * volume : 默認為 Config 內的音量參數
-         * loop :默認為 false
+         * ```
+         *      預設參數:
+         *          canSuperimpose : fcc.type.AudioStateType.CLEAR_TO_REPLAY
+         *          volume : 默認為 Config 內的音量參數
+         *          loop :默認為 false
+         * ```
          * @param {string} name : 音效檔名
          * @param {AudioStateType} canSuperimpose : 能否疊加
          * @param {number} volume : 音量 0~1
@@ -91,8 +97,8 @@ namespace fcc {
 
         /**
          * 撥放音樂,將會依照當初設定的參數進行播放
-         * 若無參數設定撥放模式,依照默認參數撥放
-         * @param {string} name : 音樂檔名
+         * 若無發現可用參數設定,依照默認參數撥放
+         * @param {string} name - 音樂檔名
          */
         public musicPlay(name: string) {
             this.factory.musicPlay(name);
@@ -100,39 +106,32 @@ namespace fcc {
 
         /**
          * 撥放音效,將會依照當初設定的參數進行播放
-         * 若無參數設定撥放模式,依照默認參數撥放
-         * @param {string} name : 音效檔名
+         * 若無發現可用參數設定,依照默認參數撥放
+         * @param {string} name - 音效檔名
          */
         public effectPlay(name: string) {
-
             this.factory.effectPlay(name);
-
         }
 
         /**
          * 停止音樂
          */
         public musicStop() {
-
             this.factory.musicStop();
-
         }
 
         /**
          * 暫停音樂
          */
         public musicPause() {
-
             this.factory.musicPause();
-
         }
 
         /**
          * 停止音效
-         * @param {string} name : 音效檔名
+         * @param {string} name - 音效檔名
          */
         public effectStop(name: string) {
-
             this.factory.effectStop(name);
         }
 
@@ -145,8 +144,13 @@ namespace fcc {
 
         /**
          * 獲取撥放的狀態
-         * @param {string} name : 音效檔名
-         * @return {Map<string, string | boolean | number>} : 撥放設定參數
+         * ```
+         *      return data:
+         *          volume : number
+         *          loop : boolean
+         * ```
+         * @param {string} name - 音效檔名
+         * @return {Map<string, string | boolean | number>} - 撥放設定參數
          */
         public getMusicState(name: string): Map<string, string | boolean | number> {
             return this.factory.getMusicState(name);
@@ -154,8 +158,14 @@ namespace fcc {
 
         /**
          * 獲取撥放的狀態
-         * @param {string} name : 音樂檔名
-         * @return {Map<string, string | fcc.type.AudioStateType |boolean | number>} : 撥放設定參數
+         * ```
+         *      return data:
+         *          volume : number
+         *          canSuperimpose : fcc.type.AudioStateType
+         *          loop : boolean
+         * ```
+         * @param {string} name - 音樂檔名
+         * @return {Map<string, string | fcc.type.AudioStateType |boolean | number>} -
          */
         public getEffectState(name: string): Map<string, string | type.AudioStateType | boolean | number> {
             return this.factory.getEffectState(name);

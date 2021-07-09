@@ -43,6 +43,6 @@ export default abstract class AErrorFrameTemplate extends AGenericTemplate {
                 "errorButtonTouchEvent",
                 this
             );
-        this.onCreate();
+        super.onLoad();
     }
 }

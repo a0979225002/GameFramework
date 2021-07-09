@@ -18,6 +18,10 @@ export default abstract class AGenericTemplate extends OverrideComponent {
      */
     protected languageSetting(): void {};
 
+    protected onLoad() {
+        this.onCreate();
+    }
+
     protected start(): void {
         this.languageSetting();
     }

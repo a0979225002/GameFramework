@@ -11,7 +11,6 @@
     "downlevelIteration" : true,                  //允許for of 迭代
     "isolatedModules": false,                     //將每個文件作為單獨的模塊
     "removeComments": false,                      //刪除所有註釋，除了以/!*開頭的版權信息。
-    "outDir": "js-dist/",                         //重定向輸出目錄
     "types": [
       "../@types/creator",
       "../@types/global",

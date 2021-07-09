@@ -117,7 +117,7 @@ export default abstract class AMenuOnlyButtonTemplate extends AMenuButtonTemplat
 
 
     protected onLoad():void {
-        super.onLoad();
+
         /*背景音樂按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
@@ -243,6 +243,6 @@ export default abstract class AMenuOnlyButtonTemplate extends AMenuButtonTemplat
                 this
             );
 
-        this.onCreate();
+        super.onLoad();
     }
 }

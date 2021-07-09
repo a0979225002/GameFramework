@@ -31,7 +31,6 @@ namespace fcc {
             this._designWidth = 1280;                                                   //初始預設寬度
             this._designHeight = 720;                                                   //初始預設高度
             this.sceneSizeChangeListener = new SceneSizeChangeListener(configManager, this);
-            //實例化監聽器
             this.sceneStyleHandler = new SceneStyleHandler(this);           //實例化scene樣式導向器
             this.style = type.SceneStyleType.HORIZONTAL;                                //初始預設scene畫面調整的模式
         }

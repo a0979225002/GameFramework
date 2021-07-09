@@ -4,20 +4,6 @@ namespace fcc {
 
         /**
          * @Author 蕭立品
-         * @Description (介面) 語言種類
-         * @Date 2021-06-28 下午 12:07
-         * @Version 1.0
-         */
-        export interface ILanguageParameter {
-            CNY: ILanguageStyle;
-            NTD: ILanguageStyle;
-            USD: ILanguageStyle;
-            VND: ILanguageStyle;
-            THB: ILanguageStyle;
-        }
-
-        /**
-         * @Author 蕭立品
          * @Description (介面) 語言樣是樣式表
          * @Date 2021-06-28 下午 12:07
          * @Version 1.0

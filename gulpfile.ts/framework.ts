@@ -56,7 +56,7 @@ function buildAssetFramework(cb) {
                     callback();
                     //fcc-framework.js
                 }))
-                .pipe(uglify())
+                // .pipe(uglify())
                 .pipe(gulp.dest('dist/fcc')),
             tsFrameWork.dts
                 .pipe(through.obj(function (chunk, enc, callback) {

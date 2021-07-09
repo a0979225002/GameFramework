@@ -94,7 +94,6 @@ export default abstract class AMainGameDoubleButtonTemplate extends AMainGameBut
     protected abstract menuButtonV: cc.Button
 
     protected onLoad() {
-        super.onLoad();
         fcc.global.Button.addButtonEvent(                        //自動按鈕監聽添加
             this.autoButtonH,
             "autoButtonEventListener",
@@ -135,8 +134,7 @@ export default abstract class AMainGameDoubleButtonTemplate extends AMainGameBut
             "menuButtonEventListener",
             this
         );
-
-        this.onCreate();                                           //初始自訂狀態
+        super.onLoad();
     }
 
     /**

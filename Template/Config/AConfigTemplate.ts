@@ -33,6 +33,6 @@ export default abstract class AConfigTemplate extends AGenericTemplate {
         this.configSetting();                   //所有動作中需最先執行,遊戲初始設定
         this.responseDataModelSetting();        //遊戲初始接收module 創建
         this.processSetting();                  //遊戲流程創建
-        this.onCreate();
+        super.onLoad();
     }
 }

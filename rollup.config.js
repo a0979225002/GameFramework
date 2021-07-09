@@ -1,6 +1,6 @@
 // rollup.config.js
 import ts from "rollup-plugin-ts";
-import {uglify} from "rollup-plugin-uglify";
+// import {uglify} from "rollup-plugin-uglify";
 
 /**
  * 打包 Template
@@ -10,13 +10,9 @@ export default {
     output: {
         file: 'dist/tcc/fcc-template.js',
         exports: "auto",
+        format:"es"
     },
     plugins: [
-        uglify({
-            output: {
-                // comments:"all",//保留註解
-            }
-        }),
         ts({
                 tsconfig: "./Template/tsconfig.json",
             },

@@ -53,6 +53,11 @@ namespace fcc {
             return this;
         }
 
+        /**
+         * 添加slot主事件樣式設定
+         * @param {{new(slotStyleManager: fcc.IF.ISlotStyleManager): T}} slotSetting
+         * @return {T}
+         */
         setSlotStyle<T extends IF.ISlotSetting>(slotSetting?: new(slotStyleManager: IF.ISlotStyleManager) => T): T {
             return new slotSetting(this);
         }

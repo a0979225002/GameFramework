@@ -99,7 +99,6 @@ export default abstract class ARecordDoubleButtonTemplate extends ARecordButtonT
     protected abstract previousRecordButtonV: cc.Button;
 
     protected onLoad() {
-        super.onLoad();
         /*反回上一頁按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
@@ -190,7 +189,7 @@ export default abstract class ARecordDoubleButtonTemplate extends ARecordButtonT
                 this,
                 PageChangeType.PREVIOUS
             );
-        this.onCreate();
+        super.onLoad();
     }
 
     /**

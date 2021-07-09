@@ -78,5 +78,6 @@ export {default as ASlotInitializeTemplate} from './Slot/ASlotInitializeTemplate
 
 /*遊戲 SERVER FREE MODEL*/
 
+
 /*當前版本號*/
 globalThis.TCC_VERSION = VERSION;

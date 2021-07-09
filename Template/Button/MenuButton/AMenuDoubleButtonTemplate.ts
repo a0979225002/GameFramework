@@ -220,7 +220,7 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
     protected abstract descriptionPageButtonV: cc.Button;
 
     protected onLoad() {
-        super.onLoad();
+
         /*背景音樂按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
@@ -440,6 +440,6 @@ export default abstract class AMenuDoubleButtonTemplate extends AMenuButtonTempl
                 this
             );
 
-        this.onCreate();
+        super.onLoad();
     }
 }

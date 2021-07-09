@@ -57,7 +57,6 @@ export default abstract class ARecordOnlyButtonTemplate extends ARecordButtonTem
     protected abstract previousRecordButton: cc.Button;
 
     protected onLoad() {
-        super.onLoad();
         /*反回上一頁按鈕事件綁定*/
         fcc.global.Button
             .addButtonEvent(
@@ -110,7 +109,7 @@ export default abstract class ARecordOnlyButtonTemplate extends ARecordButtonTem
                 PageChangeType.PREVIOUS
             );
 
-        this.onCreate();
+        super.onLoad();
     }
 
     /**

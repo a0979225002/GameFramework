@@ -61,6 +61,7 @@ export default abstract class ARecordButtonTemplate extends AGenericTemplate {
     protected onLoad(): void {
         this.isHistoryResultOK = false;
         this.gameHistoryResultEventListener();
+        super.onLoad();
     }
 
     /**

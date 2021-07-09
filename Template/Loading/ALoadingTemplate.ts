@@ -56,7 +56,7 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
         this._canPlayGame = false;                          //由 Server TableInfo Event 改變狀態
         this.tableInfoEvent.apply(this);             //TableInfo Event 事件
         ALoadingTemplate.updateUserIp();                    //如果是正式上線,將自動更新拿取外部資源的IP
-        this.onCreate();                                    //自訂義初始 例:拿取node...
+        super.onLoad();
 
     }
 

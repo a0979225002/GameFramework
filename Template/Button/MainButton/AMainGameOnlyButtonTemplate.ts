@@ -26,25 +26,25 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
      * 開始遊戲按鈕
      * @type {cc.Button}
      */
-    abstract startButton: cc.Button;
+    protected abstract startButton: cc.Button;
 
     /**
      * 自動按鈕
      * @type {cc.Button}
      */
-    abstract autoButton: cc.Button;
+    protected abstract autoButton: cc.Button;
 
     /**
      * 加速按鈕
      * @type {cc.Button}
      */
-    abstract speedUpButton: cc.Button;
+    protected abstract speedUpButton: cc.Button;
 
     /**
      * 押注金額選擇按鈕
      * @type {cc.Button}
      */
-    abstract betSelectionButton: cc.Button;
+    protected abstract betSelectionButton: cc.Button;
 
     /**
      * 設定頁按鈕
@@ -54,7 +54,6 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
     protected abstract menuButton: cc.Button
 
     protected onLoad() {
-        super.onLoad();
         fcc.global.Button.addButtonEvent(                        //開始按鈕監聽添加
             this.startButton,
             "startButtonEventListener",
@@ -80,8 +79,7 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
             "menuButtonEventListener",
             this
         )
-
-        this.onCreate();                                           //初始自訂狀態
+        super.onLoad();
     }
 
     /**

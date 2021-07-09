@@ -19,7 +19,7 @@ export default abstract class ALoadingFrameTemplate extends AGenericTemplate {
 
     protected onLoad() {
         this.loadingInitialize();
-        this.onCreate();
+        super.onLoad();
     }
 
     /**

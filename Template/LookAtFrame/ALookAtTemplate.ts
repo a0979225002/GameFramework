@@ -5,7 +5,10 @@ import ScrollFocusStateNotification from "../Event/Notification/GameNotification
 /**
  * @Author XIAO-LI-PIN
  * @Description 瞇排模板
- * @NOTE: 使用前,需先實現 ScrollFocusStateNotification 的通知綁定
+ * ```
+ *      事件:
+ *         接收{ScrollFocusStateNotification} : 瞇排事件觸發時
+ * ```
  * @Date 2021-05-26 下午 17:24
  * @Version 1.1
  */
@@ -40,12 +43,19 @@ export default abstract class ALookAtTemplate extends AGenericTemplate {
     protected abstract removeLookAtEffect(index: number);
 
     protected onLoad() {
+        this.addNotification();     //綁定推播接收事件
+        super.onLoad()
+    }
 
+    /**
+     * 添加推撥的接收事件
+     */
+    addNotification(){
+
+        /*瞇排事件觸發時,推撥至此*/
         fcc.notificationMgr<ScrollFocusStateNotification>()
             .getNotification(fcc.type.NotificationType.SCROLL_FOCUS_STATE)
             .subscribe(this.getScrollFocusStateObserver(),true);
-
-        this.onCreate();
     }
 
     /**

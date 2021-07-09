@@ -75,7 +75,7 @@ export default abstract class ASlotInitializeTemplate extends AGenericTemplate {
         this.slotStyleSetting();            //設定 slot 樣式,並綁定
         this.normalResultResponse();        //添加一般答案回傳監聽
         this.freeResultEvenResponse();      //添加免費答案回傳監聽
-        this.onCreate();                    //初始化
+        super.onLoad();
     }
 
     /**

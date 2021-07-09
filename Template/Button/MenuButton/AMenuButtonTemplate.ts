@@ -125,6 +125,7 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
     protected onLoad() {
         this.nowAutoType = fcc.configMgr.autoCount;
         this.addNotification();                         //初始化綁定監聽接收事件
+        super.onLoad();
     }
 
     /**

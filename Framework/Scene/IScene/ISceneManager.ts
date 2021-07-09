@@ -13,6 +13,9 @@ namespace fcc {
          */
         export interface ISceneManager {
 
+            /**
+             *
+             */
             sceneDirection: type.SceneDirectionType;
 
             /**

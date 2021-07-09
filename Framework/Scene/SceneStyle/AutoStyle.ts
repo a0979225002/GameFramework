@@ -15,7 +15,6 @@ namespace fcc {
 
         constructor(sceneManager: IF.ISceneManager) {
             this.sceneManager = sceneManager;
-
             if (!NotificationManager
                 .instance()
                 .hasNotification(type.NotificationType.SCENE_DIRECTION_CHANGE)) {

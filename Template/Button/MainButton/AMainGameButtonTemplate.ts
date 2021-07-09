@@ -117,6 +117,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
         this.nowSpeed = fcc.configMgr.isSpeedUp;                                    //初始當前遊戲速度
         this.addNotification();                                                     //添加玩家金額 /自動遊戲事件 監聽
         this.makeTotalBetButtonToListener();                                        //總押注視窗中按鈕監聽事件
+        super.onLoad();
     }
 
     /**

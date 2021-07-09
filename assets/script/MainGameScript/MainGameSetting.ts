@@ -169,13 +169,9 @@ export default class MainGameSetting extends AMainGameSettingTemplate {
         SlotGameManager.instance
             .setProcess(GameType.FREE, freeP)
             .setProcess(GameType.NORMAL, normalP)
-            // .setProcess(GameType.NORMAL,this.getFreeStateProcess())
             // .setProcess("FreeOpenTest",this.getFreeOpenTestProcess())
             // .setProcess("BigWinTest",this.getBigWinTestProcess())
-            // .setProcess(GameType.NORMAL, this.getTestProcess())
             // .setProcess("BigWinTest", this.getTestProcess2())
-            // .setInitialProcess(normalP);
-            // .setInitialProcess(GameType.NORMAL);
             .setInitialProcess(GameType.NORMAL);
     }
 

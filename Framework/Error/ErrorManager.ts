@@ -86,9 +86,7 @@ namespace fcc {
          * @param {string} buttonText - button文字
          */
         warning(permanentState: boolean, message: string, buttonText?: string) {
-
             this.handler.checkWarning(permanentState, message, buttonText);
-
         }
 
         /**

@@ -11,7 +11,7 @@ export default abstract class AMainInitTemplate extends AGenericTemplate {
     protected onLoad() {
         this.setHistoryDetail();        //建立詳單頁面
         this.prefabInstantiate();       //實例化所有動態加載的prefab
-        this.onCreate();                //自訂初始
+        super.onLoad();
     }
 
     /**
