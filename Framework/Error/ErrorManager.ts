@@ -60,9 +60,16 @@ namespace fcc {
         }
 
         /**
-         * 責任鏈模式
-         * 顯示錯誤訊息,能做多個物件檢測
-         * @param{string | ErrorType }message
+         * 執行該類型之錯誤提示
+         * @summary - 責任鏈模式 : Overload
+         * @throws (null,any) - return 該物件 or throw ("該物件為null")
+         * ```
+         *      參數:
+         *          (null,any) - return 該物件 or throw ("該物件為null")
+         *          (fcc.type.ErrorType,string) - throw (`ErrorType + ${string}`)
+         *          (string) - throw (`${string}`)
+         * ```
+         * @param {string | fcc.type.ErrorType} message
          * @param obj
          */
         executeError(message: string | type.ErrorType, obj: any) {
@@ -75,7 +82,7 @@ namespace fcc {
          * @param {string} message  - 錯誤訊息
          * @param {string} buttonText - button文字
          */
-        serverError(permanentState: boolean, message: string, buttonText?: string) {
+        showErrorDialog(permanentState: boolean, message: string, buttonText?: string) {
             this.handler.checkServerError(permanentState, message, buttonText);
         }
 
@@ -85,7 +92,7 @@ namespace fcc {
          * @param {string} message  - 錯誤訊息
          * @param {string} buttonText - button文字
          */
-        warning(permanentState: boolean, message: string, buttonText?: string) {
+        showWarningDialog(permanentState: boolean, message: string, buttonText?: string) {
             this.handler.checkWarning(permanentState, message, buttonText);
         }
 

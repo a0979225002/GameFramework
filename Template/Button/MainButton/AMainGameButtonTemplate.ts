@@ -225,7 +225,9 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
     private async longTouchTimer(): Promise<void> {
         //推播auto事件
         this.autoNotify(true, this.nowAutoType);
-        await this.startButtonEvent();
+        if(fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY){
+            await this.startButtonEvent();
+        }
     }
 
     /**
@@ -247,7 +249,9 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     protected async startButtonOnTouchEnd(): Promise<void> {
         this.unschedule(this.longTouchTimer);
-        await this.startButtonEvent();
+        if(fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY){
+            await this.startButtonEvent();
+        }
     }
 
     /**
@@ -293,7 +297,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
                     this.nowAutoType = afterAutoCount;
                     this.isAutoState = isAutomaticState;
                     this.autoEvent(isAutomaticState, afterAutoCount);
-                    if (isAutomaticState) {
+                    if (isAutomaticState && fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY) {
                         await this.startButtonEvent();
                     }
                 }, this);
@@ -316,6 +320,9 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
 
     /**
      * 開始遊戲監聽事件
+     *
+     *
+     *
      * @returns {Promise<void>}
      * @protected
      */
@@ -336,13 +343,14 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
                     .notify();
                 return;
             }
+
             //判斷當前是金額足夠
             let nowUserBetIndex = this.userBetPoint.LineBet;
             let userBet = this.tableInfo.LineTotalBet[nowUserBetIndex];
 
             //如果用戶金額不足的情況
             if (this.userMoney - userBet < 0) {
-                fcc.errorMgr.serverError(false, fcc.languageMgr.getText("S_9003"));
+                fcc.errorMgr.showErrorDialog(false, fcc.languageMgr.getText("S_9003"));
                 return;
             }
             this.startEvent();

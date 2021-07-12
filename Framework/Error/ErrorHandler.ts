@@ -28,8 +28,12 @@ namespace fcc {
          * 確認錯誤類型
          * @summary - 責任鏈模式 : Overload
          * @throws (null,any) - return 該物件 or throw ("該物件為null")
-         * @throws (fcc.type.ErrorType,string) - throw (`ErrorType + ${string}`)
-         * @throws (string,any) - throw (`${string}`)
+         * ```
+         *      參數:
+         *          (null,any) - return 該物件 or throw ("該物件為null")
+         *          (fcc.type.ErrorType,string) - throw (`ErrorType + ${string}`)
+         *          (string) - throw (`${string}`)
+         * ```
          * @param {string | fcc.type.ErrorType} message
          * @param obj
          */

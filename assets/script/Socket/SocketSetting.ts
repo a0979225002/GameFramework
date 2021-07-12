@@ -1,4 +1,4 @@
-import {SmartFox, SFSObject} from "../../../sfs2x-api-1.7.17";
+import {SmartFox, SFSObject} from "./sfs2x-api-1.7.17";
 
 let data: { [x: string]: any; } | null;
 export default class SocketSetting {

@@ -21,11 +21,11 @@ export default class ResultSortOut extends cc.Component {
         switch (_cmd) {
             case "MemberInfo":
                 PublicSetUp.Ratio = SocketSetting.ClientSetObject.Ratio;
+                cc.log(PublicSetUp.Ratio);
                 break;
             case "GameLobbyInfoResult":
-
                 PublicSetUp.GameLobbyName = SocketSetting.ServerReturnData[_cmd].GameLobbyName;
-
+                cc.log( PublicSetUp.GameLobbyName);
                 break;
             case "GameLobby":  // 底層進大廳 通知遊戲顯示大廳
 

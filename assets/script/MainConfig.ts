@@ -36,7 +36,7 @@ export default class MainConfig extends ASlotConfig {
             .setEffectVolume(1)                                 //初始默認效果音量
             .setLanguage(LanguageType.America)                  //測試時才有用,當有PHP檔案蓋過WebRequest類時此參數將自動失效
             .setExternallyLoadURL("http://10.10.0.47/games")    //同上
-            .setFrameWorkDebug(false)                           //正式上線時關閉
+            .setFrameWorkDebug(true)                           //正式上線時關閉
             .builder();
     }
 

@@ -54,11 +54,6 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
     protected abstract menuButton: cc.Button
 
     protected onLoad() {
-        fcc.global.Button.addButtonEvent(                        //開始按鈕監聽添加
-            this.startButton,
-            "startButtonEventListener",
-            this
-        );
         fcc.global.Button.addButtonEvent(                        //自動按鈕監聽添加
             this.autoButton,
             "autoButtonEventListener",

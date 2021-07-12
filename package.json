@@ -52,7 +52,11 @@
   },
   "scripts": {
     "test": "jest",
-    "rollup": "rollup -c"
+    "rollup": "rollup -c",
+    "gulp-buildFramework": "gulp buildFramework",
+    "gulp-buildPublishFramework": "gulp buildFramework2",
+    "dpdm-Framework" : "dpdm Framework/**/*.ts",
+    "dpdm-Template" : "dpdm Template/**/*.ts"
   },
   "repository": {
     "type": "git",

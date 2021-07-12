@@ -1734,10 +1734,15 @@ class AMainGameButtonTemplate extends AGenericTemplate {
               //推播auto事件
               _this.autoNotify(true, _this.nowAutoType);
 
-              _context.next = 3;
+              if (!(fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY)) {
+                _context.next = 4;
+                break;
+              }
+
+              _context.next = 4;
               return _this.startButtonEvent();
 
-            case 3:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -1773,10 +1778,15 @@ class AMainGameButtonTemplate extends AGenericTemplate {
             case 0:
               _this2.unschedule(_this2.longTouchTimer);
 
-              _context2.next = 3;
+              if (!(fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY)) {
+                _context2.next = 4;
+                break;
+              }
+
+              _context2.next = 4;
               return _this2.startButtonEvent();
 
-            case 3:
+            case 4:
             case "end":
               return _context2.stop();
           }
@@ -1860,7 +1870,7 @@ class AMainGameButtonTemplate extends AGenericTemplate {
 
                   _this4.autoEvent(isAutomaticState, afterAutoCount);
 
-                  if (!isAutomaticState) {
+                  if (!(isAutomaticState && fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY)) {
                     _context4.next = 6;
                     break;
                   }
@@ -2084,8 +2094,6 @@ class AMainGameButtonTemplate extends AGenericTemplate {
 
 class AMainGameOnlyButtonTemplate extends AMainGameButtonTemplate {
   onLoad() {
-    fcc.global.Button.addButtonEvent( //開始按鈕監聽添加
-    this.startButton, "startButtonEventListener", this);
     fcc.global.Button.addButtonEvent( //自動按鈕監聽添加
     this.autoButton, "autoButtonEventListener", this);
     fcc.global.Button.addButtonEvent( //加速按鈕監聽添加

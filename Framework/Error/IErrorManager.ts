@@ -55,9 +55,16 @@ namespace fcc {
             isShowBackHomeButton: boolean;
 
             /**
-             * 責任鏈模式
-             * 顯示錯誤訊息,能做多個物件檢測
-             * @param{string | }message
+             * 執行該類型之錯誤提示
+             * @summary - 責任鏈模式 : Overload
+             * @throws (null,any) - return 該物件 or throw ("該物件為null")
+             * ```
+             *      參數:
+             *          (null,any) - return 該物件 or throw ("該物件為null")
+             *          (fcc.type.ErrorType,string) - throw (`ErrorType + ${string}`)
+             *          (string) - throw (`${string}`)
+             * ```
+             * @param {string | fcc.type.ErrorType} message
              * @param obj
              */
             executeError(message: string | type.ErrorType, obj?: any): void;
@@ -68,7 +75,7 @@ namespace fcc {
              * @param {string} message  : 錯誤訊息
              * @param {string} buttonText : button文字
              */
-            serverError(permanentState: boolean, message: string, buttonText?: string): void;
+            showErrorDialog(permanentState: boolean, message: string, buttonText?: string): void;
 
             /**
              * 顯示警告,將會調用已保存的警告Node
@@ -76,7 +83,7 @@ namespace fcc {
              * @param {string} message  : 錯誤訊息
              * @param {string} buttonText : button文字
              */
-            warning(permanentState: boolean, message: string, buttonText?: string): void;
+            showWarningDialog(permanentState: boolean, message: string, buttonText?: string): void;
 
             /**
              * 添加要綁定的Error組件
