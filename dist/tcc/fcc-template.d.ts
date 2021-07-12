@@ -649,6 +649,9 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
     protected getUserMoneyChangeObserver(): UserMoneyChangeObserver;
     /**
      * 開始遊戲監聽事件
+     *
+     *
+     *
      * @returns {Promise<void>}
      * @protected
      */

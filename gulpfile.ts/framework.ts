@@ -44,6 +44,7 @@ function buildAssetFramework(cb) {
 
         return merge(
             tsFrameWork.js
+                .pipe(uglify())
                 .pipe(sourcemaps.write())
                 .pipe(browserify({
                     insertGlobals: true,
