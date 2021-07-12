@@ -2,8 +2,8 @@
   "compilerOptions": {
     "declaration": true,                          //生成相應的.d.ts文件。
     "module": "CommonJS",                         //指定生成哪個模塊系統代
-    "lib": [ "es5","es2015", "es2017", "dom"],
-    "target": "ES2015",                           //指定ECMAScript目標版本
+    "lib": [ "es5","es2015", "es2017", "dom","ES2015.Promise"],
+    "target": "ES6",                           //指定ECMAScript目標版本
     "experimentalDecorators": true,               //打開裝飾器功能
     "emitDecoratorMetadata": true,                //能讀取元數據,裝飾器使用
     "forceConsistentCasingInFileNames": true,     //路徑強制區分大小寫。

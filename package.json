@@ -38,6 +38,7 @@
     "gulp-util": "^3.0.8",
     "jest": "^26.6.3",
     "rollup-plugin-ts": "^1.4.0",
+    "rollup-plugin-typescript": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.4",
     "tern": "^0.24.3",
     "ts": "^0.2.2",
@@ -50,7 +51,8 @@
     "webpack-cli": "^4.6.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "rollup": "rollup -c"
   },
   "repository": {
     "type": "git",

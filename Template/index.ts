@@ -70,14 +70,38 @@ export {default as NoLineSlotTemplate} from './Slot/Style/NoLineSlotTemplate';
 /*SLOT初始設定 模板*/
 export {default as ASlotInitializeTemplate} from './Slot/ASlotInitializeTemplate';
 
-/*遊戲 SERVER TABLE INFO MODEL*/
 
+/*遊戲 INTERFACE SERVER FREE MODEL*/
+export {default as IExtendHasLineFreeResult} from './NetWork/ISeverDataModel/IFreeResult/IExtendHasLineFreeResult';
+export {default as IHasLineFreeResultModule} from './NetWork/ISeverDataModel/IFreeResult/IHasLineFreeResultModule';
+export {default as INoLineFreeResultModel} from './NetWork/ISeverDataModel/IFreeResult/INoLineFreeResultModel';
+export {default as ISlotFreeBaseResultModel} from './NetWork/ISeverDataModel/IFreeResult/ISlotFreeBaseResultModel';
 
-/*遊戲 SERVER NORMAL MODEL*/
+/*遊戲 INTERFACE SERVER NORMAL MODEL*/
+export {default as IExtendHasLineResult} from './NetWork/ISeverDataModel/INormalResult/IExtendHasLineResult';
+export {default as IHasLineResultModule} from './NetWork/ISeverDataModel/INormalResult/IHasLineResultModule';
+export {default as INoLineResultModel} from './NetWork/ISeverDataModel/INormalResult/INoLineResultModel';
+export {default as ISlotBaseResultModel} from './NetWork/ISeverDataModel/INormalResult/ISlotBaseResultModel';
+
+/*遊戲 INTERFACE SERVER TABLE INFO MODEL*/
+export {default as IBaseTableInfoModel} from './NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel';
+export {default as IHasLineTableInfoModule} from './NetWork/ISeverDataModel/ITableInfoResult/IHasLineTableInfoModule';
+export {default as INoLineTableInfoModule} from './NetWork/ISeverDataModel/ITableInfoResult/INoLineTableInfoModule';
 
 
 /*遊戲 SERVER FREE MODEL*/
+export {default as ExtendHasLineFreeResult} from './NetWork/ServerDataModel/FreeResult/ExtendHasLineFreeResult';
+export {default as HasLineFreeResult} from './NetWork/ServerDataModel/FreeResult/HasLineFreeResult';
+export {default as NoLineFreeResult} from './NetWork/ServerDataModel/FreeResult/NoLineFreeResult';
 
+/*遊戲 SERVER NORMAL MODEL*/
+export {default as ExtendHasLineResult} from './NetWork/ServerDataModel/NormalResult/ExtendHasLineResult';
+export {default as HasLineResult} from './NetWork/ServerDataModel/NormalResult/HasLineResult';
+export {default as NoLineResult} from './NetWork/ServerDataModel/NormalResult/NoLineResult';
+
+/*遊戲 SERVER TABLE INFO MODEL*/
+export {default as HasLineTableInfo} from './NetWork/ServerDataModel/TableInfo/HasLineTableInfo';
+export {default as NoLineTableInfo} from './NetWork/ServerDataModel/TableInfo/NoLineTableInfo';
 
 /*當前版本號*/
 globalThis.TCC_VERSION = VERSION;

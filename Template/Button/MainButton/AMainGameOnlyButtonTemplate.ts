@@ -71,7 +71,7 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
         );
         fcc.global.Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加
             this.betSelectionButton,
-            "betSelectionButtonEventListener",
+            "totalBetFrameTouchEventListener",
             this
         );
         fcc.global.Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加

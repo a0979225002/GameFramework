@@ -1,4 +1,3 @@
-
 /// <reference path="./Enum/SceneStyleType.ts" />
 /// <reference path="./SceneStyle/AutoStyle.ts" />
 /// <reference path="./SceneStyle/HorizontalStyle.ts" />
@@ -16,11 +15,10 @@ namespace fcc {
         private autoStyle: AutoStyle;
         private horizontalStyle: HorizontalStyle;
         private verticalStyle: VerticalStyle;
+        private readonly sceneManager: IF.ISceneManager;
 
         constructor(sceneManager: IF.ISceneManager) {
-            this.autoStyle = new AutoStyle(sceneManager);
-            this.horizontalStyle = new HorizontalStyle();
-            this.verticalStyle = new VerticalStyle();
+            this.sceneManager = sceneManager;
         }
 
         /**
@@ -32,12 +30,15 @@ namespace fcc {
         getStyle(sceneStyle: type.SceneStyleType | IF.ISceneStyle, width: number, height: number) {
             switch (sceneStyle) {
                 case type.SceneStyleType.AUTO:
+                    if (!this.autoStyle) this.autoStyle = new AutoStyle(this.sceneManager);
                     this.autoStyle.executionStyle(width, height);
                     break;
                 case type.SceneStyleType.HORIZONTAL:
+                    if (!this.horizontalStyle) this.horizontalStyle = new HorizontalStyle();
                     this.horizontalStyle.executionStyle(width, height)
                     break;
                 case type.SceneStyleType.VERTICAL:
+                    if (!this.verticalStyle) this.verticalStyle = new VerticalStyle();
                     this.verticalStyle.executionStyle(width, height);
                     break;
                 default :

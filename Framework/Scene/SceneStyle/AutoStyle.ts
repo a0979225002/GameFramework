@@ -19,7 +19,7 @@ namespace fcc {
                 .instance()
                 .hasNotification(type.NotificationType.SCENE_DIRECTION_CHANGE)) {
                 this.eventLock = true;
-                ErrorManager.instance.executeError(type.ErrorType.SCENE_FW, "你尚未綁定當遊戲方向更動時的推播事件,因此不會觸發自動推播事件")
+                console.log("你尚未綁定當遊戲方向更動時的推播事件,因此不會觸發方向改變的推播事件")
             } else {
                 this.eventLock = false;
             }

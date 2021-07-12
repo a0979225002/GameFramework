@@ -10,7 +10,7 @@ namespace fcc {
 
         private static _instance: IF.IProcessManager
 
-        private configManager: IF.ISlotConfigManager;
+        private configManager: IF.IConfigManager;
 
         /**
          * 當前遊戲狀態
@@ -35,7 +35,7 @@ namespace fcc {
         private gameProcessFactory: IF.IGameProcessFactory;
 
 
-        private constructor(configManager: IF.ISlotConfigManager) {
+        private constructor(configManager: IF.IConfigManager) {
             this.configManager = configManager;                                      //獲取ConfigManger,雙向綁定
             this.gameProcessFactory = new GameProcessFactory(this);      //初始化流程工廠
             this._gameState = type.GameStateType.STANDBY;                            //初始遊戲狀態
@@ -46,7 +46,7 @@ namespace fcc {
          *  懶漢加載
          *  初始化,只讓一個專案只有一次產生此class
          */
-        public static setInstance(configManager: IF.ISlotConfigManager) {
+        public static setInstance(configManager: IF.IConfigManager) {
             if (!this._instance) {
                 this._instance = new ProcessManager(configManager);
                 processMgr = this._instance;
@@ -102,6 +102,7 @@ namespace fcc {
 
         /**
          * 執行設定好的流程
+         * @return {Promise<void>}
          */
         public play(): Promise<void> {
             return new Promise<void>(async (resolve) => {

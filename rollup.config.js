@@ -1,5 +1,7 @@
 // rollup.config.js
 import ts from "rollup-plugin-ts";
+
+
 // import {uglify} from "rollup-plugin-uglify";
 
 /**
@@ -10,11 +12,12 @@ export default {
     output: {
         file: 'dist/tcc/fcc-template.js',
         exports: "auto",
-        format:"es"
+        format:"cjs"
     },
     plugins: [
         ts({
                 tsconfig: "./Template/tsconfig.json",
+                transpiler: "babel"
             },
         ),
     ]
