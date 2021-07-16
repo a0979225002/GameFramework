@@ -225,7 +225,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
     private async longTouchTimer(): Promise<void> {
         //推播auto事件
         this.autoNotify(true, this.nowAutoType);
-        if(fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY){
+        if (fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY) {
             await this.startButtonEvent();
         }
     }
@@ -249,7 +249,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     protected async startButtonOnTouchEnd(): Promise<void> {
         this.unschedule(this.longTouchTimer);
-        if(fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY){
+        if (fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY) {
             await this.startButtonEvent();
         }
     }
@@ -365,7 +365,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * 正常情況,推播當前auto狀態事件
      * @private
      */
-    protected async autoButtonEventListener(): Promise<void> {
+    protected autoButtonEventListener(): void {
         this.unschedule(this.longTouchTimer);//將長案事件失效
         //如果當前押注視窗開啟中,將更換為關閉視窗方法
         if (this.isShowTotalBetFrame) {
@@ -387,7 +387,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
 
         fcc.notificationMgr<SpeedStateChangeNotification>()
             .getNotification(fcc.type.NotificationType.SPEED_CHANGE)
-            .notify(this.nowSpeed)
+            .notify(this.nowSpeed);
 
         this.speedUpEvent(this.nowSpeed);
     }

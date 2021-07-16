@@ -16,7 +16,7 @@ export default class StopNowStateNotification extends fcc.ABS.ABaseNotification 
 
     constructor() {
         super();
-        this.TAG_NAME = fcc.type.NotificationType.SCENE_DIRECTION_CHANGE
+        this.TAG_NAME = fcc.type.NotificationType.STOP_NOW
     }
 
     /**

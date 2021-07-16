@@ -29,12 +29,12 @@ namespace fcc {
                 if (!this.processToMap.has(processName)) {
                     ErrorManager.instance.executeError(type.ErrorType.PROCESS_FW, "查找不到該流程,請確認是否已綁定進框架中");
                 } else {
-                    this.processToMap.get(processName).executionContainer.onCreate();
+                    this.processToMap.get(processName).executionContent.onCreate();
                 }
             } else {
                 let values = this.processToMap.values();
                 for (let value of values) {
-                    value.executionContainer.onCreate();
+                    value.executionContent.onCreate();
                 }
             }
 

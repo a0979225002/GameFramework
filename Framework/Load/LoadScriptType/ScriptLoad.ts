@@ -18,7 +18,6 @@ namespace fcc {
 
         constructor(scriptName: string, type: string, url: string) {
             super(scriptName, type, url)
-
             this.linkElem = document.createElement("script");
 
         }
@@ -30,8 +29,14 @@ namespace fcc {
             }
             this.linkElem.type = this.type;
             this.linkElem.src = url;
+            this.linkElem.onload = this.test;
             ABS.ALoadScriptType.head.appendChild(this.linkElem);
             LoadResManager.instance.scriptRes.add(url);
+            cc.log("測試加載script", "01")
+        }
+
+        test() {
+            cc.log("測試加載script", "00")
         }
     }
 }

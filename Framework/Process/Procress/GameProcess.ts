@@ -20,10 +20,10 @@ namespace fcc {
          * @type {IGameProcedureExecutionContainer}
          * @private
          */
-        private readonly _executionContainer: IF.IGameProcedureExecutionContainer;
+        private readonly _executionContent: IF.IGameProcedureExecutionContent;
 
-        constructor(container: IF.IGameProcedureExecutionContainer) {
-            this._executionContainer = container;
+        constructor(container: IF.IGameProcedureExecutionContent) {
+            this._executionContent = container;
             this._process = new Set<() => Promise<void>>();
         }
 
@@ -33,7 +33,7 @@ namespace fcc {
          */
         onExecution(): this {
 
-            this._process.add(this._executionContainer.onExecution);
+            this._process.add(this._executionContent.onExecution);
 
             return this;
         }
@@ -43,7 +43,7 @@ namespace fcc {
          * @return {this}
          */
         onEnd(): this {
-            this._process.add(this._executionContainer.onEnd);
+            this._process.add(this._executionContent.onEnd);
             return this;
         }
 
@@ -52,7 +52,7 @@ namespace fcc {
          * @return {this}
          */
         onChangeStatus(): this {
-            this._process.add(this._executionContainer.onChangeStatus);
+            this._process.add(this._executionContent.onChangeStatus);
             return this;
         }
 
@@ -62,7 +62,7 @@ namespace fcc {
          */
         public async start(): Promise<void> {
             for (let method of this._process) {
-                await method.apply(this._executionContainer);
+                await method.apply(this._executionContent);
             }
         }
 
@@ -70,8 +70,8 @@ namespace fcc {
             return this._process;
         }
 
-        get executionContainer(): fcc.IF.IGameProcedureExecutionContainer {
-            return this._executionContainer;
+        get executionContent(): fcc.IF.IGameProcedureExecutionContent {
+            return this._executionContent;
         }
     }
 }

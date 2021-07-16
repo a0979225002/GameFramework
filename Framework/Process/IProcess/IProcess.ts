@@ -18,7 +18,7 @@ namespace fcc {
             /**
              * 流程容器
              */
-            readonly executionContainer: IF.IExecutionContainer;
+            readonly executionContent: IF.IExecutionContent;
 
             /**
              * 更換流程

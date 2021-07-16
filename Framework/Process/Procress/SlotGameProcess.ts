@@ -18,9 +18,9 @@ namespace fcc {
          * @type {ISlotProcedureExecutionContainer}
          * @private
          */
-        private readonly _executionContainer: IF.ISlotProcedureExecutionContainer;
+        private readonly _executionContainer: IF.ISlotProcedureExecutionContent;
 
-        constructor(container: IF.ISlotProcedureExecutionContainer) {
+        constructor(container: IF.ISlotProcedureExecutionContent) {
             this._executionContainer = container;
             this._process = new Set();              //初始化,存放要執行的方法
         }
@@ -100,7 +100,7 @@ namespace fcc {
             }
         }
 
-        get executionContainer(): fcc.IF.ISlotProcedureExecutionContainer {
+        get executionContent(): fcc.IF.ISlotProcedureExecutionContent {
             return this._executionContainer;
         }
 

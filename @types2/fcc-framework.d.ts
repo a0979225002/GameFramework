@@ -3791,7 +3791,7 @@ declare namespace fcc {
          * @Date 2021/7/12 下午6:30:32
          * @Version 0.0.3
          */
-        interface IGameProcedureExecutionContainer extends IExecutionContainer {
+        interface IGameProcedureExecutionContainer extends IExecutionContent {
             /**
              * 執行流程
              * @returns {Promise<void>}
@@ -3813,7 +3813,7 @@ declare namespace fcc {
          * @Date 2021/7/12 下午6:30:32
          * @Version 0.0.3
          */
-        interface ISlotProcedureExecutionContainer extends IExecutionContainer {
+        interface ISlotProcedureExecutionContainer extends IExecutionContent {
             /**
              * 自訂流程開始時判斷
              * @returns {Promise<void>}
@@ -3885,7 +3885,7 @@ declare namespace fcc {
             /**
              * 流程容器
              */
-            readonly executionContainer: IF.IExecutionContainer;
+            readonly executionContainer: IF.IExecutionContent;
             /**
              * 更換流程
              */
@@ -3957,7 +3957,7 @@ declare namespace fcc {
          * @private
          */
         private readonly _executionContainer;
-        constructor(container: IF.IGameProcedureExecutionContainer);
+        constructor(container: IF.IGameProcedureExecutionContent);
         /**
          * 執行流程
          * @return {this}
@@ -3979,7 +3979,7 @@ declare namespace fcc {
          */
         start(): Promise<void>;
         get process(): Set<() => (Promise<void> | void)>;
-        get executionContainer(): fcc.IF.IGameProcedureExecutionContainer;
+        get executionContent(): fcc.IF.IGameProcedureExecutionContent;
     }
 }
 declare namespace fcc {
@@ -4002,7 +4002,7 @@ declare namespace fcc {
          * @private
          */
         private readonly _executionContainer;
-        constructor(container: IF.ISlotProcedureExecutionContainer);
+        constructor(container: IF.ISlotProcedureExecutionContent);
         /**
          * 初始化 : 自訂開始遊戲前的效果
          * @example - 按鈕,背景…等
@@ -4041,7 +4041,7 @@ declare namespace fcc {
          * @return {Promise<void>}
          */
         start(): Promise<void>;
-        get executionContainer(): fcc.IF.ISlotProcedureExecutionContainer;
+        get executionContent(): fcc.IF.ISlotProcedureExecutionContent;
         get process(): Set<() => (Promise<void> | void)>;
     }
 }

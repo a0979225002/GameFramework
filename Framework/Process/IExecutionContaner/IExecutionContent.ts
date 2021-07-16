@@ -7,7 +7,7 @@ namespace fcc {
          * @Date 2021-05-14 下午 03:50
          * @Version 1.0
          */
-        export interface IExecutionContainer {
+        export interface IExecutionContent {
 
             /**
              * 更換流程

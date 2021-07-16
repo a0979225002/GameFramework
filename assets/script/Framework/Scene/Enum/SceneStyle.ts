@@ -1,9 +1,7 @@
 enum SceneStyle {
-
     AUTO = 'AUTO',
     Horizontal = 'Horizontal',
     Vertical = 'Vertical'
-
 }
 
 export {SceneStyle};

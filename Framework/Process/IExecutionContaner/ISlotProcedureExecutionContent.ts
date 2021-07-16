@@ -6,7 +6,7 @@ namespace fcc {
          * @Date 2021-05-14 下午 03:44
          * @Version 1.0
          */
-        export interface ISlotProcedureExecutionContainer extends IExecutionContainer {
+        export interface ISlotProcedureExecutionContent extends IExecutionContent {
 
             /**
              * 自訂流程開始時判斷

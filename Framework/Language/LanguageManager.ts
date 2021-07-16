@@ -153,7 +153,7 @@ namespace fcc {
             this.style.set(type.LanguageType.CHINESE, CNY);
             this.style.set(type.LanguageType.AMERICA, USD);
             this.style.set(type.LanguageType.INDONESIA, IDR);
-            this.style.set(type.LanguageType.TAIWAN, NTD);
+            this.style.set(type.LanguageType.THAILAND, THB);
             this.style.set(type.LanguageType.MALAYSIA, MYR);
             this.style.set(type.LanguageType.VIETNAM, VND);
         }
@@ -208,7 +208,6 @@ namespace fcc {
         getAllText(): object {
             return this.languageCache;
         }
-
 
         /**
          * 重新載入語系

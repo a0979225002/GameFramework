@@ -6,7 +6,7 @@ namespace fcc {
          * @Date 2021-05-14 下午 03:15
          * @Version 1.0
          */
-        export interface IGameProcedureExecutionContainer extends IExecutionContainer {
+        export interface IGameProcedureExecutionContent extends IExecutionContent {
 
             /**
              * 執行流程

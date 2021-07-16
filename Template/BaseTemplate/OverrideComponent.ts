@@ -51,6 +51,7 @@ export default class OverrideComponent extends cc.Component {
      * @protected
      */
     protected checkScheduleRepeat(callback, repeat): Function {
+        //TODO
         if (repeat > 0) {
             callback.prototype = () => {
                 repeat--;
