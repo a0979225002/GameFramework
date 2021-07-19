@@ -662,7 +662,7 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * 正常情況,推播當前auto狀態事件
      * @private
      */
-    protected autoButtonEventListener(): Promise<void>;
+    protected autoButtonEventListener(): void;
     /**
      * 加速按鈕監聽事件
      * @protected
@@ -1685,6 +1685,232 @@ declare abstract class ALookAtTemplate extends AGenericTemplate {
      * @private
      */
     private getScrollFocusStateObserver;
+}
+declare abstract class AWinLinTemplate extends AGenericTemplate {
+    /**
+     * 存放所有贏線會經過的點(老虎機所有格子的中心點)
+     * @type {Array<Map<number, number>>}
+     * @private
+     */
+    private winLinAllPosition;
+    /**
+     * 存放該局所有會使用到的線
+     * ```
+     *   Array[第幾條線]<Map<線段編號(0~slot長度+1),線段 node>>
+     * ```
+     * @type {Array<Map<number, cc.Node>>}
+     * @private
+     */
+    private allWinLine;
+    /**
+     * 判斷是否持續執行單線播放
+     * @type {boolean}
+     * @private
+     */
+    private isStop;
+    /**
+     * 向量 : 當前線條執行方向
+     * @type {cc.Vec2}
+     * @private
+     */
+    protected vector: cc.Vec2;
+    /**
+     * 初始角度
+     * @type {number}
+     * @private
+     */
+    protected angle: number;
+    /**
+     * 執行線條動畫時間(單位為S)
+     * 建議 : 0.5 以下
+     */
+    protected runLineSpeed: number;
+    /**
+     * 容器層級位置,因容器位置會改變線條層級顯示
+     * 注意:需要再最上層參數可以是 -1
+     * @type {number}
+     * @private
+     */
+    protected containerIndex: number;
+    /**
+     * 每列格子數量
+     * @type {number}
+     * @private
+     */
+    protected abstract gridCont: number;
+    /**
+     * 每個格子高度
+     * @type {number}
+     * @private
+     */
+    protected abstract gridHeight: number;
+    /**
+     * 贏分線條,Sprite組件
+     * @protected
+     */
+    protected abstract lineSprite: any;
+    /**
+     * slot所有列,計算點用
+     * @type {cc.Node[]}
+     * @protected
+     */
+    protected abstract gridRow: cc.Node[];
+    /**
+     * 存放所有贏線的容器
+     * @type {cc.Node}
+     * @private
+     */
+    protected abstract _container: cc.Node;
+    /**
+     * 隱藏物件,當贏線動畫跑完之後,需自行隱藏該線條,與贏分格子
+     * ```
+     *  隱藏線條方法可使用 :
+     *      restoreLines(lineNumber?)
+     *
+     * ```
+     * @param {number} lineNumber - 有參數回傳為單一線條,無參數回傳為所有線條
+     * @return {Promise<void>}
+     * @protected
+     */
+    protected abstract hideNode(lineNumber?: number): Promise<void>;
+    /**
+     * 顯示獲獎格子動畫
+     * @param {number} gridNumber - 獲獎的格子
+     * @protected
+     */
+    protected abstract showWinGrid(gridNumber: number): void;
+    /**
+     * 顯示獲獎分數
+     * @param {number} lineNumber - 有參數回傳為單一線條,無參數回傳為所有線條
+     * @protected
+     */
+    protected abstract showWinPoint(lineNumber?: number): void;
+    protected onCreate(): void;
+    protected start(): void;
+    /**
+     * 還原使用過的贏線為初始狀態
+     * @param {number} lineNumber - 有傳參會只對該線條內的線段初始,無傳參會對所有線段初始
+     */
+    restoreLines(lineNumber?: number): void;
+    /**
+     * 建構該局贏線的Node容器
+     */
+    protected buildWinLineContainer(): void;
+    /**
+     * 執行單條贏線依序播放
+     * @param {Array<Array<number>>} answers
+     * @param {() => void} callback
+     * @param self
+     */
+    play(answers: Array<Array<number>>): Promise<void>;
+    /**
+     * 顯示所有線
+     * @private
+     */
+    private runLine;
+    /**
+     * 執行全贏線動畫
+     * @param {Array<Array<number>>} answer
+     * @param {() => void} callback
+     * @param self
+     */
+    playAll(answer: Array<Array<number>>): Promise<void>;
+    /**
+     * 顯示所有線
+     * @private
+     */
+    private runAllLine;
+    /**
+     * 初始各線段初始位置
+     * @param {number} lineNumber
+     * @param {number} lineChildNumber
+     * @param {number} answer
+     * @private
+     */
+    private initLinePosition;
+    /**
+     * 拿取座標位置
+     * @param {number} lineNumber - 哪一條線
+     * @param {number} lineChildNumber - 第幾線段:(整條線段拆分成 該Slot列數+1)
+     * @param {number} answer - 答案 (第幾個grid)
+     * @return {cc.Vec2} - 座標
+     * @private
+     */
+    private getPosition;
+    /**
+     * 執行播放跑線動畫
+     * @param {number} lineNumber - 哪一條線
+     * @param {Array<number>} answer - 該線條會經過的所有答案
+     * @return {Promise<void>}
+     * @private
+     */
+    private runLineToAsync;
+    /**
+     * 依序執行該線條遞迴播放跑線動畫
+     * @NODE 對應A點 > B點 > C 點方式,依序使用遞迴方式將線條連線
+     * @param {number} lineNumber - 哪一條線
+     * @param {Array<number>} answer - 該線條會經過的所有答案
+     * @param {(value: (void | PromiseLike<void>)) => void} resolve - 釋放異步
+     * @param {number} lineChildNumber - 由遞迴增加,每遞迴一次更新下個線段
+     */
+    private lineAndGridAnimationLoop;
+    /**
+     * 複製贏線
+     * @param {number} quantity - 贏幾條線
+     * @return {this}
+     * @protected
+     */
+    copyWinLinToContainer(quantity: number): this;
+    /**
+     * 初始所有line會經過的點
+     * ```
+     *      注意:如果點位不正常,請自行override實現
+     * ```
+     */
+    protected initWinLinPosition(): Map<number, number>[];
+    /**
+     * 計算平均速度
+     * @protected
+     */
+    protected calculationAverageSpeed(): void;
+    /**
+     * 獲取兩點間距離
+     * ```
+     *      兩點間距離公式 :
+     *          d = √(p2.x - p1.x)^2 + (p2.y- p1.y)^2
+     * ```
+     * @param {cc.Vec2} p1 - 起點
+     * @param {cc.Vec2} p2 - 要到達的點
+     * @return {number} - 兩點間距離
+     * @private
+     */
+    private getDistanceBetweenTwoPoints;
+    /**
+     * 獲取兩點間角度
+     * ```
+     *      1.獲取P1到P2的向量方向
+     *          公式:X:(P2.x -P1.x),Y:(P2.y - P1-y)
+     *
+     *      2.弧度轉換角度公式:
+     *         angle = radians * (180 / Math.PI)
+     * ```
+     * @param {cc.Vec2} p1 - 起始點
+     * @param {cc.Vec2} p2 - 終點
+     * @return {number} - 兩點間角度
+     */
+    private getAngleBetweenTwoPoints;
+    /**
+     * 清除所有該局使用完的贏線
+     */
+    clear(): void;
+    /**
+     * 數據測試,待刪除
+     * @param {number} quantity
+     * @return {Array<Array<number>>}
+     * @protected
+     */
+    test(quantity: number): Array<Array<number>>;
+    get container(): cc.Node;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -3355,4 +3581,4 @@ declare class NoLineTableInfo implements INoLineTableInfoModule {
     get EventRequire(): number;
     set EventRequire(value: number);
 }
-export { AGenericTemplate, OverrideComponent, AConfigTemplate, AutoStateChangeNotification, ScrollFocusStateNotification, SpeedStateChangeNotification, StopNowStateNotification, UserMoneyChangeNotification, UserTotalBetChangeNotification, UserWinPointStateNotification, ResponseResultNotification, AutoStateChangeObserver, ScrollFocusStateObserver, SpeedStateChangeObserver, StopNowStateObserver, UserMoneyChangeObserver, UserTotalBetChangeObserver, UserWinPointStateObserver, ResponseResultObserver, AMainGameButtonTemplate, AMainGameOnlyButtonTemplate, AMainGameDoubleButtonTemplate, AMenuButtonTemplate, AMenuDoubleButtonTemplate, AMenuOnlyButtonTemplate, ARecordButtonTemplate, ARecordDoubleButtonTemplate, ARecordOnlyButtonTemplate, AErrorFrameTemplate, ALoadingTemplate, ALoadingFrameTemplate, ALookAtTemplate, AMainInitTemplate, ASlotTemplate, NoLineSlotTemplate, ASlotInitializeTemplate, IExtendHasLineFreeResult, IHasLineFreeResultModule, INoLineFreeResultModel, ISlotFreeBaseResultModel, IExtendHasLineResult, IHasLineResultModule, INoLineResultModel, ISlotBaseResultModel, IBaseTableInfoModel, IHasLineTableInfoModule, INoLineTableInfoModule, ExtendHasLineFreeResult, HasLineFreeResult, NoLineFreeResult, ExtendHasLineResult, HasLineResult, NoLineResult, HasLineTableInfo, NoLineTableInfo };
+export { AGenericTemplate, OverrideComponent, AConfigTemplate, AutoStateChangeNotification, ScrollFocusStateNotification, SpeedStateChangeNotification, StopNowStateNotification, UserMoneyChangeNotification, UserTotalBetChangeNotification, UserWinPointStateNotification, ResponseResultNotification, AutoStateChangeObserver, ScrollFocusStateObserver, SpeedStateChangeObserver, StopNowStateObserver, UserMoneyChangeObserver, UserTotalBetChangeObserver, UserWinPointStateObserver, ResponseResultObserver, AMainGameButtonTemplate, AMainGameOnlyButtonTemplate, AMainGameDoubleButtonTemplate, AMenuButtonTemplate, AMenuDoubleButtonTemplate, AMenuOnlyButtonTemplate, ARecordButtonTemplate, ARecordDoubleButtonTemplate, ARecordOnlyButtonTemplate, AErrorFrameTemplate, ALoadingTemplate, ALoadingFrameTemplate, ALookAtTemplate, AWinLinTemplate, AMainInitTemplate, ASlotTemplate, NoLineSlotTemplate, ASlotInitializeTemplate, IExtendHasLineFreeResult, IHasLineFreeResultModule, INoLineFreeResultModel, ISlotFreeBaseResultModel, IExtendHasLineResult, IHasLineResultModule, INoLineResultModel, ISlotBaseResultModel, IBaseTableInfoModel, IHasLineTableInfoModule, INoLineTableInfoModule, ExtendHasLineFreeResult, HasLineFreeResult, NoLineFreeResult, ExtendHasLineResult, HasLineResult, NoLineResult, HasLineTableInfo, NoLineTableInfo };

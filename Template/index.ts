@@ -4,7 +4,7 @@
  * @Date 2021-07-06 下午 01:55
  * @Version 0.03
  */
-const VERSION = "0.03"//版本號
+const VERSION = "0.04"//版本號
 
 /*所有模板繼承之對象*/
 export {default as AGenericTemplate} from './BaseTemplate/AGenericTemplate';
@@ -14,14 +14,28 @@ export {default as OverrideComponent} from './BaseTemplate/OverrideComponent';
 export {default as AConfigTemplate} from './Config/AConfigTemplate';
 
 /*通用 Notification 管理器*/
-export {default as AutoStateChangeNotification} from './Event/Notification/GameNotification/AutoStateChangeNotification';
-export {default as ScrollFocusStateNotification} from './Event/Notification/GameNotification/ScrollFocusStateNotification';
-export {default as SpeedStateChangeNotification} from './Event/Notification/GameNotification/SpeedStateChangeNotification';
+export {
+    default as AutoStateChangeNotification
+} from './Event/Notification/GameNotification/AutoStateChangeNotification';
+export {
+    default as ScrollFocusStateNotification
+} from './Event/Notification/GameNotification/ScrollFocusStateNotification';
+export {
+    default as SpeedStateChangeNotification
+} from './Event/Notification/GameNotification/SpeedStateChangeNotification';
 export {default as StopNowStateNotification} from './Event/Notification/GameNotification/StopNowStateNotification';
-export {default as UserMoneyChangeNotification} from './Event/Notification/GameNotification/UserMoneyChangeNotification';
-export {default as UserTotalBetChangeNotification} from './Event/Notification/GameNotification/UserTotalBetChangeNotification';
-export {default as UserWinPointStateNotification} from './Event/Notification/GameNotification/UserWinPointStateNotification';
-export {default as ResponseResultNotification} from './Event/Notification/ResponseNotifivation/ResponseResultNotification';
+export {
+    default as UserMoneyChangeNotification
+} from './Event/Notification/GameNotification/UserMoneyChangeNotification';
+export {
+    default as UserTotalBetChangeNotification
+} from './Event/Notification/GameNotification/UserTotalBetChangeNotification';
+export {
+    default as UserWinPointStateNotification
+} from './Event/Notification/GameNotification/UserWinPointStateNotification';
+export {
+    default as ResponseResultNotification
+} from './Event/Notification/ResponseNotifivation/ResponseResultNotification';
 
 /*通用 Observer 事件*/
 export {default as AutoStateChangeObserver} from './Event/Observer/GameObserver/AutoStateChangeObserver';
@@ -59,6 +73,9 @@ export {default as ALoadingFrameTemplate} from './LoadingFrame/ALoadingFrameTemp
 
 /*瞇排效果 模板*/
 export {default as ALookAtTemplate} from './LookAtFrame/ALookAtTemplate';
+
+/*贏分線效果 模板*/
+export {default as AWinLinTemplate} from './WinLine/AWinLinTemplate';
 
 /*主遊戲進入初始化動作 模板*/
 export {default as AMainInitTemplate} from './MainInit/AMainInitTemplate';

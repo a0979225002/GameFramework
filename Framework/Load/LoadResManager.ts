@@ -24,6 +24,14 @@ namespace fcc {
          * 次加載,可以在還未加載完成時,也能進入MainGame Scene
          */
         private _secondaryLoadState: Map<string, number>;
+
+        /**
+         * 外部資料加載,狀態
+         * @type {Map<string, number>}
+         * @private
+         */
+        private _scriptLoadState: Map<string, number>;
+
         /**
          * img物件保存
          */
@@ -64,9 +72,10 @@ namespace fcc {
 
         private constructor(configManager: IF.IConfigManager) {
             this.configManager = configManager;
-            this.loadTypeHandler = new LoadTypeHandler(this,configManager);       //配發要用哪個class執行載入動作
+            this.loadTypeHandler = new LoadTypeHandler(this, configManager);       //配發要用哪個class執行載入動作
             this._initialLoadState = new Map<string, number>();                                 //主加載狀態
             this._secondaryLoadState = new Map<string, number>();                               //次加載狀態
+            this._scriptLoadState = new Map<string, number>();                                   //外次資源加載
             this._imgRes = new Map<string, Map<string, cc.SpriteFrame>>();                      //圖片
             this._spineRes = new Map<string, sp.SkeletonData>();                                //骨架
             this._readFileRes = new Map<string, Map<string, string>>();                         //text文件
@@ -162,13 +171,21 @@ namespace fcc {
         }
 
         /**
+         * 外部資源加載完成返回
+         * @param {string} name
+         * @param {number} state
+         */
+        public loadScriptEventCallback(name: string, state: number): void {
+            this.onlyResEventCallback(name, state);
+        }
+
+        /**
          * 單一資源返回判斷,用戶是否有添加callback參數
          * @param {string} name
          * @param {number} state
          * @private
          */
         private onlyResEventCallback(name: string, state: number) {
-
             //如果有綁訂的回傳方法時,將回傳該資源當前的加載進度
             if (this.callFun.has(name)) {
                 this.callFun.get(name)(state);
@@ -208,9 +225,7 @@ namespace fcc {
         loadBundle(name: string, type: type.LoadType, url: string, isLanguageUsed?: boolean): this {
 
             if (isLanguageUsed) {
-
                 url = `${url}/${this.configManager.language}`
-
             }
 
             this.loadTypeHandler.executeLoadBundle(name, type, url).then();
@@ -328,6 +343,10 @@ namespace fcc {
             return this._secondaryLoadState
         }
 
+        get scriptLoadState(): Map<string, number> {
+            return this._scriptLoadState;
+        }
+
         get imgRes(): Map<string, Map<string, cc.SpriteFrame>> {
             return this._imgRes
         }
@@ -355,5 +374,6 @@ namespace fcc {
         get sceneRes(): Map<string, cc.SceneAsset> {
             return this._sceneRes
         }
+
     }
 }

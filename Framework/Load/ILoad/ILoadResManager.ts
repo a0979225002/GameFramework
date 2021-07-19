@@ -21,6 +21,11 @@ namespace fcc {
             secondaryLoadState: Map<string, number>;
 
             /**
+             * 外部資料加載,狀態
+             */
+            scriptLoadState:Map<string,number>;
+
+            /**
              * img物件保存
              */
             imgRes: Map<string, Map<string, cc.SpriteFrame>>;
@@ -72,6 +77,13 @@ namespace fcc {
              * @param {number} state
              */
             loadSecondaryEventCallback(name: string, state: number): void;
+
+            /**
+             * 外部資源加載完成返回
+             * @param {string} name
+             * @param {number} state
+             */
+            loadScriptEventCallback(name: string, state: number): void
 
             /**
              * 加載該資料夾底下所有資源

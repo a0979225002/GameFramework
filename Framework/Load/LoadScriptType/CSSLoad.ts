@@ -28,6 +28,9 @@ namespace fcc {
             this.linkElem.rel = "stylesheet";
             this.linkElem.type = this.type;
             this.linkElem.href = url;
+            this.linkElem.onload = ()=>{
+                LoadResManager.instance.loadScriptEventCallback(this.scriptName,1);
+            };
             ABS.ALoadScriptType.head.appendChild(this.linkElem);
             LoadResManager.instance.scriptRes.add(url);
         }

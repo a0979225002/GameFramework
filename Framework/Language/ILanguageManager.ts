@@ -28,21 +28,6 @@ namespace fcc {
         export interface ILanguageManager {
 
             /**
-             * 當前語系
-             */
-            nowLang: string | type.LanguageType;
-
-            /**
-             * 當前綁定的組件
-             */
-            nowLanguageLabel: Map<cc.Label, string>;
-
-            /**
-             * 當前所有語系樣式列表
-             */
-            style: Map<string | type.LanguageType, IF.ILanguageStyle>;
-
-            /**
              * 額外添加新的語系樣式
              * @param {string | fcc.type.LanguageType} key - 額外語系鍵值
              * @param {fcc.IF.ILanguageStyle} style - 新樣式
@@ -61,7 +46,7 @@ namespace fcc {
             reLoadNowLanguage();
 
             /**
-             * 更新文字,會順便更新當前語系樣式
+             * 更新文字該label文字
              * @param {cc.Label} target - 要更新的目標
              * @param {string} textKey -
              * @return {this}
@@ -71,13 +56,19 @@ namespace fcc {
             /**
              * 更新所有透過 updateText更新的組件,更新該組件樣是
              * 注意 : 須配合 updateText 一起使用
+             * @param {boolean} save - 是否要保存 label組件,可配合updateLanguage()方法將已經綁定的label全部再次更換語系文字
              */
-            updateStyle(): void;
+            updateStyle(save:boolean): void;
 
             /**
              * 清除無用的語系緩存
              */
-            removeStringBuffer(): void;
+            removeStringBuffer(language?: string | type.LanguageType): void;
+
+            /**
+             * 添加當前語系
+             */
+            setLanguage():void;
 
             /**
              * 獲取當前語系數據,返回該key對應的文字

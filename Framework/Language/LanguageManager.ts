@@ -84,40 +84,42 @@ namespace fcc {
          * 當前語言文字緩存
          * @type {{[p: string]: string}}
          */
-        languageCache: { [key: string]: string };
+        private languageCache: { [key: string]: string };
 
         /**
          * 當前語系
          * @type {string}
          */
-        nowLang: string | type.LanguageType;
+        private _nowLang: string | type.LanguageType;
 
         /**
          * 當前綁定的組件
          * @type {Map<cc.Label, string>}
          */
-        nowLanguageLabel: Map<cc.Label, string>;
+        private readonly _nowLanguageLabels: Map<cc.Label, string>;
 
         /**
-         * 語系組件緩存
+         * 所有更新完後的label 都會保存至這,需要再次更換語系時使用
+         * @type {Array<Map<cc.Label, string>>}
+         * @private
          */
-        private labelCache: cc.Label[];
+        private allLanguageLabel: Array<Map<cc.Label, string>>;
 
         /**
          * 當前所有語系樣式列表
          * @type {object}
          */
-        style: Map<string | fcc.type.LanguageType, fcc.IF.ILanguageStyle>;
-
+        private readonly _style: Map<string | fcc.type.LanguageType, fcc.IF.ILanguageStyle>;
         private configManager: fcc.IF.IConfigManager;
         private static _instance: IF.ILanguageManager;
 
         constructor(configManager: IF.IConfigManager) {
             this.configManager = configManager;
-            this.style = new Map<string | fcc.type.LanguageType, fcc.IF.ILanguageStyle>();  //初始各語系樣式
-            this.nowLanguageLabel = new Map<cc.Label, string>();                            //初始當前綁定的所有label
-            this.initDefaultStyle();                                                        //初始化預設語系樣式
-            this.nowLang = this.configManager.language;                                     //初始當前語系
+            this._style = new Map<string | fcc.type.LanguageType, fcc.IF.ILanguageStyle>();  //初始各語系樣式
+            this.allLanguageLabel = new Array<Map<cc.Label, string>>();                      //初始所有label
+            this._nowLanguageLabels = new Map<cc.Label, string>();                            //初始當前綁定的所有label
+            this.initDefaultStyle();                                                         //初始化預設語系樣式
+            this._nowLang = this.configManager.language;                                     //初始當前語系
         }
 
 
@@ -149,20 +151,20 @@ namespace fcc {
          * @private
          */
         private initDefaultStyle() {
-            this.style.set(type.LanguageType.TAIWAN, NTD);
-            this.style.set(type.LanguageType.CHINESE, CNY);
-            this.style.set(type.LanguageType.AMERICA, USD);
-            this.style.set(type.LanguageType.INDONESIA, IDR);
-            this.style.set(type.LanguageType.THAILAND, THB);
-            this.style.set(type.LanguageType.MALAYSIA, MYR);
-            this.style.set(type.LanguageType.VIETNAM, VND);
+            this._style.set(type.LanguageType.TAIWAN, NTD);
+            this._style.set(type.LanguageType.CHINESE, CNY);
+            this._style.set(type.LanguageType.AMERICA, USD);
+            this._style.set(type.LanguageType.INDONESIA, IDR);
+            this._style.set(type.LanguageType.THAILAND, THB);
+            this._style.set(type.LanguageType.MALAYSIA, MYR);
+            this._style.set(type.LanguageType.VIETNAM, VND);
         }
 
         /**
          * 額外添加新的語系樣式
          */
         addStyle(key: string | type.LanguageType, style: IF.ILanguageStyle) {
-            this.style.set(key, style)
+            this._style.set(key, style)
         }
 
         /**
@@ -170,19 +172,22 @@ namespace fcc {
          * @param {string | fcc.type.LanguageType} language - 要更新的語系
          */
         updateLanguage(language: string | type.LanguageType) {
-            if (this.nowLang != language) {
-                this.nowLang = language;
-                for (let label of this.nowLanguageLabel.keys()) {
-                    let textKey = this.nowLanguageLabel.get(label);
-                    this.updateText(label, textKey);
+            if (this._nowLang != language) {
+                this._nowLang = language;
+                for (let map of this.allLanguageLabel) {
+                    for (let label of map.keys()) {
+                        let textKey = map.get(label);
+                        this.updateText(label, textKey);
+                    }
                 }
+                this.updateStyle(false);
             }
         }
 
         /**
          * 添加當前語系
          */
-        setLanguage() {
+        setLanguage(): void {
             if (!this.languageCache) {
                 this.reLoadNowLanguage();
             }
@@ -193,7 +198,7 @@ namespace fcc {
          * @return {string}
          */
         getLanguage(): string {
-            return this.nowLang;
+            return this._nowLang;
         }
 
         /**
@@ -212,9 +217,13 @@ namespace fcc {
         /**
          * 重新載入語系
          */
-        reLoadNowLanguage() {
+        reLoadNowLanguage(language?: string | type.LanguageType) {
             try {
-                this.languageCache = window.language_Mode[this.nowLang];
+                if (language) {
+                    this.languageCache = window.language_Mode[language];
+                } else {
+                    this.languageCache = window.language_Mode[this._nowLang];
+                }
             } catch (e) {
                 console.log("window.language_Mode 查找不到該語系", e);
             }
@@ -229,32 +238,36 @@ namespace fcc {
 
         updateText(target: cc.Label, textKey: string): this {
             target.string = this.getText(textKey);
-            this.labelCache.push(target);
+            this._nowLanguageLabels.set(target, textKey);
             return this;
         }
 
         /**
          * 更新所有透過 updateText更新的組件,更新該組件樣是
          * 注意 : 須配合 updateText 一起使用
+         * @param {boolean} save - 是否要保存 label組件,可配合updateLanguage()方法將已經綁定的label全部再次更換語系文字
          */
-        updateStyle(): void {
+        updateStyle(save: boolean): void {
 
-            let language: string | fcc.type.LanguageType = this.nowLang;
+            let language: string | fcc.type.LanguageType = this._nowLang;
 
-            if (!this.style.has(this.nowLang)) {
+            if (!this._style.has(this._nowLang)) {
                 language = type.LanguageType.AMERICA;
             }
 
-            const fontFamily: string = this.style.get(language).fontFamily;
-            const fontSize: number = this.style.get(language).fontSize;
-            const lineHeight: number = this.style.get(language).lineHeight;
+            const fontFamily: string = this._style.get(language).fontFamily;
+            const fontSize: number = this._style.get(language).fontSize;
+            const lineHeight: number = this._style.get(language).lineHeight;
 
-            for (let label of this.labelCache) {
+            for (let label of this._nowLanguageLabels.keys()) {
                 label.fontFamily = fontFamily;
                 label.fontSize = fontSize;
                 label.lineHeight = lineHeight;
             }
-            this.labelCache.length = 0;
+            if (save) this.allLanguageLabel.push(this._nowLanguageLabels);
+            this._nowLanguageLabels.clear();
         }
     }
+
+
 }

@@ -29,14 +29,11 @@ namespace fcc {
             }
             this.linkElem.type = this.type;
             this.linkElem.src = url;
-            this.linkElem.onload = this.test;
+            this.linkElem.onload = () => {
+                LoadResManager.instance.loadScriptEventCallback(this.scriptName, 1);
+            };
             ABS.ALoadScriptType.head.appendChild(this.linkElem);
             LoadResManager.instance.scriptRes.add(url);
-            cc.log("測試加載script", "01")
-        }
-
-        test() {
-            cc.log("測試加載script", "00")
         }
     }
 }
