@@ -64,7 +64,7 @@ namespace fcc {
         private _sceneRes: Map<string, cc.SceneAsset>
 
         private readonly loadTypeHandler: LoadTypeHandler;
-        private callFun: Map<string, (progress: number) => void>;
+        private callFun: Map<string, (progress: number, isError?: boolean) => void>;
         private count: number;
         private allProgress: number;
         private beforeProgress: number;
@@ -80,7 +80,7 @@ namespace fcc {
             this._spineRes = new Map<string, sp.SkeletonData>();                                //骨架
             this._readFileRes = new Map<string, Map<string, string>>();                         //text文件
             this._prefabRes = new Map<string, cc.Prefab>();                                     //預載體
-            this.callFun = new Map<string, (progress: number) => void>();                       //callback方法
+            this.callFun = new Map<string, (progress: number, isError?: boolean) => void>();                       //callback方法
             this._musicRes = new Map<string, cc.AudioClip>();                                   //音樂
             this._scriptRes = new Set<string>();                                                //外部腳本保存URL地址,單存判斷是否重複加載
             this._sceneRes = new Map<string, cc.SceneAsset>();                                  //保存scene場場景資源
@@ -173,26 +173,38 @@ namespace fcc {
         /**
          * 外部資源加載完成返回
          * @param {string} name
-         * @param {number} state
+         * @param {number} isError
          */
-        public loadScriptEventCallback(name: string, state: number): void {
-            this.onlyResEventCallback(name, state);
+        public loadScriptEventCallback(name: string, isError: boolean): void {
+            this.onlyResEventCallback(name, 1, isError);
         }
 
         /**
          * 單一資源返回判斷,用戶是否有添加callback參數
          * @param {string} name
          * @param {number} state
+         * @param isError - 是否有錯誤回傳(外部加載腳本用)
          * @private
          */
-        private onlyResEventCallback(name: string, state: number) {
+        private onlyResEventCallback(name: string, state: number, isError?: boolean) {
+
+
             //如果有綁訂的回傳方法時,將回傳該資源當前的加載進度
             if (this.callFun.has(name)) {
-                this.callFun.get(name)(state);
+
+                let fun = this.callFun.get(name);
+
                 if (state == 1) {
                     //事件結束,清除該是保存的function
                     this.callFun.delete(name);
                 }
+
+                if (isError) {
+                    fun(state, isError);
+                } else {
+                    fun(state);
+                }
+
             }
         }
 
@@ -235,10 +247,11 @@ namespace fcc {
 
         /**
          * 保存使用者要callback的方法,當有回傳進度時將透過 loadEventCallback方法回傳進度
-         * @param callFun
-         * @param resName
+         * @param {(progress: number,isError?:boolean) => void} callFun
+         * @param {string} resName - 檔案名稱
+         * @returns {this}: methodName 未使用情況,回傳 void
          */
-        callback(callFun: (progress: number) => void, resName?: string) {
+        callback(callFun: (progress: number, isError?: boolean) => void, resName?: string) {
             if (resName) {
                 if (this.callFun.has(resName)) {
                     ErrorManager.instance.executeError(type.ErrorType.LOAD_FW, "如果拿取該資源進度,請勿重複callback");
@@ -275,14 +288,13 @@ namespace fcc {
 
         /**
          * 加載外部腳本
-         * @param name
-         * @param type
-         * @param url
+         * @param name - 檔案名稱,不含副檔名
+         * @param type - 檔案類型
+         * @param url - 檔案url,不含外部 url
+         * @param parameter - get 參數
          */
-        loadExternalScript(name: string, type: type.LoadType, url: string) {
-
-            this.loadTypeHandler.executeLoadExternalScript(name, type, url);
-
+        loadExternalScript(name: string, type: type.LoadType, url: string, parameter: string = "") {
+            this.loadTypeHandler.executeLoadExternalScript(name, type, url, parameter);
             return this;
         }
 
@@ -290,9 +302,7 @@ namespace fcc {
          * 重置
          */
         reset() {
-
             LoadResManager._instance = null;
-
         }
 
         //--------------------------------------setter------------------------------------

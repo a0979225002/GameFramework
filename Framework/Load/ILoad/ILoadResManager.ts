@@ -81,9 +81,9 @@ namespace fcc {
             /**
              * 外部資源加載完成返回
              * @param {string} name
-             * @param {number} state
+             * @param {number} isError
              */
-            loadScriptEventCallback(name: string, state: number): void
+            loadScriptEventCallback(name: string, isError: boolean): void
 
             /**
              * 加載該資料夾底下所有資源
@@ -110,20 +110,21 @@ namespace fcc {
 
             /**
              * 保存使用者要callback的方法,當有回傳進度時將透過 loadEventCallback方法回傳進度
-             * @param {(progress: number) => void} callFun
-             * @param {string} methodName
+             * @param {(progress: number,isError?:boolean) => void} callFun
+             * @param {string} methodName- 檔案名稱
              * @returns {this}: methodName 未使用情況,回傳 void
              */
-            callback(callFun: (progress: number) => void, methodName?: string): this;
+            callback(callFun: (progress: number,isError?:boolean) => void, methodName?: string): this;
 
             /**
-             * 載入外部腳本
-             * @param {string} name
-             * @param {LoadType} type
-             * @param {string} url
+             * 加載外部腳本
+             * @param name - 檔案名稱,不含副檔名
+             * @param type - 檔案類型
+             * @param url - 檔案url,不含外部 url
+             * @param parameter - get 參數
              * @returns {this}
              */
-            loadExternalScript(name: string, type: type.LoadType, url: string): this;
+            loadExternalScript(name: string, type: type.LoadType, url: string,parameter?:string): this;
 
             /**
              * 查看該資源是否已加載完畢

@@ -126,17 +126,18 @@ namespace fcc {
 
         /**
          * 加載外部腳本
-         * @param name - 檔名
+         * @param name - 檔案名稱,不含副檔名
          * @param type - 檔案類型
-         * @param url - url地址
+         * @param url - 檔案url,不含外部 url
+         * @param parameter - get 參數
          */
-        executeLoadExternalScript(name: string, type: type.LoadType, url: string) {
+        executeLoadExternalScript(name: string, type: type.LoadType, url: string, parameter: string) {
             switch (type) {
                 case fcc.type.LoadType.css:
-                    new CSSLoad(name, "text/css", url).loadScript();
+                    new CSSLoad(name, "text/css", url,parameter).loadScript();
                     break
                 case fcc.type.LoadType.script:
-                    new ScriptLoad(name, "text/javascript", url).loadScript();
+                    new ScriptLoad(name, "text/javascript", url,parameter).loadScript();
                     break
                 default:
                     ErrorManager.instance.executeError(fcc.type.ErrorType.TYPE_FW, "LoadType 無法偵測");

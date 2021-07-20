@@ -2817,7 +2817,7 @@ declare namespace fcc {
         /**
          * 重新載入語系
          */
-        reLoadNowLanguage(): void;
+        reTakeLanguageBuffer(): void;
         /**
          * TODO 清除無用的語系緩存
          */

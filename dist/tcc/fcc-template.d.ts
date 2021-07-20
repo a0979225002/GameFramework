@@ -95,18 +95,19 @@ declare abstract class AConfigTemplate extends AGenericTemplate {
      */
     protected abstract configSetting(): void;
     /**
-     * 綁定遊戲 network response module;
+     * 初始Client參數
+     * @protected
      */
-    protected abstract responseDataModelSetting(): void;
+    protected abstract initClient(): void;
     /**
      * 音樂撥放樣式設定
      */
     protected abstract audioSetting(): void;
     /**
-     * 遊戲流程設定
+     * 遊戲流程創建
      * @protected
      */
-    protected abstract processSetting(): void;
+    protected abstract processCreate(): void;
     protected onLoad(): void;
 }
 /**
@@ -1591,14 +1592,36 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
     protected abstract sceneStyle(): void;
     protected onLoad(): void;
     protected start(): void;
-    /**
-     * 如果為上線模式,將會獲取外部IP,自動更新遊戲配置Config內的URL
-     */
-    private static updateUserIp;
-    /**
-     * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
-     */
-    private tableInfoEvent;
+    //
+    // /**
+    //  * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
+    //  */
+    // private tableInfoEvent() {
+    //     fcc.eventMgr.eventListener(
+    //         fcc.type.ServerEventType.TABLE_INFO, (tableInfo) => {
+    //             for (let name of Object.keys(tableInfo)) {
+    //                 if (this.tableInfo[name] === undefined) {
+    //                     try {
+    //                         fcc.errorMgr.executeError(
+    //                             fcc.type.ErrorType.WEB_RESPONSE_FW,
+    //                             `無 ${name} 參數,請更換 TableInfo Type`
+    //                         );
+    //                     } catch (e) {
+    //                         console.log(e);
+    //                     }
+    //                 } else {
+    //                     this.tableInfo[name] = tableInfo[name];
+    //                 }
+    //             }
+    //             console.log(`${fcc.type.ServerEventType.TABLE_INFO} : ${this.tableInfo}`);
+    //
+    //             fcc.notificationMgr<UserMoneyChangeNotification>()
+    //                 .getNotification(fcc.type.NotificationType.USER_MONEY_CHANGE)
+    //                 .notify(this.tableInfo.UserPoint);
+    //             this._canPlayGame = true;
+    //
+    //         }, true)
+    // }
     /**
      * 是否可以進入主遊戲,由server回傳tableInfo後此class改變狀態
      * @type {boolean}

@@ -9,6 +9,9 @@
 /// <reference path="./Scene/SceneManager.ts" />
 /// <reference path="./Slot/SlotStyleManager.ts" />
 /// <reference path="./Listener/NotificationManager.ts" />
+
+const FCC_VERSION = 0.04;
+
 namespace fcc {
 
 
@@ -130,4 +133,5 @@ namespace fcc {
  * 擴展至全域,cocos規定
  * @type {fcc}
  */
+
 globalThis.fcc = fcc;

@@ -9,7 +9,7 @@ namespace fcc {
      * @Date 2021-04-14 下午 20:24
      * @Version 1.1
      */
-    export class EventManager extends cc.EventTarget implements IF.IEventManager {
+    export class EventManager implements IF.IEventManager {
 
         private static _instance: IF.IEventManager;
 
@@ -31,7 +31,6 @@ namespace fcc {
         private readonly _eventsCurrentlyBeing: Map<string, string>
 
         private constructor(configManager: IF.IConfigManager) {
-            super();
             this.configManager = configManager;
             this._eventCount = 0;
             this._eventsCurrentlyBeing = new Map<string, string>();
@@ -62,21 +61,20 @@ namespace fcc {
 
         /**
          * 添加事件
-         * @param eventTarget
-         * @param {string} eventName
+         * @param {string} eventName - 事件名稱
          * @param {any} any : 要回傳的物件
          */
-        public emitEvent(eventName: type.ServerEventType | string, ...any: any) {
-            any ? this.target.emit(eventName, ...any) : this.target.emit(eventName);
+        public emitEvent(eventName: type.ServerEventType | string, ...any: any): void {
+            this.target.emit(eventName, ...any);
         }
 
         /**
          * server監聽回傳接收
-         * @param {string} eventName
-         * @param {Function} callFun
+         * @param {string} eventName- 事件名稱
+         * @param {Function} callFun - 返回方法
          * @param isPermanent - 是否常駐
          */
-        public eventListener(eventName: string, callFun: (...target: any) => void, isPermanent: boolean) {
+        public eventListener(eventName: string, callFun: (...parameter: any) => void, isPermanent: boolean) {
             this._eventCount += 1;
             this._eventsCurrentlyBeing.set("severEvent", eventName);
             if (isPermanent) {
@@ -88,20 +86,20 @@ namespace fcc {
 
         /**
          * 刪除之前用同類型，回調，目標或 useCapture 註冊的事件監聽器，如果只傳遞 type，將會刪除 type 類型的所有事件監聽器。
-         * @param {ServerEventType | GameEventType} eventName
-         * @param {cc.EventTarget} eventTarget
-         * @param callFun?{Function} : 要刪除的方法,如果未傳參數,將默認全部相關的callFun一並刪除
-         * @param target?{Object}:調用回調的目標（此對象），如果未指定，則僅刪除沒有目標的回調
+         * @param {ServerEventType | GameEventType} eventName - 事件名稱
+         * @param callFun?{Function} - 要刪除的方法,如果未傳參數,將默認全部相關的callFun一並刪除
          */
-        public destroyEvent(eventName: string, callFun?: Function, target?: Object) {
-            this.target.off(eventName, callFun, target);
+        public destroyEvent(eventName: string, callFun?: Function) {
+            this.target.off(eventName, callFun, this.target);
         }
 
         /**
          * 是否該事件持續監聽中
+         * @param {string} eventName - 事件名稱
+         * @return {boolean}
          */
-        public hasListening(eventName: string, eventTarget: cc.EventTarget): boolean {
-            return eventTarget.hasEventListener(eventName);
+        public hasListening(eventName: string): boolean {
+            return this.target.hasEventListener(eventName);
         }
 
         public get eventCount(): number {

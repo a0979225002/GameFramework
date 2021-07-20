@@ -103,7 +103,7 @@ namespace fcc {
          * @type {Array<Map<cc.Label, string>>}
          * @private
          */
-        private allLanguageLabel: Array<Map<cc.Label, string>>;
+        private readonly allLanguageLabel: Array<Map<cc.Label, string>>;
 
         /**
          * 當前所有語系樣式列表
@@ -162,6 +162,8 @@ namespace fcc {
 
         /**
          * 額外添加新的語系樣式
+         * @param {string | fcc.type.LanguageType} key - 國家簡寫
+         * @param {fcc.IF.ILanguageStyle} style - 新樣式
          */
         addStyle(key: string | type.LanguageType, style: IF.ILanguageStyle) {
             this._style.set(key, style)
@@ -189,7 +191,7 @@ namespace fcc {
          */
         setLanguage(): void {
             if (!this.languageCache) {
-                this.reLoadNowLanguage();
+                this.reTakeLanguageBuffer();
             }
         }
 
@@ -210,14 +212,19 @@ namespace fcc {
             return this.languageCache[key];
         }
 
+        /**
+         * 獲取當前語系緩存
+         * @return {object}
+         */
         getAllText(): object {
             return this.languageCache;
         }
 
         /**
-         * 重新載入語系
+         * 重新獲取語系,並更新緩衝內
+         * @param {string | fcc.type.LanguageType} language - 有參數為強制更新該參數語系,無參為當前拿取當前語系更新緩衝
          */
-        reLoadNowLanguage(language?: string | type.LanguageType) {
+        reTakeLanguageBuffer(language?: string | type.LanguageType) {
             try {
                 if (language) {
                     this.languageCache = window.language_Mode[language];
@@ -236,8 +243,16 @@ namespace fcc {
             //TODO
         }
 
-        updateText(target: cc.Label, textKey: string): this {
-            target.string = this.getText(textKey);
+        /**
+         * 更新文字該label文字
+         * @param {cc.Label} target - 要更新的目標
+         * @param {string?} textKey - 要更新的文字 key
+         * @return {this}
+         */
+        updateText(target: cc.Label, textKey?: string): this {
+            if(textKey){
+                target.string = this.getText(textKey);
+            }
             this._nowLanguageLabels.set(target, textKey);
             return this;
         }

@@ -29,7 +29,7 @@ namespace fcc {
 
             /**
              * 額外添加新的語系樣式
-             * @param {string | fcc.type.LanguageType} key - 額外語系鍵值
+             * @param {string | fcc.type.LanguageType} key - 國家簡寫
              * @param {fcc.IF.ILanguageStyle} style - 新樣式
              */
             addStyle(key: string | type.LanguageType, style: IF.ILanguageStyle): void;
@@ -41,17 +41,18 @@ namespace fcc {
             updateLanguage(language: string | type.LanguageType): void;
 
             /**
-             * 重新載入語系
+             * 重新獲取語系,並更新緩衝內
+             * @param {string | fcc.type.LanguageType} language - 有參數為強制更新該參數語系,無參為當前拿取當前語系更新緩衝
              */
-            reLoadNowLanguage();
+            reTakeLanguageBuffer(language?: string | type.LanguageType);
 
             /**
              * 更新文字該label文字
              * @param {cc.Label} target - 要更新的目標
-             * @param {string} textKey -
+             * @param {string?} textKey - 要更新的文字 key
              * @return {this}
              */
-            updateText(target: cc.Label, textKey: string): this;
+            updateText(target: cc.Label, textKey?: string): this;
 
             /**
              * 更新所有透過 updateText更新的組件,更新該組件樣是
@@ -78,8 +79,8 @@ namespace fcc {
             getText(key: string): string;
 
             /**
-             * 獲取當前語系數據
-             * @return {object} - 獲取當前語系數據,返回所有數據
+             * 獲取當前語系緩存
+             * @return {object}
              */
             getAllText(): object;
 

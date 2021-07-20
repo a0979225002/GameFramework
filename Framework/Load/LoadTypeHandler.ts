@@ -64,12 +64,13 @@ namespace fcc {
 
         /**
          * 加載外部腳本
-         * @param {string} name
-         * @param {LoadType} type
-         * @param {string} url
+         * @param name - 檔案名稱,不含副檔名
+         * @param type - 檔案類型
+         * @param url - 檔案url,不含外部 url
+         * @param parameter - get 參數
          */
-        executeLoadExternalScript(name: string, type: type.LoadType, url: string) {
-            this.factory.executeLoadExternalScript(name, type, url);
+        executeLoadExternalScript(name: string, type: type.LoadType, url: string,parameter:string) {
+            this.factory.executeLoadExternalScript(name, type, url,parameter);
         }
     }
 }

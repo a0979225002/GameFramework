@@ -19,3 +19,17 @@ test("Map",()=>{
 
 
 })
+
+test("object",()=>{
+
+    let a = {
+        "01":10,
+        "02":20,
+        "03":30
+    }
+
+    for(let b in a){
+        console.log(b)
+    }
+
+})

@@ -20,37 +20,33 @@ namespace fcc {
             eventsCurrentlyBeing: Map<string, string>;
 
             /**
-             * 發射事件
-             * @param eventTarget
-             * @param {string} eventName
-             * @param {any} any : 要回傳的物件
+             * 添加事件
+             * @param {string} eventName - 事件名稱
+             * @param parameter
              */
-            emit(eventName: string, ...any: any): void;
+            emitEvent(eventName: type.ServerEventType | string, ...parameter: any):void
 
             /**
              * server監聽回傳接收
-             * @param {string} eventName
-             * @param {Function} callFun
+             * @param {string} eventName - 事件名稱
+             * @param {Function} callFun - 返回方法
              * @param isPermanent - 是否常駐
              */
-            eventListener(eventName: string, callFun: (target?: any) => void, isPermanent: boolean): void;
+            eventListener(eventName: string, callFun: (...parameter: any) => void, isPermanent: boolean): void;
 
             /**
-             * 刪除事件,綁定的回傳也一並刪除
-             * @param {ServerEventType | GameEventType} eventName
-             * @param {cc.EventTarget} eventTarget
-             * @param callFun
-             * @param target
+             * 刪除之前用同類型，回調，目標或 useCapture 註冊的事件監聽器，如果只傳遞 type，將會刪除 type 類型的所有事件監聽器。
+             * @param {ServerEventType | GameEventType} eventName - 事件名稱
+             * @param callFun?{Function} - 要刪除的方法,如果未傳參數,將默認全部相關的callFun一並刪除
              */
-            destroyEvent(eventName: string, callFun?: Function, target?: Object): void;
+            destroyEvent(eventName: string, callFun?: Function): void;
 
             /**
-             * 該事件是否持續監聽中
-             * @param {ServerEventType | GameEventType} eventName
-             * @param eventTarget
+             * 是否該事件持續監聽中
+             * @param {string} eventName - 事件名稱
              * @return {boolean}
              */
-            hasListening(eventName: type.ServerEventType | string, eventTarget): boolean;
+            hasListening(eventName: type.ServerEventType | string): boolean;
 
         }
     }

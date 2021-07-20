@@ -11,7 +11,7 @@ const fs = require("fs");
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 
-const VERSION = "0.0.3";
+const FCC_VERSION = "0.0.4";
 
 /**
  * 清空資源框架
@@ -63,6 +63,7 @@ function buildAssetFramework(cb) {
                 .pipe(through.obj(function (chunk, enc, callback) {
                     let sdata = chunk.contents.toString();
                     let replace = updateVersion(sdata);
+                    replace += `\n window.VERSION = "${FCC_VERSION}";`
                     chunk.contents = Buffer.from(replace);
                     this.push(chunk)
                     callback();
@@ -89,7 +90,7 @@ function updateVersion(library: string): string {
 
     return date.replace(
         /@Version [0-9]*[.][0-9]*/gm,
-        `@Version ${VERSION}`
+        `@Version ${FCC_VERSION}`
     );
 }
 
