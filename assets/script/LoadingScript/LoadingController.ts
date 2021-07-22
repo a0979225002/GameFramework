@@ -10,6 +10,9 @@ import SceneDirectionChangeObserver from "../Framework/Scene/SceneObserver/Scene
 import ALoadingTemplate from '../Framework/Template/Loading/ALoadingTemplate'
 import {socketJS} from "../Socket/Socket";
 import SocketSetting from '../Socket/SocketSetting'
+import {WebResponseManager} from "../Framework/WebResponse/WebResponseManager";
+import {NoLineTableInfo} from "../../../Template";
+import {ResponseType} from "../Framework/WebResponse/Enum/ResponseType";
 import NoSleep = require('../Socket/NoSleep');
 
 const {ccclass, property} = cc._decorator;
@@ -38,6 +41,8 @@ export default class LoadingController extends ALoadingTemplate {
      * 自定義初始
      */
     public onCreat() {
+
+        this.tableInfo = WebResponseManager.instance<NoLineTableInfo>().getResult(ResponseType.TABLE_INFO)
         socketJS.SFSLoad(SlotConfigManager.instance.gameNumber);
         this.isLogoAnimaEnd = false;                                    //初始化尚未結束logo動畫
         this.progressNum = 0;                                           //初始進度條為0;

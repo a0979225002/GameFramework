@@ -19,25 +19,22 @@ export default class ResultSortOut extends cc.Component {
 
     async SFSToGame(_cmd: string) {
         switch (_cmd) {
-            case "MemberInfo":
+            case "MemberInfo"://沒用
                 PublicSetUp.Ratio = SocketSetting.ClientSetObject.Ratio;
                 cc.log(PublicSetUp.Ratio);
                 break;
-            case "GameLobbyInfoResult":
+            case "GameLobbyInfoResult"://沒用
                 PublicSetUp.GameLobbyName = SocketSetting.ServerReturnData[_cmd].GameLobbyName;
                 cc.log( PublicSetUp.GameLobbyName);
                 break;
-            case "GameLobby":  // 底層進大廳 通知遊戲顯示大廳
-
+            case "GameLobby":  //底層進大廳 通知遊戲顯示大廳
                 PublicSetUp.SlotTableInfo["GameID"] = SocketSetting.ClientSetObject.serverGameGroupID;
                 PublicSetUp.SlotTableInfo["BetLobby"] = "1";
                 socketJS.SFSToServer("SlotTableInfo", PublicSetUp.SlotTableInfo);
                 break;
             case "SlotTableInfoResult":
-
                 PublicSetUp.JoinRoom = SocketSetting.ServerReturnData[_cmd].TableName;
                 socketJS.SFSJoinRoom(PublicSetUp.JoinRoom);
-
                 break;
             case "CanPlayGame": // 底層進遊戲 通知GameLoading.js 可以顯示主遊戲場景
                 socketJS.SFSToServer("Table", "");

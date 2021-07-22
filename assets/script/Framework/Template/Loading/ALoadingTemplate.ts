@@ -1,4 +1,9 @@
 import OverrideComponent from "../OverrideComponent";
+import EventManager from "../../Listener/EventManager";
+import {ServerEventType} from "../../Listener/Enum/ServerEventType";
+import ErrorManager from "../../Error/ErrorManager";
+import UserMoneyChangeNotification from "../../Process/GameNotification/UserMoneyChangeNotification";
+import {ErrorType} from "../../Error/Enum/ErrorManagerEnum";
 
 const {ccclass} = cc._decorator;
 
@@ -49,6 +54,7 @@ export default abstract class ALoadingTemplate extends OverrideComponent impleme
     }
 
     protected start() {
+        this.tableInfoEvent();
         this.sceneStyle();
         this.loadExternalScript();          //外部資源
         this.onLoadResources();             //載入資源方法
@@ -56,27 +62,27 @@ export default abstract class ALoadingTemplate extends OverrideComponent impleme
         this.updateProgressText();          //更新讀取條文字
     }
 
-    //
-    // /**
-    //  * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
-    //  */
-    // private tableInfoEvent() {
-    //     EventManager.instance.serverEventListener(
-    //         ServerEventType.TABLE_INFO, (target) => {
-    //             for (let name of Object.keys(target)) {
-    //                 if (this.tableInfo[name] === undefined) {
-    //                     try {
-    //                         ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `無 ${name} 參數,請更換 TableInfo Type`)
-    //                     } catch (e) {
-    //                         console.log(e);
-    //                     }
-    //                 } else {
-    //                     this.tableInfo[name] = target[name];
-    //                 }
-    //             }
-    //             cc.log(this.tableInfo);
-    //             UserMoneyChangeNotification.instance.notify(this.tableInfo.UserPoint);
-    //             this._canPlayGame = true;
-    //         }, true);
-    // }
+
+    /**
+     * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
+     */
+    private tableInfoEvent() {
+        EventManager.instance.serverEventListener(
+            ServerEventType.TABLE_INFO, (target) => {
+                for (let name of Object.keys(target)) {
+                    if (this.tableInfo[name] === undefined) {
+                        try {
+                            ErrorManager.instance.executeError(ErrorType.WebResponseErrorFW, `無 ${name} 參數,請更換 TableInfo Type`)
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    } else {
+                        this.tableInfo[name] = target[name];
+                    }
+                }
+                cc.log(this.tableInfo);
+                UserMoneyChangeNotification.instance.notify(this.tableInfo.UserPoint);
+                this._canPlayGame = true;
+            }, true);
+    }
 }

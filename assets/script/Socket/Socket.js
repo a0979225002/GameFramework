@@ -275,6 +275,7 @@ cc.Class({
     },
     //登入成功
     onLogin: function (event) {
+
         socketSetting.ServerReturnData.stateValue = event.data.get("State");
         switch (event.data.get("LoginState")) {
             case "0":
@@ -297,6 +298,7 @@ cc.Class({
     onLogout: function (event) {
         socketSetting.ClientSetObject.SFSLoadStart = false;
         socketSetting.serverSfs.disconnect()
+        //註冊事件登入
         if (socketSetting.ServerReturnData.stateValue == 0 && socketSetting.ClientSetObject.LoginState == "0") {
             socketSetting.ClientSetObject.LoginState = "1";
             socketSetting.ClientSetObject.LoginData.putUtfString("LoginState", socketSetting.ClientSetObject.LoginState);
@@ -328,7 +330,7 @@ cc.Class({
                 ResultSortOut.instance.SFSToGame("GameLobby");
                 break;
             case socketSetting.ClientSetObject.serverGameGroupID:
-                socketSetting.serverSfs.enableLagMonitor(true, 5);//開啟Ping功能
+                socketSetting.serverSfs.enableLagMonitor(true, 5);
                 ResultSortOut.instance.SFSToGame("CanPlayGame");
                 break;
         }
@@ -373,6 +375,8 @@ cc.Class({
         var params = event.params;
         var paramskeyArray = params.getKeysArray();
         socketSetting.ServerReturnData[cmd] = {};
+
+        cc.log(event)
         obj_socket.self.BufferParsing(socketSetting.ServerReturnData[cmd], params, paramskeyArray);
         switch (cmd) {
             //=======================================================大廳用封包====================================================
@@ -388,13 +392,6 @@ cc.Class({
                 var buf = {};
                 buf.GameID = socketSetting.ClientSetObject.serverGameGroupID;
                 obj_socket.self.SFSToServer("GameLobbyInfo", buf);
-                if (window.windows != 1) {
-                    try {
-                        window.CocosLoadEnd();
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
                 break;
             case "GameLobbyInfoResult":
                 socketSetting.ServerReturnData.GameLobbyName = params.getUtfString("GameLobbyName");

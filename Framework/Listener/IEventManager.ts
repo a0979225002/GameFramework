@@ -24,15 +24,16 @@ namespace fcc {
              * @param {string} eventName - 事件名稱
              * @param parameter
              */
-            emitEvent(eventName: type.ServerEventType | string, ...parameter: any):void
+            emitEvent(eventName: type.ServerEventType | string, ...parameter: any): void
 
             /**
              * server監聽回傳接收
              * @param {string} eventName - 事件名稱
              * @param {Function} callFun - 返回方法
              * @param isPermanent - 是否常駐
+             * @param {any} self - 調用回哪個對象
              */
-            eventListener(eventName: string, callFun: (...parameter: any) => void, isPermanent: boolean): void;
+            eventListener(eventName: string, callFun: (...parameter: any) => void, isPermanent?: boolean, self?: any): void
 
             /**
              * 刪除之前用同類型，回調，目標或 useCapture 註冊的事件監聽器，如果只傳遞 type，將會刪除 type 類型的所有事件監聽器。
