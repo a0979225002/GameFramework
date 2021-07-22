@@ -1,6 +1,6 @@
 /// <reference path="../Error/Enum/ErrorType.ts" />
 /// <reference path="../Error/ErrorManager.ts" />
-/// <reference path="./Enum/LoadEnum.ts" />
+/// <reference path="./Enum/LoadType.ts" />
 /// <reference path="./ILoad/ILoadFactory.ts" />
 /// <reference path="./ILoad/ILoadResManager.ts" />
 /// <reference path="./LoadTypeFactory.ts" />

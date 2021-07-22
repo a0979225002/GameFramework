@@ -24,13 +24,7 @@ namespace fcc {
              * 老虎機轉動
              * @returns {Promise<void>}
              */
-            onRunGrid(): Promise<void>;
-
-            /**
-             * 老虎機漸出停止
-             * @returns {Promise<void>}
-             */
-            onSineOutGrid(): Promise<void>;
+            onRunning(): Promise<void>;
 
             /**
              * 顯示結果動畫

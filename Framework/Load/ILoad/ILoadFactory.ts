@@ -1,4 +1,4 @@
-/// <reference path="../Enum/LoadEnum.ts" />
+/// <reference path="../Enum/LoadType.ts" />
 namespace fcc {
 
     export namespace IF {

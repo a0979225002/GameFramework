@@ -1,6 +1,6 @@
 /// <reference path="../Error/Enum/ErrorType.ts" />
 /// <reference path="../Error/ErrorManager.ts" />
-/// <reference path="./Enum/LoadEnum.ts" />
+/// <reference path="./Enum/LoadType.ts" />
 /// <reference path="./LoadScriptType/CSSLoad.ts" />
 /// <reference path="./LoadScriptType/ScriptLoad.ts" />
 /// <reference path="./LoadType/ImgLoad.ts" />
@@ -101,22 +101,22 @@ namespace fcc {
          */
         private checkLoadType(dataName: string, type: type.LoadType, url: string, folder: string) {
             switch (type) {
-                case fcc.type.LoadType.img:
+                case fcc.type.LoadType.IMG:
                     new ImgLoad(dataName, cc.SpriteAtlas, url, folder).loadResources();
                     break;
-                case fcc.type.LoadType.music:
+                case fcc.type.LoadType.MUSIC:
                     new MusicLoad(dataName, cc.AudioClip, url, folder).loadResources();
                     break;
-                case fcc.type.LoadType.prefab:
+                case fcc.type.LoadType.PREFAB:
                     new PrefabLoad(dataName, cc.Prefab, url, folder).loadResources();
                     break;
-                case fcc.type.LoadType.spine:
+                case fcc.type.LoadType.SPINE:
                     new SpineLoad(dataName, sp.SkeletonData, url, folder).loadResources();
                     break;
-                case fcc.type.LoadType.scene:
+                case fcc.type.LoadType.SCENE:
                     new SceneLoad(dataName, cc.SceneAsset, null, folder).loadResources();
                     break;
-                case fcc.type.LoadType.text:
+                case fcc.type.LoadType.TEXT:
                     new TextLoad(dataName, cc.TextAsset, url, folder).loadResources();
                     break;
                 default :
@@ -133,10 +133,10 @@ namespace fcc {
          */
         executeLoadExternalScript(name: string, type: type.LoadType, url: string, parameter: string) {
             switch (type) {
-                case fcc.type.LoadType.css:
+                case fcc.type.LoadType.CSS:
                     new CSSLoad(name, "text/css", url,parameter).loadScript();
                     break
-                case fcc.type.LoadType.script:
+                case fcc.type.LoadType.SCRIPT:
                     new ScriptLoad(name, "text/javascript", url,parameter).loadScript();
                     break
                 default:

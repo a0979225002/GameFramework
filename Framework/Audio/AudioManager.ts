@@ -74,7 +74,7 @@ namespace fcc {
          * 額外對該音效做設定,你可以不做設定,將會依照默認設定自動設定
          * ```
          *      預設參數:
-         *          canSuperimpose : fcc.type.AudioStateType.CLEAR_TO_REPLAY
+         *          canSuperimpose : fcc.type.AudioStateType.NOT_PLAYING
          *          volume : 默認為 Config 內的音量參數
          *          loop :默認為 false
          * ```

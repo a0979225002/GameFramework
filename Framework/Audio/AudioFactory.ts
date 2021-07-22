@@ -52,7 +52,7 @@ namespace fcc {
             this.effectNormalData = new Map<string, string | type.AudioStateType | boolean | number>();
             this.musicNormalData.set("volume", this.musicVolume);
             this.musicNormalData.set("loop", this.loop);
-            this.effectNormalData.set("canSuperimpose", type.AudioStateType.CLEAR_TO_REPLAY);
+            this.effectNormalData.set("canSuperimpose", type.AudioStateType.NOT_PLAYING);
             this.effectNormalData.set("volume", this.effectVolume);
             this.effectNormalData.set("loop", this.loop);
         }

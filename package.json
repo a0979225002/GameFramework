@@ -52,8 +52,8 @@
   },
   "scripts": {
     "test": "jest",
-    "rollup Tcc-Template": "rollup -c",
-    "gulp Fcc-Framework": "gulp buildFramework",
+    "rollup TCC-Template": "rollup -c",
+    "gulp FCC-Framework": "gulp buildFramework",
     "gulp PublishFramework": "gulp buildFramework2",
     "dpdm-Framework" : "dpdm Framework/**/*.ts",
     "dpdm-Template" : "dpdm Template/**/*.ts"

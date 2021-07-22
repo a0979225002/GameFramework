@@ -54,7 +54,7 @@ namespace fcc {
          */
         public onRunning(): this {
 
-            this._process.add(this._executionContainer.onRunGrid);
+            this._process.add(this._executionContainer.onRunning);
 
             return this;
         }

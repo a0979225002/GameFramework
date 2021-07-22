@@ -17,7 +17,7 @@ namespace fcc {
             CLEAR_TO_REPLAY = "CLEAR_TO_REPLAY",
 
             /**
-             * 檢測到該音樂正在撥放時,不做任何事情
+             * 檢測到該音樂正在撥放時,將直接離開
              * @type {AudioStateType.NOT_PLAYING}
              */
             NOT_PLAYING = "NOT_PLAYING",

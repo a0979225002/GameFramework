@@ -11,7 +11,7 @@ export {default as AGenericTemplate} from './BaseTemplate/AGenericTemplate';
 export {default as OverrideComponent} from './BaseTemplate/OverrideComponent';
 
 /*遊戲初始設定模板*/
-export {default as AConfigTemplate} from './Config/AConfigTemplate';
+export {default as ACenterTemplate} from './Center/ACenterTemplate';
 
 /*通用 Notification 管理器*/
 export {

@@ -89,7 +89,7 @@ declare abstract class AGenericTemplate extends OverrideComponent {
  * @Date 2021-06-01 下午 04:49
  * @Version 1.0
  */
-declare abstract class AConfigTemplate extends AGenericTemplate {
+declare abstract class ACenterTemplate extends AGenericTemplate {
     /**
      * 初始化當前遊戲
      */
@@ -108,6 +108,11 @@ declare abstract class AConfigTemplate extends AGenericTemplate {
      * @protected
      */
     protected abstract processCreate(): void;
+    /**
+     * notification 此遊戲會用到的 所有通知事件添加
+     * @protected
+     */
+    protected abstract notificationSetting(): void;
     protected onLoad(): void;
 }
 /**
@@ -1567,14 +1572,12 @@ declare abstract class AErrorFrameTemplate extends AGenericTemplate {
 /**
  * @Author XIAO-LI-PIN
  * @Description (模板)登入遊戲內進入主遊戲
- *```
+ * ```
  *      事件:
- *          接收 {ResponseResultNotification} : 當server  已成功回傳 TableInfo 會觸發打開 isGetTableInfoResponse = true
- *             可在update監聽,並給予前往主畫面事件
- *             callback :  this.autoEvent(isAutomaticState, afterAutoCount);
- *                          if (isAutomaticState) {
- *                              await this.startButtonEvent();
- *                          }
+ *          接收 {ResponseResultNotification} :
+ *          當server  已成功回傳 TableInfo 會觸發打開 isGetTableInfoResponse = true
+ *          可在update監聽,並給予前往主畫面事件
+ *
  * ```
  * @Date 2021-07-07 上午 10:55
  * @Version 0.0.3
@@ -1633,41 +1636,11 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      * 進入主遊戲按鈕事件
      * @protected
      */
-    protected abstract intoMainGameButtonEvent: any;
+    protected abstract intoMainGameButtonEvent(): void;
     protected constructor();
     protected onLoad(): void;
     protected start(): void;
     protected responseNotification(): void;
-    //
-    // /**
-    //  * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
-    //  */
-    // private tableInfoEvent() {
-    //     fcc.eventMgr.eventListener(
-    //         fcc.type.ServerEventType.TABLE_INFO, (tableInfo) => {
-    //             for (let name of Object.keys(tableInfo)) {
-    //                 if (this.tableInfo[name] === undefined) {
-    //                     try {
-    //                         fcc.errorMgr.executeError(
-    //                             fcc.type.ErrorType.WEB_RESPONSE_FW,
-    //                             `無 ${name} 參數,請更換 TableInfo Type`
-    //                         );
-    //                     } catch (e) {
-    //                         console.log(e);
-    //                     }
-    //                 } else {
-    //                     this.tableInfo[name] = tableInfo[name];
-    //                 }
-    //             }
-    //             console.log(`${fcc.type.ServerEventType.TABLE_INFO} : ${this.tableInfo}`);
-    //
-    //             fcc.notificationMgr<UserMoneyChangeNotification>()
-    //                 .getNotification(fcc.type.NotificationType.USER_MONEY_CHANGE)
-    //                 .notify(this.tableInfo.UserPoint);
-    //             this._canPlayGame = true;
-    //
-    //         }, true)
-    // }
     /**
      * 是否可以進入主遊戲,由server回傳tableInfo後此class改變狀態
      * @type {boolean}
@@ -3657,4 +3630,4 @@ declare class NoLineTableInfo implements INoLineTableInfoModule {
     get EventRequire(): number;
     set EventRequire(value: number);
 }
-export { AGenericTemplate, OverrideComponent, AConfigTemplate, AutoStateChangeNotification, ScrollFocusStateNotification, SpeedStateChangeNotification, StopNowStateNotification, UserMoneyChangeNotification, UserTotalBetChangeNotification, UserWinPointStateNotification, ResponseResultNotification, AutoStateChangeObserver, ScrollFocusStateObserver, SpeedStateChangeObserver, StopNowStateObserver, UserMoneyChangeObserver, UserTotalBetChangeObserver, UserWinPointStateObserver, ResponseResultObserver, AMainGameButtonTemplate, AMainGameOnlyButtonTemplate, AMainGameDoubleButtonTemplate, AMenuButtonTemplate, AMenuDoubleButtonTemplate, AMenuOnlyButtonTemplate, ARecordButtonTemplate, ARecordDoubleButtonTemplate, ARecordOnlyButtonTemplate, AErrorFrameTemplate, ALoadingTemplate, ALoadingFrameTemplate, ALookAtTemplate, AWinLinTemplate, AMainInitTemplate, ASlotTemplate, NoLineSlotTemplate, ASlotInitializeTemplate, IExtendHasLineFreeResult, IHasLineFreeResultModule, INoLineFreeResultModel, ISlotFreeBaseResultModel, IExtendHasLineResult, IHasLineResultModule, INoLineResultModel, ISlotBaseResultModel, IBaseTableInfoModel, IHasLineTableInfoModule, INoLineTableInfoModule, ExtendHasLineFreeResult, HasLineFreeResult, NoLineFreeResult, ExtendHasLineResult, HasLineResult, NoLineResult, HasLineTableInfo, NoLineTableInfo };
+export { AGenericTemplate, OverrideComponent, ACenterTemplate, AutoStateChangeNotification, ScrollFocusStateNotification, SpeedStateChangeNotification, StopNowStateNotification, UserMoneyChangeNotification, UserTotalBetChangeNotification, UserWinPointStateNotification, ResponseResultNotification, AutoStateChangeObserver, ScrollFocusStateObserver, SpeedStateChangeObserver, StopNowStateObserver, UserMoneyChangeObserver, UserTotalBetChangeObserver, UserWinPointStateObserver, ResponseResultObserver, AMainGameButtonTemplate, AMainGameOnlyButtonTemplate, AMainGameDoubleButtonTemplate, AMenuButtonTemplate, AMenuDoubleButtonTemplate, AMenuOnlyButtonTemplate, ARecordButtonTemplate, ARecordDoubleButtonTemplate, ARecordOnlyButtonTemplate, AErrorFrameTemplate, ALoadingTemplate, ALoadingFrameTemplate, ALookAtTemplate, AWinLinTemplate, AMainInitTemplate, ASlotTemplate, NoLineSlotTemplate, ASlotInitializeTemplate, IExtendHasLineFreeResult, IHasLineFreeResultModule, INoLineFreeResultModel, ISlotFreeBaseResultModel, IExtendHasLineResult, IHasLineResultModule, INoLineResultModel, ISlotBaseResultModel, IBaseTableInfoModel, IHasLineTableInfoModule, INoLineTableInfoModule, ExtendHasLineFreeResult, HasLineFreeResult, NoLineFreeResult, ExtendHasLineResult, HasLineResult, NoLineResult, HasLineTableInfo, NoLineTableInfo };

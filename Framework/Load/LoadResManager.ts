@@ -1,7 +1,7 @@
 /// <reference path="../Error/Enum/ErrorType.ts" />
 /// <reference path="../Error/ErrorManager.ts" />
 /// <reference path="../Global/Util.ts" />
-/// <reference path="./Enum/LoadEnum.ts" />
+/// <reference path="./Enum/LoadType.ts" />
 /// <reference path="./ILoad/ILoadResManager.ts" />
 /// <reference path="./LoadTypeHandler.ts" />
 namespace fcc {
@@ -26,11 +26,11 @@ namespace fcc {
         private _secondaryLoadState: Map<string, number>;
 
         /**
-         * 外部資料加載,狀態
+         * 外部資料加載資源狀態
          * @type {Map<string, number>}
          * @private
          */
-        private _scriptLoadState: Map<string, number>;
+        private readonly _scriptLoadState: Map<string, number>;
 
         /**
          * img物件保存
@@ -116,9 +116,9 @@ namespace fcc {
 
         /**
          * 主資源加載物件,監聽是否有callback,隨之返回該狀態
-         * @param name
-         * @param progress 又加載了多少
-         * @param state 該物件加載到幾趴
+         * @param name - 加載物件名稱,由使用者自訂義加載名稱
+         * @param progress - 加載進度
+         * @param state - 該物件加載百分比
          */
         loadMainEventCallback(name: string, progress: number, state: number) {
 
@@ -163,8 +163,8 @@ namespace fcc {
         /**
          * 次資源加載物件,監聽是否有callback,隨之返回該狀態
          * 注意,該狀態無總資源監聽回傳事件
-         * @param {string} name
-         * @param {number} state
+         * @param {string} name - 加載物件名稱,由使用者自訂義加載名稱
+         * @param {number} state - 該物件加載百分比
          */
         public loadSecondaryEventCallback(name: string, state: number) {
             this.onlyResEventCallback(name, state);
@@ -172,8 +172,8 @@ namespace fcc {
 
         /**
          * 外部資源加載完成返回
-         * @param {string} name
-         * @param {number} isError
+         * @param {string} name - 加載物件名稱(檔名)
+         * @param {number} isError - 是否加載錯誤
          */
         public loadScriptEventCallback(name: string, isError: boolean): void {
             this.onlyResEventCallback(name, 1, isError);
@@ -181,8 +181,8 @@ namespace fcc {
 
         /**
          * 單一資源返回判斷,用戶是否有添加callback參數
-         * @param {string} name
-         * @param {number} state
+         * @param {string} name - 加載物件名稱
+         * @param {number} state - 該物件加載百分比
          * @param isError - 是否有錯誤回傳(外部加載腳本用)
          * @private
          */
@@ -210,10 +210,10 @@ namespace fcc {
 
         /**
          * 加載該資料夾底下所有資源 注意: 需存放於 resources中
-         * @param {string} name : 自訂義拿取資源時的名稱
-         * @param {LoadType} type : 要獲取的資源類型
-         * @param {string} url : 要獲取的資源位置
-         * @param {boolean} isLanguageUsed : 是否要使用語系位置
+         * @param {string} name - 自訂義拿取資源時的名稱
+         * @param {LoadType} type - 要獲取的資源類型
+         * @param {string} url - 要獲取的資源位置
+         * @param {boolean} isLanguageUsed - 是否要使用語系位置
          * @return {this}
          */
         loadAsset(name: string, type: type.LoadType, url: string, isLanguageUsed?: boolean): this {
@@ -229,10 +229,10 @@ namespace fcc {
          * 加載 該 assetBundle 底下資源
          * 使用此方法者,加載狀態存放次加載中 secondaryLoadState
          * 注意:須於UI勾選配置為Bundle資料夾
-         * @param {string} name : 自訂義拿取資源時的名稱
-         * @param {LoadType} type : 要獲取的資源類型
-         * @param {string} url : 要獲取的資源位置
-         * @param {boolean} isLanguageUsed : 是否要使用語系位置
+         * @param {string} name - 自訂義拿取資源時的名稱
+         * @param {LoadType} type - 要獲取的資源類型
+         * @param {string} url - 要獲取的資源位置
+         * @param {boolean} isLanguageUsed - 是否要使用語系位置
          */
         loadBundle(name: string, type: type.LoadType, url: string, isLanguageUsed?: boolean): this {
 
@@ -290,8 +290,9 @@ namespace fcc {
          * 加載外部腳本
          * @param name - 檔案名稱,不含副檔名
          * @param type - 檔案類型
-         * @param url - 檔案url,不含外部 url
-         * @param parameter - get 參數
+         * @param url - 檔案URL,不含外部 URL
+         * @param parameter - GET 參數
+         * @returns {this}
          */
         loadExternalScript(name: string, type: type.LoadType, url: string, parameter: string = "") {
             this.loadTypeHandler.executeLoadExternalScript(name, type, url, parameter);
@@ -299,10 +300,27 @@ namespace fcc {
         }
 
         /**
-         * 重置
+         * 清除資源
+         * @param {string} type - 資源類型
          */
-        reset() {
-            LoadResManager._instance = null;
+        remove(type: string): void {
+            switch (type) {
+                case fcc.type.LoadType.SPINE:
+                    this.spineRes.clear();
+                    break;
+                case fcc.type.LoadType.MUSIC:
+                    this.musicRes.clear();
+                    break;
+                case fcc.type.LoadType.PREFAB:
+                    this.prefabRes.clear();
+                    break;
+                case fcc.type.LoadType.SCENE:
+                    this.sceneRes.clear();
+                    break;
+                case fcc.type.LoadType.TEXT:
+                    this.readFileRes.clear();
+                    break;
+            }
         }
 
         //--------------------------------------setter------------------------------------

@@ -12,51 +12,51 @@ namespace fcc {
 
             /**
              * 圖片類型
-             * @type {fcc.type.LoadType.img}
+             * @type {fcc.type.LoadType.IMG}
              */
-            img,
+            IMG = "IMG",
 
             /**
              * 骨骼动画類型
-             * @type {fcc.type.LoadType.spine}
+             * @type {fcc.type.LoadType.SPINE}
              */
-            spine,
+            SPINE = "SPINE",
 
             /**
              * 預載資源類型
-             * @type {fcc.type.LoadType.prefab}
+             * @type {fcc.type.LoadType.PREFAB}
              */
-            prefab,
+            PREFAB = "PREFAB",
 
             /**
              * 音樂類型
-             * @type {fcc.type.LoadType.music}
+             * @type {fcc.type.LoadType.MUSIC}
              */
-            music,
+            MUSIC = "MUSIC",
 
             /**
              * 文字類型(注意:目前只接收 .CSV 檔案)
-             * @type {fcc.type.LoadType.text}
+             * @type {fcc.type.LoadType.TEXT}
              */
-            text,
+            TEXT = "TEXT",
 
             /**
              * 場景類型(注意:動態載入資源需放入resource資料夾內 or bundle資料夾內)
-             * @type {fcc.type.LoadType.scene}
+             * @type {fcc.type.LoadType.SCENE}
              */
-            scene,
+            SCENE = "SCENE",
 
             /**
              * 外部URL腳本
-             * @type {fcc.type.LoadType.script}
+             * @type {fcc.type.LoadType.SCRIPT}
              */
-            script,
+            SCRIPT = "SCRIPT",
 
             /**
              * 外部URL CSS
-             * @type {fcc.type.LoadType.script}
+             * @type {fcc.type.LoadType.SCRIPT}
              */
-            css,
+            CSS = "CSS",
         }
     }
 }

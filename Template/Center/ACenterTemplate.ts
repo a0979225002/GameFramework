@@ -6,7 +6,7 @@ import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
  * @Date 2021-06-01 下午 04:49
  * @Version 1.0
  */
-export default abstract class AConfigTemplate extends AGenericTemplate {
+export default abstract class ACenterTemplate extends AGenericTemplate {
 
     /**
      * 初始化當前遊戲
@@ -32,11 +32,18 @@ export default abstract class AConfigTemplate extends AGenericTemplate {
      */
     protected abstract processCreate(): void;
 
+    /**
+     * notification 此遊戲會用到的 所有通知事件添加
+     * @protected
+     */
+    protected abstract notificationSetting(): void;
+
     protected onLoad() {
         this.initClient();                  //初始Client參數
         this.configSetting();               //所有動作中需最先執行,遊戲初始設定
         this.audioSetting();                //音樂撥放樣式設定
         this.processCreate();               //遊戲流程創建
+        this.notificationSetting();         //通知事件添加創建
         super.onLoad();
     }
 }
