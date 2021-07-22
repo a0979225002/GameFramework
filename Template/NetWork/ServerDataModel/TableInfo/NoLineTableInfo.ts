@@ -63,6 +63,11 @@ export default class NoLineTableInfo implements INoLineTableInfoModule {
      */
     private _EventRequire: number;
 
+    /**
+     * 預設押住倍率
+     */
+    DefaultBetIndex: number;
+
     constructor() {
         this._IsLines = 0;
         this._BetTimes = 0;
@@ -75,6 +80,7 @@ export default class NoLineTableInfo implements INoLineTableInfoModule {
         this._LevelWinPoint = new Array<number>();
         this._EventMode = 0;
         this._EventRequire = 0;
+        this.DefaultBetIndex = 0;
         Object.preventExtensions(this);
     }
 

@@ -19,4 +19,20 @@ export default interface IBaseTableInfoModel {
      * 玩家現有金額
      */
     UserPoint: number;
+
+    /**
+     * 預設押住倍率
+     */
+    DefaultBetIndex:number;
+
+    /**
+     * 活動模式 0 沒有 11 轉盤
+     * @type {number}
+     */
+    EventMode: number;
+    /**
+     * 活動轉數需求
+     * @type {number}
+     */
+    EventRequire: number;
 }

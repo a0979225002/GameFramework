@@ -41,7 +41,6 @@ export default class LoadingController extends ALoadingTemplate {
      * 自定義初始
      */
     public onCreat() {
-
         this.tableInfo = WebResponseManager.instance<NoLineTableInfo>().getResult(ResponseType.TABLE_INFO)
         socketJS.SFSLoad(SlotConfigManager.instance.gameNumber);
         this.isLogoAnimaEnd = false;                                    //初始化尚未結束logo動畫
@@ -160,7 +159,6 @@ export default class LoadingController extends ALoadingTemplate {
      * @param {number} textIndex
      */
     public updateProgressText(textIndex: number = 1) {
-
         textIndex++;
         if (textIndex > 7) textIndex = 1;
         let textHeight = this.loadTextToArray[0].node.height;
@@ -175,7 +173,6 @@ export default class LoadingController extends ALoadingTemplate {
                 node.y = nextNodeY - textHeight;
                 this.loadTextToArray.splice(0, 1);
                 this.loadTextToArray.push(node.getComponent(cc.Label));
-
                 //當進度尚未載入完成,且尚未登入成功,持續遞歸
                 if (this.progressNum != 1 || !this.canPlayGame) {
                     this.updateProgressText(textIndex);

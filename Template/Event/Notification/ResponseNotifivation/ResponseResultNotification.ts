@@ -2,7 +2,7 @@ import ResponseResultObserver from "../../Observer/ResponseObserver/ResponseResu
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 : server 對該局遊戲回傳結果時
+ * @Description 通知管理器 : server Response結束時
  * @Date 2021-06-09 下午 05:48
  * @Version 1.0
  */
@@ -14,7 +14,7 @@ export default class ResponseResultNotification extends fcc.ABS.ABaseNotificatio
      */
     public readonly TAG_NAME: string;
 
-    private constructor() {
+    constructor() {
         super();
         this.TAG_NAME = fcc.type.NotificationType.RESPONSE_RESULT
     }
@@ -30,12 +30,12 @@ export default class ResponseResultNotification extends fcc.ABS.ABaseNotificatio
 
     /**
      * 推播該局Server是否已回傳答案
-     * @param {boolean} isResultOk - 初始化 or 回傳成功
+     * @param {boolean} responseType - json以保存完畢
      */
-    notify(isResultOk: boolean): void {
+    notify(responseType: string): void {
         if (this.observer.size > 0) {
             for (let observer of this.observer) {
-                observer.pushNotification(isResultOk);
+                observer.pushNotification(responseType);
                 if (!observer.isPermanent) {
                     this.unsubscribe(observer);
                 }

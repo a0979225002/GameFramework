@@ -58,6 +58,22 @@ export default class HasLineTableInfo implements IHasLineTableInfoModule {
      */
     private _LevelWinPoint: Array<number>;
 
+    /**
+     * 活動模式 0 沒有 11 轉盤
+     * @type {number}
+     */
+    private _EventMode: number;
+    /**
+     * 活動轉數需求
+     * @type {number}
+     */
+    private _EventRequire: number;
+
+    /**
+     * 預設押住倍率
+     */
+    private _DefaultBetIndex: number;
+
     constructor() {
         this._IsLines = 0;
         this._BetTimes = 0;
@@ -69,6 +85,9 @@ export default class HasLineTableInfo implements IHasLineTableInfoModule {
         this._Grid = new Array<number>();
         this._UserPoint = 0;
         this._LevelWinPoint = new Array<number>();
+        this._EventMode = 0;
+        this._EventRequire = 0;
+        this._DefaultBetIndex = 0;
         Object.preventExtensions(this);
     }
 
@@ -150,5 +169,30 @@ export default class HasLineTableInfo implements IHasLineTableInfoModule {
 
     set LevelWinPoint(value: Array<number>) {
         this._LevelWinPoint = value;
+    }
+
+    get DefaultBetIndex(): number {
+        return this._DefaultBetIndex;
+    }
+
+    set DefaultBetIndex(value: number) {
+        this._DefaultBetIndex = value;
+    }
+
+
+    get EventMode(): number {
+        return this._EventMode;
+    }
+
+    set EventMode(value: number) {
+        this._EventMode = value;
+    }
+
+    get EventRequire(): number {
+        return this._EventRequire;
+    }
+
+    set EventRequire(value: number) {
+        this._EventRequire = value;
     }
 }

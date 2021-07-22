@@ -375,7 +375,7 @@ declare class UserWinPointStateNotification extends fcc.ABS.ABaseNotification {
      * @type {string}
      */
     readonly TAG_NAME: string;
-    private constructor();
+    constructor();
     /**
      * 訂閱該事件
      * @param {UserWinPointStateObserver} observer - 推撥接收者
@@ -396,16 +396,16 @@ declare class UserWinPointStateNotification extends fcc.ABS.ABaseNotification {
  * @Version 1.0
  */
 declare class ResponseResultObserver extends fcc.ABS.ABaseObserver {
-    constructor(callFun: (isResultOk: boolean) => void, self: any);
+    constructor(callFun: (responseType: string) => void, self: any);
     /**
      * 推播該局Server是否已回傳答案
-     * @param {boolean} isResultOk - 初始化 or 回傳成功
+     * @param {boolean} responseType - json以保存完畢
      */
-    pushNotification(isResultOk: boolean): void;
+    pushNotification(responseType: string): void;
 }
 /**
  * @Author XIAO-LI-PIN
- * @Description 通知管理器 : server 對該局遊戲回傳結果時
+ * @Description 通知管理器 : server Response結束時
  * @Date 2021-06-09 下午 05:48
  * @Version 1.0
  */
@@ -415,7 +415,7 @@ declare class ResponseResultNotification extends fcc.ABS.ABaseNotification {
      * @type {string}
      */
     readonly TAG_NAME: string;
-    private constructor();
+    constructor();
     /**
      * 訂閱該事件
      * @param {ResponseResultObserver} observer - 推撥接收者
@@ -424,9 +424,9 @@ declare class ResponseResultNotification extends fcc.ABS.ABaseNotification {
     subscribe(observer: ResponseResultObserver, isPermanent: boolean): void;
     /**
      * 推播該局Server是否已回傳答案
-     * @param {boolean} isResultOk - 初始化 or 回傳成功
+     * @param {boolean} responseType - json以保存完畢
      */
-    notify(isResultOk: boolean): void;
+    notify(responseType: string): void;
 }
 interface IBaseTableInfoModel {
     /**
@@ -449,6 +449,20 @@ interface IBaseTableInfoModel {
      * 玩家現有金額
      */
     UserPoint: number;
+    /**
+     * 預設押住倍率
+     */
+    DefaultBetIndex: number;
+    /**
+     * 活動模式 0 沒有 11 轉盤
+     * @type {number}
+     */
+    EventMode: number;
+    /**
+     * 活動轉數需求
+     * @type {number}
+     */
+    EventRequire: number;
 }
 /**
  * Request Server 的 object
@@ -1553,23 +1567,48 @@ declare abstract class AErrorFrameTemplate extends AGenericTemplate {
 /**
  * @Author XIAO-LI-PIN
  * @Description (模板)登入遊戲內進入主遊戲
+ *```
+ *      事件:
+ *          接收 {ResponseResultNotification} : 當server  已成功回傳 TableInfo 會觸發打開 isGetTableInfoResponse = true
+ *             可在update監聽,並給予前往主畫面事件
+ *             callback :  this.autoEvent(isAutomaticState, afterAutoCount);
+ *                          if (isAutomaticState) {
+ *                              await this.startButtonEvent();
+ *                          }
+ * ```
  * @Date 2021-07-07 上午 10:55
  * @Version 0.0.3
  */
 declare abstract class ALoadingTemplate extends AGenericTemplate {
     /**
-     * 是否可以進入主遊戲,由server回傳tableInfo後此class改變狀態
+     * 是否Server已經回傳TableInfo信息
      * @type {boolean}
      * @default false
      * @private
      */
-    private _canPlayGame;
+    private _isGetTableInfoResponse;
     /**
-     * tableInfo Model
-     * @type {IBaseTableInfoModel}
+     * 進度條組件
+     * @type {cc.ProgressBar}
+     * @private
+     */
+    protected abstract progressBar: cc.ProgressBar;
+    /**
+     * 進入主遊戲場景按鈕
+     * @type {cc.Button}
      * @protected
      */
-    protected abstract tableInfo: IBaseTableInfoModel;
+    protected abstract intoMainGameButton: cc.Button;
+    /**
+     * 讀取條內所有文字的父類
+     * @type {cc.Node}
+     * @protected
+     */
+    protected abstract progressTextParent: cc.Node;
+    /**
+     * 讀取條內所有文字
+     */
+    protected abstract progressTextLabel: cc.Label[];
     /**
      * 載入主資源
      */
@@ -1583,15 +1622,22 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      */
     protected abstract loadExternalScript(): void;
     /**
-     * 更新讀取條文字動畫
-     */
-    protected abstract updateProgressText(): void;
-    /**
      * 當前scene模式,更新當前畫面是配寬高
      */
     protected abstract sceneStyle(): void;
+    /**
+     * 更新讀取條文字動畫
+     */
+    protected abstract updateProgressTextAnimation(): void;
+    /**
+     * 進入主遊戲按鈕事件
+     * @protected
+     */
+    protected abstract intoMainGameButtonEvent: any;
+    protected constructor();
     protected onLoad(): void;
     protected start(): void;
+    protected responseNotification(): void;
     //
     // /**
     //  * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
@@ -1628,7 +1674,7 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      * @default false
      * @private
      */
-    get canPlayGame(): boolean;
+    get isGetTableInfoResponse(): boolean;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -2291,15 +2337,6 @@ declare abstract class ASlotInitializeTemplate extends AGenericTemplate {
      */
     protected abstract getAllGridSprite(): Map<number, Array<cc.Sprite>>;
     protected onLoad(): void;
-    /**
-     * server 回傳normalResult答案時的事件接收器
-     */
-    private normalResultResponse;
-    /**
-     * server 回傳freeResult答案時的事件接收器
-     * @private
-     */
-    private freeResultEvenResponse;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -2684,14 +2721,6 @@ interface INoLineTableInfoModule extends IBaseTableInfoModel {
      * 幾線遊戲
      */
     Line: string;
-    /**
-     * 活動模式 0 沒有 11 轉盤
-     */
-    EventMode: number;
-    /**
-     * 活動轉數需求
-     */
-    EventRequire: number;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -3496,6 +3525,20 @@ declare class HasLineTableInfo implements IHasLineTableInfoModule {
      * @type {Array<number>}
      */
     private _LevelWinPoint;
+    /**
+     * 活動模式 0 沒有 11 轉盤
+     * @type {number}
+     */
+    private _EventMode;
+    /**
+     * 活動轉數需求
+     * @type {number}
+     */
+    private _EventRequire;
+    /**
+     * 預設押住倍率
+     */
+    private _DefaultBetIndex;
     constructor();
     get IsLines(): number;
     set IsLines(value: number);
@@ -3517,6 +3560,12 @@ declare class HasLineTableInfo implements IHasLineTableInfoModule {
     set UserPoint(value: number);
     get LevelWinPoint(): Array<number>;
     set LevelWinPoint(value: Array<number>);
+    get DefaultBetIndex(): number;
+    set DefaultBetIndex(value: number);
+    get EventMode(): number;
+    set EventMode(value: number);
+    get EventRequire(): number;
+    set EventRequire(value: number);
 }
 /**
  * @Author XIAO-LI-PIN
@@ -3580,6 +3629,10 @@ declare class NoLineTableInfo implements INoLineTableInfoModule {
      * @type {number}
      */
     private _EventRequire;
+    /**
+     * 預設押住倍率
+     */
+    DefaultBetIndex: number;
     constructor();
     get IsLines(): number;
     set IsLines(value: number);

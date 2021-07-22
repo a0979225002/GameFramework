@@ -1,28 +1,57 @@
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
-import IBaseTableInfoModel from "../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
+import ResponseResultNotification from "../Event/Notification/ResponseNotifivation/ResponseResultNotification";
+import ResponseResultObserver from "../Event/Observer/ResponseObserver/ResponseResultObserver";
 
 /**
  * @Author XIAO-LI-PIN
  * @Description (模板)登入遊戲內進入主遊戲
+ *```
+ *      事件:
+ *          接收 {ResponseResultNotification} : 當server  已成功回傳 TableInfo 會觸發打開 isGetTableInfoResponse = true
+ *             可在update監聽,並給予前往主畫面事件
+ *             callback :  this.autoEvent(isAutomaticState, afterAutoCount);
+ *                          if (isAutomaticState) {
+ *                              await this.startButtonEvent();
+ *                          }
+ * ```
  * @Date 2021-07-07 上午 10:55
  * @Version 0.0.3
  */
 export default abstract class ALoadingTemplate extends AGenericTemplate {
 
     /**
-     * 是否可以進入主遊戲,由server回傳tableInfo後此class改變狀態
+     * 是否Server已經回傳TableInfo信息
      * @type {boolean}
      * @default false
      * @private
      */
-    private _canPlayGame: boolean;
+    private _isGetTableInfoResponse: boolean;
 
     /**
-     * tableInfo Model
-     * @type {IBaseTableInfoModel}
+     * 進度條組件
+     * @type {cc.ProgressBar}
+     * @private
+     */
+    protected abstract progressBar: cc.ProgressBar;
+
+    /**
+     * 進入主遊戲場景按鈕
+     * @type {cc.Button}
      * @protected
      */
-    protected abstract tableInfo: IBaseTableInfoModel;
+    protected abstract intoMainGameButton: cc.Button;
+
+    /**
+     * 讀取條內所有文字的父類
+     * @type {cc.Node}
+     * @protected
+     */
+    protected abstract progressTextParent: cc.Node;
+
+    /**
+     * 讀取條內所有文字
+     */
+    protected abstract progressTextLabel: cc.Label[];
 
     /**
      * 載入主資源
@@ -40,28 +69,57 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
     protected abstract loadExternalScript(): void;
 
     /**
-     * 更新讀取條文字動畫
-     */
-    protected abstract updateProgressText(): void;
-
-    /**
      * 當前scene模式,更新當前畫面是配寬高
      */
     protected abstract sceneStyle(): void;
 
+    /**
+     * 更新讀取條文字動畫
+     */
+    protected abstract updateProgressTextAnimation(): void
+
+    /**
+     * 進入主遊戲按鈕事件
+     * @protected
+     */
+    protected abstract intoMainGameButtonEvent;
+
+    protected constructor() {
+        super();
+        this._isGetTableInfoResponse = false;          //是否Server已經回傳TableInfo信息
+    }
+
     protected onLoad() {
-        this._canPlayGame = false;                          //由 Server TableInfo Event 改變狀態
+        /*response 回傳監聽*/
+        this.responseNotification();
+        /*進入主遊戲按鈕事件*/
+        fcc.global.Button.addButtonEvent(
+            this.intoMainGameButton,
+            "intoMainGameButtonEvent",
+            this
+        )
         super.onLoad();
     }
 
     protected start() {
         super.start();
-        this.sceneStyle();                  //當前scene模式,更新當前畫面是配寬高
-        this.loadExternalScript();          //外部資源
-        this.onLoadResources();             //載入資源方法
-        this.loadAssetBundle();             //次資源
-        this.updateProgressText();          //更新讀取條文字
+        this.sceneStyle();                          //當前scene模式,更新當前畫面是配寬高
+        this.loadExternalScript();                  //外部資源
+        this.onLoadResources();                     //載入資源方法
+        this.loadAssetBundle();                     //次資源
+        this.updateProgressTextAnimation();         //更新讀取條文字
     }
+
+    protected responseNotification() {
+        fcc.notificationMgr<ResponseResultNotification>()
+            .getNotification(fcc.type.NotificationType.RESPONSE_RESULT)
+            .subscribe(new ResponseResultObserver((responseType) => {
+                if (responseType == fcc.type.ServerEventType.TABLE_INFO) {
+                    this._isGetTableInfoResponse = true;
+                }
+            }, this), false);
+    }
+
     //
     // /**
     //  * 當Server 回傳tableInfo 資訊,將更動canPlayGame布林值,且保存tableInfo資源
@@ -99,7 +157,7 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
      * @default false
      * @private
      */
-    get canPlayGame(): boolean {
-        return this._canPlayGame
+    get isGetTableInfoResponse(): boolean {
+        return this._isGetTableInfoResponse
     }
 }

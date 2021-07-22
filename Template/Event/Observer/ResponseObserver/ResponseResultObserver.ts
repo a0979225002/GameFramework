@@ -6,15 +6,15 @@
  */
 export default class ResponseResultObserver extends fcc.ABS.ABaseObserver {
 
-    constructor(callFun: (isResultOk: boolean) => void, self) {
+    constructor(callFun: (responseType:string) => void, self) {
         super(callFun, self);
     }
 
     /**
      * 推播該局Server是否已回傳答案
-     * @param {boolean} isResultOk - 初始化 or 回傳成功
+     * @param {boolean} responseType - json以保存完畢
      */
-    pushNotification(isResultOk: boolean): void {
-        super.pushNotification(isResultOk)
+    pushNotification(responseType:string): void {
+        super.pushNotification(responseType)
     }
 }

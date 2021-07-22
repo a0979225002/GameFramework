@@ -1,5 +1,4 @@
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
-import ResponseResultNotification from "../Event/Notification/ResponseNotifivation/ResponseResultNotification";
 
 /**
  * @Author XIAO-LI-PIN
@@ -71,74 +70,72 @@ export default abstract class ASlotInitializeTemplate extends AGenericTemplate {
     protected abstract getAllGridSprite(): Map<number, Array<cc.Sprite>>;
 
     protected onLoad() {
-        this.slotInitialize();              //初始化slot
         this.slotStyleSetting();            //設定 slot 樣式,並綁定
-        this.normalResultResponse();        //添加一般答案回傳監聽
-        this.freeResultEvenResponse();      //添加免費答案回傳監聽
+        this.slotInitialize();              //初始化slot
         super.onLoad();
     }
 
-    /**
-     * server 回傳normalResult答案時的事件接收器
-     */
-    private normalResultResponse(): void {
-
-        fcc.eventMgr.eventListener(
-            fcc.type.ServerEventType.BET_RESULT,
-            (betResult: object) => {
-                for (let name of Object.keys(betResult)) {
-                    if (this.normalResult[name] === undefined) {
-                        try {
-                            fcc.errorMgr
-                                .executeError(
-                                    fcc.type.ErrorType.WEB_RESPONSE_FW,
-                                    `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換BetResultModule Type`
-                                );
-                        } catch (e) {
-                            console.log(e);
-                        }
-                    } else {
-                        this.normalResult[name] = betResult[name];
-                    }
-                }
-                console.log(`${fcc.type.ServerEventType.BET_RESULT} : ${this.normalResult}`);
-
-                fcc.notificationMgr<ResponseResultNotification>()
-                    .getNotification(fcc.type.NotificationType.RESPONSE_RESULT)
-                    .notify(true);
-
-            }, true);
-    }
-
-    /**
-     * server 回傳freeResult答案時的事件接收器
-     * @private
-     */
-    private freeResultEvenResponse() {
-
-        fcc.eventMgr.eventListener(
-            fcc.type.ServerEventType.FREE_SPIN_RESULT,
-            (freeResult: object) => {
-                for (let name of Object.keys(freeResult)) {
-                    if (this.freeResult[name] === undefined) {
-                        try {
-                            fcc.errorMgr
-                                .executeError(
-                                    fcc.type.ErrorType.WEB_RESPONSE_FW,
-                                    `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換FreeResultModule Type`
-                                );
-                        } catch (e) {
-                            console.log(e);
-                        }
-                    } else {
-                        this.freeResult[name] = freeResult[name];
-                    }
-                }
-                console.log(`${fcc.type.ServerEventType.BET_RESULT} : ${this.normalResult}`);
-
-                fcc.notificationMgr<ResponseResultNotification>()
-                    .getNotification(fcc.type.NotificationType.RESPONSE_RESULT)
-                    .notify(true);
-            }, true);
-    }
+    // /**
+    //  * server 回傳normalResult答案時的事件接收器
+    //  */
+    // private normalResultResponse(): void {
+    //
+    //     fcc.eventMgr.eventListener(
+    //         fcc.type.ServerEventType.BET_RESULT,
+    //         (betResult: object) => {
+    //             for (let name of Object.keys(betResult)) {
+    //                 if (this.normalResult[name] === undefined) {
+    //                     try {
+    //                         fcc.errorMgr
+    //                             .executeError(
+    //                                 fcc.type.ErrorType.WEB_RESPONSE_FW,
+    //                                 `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換BetResultModule Type`
+    //                             );
+    //                     } catch (e) {
+    //                         console.log(e);
+    //                     }
+    //                 } else {
+    //                     this.normalResult[name] = betResult[name];
+    //                 }
+    //             }
+    //             console.log(`${fcc.type.ServerEventType.BET_RESULT} : ${this.normalResult}`);
+    //
+    //             fcc.notificationMgr<ResponseResultNotification>()
+    //                 .getNotification(fcc.type.NotificationType.RESPONSE_RESULT)
+    //                 .notify(true);
+    //
+    //         }, true);
+    // }
+    //
+    // /**
+    //  * server 回傳freeResult答案時的事件接收器
+    //  * @private
+    //  */
+    // private freeResultEvenResponse() {
+    //
+    //     fcc.eventMgr.eventListener(
+    //         fcc.type.ServerEventType.FREE_SPIN_RESULT,
+    //         (freeResult: object) => {
+    //             for (let name of Object.keys(freeResult)) {
+    //                 if (this.freeResult[name] === undefined) {
+    //                     try {
+    //                         fcc.errorMgr
+    //                             .executeError(
+    //                                 fcc.type.ErrorType.WEB_RESPONSE_FW,
+    //                                 `${name}參數未宣告:無法保存回傳值,如果該參數為必要,請更換FreeResultModule Type`
+    //                             );
+    //                     } catch (e) {
+    //                         console.log(e);
+    //                     }
+    //                 } else {
+    //                     this.freeResult[name] = freeResult[name];
+    //                 }
+    //             }
+    //             console.log(`${fcc.type.ServerEventType.BET_RESULT} : ${this.normalResult}`);
+    //
+    //             fcc.notificationMgr<ResponseResultNotification>()
+    //                 .getNotification(fcc.type.NotificationType.RESPONSE_RESULT)
+    //                 .notify(true);
+    //         }, true);
+    // }
 }

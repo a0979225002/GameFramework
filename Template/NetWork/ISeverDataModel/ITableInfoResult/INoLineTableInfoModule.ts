@@ -23,12 +23,4 @@ export default interface INoLineTableInfoModule extends IBaseTableInfoModel {
      * 幾線遊戲
      */
     Line: string;
-    /**
-     * 活動模式 0 沒有 11 轉盤
-     */
-    EventMode: number;
-    /**
-     * 活動轉數需求
-     */
-    EventRequire: number;
 }

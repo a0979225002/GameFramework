@@ -14,7 +14,7 @@ export default class UserWinPointStateNotification extends fcc.ABS.ABaseNotifica
      */
     public readonly TAG_NAME: string;
 
-    private constructor() {
+    constructor() {
         super();
         this.TAG_NAME = fcc.type.NotificationType.USER_GET_WIN;
     }

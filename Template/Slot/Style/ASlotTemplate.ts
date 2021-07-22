@@ -150,8 +150,10 @@ export default abstract class ASlotTemplate implements fcc.IF.ISlot {
      */
     private getResponseResultObserver(): ResponseResultObserver {
         if (!this.responseResultObserver) {
-            this.responseResultObserver = new ResponseResultObserver((isResultOk) => {
-                this.isResultOK = isResultOk;
+            this.responseResultObserver = new ResponseResultObserver((responseType) => {
+                if(responseType == fcc.type.ServerEventType.BET_RESULT || responseType == fcc.type.ServerEventType.FREE_SPIN_RESULT){
+                    this.isResultOK = true;
+                }
             }, this);
         }
         return this.responseResultObserver;

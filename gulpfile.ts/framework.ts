@@ -63,7 +63,6 @@ function buildAssetFramework(cb) {
                 .pipe(through.obj(function (chunk, enc, callback) {
                     let sdata = chunk.contents.toString();
                     let replace = updateVersion(sdata);
-                    replace += `\n window.VERSION = "${FCC_VERSION}";`
                     chunk.contents = Buffer.from(replace);
                     this.push(chunk)
                     callback();
