@@ -802,7 +802,7 @@ declare namespace fcc {
         enum LoadType {
             /**
              * 圖片類型
-             * @type {fcc.type.LoadType.IMG}
+             * @type {fcc.type.LoadType.IMG_ATLAS}
              */
             img = 0,
             /**

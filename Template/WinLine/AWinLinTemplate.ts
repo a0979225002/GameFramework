@@ -136,7 +136,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {cc.Node}
      * @private
      */
-    protected abstract _container: cc.Node;
+    protected _container: cc.Node;
 
     /**
      * 隱藏物件,當贏線動畫跑完之後,需自行隱藏該線條,與贏分格子

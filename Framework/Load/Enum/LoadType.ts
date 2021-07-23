@@ -11,10 +11,19 @@ namespace fcc {
         export enum LoadType {
 
             /**
-             * 圖片類型
+             * 單一圖片
+             */
+            /**
+             * 圖輯類型
              * @type {fcc.type.LoadType.IMG}
              */
             IMG = "IMG",
+
+            /**
+             * 圖輯類型
+             * @type {fcc.type.LoadType.IMG_ATLAS}
+             */
+            IMG_ATLAS = "IMG_ATLAS",
 
             /**
              * 骨骼动画類型

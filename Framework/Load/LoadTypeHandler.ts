@@ -41,7 +41,6 @@ namespace fcc {
          * @param url
          */
         public async executeLoadBundle(name: string, type: type.LoadType, url: string) {
-
             this.checkRepeatTheName(name);
             this.loadResManager.secondaryLoadState.set(name, null);
             await this.factory.executeLoadBundle(name, type, url);

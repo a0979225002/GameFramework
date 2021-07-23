@@ -79,10 +79,8 @@ namespace fcc {
          * @param url - 資源位置
          */
         async executeLoadBundle(dataName: string, type: type.LoadType, url: string) {
-
             await this.loadBundle(dataName, type, url);
             this.checkLoadType(dataName, type, url, "secondaryRes");
-
             if (this.assetMethod.length != 0) {
                 while (this.assetMethod.length) {
                     this.assetMethod[0]();
@@ -102,7 +100,10 @@ namespace fcc {
         private checkLoadType(dataName: string, type: type.LoadType, url: string, folder: string) {
             switch (type) {
                 case fcc.type.LoadType.IMG:
-                    new ImgLoad(dataName, cc.SpriteAtlas, url, folder).loadResources();
+                    new ImgLoad(dataName, cc.SpriteFrame, url, folder).loadResources();
+                    break;
+                case fcc.type.LoadType.IMG_ATLAS:
+                    new ImgAtlasLoad(dataName, cc.SpriteAtlas, url, folder).loadResources();
                     break;
                 case fcc.type.LoadType.MUSIC:
                     new MusicLoad(dataName, cc.AudioClip, url, folder).loadResources();
