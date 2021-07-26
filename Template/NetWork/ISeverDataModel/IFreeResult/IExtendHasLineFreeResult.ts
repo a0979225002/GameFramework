@@ -8,10 +8,6 @@ import ISlotFreeBaseResultModel from "./ISlotFreeBaseResultModel";
  */
 export default interface IExtendHasLineFreeResult extends ISlotFreeBaseResultModel {
 
-    /**
-     * 15格的資料
-     */
-    Grid: Array<number>;
 
     /**
      * 黏性圖標編號
@@ -32,11 +28,6 @@ export default interface IExtendHasLineFreeResult extends ISlotFreeBaseResultMod
      * 每條線贏幾格
      */
     LineGrid: Array<number>;
-
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     */
-    LookAt: Array<number>;
 
     /**
      * 再中免費遊戲次數 0:無 1~99:次

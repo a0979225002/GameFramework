@@ -30,4 +30,14 @@
      * 總贏得金額 (0:輸了 大於0:贏了 )
      */
     TotalWinPoint: number;
+
+    /**
+     * 15格的資料
+     */
+    Grid: Array<number>;
+
+    /**
+     * 瞇牌0:不用 1:瞇牌效果
+     */
+    LookAt: Array<number>;
 }

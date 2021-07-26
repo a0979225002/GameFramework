@@ -2087,110 +2087,184 @@ declare abstract class ASlotTemplate implements fcc.IF.ISlot {
 }
 /**
  * @Author XIAO-LI-PIN
+ * @Description (介面)所有類型Slot一般狀態接收封包的父類
+ * @Date 2021-05-31 下午 03:45
+ * @Version 1.0
+ */
+interface ISlotBaseResultModel {
+    /**
+     * 0: 押注成功 1:遊戲狀態不符 2:超過
+     */
+    State: number;
+    /**
+     * 總贏得金額 (0:輸了 大於0:贏了 )
+     */
+    TotalWinPoint: number;
+    /**
+     * 玩家現有金額(贏分後)
+     */
+    UserPointAfter: number;
+    /**
+     * 玩家現有金額(押注後)
+     */
+    UserPointBefore: number;
+    /**
+     * 15格的資料
+     */
+    Grid: Array<number>;
+    /**
+     * 瞇牌0:不用 1:瞇牌效果
+     */
+    LookAt: Array<number>;
+}
+/**
+ * @Author XIAO-LI-PIN
+ * @Description (介面)所有類型Slot免費狀態接收封包的父類
+ * @Date 2021-05-31 下午 03:45
+ * @Version 1.0
+ */
+interface ISlotFreeBaseResultModel {
+    /**
+     * 0: 押注成功 1: 非免費時間押注
+     */
+    State: number;
+    /**
+     * 玩家現有金額(贏分後)
+     */
+    UserPointAfter: number;
+    /**
+     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
+     */
+    GameState: number;
+    /**
+     * 剩餘免費遊戲次數 (0:沒有 1~99次)
+     */
+    Count: number;
+    /**
+     * 免費遊戲累計贏分
+     */
+    FreeSpinWin: number;
+    /**
+     * 總贏得金額 (0:輸了 大於0:贏了 )
+     */
+    TotalWinPoint: number;
+    /**
+     * 15格的資料
+     */
+    Grid: Array<number>;
+    /**
+     * 瞇牌0:不用 1:瞇牌效果
+     */
+    LookAt: Array<number>;
+}
+/**
+ * @Author XIAO-LI-PIN
  * @Description 無線一般版老虎機
  *  ```
+ *      SLOT STYLE : fcc.SlotImgSetting;
+ *
  *      需擁有物件
- *          音效 {"SlotTrun"}: 轉動聲音
+ *          音效 {"SlotTurn"}: 轉動聲音
  *          音效 {"SlotStop"}: 停軸聲音
  *          音效 {"getFreeIcon"+"index"}: 免費圖標音效
  *          推撥 {ScrollFocusStateNotification} : 瞇排的推播事件
  *          推撥 {StopNowStateNotification} : 即停的推播事件
  *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          model {NoLineResult} : 一般獲獎model
- *          model {NoLineFreeResult} : 免費獲獎model
+ *          model {ISlotBaseResultModel} : 一般獲獎model
+ *          model {ISlotBaseResultModel} : 免費獲獎model
  *  ```
  * @Date 2021-04-14 下午 20:24
  * @Version 1.1
  */
-declare class NoLineSlotTemplate extends ASlotTemplate {
+declare class NormalSlotTemplate extends ASlotTemplate {
     /**
      * 一般停止最少轉動次數
      * @type {number}
      * @private
      */
-    private readonly slotTurnCount;
+    protected readonly slotTurnCount: number;
     /**
      * 遊戲每格格子間的速度
      * @type {number}
      * @private
      */
-    private readonly slotGirdSpeed;
+    protected readonly slotGirdSpeed: number;
     /**
      * 遊戲每列的格子數量
      * @type {number}
      * @private
      */
-    private readonly slotRowGridCount;
+    protected readonly slotRowGridCount: number;
     /**
      * 老虎機格子高度
      * @type {number}
      * @private
      */
-    private readonly slotGridHeight;
+    protected readonly slotGridHeight: number;
     /**
      * 確認該軸是否有 free 圖標
      * @param index
      */
-    private freeIconCount;
+    protected freeIconCount: number;
     /**
      * 加速倍率
      * @type {number}
      * @private
      */
-    private readonly speedUpMultiple;
+    protected readonly speedUpMultiple: number;
     /**
      * 執行老虎機動畫的列
      * @type {Array<cc.Node>}
      * @private
      */
-    private readonly slotColumnToTween;
+    protected readonly slotColumnToTween: Array<cc.Node>;
     /**
      * 跑遊戲更換位置的grid 節點
      * @type {Map<number, Array<cc.Node>>}
      * @private
      */
-    private readonly gridNodeToMap;
+    protected readonly gridNodeToMap: Map<number, Array<cc.Node>>;
     /**
      * 跑遊戲更換答案的grid 節點
      * @type {Map<number, Array<cc.Sprite>>}
      * @private
      */
-    private readonly gridSpriteToMap;
+    protected readonly gridSpriteToMap: Map<number, Array<cc.Sprite>>;
     /**
      * 遊戲中所有靜態grid圖片
      * @param {StyleData} styleData
      */
-    private readonly gridImg;
+    protected readonly gridImg: Map<string, cc.SpriteFrame>;
     /**
      * 遊戲每列是否已經結束
      * @type {Array<boolean>}
      * @private
      */
-    private readonly isSlotEnd;
+    protected readonly isSlotEnd: Array<boolean>;
     /**
      * ["當前要跑幾個格子","slot高度"]
      * @type {Array<number>}
      * @private
      */
-    private readonly rowData;
+    protected readonly rowData: Array<number>;
     /**
      * 一般狀態回傳 model
-     * @type {NoLineResult}
+     * @type {ISlotBaseResultModel}
      * @private
      */
-    private normalResult;
+    protected normalResult: ISlotBaseResultModel;
     /**
      * 免費結果回傳 model
      * @type {NoLineFreeResult}
      * @private
      */
-    private freeResult;
+    protected freeResult: ISlotFreeBaseResultModel;
     constructor(styleData: fcc.SlotImgSetting, configManager: fcc.IF.ISlotConfigManager);
     /**
      * 計算當前格子高度
      * @private
      */
-    private getCalculateSlotHeight;
+    protected getCalculateSlotHeight(): number;
     /**
      * 轉動前動畫,先往上,在往下1/2格
      * @return {Promise<void>}
@@ -2208,68 +2282,102 @@ declare class NoLineSlotTemplate extends ASlotTemplate {
      * @param resolve 當跑完時回傳Promise 讓Api執行下一段方法
      * @param numberOfTimes 監聽當前跑了幾輪,sever回傳答案後才開始計算圈數
      */
-    private executeSlotAnimation;
+    protected executeSlotAnimation(index: number, resolve?: () => void, numberOfTimes?: number): void;
     /**
      * 拿取該要跑的次數
      * @param index - 哪一列
      * @return {number} - 該列要Loop的數字
      * @private
      */
-    private getSlotTurnCount;
+    protected getSlotTurnCount(index: any): number;
     /**
      * 推送瞇排事件
      * @param {boolean} isShow - 是否要打開該列的瞇排特效
      * @param {number} index - 第幾列
      */
-    notifyLookAtEvent(isShow: boolean, index: number): void;
+    protected notifyLookAtEvent(isShow: boolean, index: number): void;
     /**
      * 檢查是否可以即停
      * @param {number} index - 當前第幾列觸發即停事件
      * @param {() => void} resolve - 異步阻塞
      * @return {boolean}
      */
-    isCanStop(index: number, resolve: () => void): boolean;
+    protected isCanStop(index: number, resolve: () => void): boolean;
     /**
      * 更新輪播格子位置
      * @param rowNodes - 哪一列的 node 需要更換圖片位置
      * @param columnIndex - 當前是第幾列
      */
-    private updateGridPositionAndRandomImg;
+    protected updateGridPositionAndRandomImg(rowNodes: Array<cc.Node>, columnIndex: number): void;
     /**
      * 對該列正確結果顯示在頂部,透過動畫,並將結果顯示給user
      * @param {number} index : 哪一列
      * @param resolve
      */
-    private showAnswer;
+    protected showAnswer(index: number, resolve?: any): void;
     /**
      * 檢查是否需要瞇牌
      * @param index{number}:檢查該列是否需要瞇牌
      * @return {boolean} : 如果需要瞇牌,返回true
      * @private
      */
-    private checkLookAt;
+    protected checkLookAt(index: number): boolean;
     /**
      * 在答案顯示後,馬上給予回彈效果
      * @param index{number} : 哪一列已經顯示答案完畢
      * @param resolve{()=>void} : 當所有列都顯示答案且回彈效果完畢時,通知可以進行下一步
      */
-    private sineOutAnimation;
+    protected sineOutAnimation(index: number, resolve: () => void): void;
     /**
      * 確認當前答案是否有Free圖標,如果有將播放該數量的音效
      * @param index
      */
-    checkFreeIcon(index: any): void;
+    protected checkFreeIcon(index: any): void;
     /**
      * 更新正確答案
      * 答案更新再每列最上面位置,等待掉下來,顯示正確答案給USER
      * @param {number} index : 要更新哪一列最上面三個grid 為正確答案
      * @private
      */
-    private updateGridAnswer;
+    protected updateGridAnswer(index: number): void;
     /**
      * 初始化該輪所有狀態
      */
     initializeState(): void;
+}
+/**
+ * @Author XIAO-LI-PIN
+ * @Description 一般版老虎機,執行動畫為模糊圖標
+ *  ```
+ *      SLOT STYLE : fcc.SlotBurredImgSetting;
+ *
+ *      需擁有物件
+ *          音效 {"SlotTurn"}: 轉動聲音
+ *          音效 {"SlotStop"}: 停軸聲音
+ *          音效 {"getFreeIcon"+"index"}: 免費圖標音效
+ *          推撥 {ScrollFocusStateNotification} : 瞇排的推播事件
+ *          推撥 {StopNowStateNotification} : 即停的推播事件
+ *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
+ *          model {NoLineResult} : 一般獲獎model
+ *          model {NoLineFreeResult} : 免費獲獎model
+ *  ```
+ * @Date 2021-04-14 下午 20:24
+ * @Version 1.1
+ */
+declare class SlotBurredImgTemplate extends NormalSlotTemplate {
+    /**
+     * 所有模糊圖標
+     * @type {Map<string, cc.SpriteFrame>}
+     * @private
+     */
+    private gridBurredImg;
+    constructor(styleData: fcc.SlotBurredImgSetting, configManager: fcc.IF.ISlotConfigManager);
+    /**
+     * 更新輪播格子位置(更新的Gird圖片修正為模糊圖片)
+     * @param rowNodes - 哪一列的 node 需要更換圖片位置
+     * @param columnIndex - 當前是第幾列
+     */
+    protected updateGridPositionAndRandomImg(rowNodes: Array<cc.Node>, columnIndex: number): void;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -2334,47 +2442,11 @@ declare abstract class ASlotInitializeTemplate extends AGenericTemplate {
 }
 /**
  * @Author XIAO-LI-PIN
- * @Description (介面)所有類型Slot免費狀態接收封包的父類
- * @Date 2021-05-31 下午 03:45
- * @Version 1.0
- */
-interface ISlotFreeBaseResultModel {
-    /**
-     * 0: 押注成功 1: 非免費時間押注
-     */
-    State: number;
-    /**
-     * 玩家現有金額(贏分後)
-     */
-    UserPointAfter: number;
-    /**
-     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-     */
-    GameState: number;
-    /**
-     * 剩餘免費遊戲次數 (0:沒有 1~99次)
-     */
-    Count: number;
-    /**
-     * 免費遊戲累計贏分
-     */
-    FreeSpinWin: number;
-    /**
-     * 總贏得金額 (0:輸了 大於0:贏了 )
-     */
-    TotalWinPoint: number;
-}
-/**
- * @Author XIAO-LI-PIN
  * @Description (介面)擴展類有線免費狀態封包
  * @Date 2021-05-31 下午 03:45
  * @Version 1.0
  */
 interface IExtendHasLineFreeResult extends ISlotFreeBaseResultModel {
-    /**
-     * 15格的資料
-     */
-    Grid: Array<number>;
     /**
      * 黏性圖標編號
      */
@@ -2391,10 +2463,6 @@ interface IExtendHasLineFreeResult extends ISlotFreeBaseResultModel {
      * 每條線贏幾格
      */
     LineGrid: Array<number>;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     */
-    LookAt: Array<number>;
     /**
      * 再中免費遊戲次數 0:無 1~99:次
      */
@@ -2416,10 +2484,6 @@ interface IExtendHasLineFreeResult extends ISlotFreeBaseResultModel {
  */
 interface IHasLineFreeResultModule extends ISlotFreeBaseResultModel {
     /**
-     * 15格的資料
-     */
-    Grid: Array<number>;
-    /**
      * 是否有鬼牌 0:沒有 1:有
      */
     ChangeState: number;
@@ -2435,10 +2499,6 @@ interface IHasLineFreeResultModule extends ISlotFreeBaseResultModel {
      * 每條線贏幾格
      */
     LineGrid: Array<number>;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     */
-    LookAt: Array<number>;
     /**
      * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
      */
@@ -2464,10 +2524,6 @@ interface IHasLineFreeResultModule extends ISlotFreeBaseResultModel {
  */
 interface INoLineFreeResultModel extends ISlotFreeBaseResultModel {
     /**
-     * 15格的資料
-     */
-    Grid: Array<number>;
-    /**
      * 是否有鬼牌 0:沒有 1:有
      */
     ChangeState: number;
@@ -2479,10 +2535,6 @@ interface INoLineFreeResultModel extends ISlotFreeBaseResultModel {
      * 哪幾格贏 0:沒贏 1:贏
      */
     GridWin: Array<number>;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     */
-    LookAt: Array<number>;
     /**
      * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
      */
@@ -2499,30 +2551,6 @@ interface INoLineFreeResultModel extends ISlotFreeBaseResultModel {
      * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
      */
     FreeLevelWin: number;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description (介面)所有類型Slot一般狀態接收封包的父類
- * @Date 2021-05-31 下午 03:45
- * @Version 1.0
- */
-interface ISlotBaseResultModel {
-    /**
-     * 0: 押注成功 1:遊戲狀態不符 2:超過
-     */
-    State: number;
-    /**
-     * 總贏得金額 (0:輸了 大於0:贏了 )
-     */
-    TotalWinPoint: number;
-    /**
-     * 玩家現有金額(贏分後)
-     */
-    UserPointAfter: number;
-    /**
-     * 玩家現有金額(押注後)
-     */
-    UserPointBefore: number;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -2628,10 +2656,6 @@ interface IHasLineResultModule extends ISlotBaseResultModel {
  */
 interface INoLineResultModel extends ISlotBaseResultModel {
     /**
-     * 15格的資料
-     */
-    Grid: Array<number>;
-    /**
      * 是否有鬼牌擴展 0:沒有 1:有
      */
     ChangeState: number;
@@ -2651,10 +2675,6 @@ interface INoLineResultModel extends ISlotBaseResultModel {
      * 免費遊戲次數 (0:沒有 1~99次)
      */
     FreeSpinCount: number;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     */
-    LookAt: Array<number>;
     /**
      * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
      */
@@ -3651,4 +3671,4 @@ declare class NoLineTableInfo implements INoLineTableInfoModule {
     get EventRequire(): number;
     set EventRequire(value: number);
 }
-export { AGenericTemplate, OverrideComponent, ACenterTemplate, AutoStateChangeNotification, ScrollFocusStateNotification, SpeedStateChangeNotification, StopNowStateNotification, UserMoneyChangeNotification, UserTotalBetChangeNotification, UserWinPointStateNotification, ResponseResultNotification, AutoStateChangeObserver, ScrollFocusStateObserver, SpeedStateChangeObserver, StopNowStateObserver, UserMoneyChangeObserver, UserTotalBetChangeObserver, UserWinPointStateObserver, ResponseResultObserver, AMainGameButtonTemplate, AMainGameOnlyButtonTemplate, AMainGameDoubleButtonTemplate, AMenuButtonTemplate, AMenuDoubleButtonTemplate, AMenuOnlyButtonTemplate, ARecordButtonTemplate, ARecordDoubleButtonTemplate, ARecordOnlyButtonTemplate, AErrorFrameTemplate, ALoadingTemplate, ALoadingFrameTemplate, ALookAtTemplate, AWinLinTemplate, AMainInitTemplate, ASlotTemplate, NoLineSlotTemplate, ASlotInitializeTemplate, IExtendHasLineFreeResult, IHasLineFreeResultModule, INoLineFreeResultModel, ISlotFreeBaseResultModel, IExtendHasLineResult, IHasLineResultModule, INoLineResultModel, ISlotBaseResultModel, IBaseTableInfoModel, IHasLineTableInfoModule, INoLineTableInfoModule, ExtendHasLineFreeResult, HasLineFreeResult, NoLineFreeResult, ExtendHasLineResult, HasLineResult, NoLineResult, HasLineTableInfo, NoLineTableInfo };
+export { AGenericTemplate, OverrideComponent, ACenterTemplate, AutoStateChangeNotification, ScrollFocusStateNotification, SpeedStateChangeNotification, StopNowStateNotification, UserMoneyChangeNotification, UserTotalBetChangeNotification, UserWinPointStateNotification, ResponseResultNotification, AutoStateChangeObserver, ScrollFocusStateObserver, SpeedStateChangeObserver, StopNowStateObserver, UserMoneyChangeObserver, UserTotalBetChangeObserver, UserWinPointStateObserver, ResponseResultObserver, AMainGameButtonTemplate, AMainGameOnlyButtonTemplate, AMainGameDoubleButtonTemplate, AMenuButtonTemplate, AMenuDoubleButtonTemplate, AMenuOnlyButtonTemplate, ARecordButtonTemplate, ARecordDoubleButtonTemplate, ARecordOnlyButtonTemplate, AErrorFrameTemplate, ALoadingTemplate, ALoadingFrameTemplate, ALookAtTemplate, AWinLinTemplate, AMainInitTemplate, ASlotTemplate, NormalSlotTemplate, SlotBurredImgTemplate, ASlotInitializeTemplate, IExtendHasLineFreeResult, IHasLineFreeResultModule, INoLineFreeResultModel, ISlotFreeBaseResultModel, IExtendHasLineResult, IHasLineResultModule, INoLineResultModel, ISlotBaseResultModel, IBaseTableInfoModel, IHasLineTableInfoModule, INoLineTableInfoModule, ExtendHasLineFreeResult, HasLineFreeResult, NoLineFreeResult, ExtendHasLineResult, HasLineResult, NoLineResult, HasLineTableInfo, NoLineTableInfo };

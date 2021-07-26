@@ -1,9 +1,8 @@
 import ASlotTemplate from "./ASlotTemplate";
-import NoLineResult from "../../NetWork/ServerDataModel/NormalResult/NoLineResult";
-import NoLineFreeResult from "../../NetWork/ServerDataModel/FreeResult/NoLineFreeResult";
+
 import ScrollFocusStateNotification from "../../Event/Notification/GameNotification/ScrollFocusStateNotification";
-import INoLineResultModel from "../../NetWork/ISeverDataModel/INormalResult/INoLineResultModel";
-import INoLineFreeResultModel from "../../NetWork/ISeverDataModel/IFreeResult/INoLineFreeResultModel";
+import ISlotBaseResultModel from "../../NetWork/ISeverDataModel/INormalResult/ISlotBaseResultModel";
+import ISlotFreeBaseResultModel from "../../NetWork/ISeverDataModel/IFreeResult/ISlotFreeBaseResultModel";
 
 /**
  * @Author XIAO-LI-PIN
@@ -12,14 +11,14 @@ import INoLineFreeResultModel from "../../NetWork/ISeverDataModel/IFreeResult/IN
  *      SLOT STYLE : fcc.SlotImgSetting;
  *
  *      需擁有物件
- *          音效 {"SlotTrun"}: 轉動聲音
+ *          音效 {"SlotTurn"}: 轉動聲音
  *          音效 {"SlotStop"}: 停軸聲音
  *          音效 {"getFreeIcon"+"index"}: 免費圖標音效
  *          推撥 {ScrollFocusStateNotification} : 瞇排的推播事件
  *          推撥 {StopNowStateNotification} : 即停的推播事件
  *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          model {NoLineResult} : 一般獲獎model
- *          model {NoLineFreeResult} : 免費獲獎model
+ *          model {ISlotBaseResultModel} : 一般獲獎model
+ *          model {ISlotBaseResultModel} : 免費獲獎model
  *  ```
  * @Date 2021-04-14 下午 20:24
  * @Version 1.1
@@ -31,96 +30,96 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @type {number}
      * @private
      */
-    private readonly slotTurnCount: number;
+    protected readonly slotTurnCount: number;
 
     /**
      * 遊戲每格格子間的速度
      * @type {number}
      * @private
      */
-    private readonly slotGirdSpeed: number;
+    protected readonly slotGirdSpeed: number;
 
     /**
      * 遊戲每列的格子數量
      * @type {number}
      * @private
      */
-    private readonly slotRowGridCount: number;
+    protected readonly slotRowGridCount: number;
 
     /**
      * 老虎機格子高度
      * @type {number}
      * @private
      */
-    private readonly slotGridHeight: number;
+    protected readonly slotGridHeight: number;
 
     /**
      * 確認該軸是否有 free 圖標
      * @param index
      */
-    private freeIconCount: number;
+    protected freeIconCount: number;
 
     /**
      * 加速倍率
      * @type {number}
      * @private
      */
-    private readonly speedUpMultiple: number;
+    protected readonly speedUpMultiple: number;
 
     /**
      * 執行老虎機動畫的列
      * @type {Array<cc.Node>}
      * @private
      */
-    private readonly slotColumnToTween: Array<cc.Node>;
+    protected readonly slotColumnToTween: Array<cc.Node>;
 
     /**
      * 跑遊戲更換位置的grid 節點
      * @type {Map<number, Array<cc.Node>>}
      * @private
      */
-    private readonly gridNodeToMap: Map<number, Array<cc.Node>>;
+    protected readonly gridNodeToMap: Map<number, Array<cc.Node>>;
 
     /**
      * 跑遊戲更換答案的grid 節點
      * @type {Map<number, Array<cc.Sprite>>}
      * @private
      */
-    private readonly gridSpriteToMap: Map<number, Array<cc.Sprite>>;
+    protected readonly gridSpriteToMap: Map<number, Array<cc.Sprite>>;
 
     /**
      * 遊戲中所有靜態grid圖片
      * @param {StyleData} styleData
      */
-    private readonly gridImg: Map<string, cc.SpriteFrame>;
+    protected readonly gridImg: Map<string, cc.SpriteFrame>;
 
     /**
      * 遊戲每列是否已經結束
      * @type {Array<boolean>}
      * @private
      */
-    private readonly isSlotEnd: Array<boolean>;
+    protected readonly isSlotEnd: Array<boolean>;
 
     /**
      * ["當前要跑幾個格子","slot高度"]
      * @type {Array<number>}
      * @private
      */
-    private readonly rowData: Array<number>;
+    protected readonly rowData: Array<number>;
 
     /**
      * 一般狀態回傳 model
-     * @type {NoLineResult}
+     * @type {ISlotBaseResultModel}
      * @private
      */
-    private normalResult: INoLineResultModel;
+    protected normalResult: ISlotBaseResultModel;
 
     /**
      * 免費結果回傳 model
      * @type {NoLineFreeResult}
      * @private
      */
-    private freeResult: INoLineFreeResultModel;
+    protected freeResult: ISlotFreeBaseResultModel;
 
     constructor(styleData: fcc.SlotImgSetting, configManager: fcc.IF.ISlotConfigManager) {
         super(styleData, configManager);
@@ -135,8 +134,8 @@ export default class NormalSlotTemplate extends ASlotTemplate {
         this.gridNodeToMap = styleData.gridNodeToMap;                                   //拿取跑遊戲更換位置的grid 節點
         this.gridSpriteToMap = styleData.gridSpriteToMap;                               //拿取跑遊戲更換答案的grid Node
         this.gridImg = styleData.gridImg;                                               //拿取Slot格子的所有圖案
-        this.normalResult = styleData.normalResult as NoLineResult;                     //拿取一般獲獎 model
-        this.freeResult = styleData.freeResult as NoLineFreeResult;                     //拿取免費獲獎 model
+        this.normalResult = styleData.normalResult;                                     //拿取一般獲獎 model
+        this.freeResult = styleData.freeResult;                                         //拿取免費獲獎 model
         this.rowData = new Array<number>();                                             //初始化Slot每列的資料
         this.isSlotEnd = [];                                                            //遊戲每列是否已經結束
         this.rowData.push(this.slotRowGridCount, this.getCalculateSlotHeight());        //rowData [每列的格子數量,slot高度];
@@ -147,7 +146,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * 計算當前格子高度
      * @private
      */
-    private getCalculateSlotHeight(): number {
+    protected getCalculateSlotHeight(): number {
         return this.slotRowGridCount * this.slotGridHeight;
     }
 
@@ -188,7 +187,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
             //拿取該slot有幾列
             let columnLength = this.slotColumnToTween.length;
             //播放slot轉動音校
-            fcc.audioMgr.effectPlay("SlotTrun");
+            fcc.audioMgr.effectPlay("SlotTurn");
             for (let i = 0; i < columnLength; i++) {
                 //如果當前為最後一列,將異步阻塞傳出去
                 if (i == columnLength - 1) {
@@ -207,7 +206,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @param resolve 當跑完時回傳Promise 讓Api執行下一段方法
      * @param numberOfTimes 監聽當前跑了幾輪,sever回傳答案後才開始計算圈數
      */
-    private executeSlotAnimation(index: number, resolve?: () => void, numberOfTimes: number = 0) {
+    protected executeSlotAnimation(index: number, resolve?: () => void, numberOfTimes: number = 0) {
         //緩動時間 = 當前一個格子的跑速 * 有幾個格子 * 當前是否加速(無加速 = 1)
         let duration: number = this.slotGirdSpeed * this.slotRowGridCount / this.speedRatio;
         let node: cc.Node = this.slotColumnToTween[index];
@@ -261,7 +260,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @return {number} - 該列要Loop的數字
      * @private
      */
-    private getSlotTurnCount(index): number {
+    protected getSlotTurnCount(index): number {
         let count: number;
         if (this.isSpeedUp) {
             //如果是加速狀態,全軸一起停止
@@ -281,7 +280,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @param {boolean} isShow - 是否要打開該列的瞇排特效
      * @param {number} index - 第幾列
      */
-    notifyLookAtEvent(isShow: boolean, index: number) {
+    protected notifyLookAtEvent(isShow: boolean, index: number) {
         fcc.notificationMgr<ScrollFocusStateNotification>()
             .getNotification(fcc.type.NotificationType.SCROLL_FOCUS_STATE)
             .notify(index, isShow)
@@ -293,7 +292,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @param {() => void} resolve - 異步阻塞
      * @return {boolean}
      */
-    isCanStop(index: number, resolve: () => void): boolean {
+    protected isCanStop(index: number, resolve: () => void): boolean {
         //如果即停事件觸發
         if (this.isSlotImmediateStop) {
             if (index == this.slotColumnToTween.length - 1) {
@@ -319,7 +318,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @param rowNodes - 哪一列的 node 需要更換圖片位置
      * @param columnIndex - 當前是第幾列
      */
-    private updateGridPositionAndRandomImg(rowNodes: Array<cc.Node>, columnIndex: number) {
+    protected updateGridPositionAndRandomImg(rowNodes: Array<cc.Node>, columnIndex: number) {
         //獲取該列物件長度
         let rowLength = rowNodes.length - 1;
         //隨機數字
@@ -351,7 +350,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @param {number} index : 哪一列
      * @param resolve
      */
-    private showAnswer(index: number, resolve?) {
+    protected showAnswer(index: number, resolve?) {
         //更新正確答案 答案更新再每列最上面位置
         this.updateGridAnswer(index);
         //緩動時間 = 當前一個格子的跑速 * 有幾個格子 * 當前是否加速(無加速 = 1)
@@ -375,7 +374,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @return {boolean} : 如果需要瞇牌,返回true
      * @private
      */
-    private checkLookAt(index: number): boolean {
+    protected checkLookAt(index: number): boolean {
         let lookAt: Array<number>;
         let isShowLookAt: boolean;
         if (fcc.processMgr.gameState === fcc.type.GameStateType.FREEING) {
@@ -392,7 +391,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @param index{number} : 哪一列已經顯示答案完畢
      * @param resolve{()=>void} : 當所有列都顯示答案且回彈效果完畢時,通知可以進行下一步
      */
-    private sineOutAnimation(index: number, resolve: () => void) {
+    protected sineOutAnimation(index: number, resolve: () => void) {
         if ((this.isSpeedUp || this.isSlotImmediateStop) &&
             index == this.slotColumnToTween.length - 1) {
             //如果當前是瞇排或是即停狀態,將只對最後一軸結束時才播放停軸音效
@@ -410,7 +409,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
             .call(() => {
                 this.checkFreeIcon(index);
                 if (index === this.slotColumnToTween.length - 1) {
-                    fcc.audioMgr.effectStop("SlotTrun");
+                    fcc.audioMgr.effectStop("SlotTurn");
                     resolve();
                 }
             })
@@ -421,7 +420,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * 確認當前答案是否有Free圖標,如果有將播放該數量的音效
      * @param index
      */
-    checkFreeIcon(index) {
+    protected checkFreeIcon(index) {
         let gridAnswer: Array<number>;
         if (fcc.processMgr.gameState === fcc.type.GameStateType.FREEING) {
             gridAnswer = this.freeResult.Grid;
@@ -456,7 +455,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @param {number} index : 要更新哪一列最上面三個grid 為正確答案
      * @private
      */
-    private updateGridAnswer(index: number) {
+    protected updateGridAnswer(index: number) {
         let gridAnswer: Array<number>;
         if (fcc.processMgr.gameState === fcc.type.GameStateType.FREEING) {
             gridAnswer = this.freeResult.Grid;

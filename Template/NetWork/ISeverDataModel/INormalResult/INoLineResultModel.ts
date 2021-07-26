@@ -9,10 +9,6 @@ import ISlotBaseResultModel from "./ISlotBaseResultModel";
 export default interface INoLineResultModel extends ISlotBaseResultModel {
 
     /**
-     * 15格的資料
-     */
-    Grid: Array<number>;
-    /**
      * 是否有鬼牌擴展 0:沒有 1:有
      */
     ChangeState: number;
@@ -32,10 +28,7 @@ export default interface INoLineResultModel extends ISlotBaseResultModel {
      * 免費遊戲次數 (0:沒有 1~99次)
      */
     FreeSpinCount: number;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     */
-    LookAt: Array<number>;
+
     /**
      * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
      */
