@@ -56,7 +56,7 @@ export default class SlotController extends ASlotInitializeTemplate {
             .setSlotRowGridCount(3)                                      //老虎機每列格子數
             .setSlotTurnCount(2)                                         //一般停止最少轉動次數
             .setSpeedUpMultiple(2)                                       //加速倍率
-            .slotColumnToTween(this.slotRow)                             //執行老虎機動畫的列
+            .slotColumnToTween(this.slotRow)                        //執行老虎機動畫的列
             .setGridNodeToMap(this.gridNodeToMap)                        //執行動畫的所有格子
             .setGirdSpriteToMap(this.girdSpriteToMap)                    //更換圖片的所有格子
             .setGridImg(LoadResManager.instance.imgRes.get("gridImg"))   //遊戲中grid的所有格子

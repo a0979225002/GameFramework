@@ -101,7 +101,6 @@ export default class HasLineResult implements IHasLineResultModule {
         this._LookAt = new Array<number>();
         this._UserPointBefore = 0;
         this._BaseLevelWin = 0;
-        Object.preventExtensions(this);
     }
 
 

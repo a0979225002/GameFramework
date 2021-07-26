@@ -5,14 +5,6 @@ import StopNowStateNotification from "../../Event/Notification/GameNotification/
 import UserMoneyChangeObserver from "../../Event/Observer/GameObserver/UserMoenyChangeObserver";
 import SpeedStateChangeNotification from "../../Event/Notification/GameNotification/SpeedStateChangeNotification";
 import UserMoneyChangeNotification from "../../Event/Notification/GameNotification/UserMoneyChangeNotification";
-import IBaseTableInfoModel from "../../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
-
-/**
- * Request Server 的 object
- */
-export interface IUserBetPoint {
-    LineBet: number;
-}
 
 /**
  * @Author XIAO-LI-PIN
@@ -96,18 +88,11 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
     private _userMoneyChangeObserver: UserMoneyChangeObserver;
 
     /**
-     * 當前lineBet
-     * @type {ITableInfoModel}
+     * 確認當前user分數是否可以玩下輪遊戲
+     * @return {boolean}
      * @protected
      */
-    protected abstract userBetPoint: IUserBetPoint;
-
-    /**
-     * server 回傳 tableInfo model
-     * @type {IBaseTableInfoModel}
-     * @protected
-     */
-    protected abstract tableInfo: IBaseTableInfoModel;
+    protected abstract checkUserPointCanPlayGame(): boolean;
 
     protected onLoad(): void {
         this.isShowTotalBetFrame = false;                                           //當前是否開啟總押注視窗
@@ -116,7 +101,6 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
         this.longTouchTime = 0.5;                                                   //默認長壓時間0.5秒
         this.nowSpeed = fcc.configMgr.isSpeedUp;                                    //初始當前遊戲速度
         this.addNotification();                                                     //添加玩家金額 /自動遊戲事件 監聽
-        this.makeTotalBetButtonToListener();                                        //總押注視窗中按鈕監聽事件
         super.onLoad();
     }
 
@@ -136,12 +120,6 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected abstract totalBetFrameTouchEvent(isShowTotalBetFrame: boolean): void;
-
-    /**
-     * 自行添加押注視窗內所有押注按鈕監聽
-     * @protected
-     */
-    protected abstract makeTotalBetButtonToListener(): void;
 
     /**
      * 當下是否(開啟或關閉)加速狀態事件
@@ -320,9 +298,6 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
 
     /**
      * 開始遊戲監聽事件
-     *
-     *
-     *
      * @returns {Promise<void>}
      * @protected
      */
@@ -343,16 +318,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
                     .notify();
                 return;
             }
-
-            //判斷當前是金額足夠
-            let nowUserBetIndex = this.userBetPoint.LineBet;
-            let userBet = this.tableInfo.LineTotalBet[nowUserBetIndex];
-
-            //如果用戶金額不足的情況
-            if (this.userMoney - userBet < 0) {
-                fcc.errorMgr.showErrorDialog(false, fcc.languageMgr.getText("S_9003"));
-                return;
-            }
+            if (!this.checkUserPointCanPlayGame()) return;
             this.startEvent();
             await fcc.processMgr.play();
             this.endEvent();

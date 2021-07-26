@@ -9,6 +9,8 @@ import INoLineFreeResultModel from "../../NetWork/ISeverDataModel/IFreeResult/IN
  * @Author XIAO-LI-PIN
  * @Description 無線一般版老虎機
  *  ```
+ *      SLOT STYLE : fcc.SlotImgSetting;
+ *
  *      需擁有物件
  *          音效 {"SlotTrun"}: 轉動聲音
  *          音效 {"SlotStop"}: 停軸聲音
@@ -22,7 +24,7 @@ import INoLineFreeResultModel from "../../NetWork/ISeverDataModel/IFreeResult/IN
  * @Date 2021-04-14 下午 20:24
  * @Version 1.1
  */
-export default class NoLineSlotTemplate extends ASlotTemplate {
+export default class NormalSlotTemplate extends ASlotTemplate {
 
     /**
      * 一般停止最少轉動次數

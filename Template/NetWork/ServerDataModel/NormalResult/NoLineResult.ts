@@ -108,7 +108,6 @@ export default class NoLineResult implements INoLineResultModel {
         this._LevelWin = 0;
         this._BaseLevelWin = 0;
         this._BonusEventCount = 0;
-        Object.preventExtensions(this);
     }
 
     get State(): number {

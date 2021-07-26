@@ -47,7 +47,7 @@ namespace fcc {
                             spineToMap.set(spineName, spineName);
                         } else {
                             if (spineToMap.has(spineNameToNumber)) {
-                                ErrorManager.instance.executeError(type.ErrorType.LOAD_FW, `${spineName} spine動畫取number有誤,請檢查該spine Animetion是否有重複數字情況`);
+                                ErrorManager.instance.executeError(type.ErrorType.LOAD_FW, `${spineName} spine動畫取number有誤,請檢查該spine Animation是否有重複數字情況`);
                             }
                             spineToMap.set(spineNameToNumber, spineName);
                         }

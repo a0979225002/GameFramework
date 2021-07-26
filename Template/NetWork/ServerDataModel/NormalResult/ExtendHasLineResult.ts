@@ -109,7 +109,6 @@ export default class ExtendHasLineResult implements IExtendHasLineResult {
         this._UserPointBefore = 0;
         this._BaseLevelWin = 0;
         this._BonusEventCount = 0;
-        Object.preventExtensions(this);
     }
 
     get State(): number {

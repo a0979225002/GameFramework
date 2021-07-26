@@ -1,7 +1,7 @@
 namespace fcc {
     /**
      * @Author 蕭立品
-     * @Description TODO
+     * @Description 老虎機轉動時與顯示答案時的圖片一致
      * @Date 2021-06-28 下午 06:41
      * @Version 1.0
      */

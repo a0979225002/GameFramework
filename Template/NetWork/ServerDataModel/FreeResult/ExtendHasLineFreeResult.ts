@@ -114,11 +114,9 @@ export default class ExtendHasLineFreeResult implements IExtendHasLineFreeResult
         this._Count = 0;
         this._FreeSpinWin = 0;
         this._LookAt = new Array<number>();
-
         this._FreeToFree = 0;
         this._BaseLevelWin = 0;
         this._FreeLevelWin = 0;
-        Object.preventExtensions(this);
     }
 
 

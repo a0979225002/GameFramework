@@ -44,7 +44,7 @@ export default abstract class ALookAtTemplate extends AGenericTemplate {
 
     protected onLoad() {
         this.addNotification();     //綁定推播接收事件
-        super.onLoad()
+        super.onLoad();
     }
 
     /**

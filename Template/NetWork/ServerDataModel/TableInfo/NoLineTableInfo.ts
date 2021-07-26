@@ -81,7 +81,6 @@ export default class NoLineTableInfo implements INoLineTableInfoModule {
         this._EventMode = 0;
         this._EventRequire = 0;
         this.DefaultBetIndex = 0;
-        Object.preventExtensions(this);
     }
 
 

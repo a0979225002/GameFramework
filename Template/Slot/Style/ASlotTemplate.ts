@@ -99,7 +99,6 @@ export default abstract class ASlotTemplate implements fcc.IF.ISlot {
      * 添加推播事件
      */
     addNotification() {
-
         /*即停監聽*/
         fcc.notificationMgr<StopNowStateNotification>()
             .getNotification(fcc.type.NotificationType.STOP_NOW)

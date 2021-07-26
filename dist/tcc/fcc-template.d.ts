@@ -433,48 +433,6 @@ declare class ResponseResultNotification extends fcc.ABS.ABaseNotification {
      */
     notify(responseType: string): void;
 }
-interface IBaseTableInfoModel {
-    /**
-     * 押注 乘以的倍數(有線版本為自己的線數 無限版本為固定倍數)
-     */
-    BetTimes: number;
-    /**
-     * 每線押注[0.1、0.2、0.3、0.4、0.5、1、2、3、4、5]
-     */
-    LineBet: Array<number>;
-    /**
-     * 總押注[2.5、5、7.5、10、12.5、25、50、75、100、125]
-     */
-    LineTotalBet: Array<number>;
-    /**
-     * 賠率表
-     */
-    PayTable: object;
-    /**
-     * 玩家現有金額
-     */
-    UserPoint: number;
-    /**
-     * 預設押住倍率
-     */
-    DefaultBetIndex: number;
-    /**
-     * 活動模式 0 沒有 11 轉盤
-     * @type {number}
-     */
-    EventMode: number;
-    /**
-     * 活動轉數需求
-     * @type {number}
-     */
-    EventRequire: number;
-}
-/**
- * Request Server 的 object
- */
-interface IUserBetPoint {
-    LineBet: number;
-}
 /**
  * @Author XIAO-LI-PIN
  * @Description (抽象類)遊戲主頁面按鈕事件
@@ -549,17 +507,11 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     private _userMoneyChangeObserver;
     /**
-     * 當前lineBet
-     * @type {ITableInfoModel}
+     * 確認當前user分數是否可以玩下輪遊戲
+     * @return {boolean}
      * @protected
      */
-    protected abstract userBetPoint: IUserBetPoint;
-    /**
-     * server 回傳 tableInfo model
-     * @type {IBaseTableInfoModel}
-     * @protected
-     */
-    protected abstract tableInfo: IBaseTableInfoModel;
+    protected abstract checkUserPointCanPlayGame(): boolean;
     protected onLoad(): void;
     /**
      * 打開開始遊戲事件監聽
@@ -575,11 +527,6 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected abstract totalBetFrameTouchEvent(isShowTotalBetFrame: boolean): void;
-    /**
-     * 自行添加押注視窗內所有押注按鈕監聽
-     * @protected
-     */
-    protected abstract makeTotalBetButtonToListener(): void;
     /**
      * 當下是否(開啟或關閉)加速狀態事件
      * 此方法已經綁定推播事件
@@ -669,9 +616,6 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
     protected getUserMoneyChangeObserver(): UserMoneyChangeObserver;
     /**
      * 開始遊戲監聽事件
-     *
-     *
-     *
      * @returns {Promise<void>}
      * @protected
      */
@@ -848,6 +792,42 @@ declare abstract class AMainGameDoubleButtonTemplate extends AMainGameButtonTemp
      * 關閉開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
      */
     startButtonDisable(): void;
+}
+interface IBaseTableInfoModel {
+    /**
+     * 押注 乘以的倍數(有線版本為自己的線數 無限版本為固定倍數)
+     */
+    BetTimes: number;
+    /**
+     * 每線押注[0.1、0.2、0.3、0.4、0.5、1、2、3、4、5]
+     */
+    LineBet: Array<number>;
+    /**
+     * 總押注[2.5、5、7.5、10、12.5、25、50、75、100、125]
+     */
+    LineTotalBet: Array<number>;
+    /**
+     * 賠率表
+     */
+    PayTable: object;
+    /**
+     * 玩家現有金額
+     */
+    UserPoint: number;
+    /**
+     * 預設押住倍率
+     */
+    DefaultBetIndex: number;
+    /**
+     * 活動模式 0 沒有 11 轉盤
+     * @type {number}
+     */
+    EventMode: number;
+    /**
+     * 活動轉數需求
+     * @type {number}
+     */
+    EventRequire: number;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -1615,7 +1595,7 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
     /**
      * 載入主資源
      */
-    protected abstract onLoadResources(): void;
+    protected abstract loadResources(): void;
     /**
      * 載入次資源
      */
@@ -1728,6 +1708,49 @@ declare abstract class ALookAtTemplate extends AGenericTemplate {
      */
     private getScrollFocusStateObserver;
 }
+/**
+ * @Author 蕭立品
+ * @Description 顯示 winLine
+ * ```
+ *  注意:
+ *      需實作方法:
+ *          //隱藏組件,時間可自己抓
+ *          hideNode(lineNumber?:number):Promise<void>;
+ *          //顯示贏線格子動畫,無做同步,時間需自己抓
+ *          showWinGrid(gridNumber:number):void;
+ *          //顯示贏分
+ *          showWinPoint(lineNumber?:number):void;
+ *          //強制關閉winLine輪播
+ *          clear();
+ *
+ *      知識:
+ *      vector (向量): 值為當前該Line物件移動方向
+ *          例如1:初始將該 LineNode :
+ *          LineNode{
+ *              Anchor 調整為(1,0),
+ *              Rotation:-90,
+ *          };
+ *          需求為線條由左往右移動,此時向量應為 cc.v2(0,1);
+ *          總之就是因為調整方向角Rotation = -90,實際上往上方向的向量會因此往右移動
+ *
+ *          例如2:初始將該 LineNode :
+ *          LineNode{
+ *              Anchor 調整為(0,1),
+ *              Rotation:0,
+ *          };
+ *          需求為線條由左往右移動,此時向量應為 cc.v2(1,0);
+ *          此時向量只需給予正常模式
+ *
+ *          向量知識:
+ *              cc.v2(1,0) = 往右
+ *              cc.v2(0,1) = 往上
+ *              cc.v2(-1,0) = 往左
+ *              cc.v2(0,-1) = 往下
+ *
+ * ```
+ * @Date 2021-07-13 下午 01:37
+ * @Version 1.0
+ */
 declare abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 存放所有贏線會經過的點(老虎機所有格子的中心點)
@@ -1790,7 +1813,7 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * 贏分線條,Sprite組件
      * @protected
      */
-    protected abstract lineSprite: any;
+    protected abstract lineSprite: cc.Sprite;
     /**
      * slot所有列,計算點用
      * @type {cc.Node[]}
@@ -1802,7 +1825,7 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {cc.Node}
      * @private
      */
-    protected abstract _container: cc.Node;
+    protected _container: cc.Node;
     /**
      * 隱藏物件,當贏線動畫跑完之後,需自行隱藏該線條,與贏分格子
      * ```
@@ -1841,8 +1864,6 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 執行單條贏線依序播放
      * @param {Array<Array<number>>} answers
-     * @param {() => void} callback
-     * @param self
      */
     play(answers: Array<Array<number>>): Promise<void>;
     /**

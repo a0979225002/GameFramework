@@ -1,6 +1,9 @@
 import ccclass = cc._decorator.ccclass;
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 
+const LINE_CONTAINER: string = 'LINE_CONTAINER';
+
+
 /**
  * @Author 蕭立品
  * @Description 顯示 winLine
@@ -44,8 +47,6 @@ import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
  * @Date 2021-07-13 下午 01:37
  * @Version 1.0
  */
-const LINE_CONTAINER: string = 'LINE_CONTAINER';
-
 @ccclass
 export default abstract class AWinLinTemplate extends AGenericTemplate {
 
@@ -122,7 +123,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * 贏分線條,Sprite組件
      * @protected
      */
-    protected abstract lineSprite;
+    protected abstract lineSprite: cc.Sprite;
 
     /**
      * slot所有列,計算點用
@@ -176,7 +177,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     protected start() {
         super.start();
         this.buildWinLineContainer();                                                       //建構該局贏線的Node容器
-        this._container = this.lineSprite.node.parent.getChildByName(LINE_CONTAINER);  //拿取容器組件
+        this._container = this.lineSprite.node.parent.getChildByName(LINE_CONTAINER);       //拿取容器組件
         this.winLinAllPosition = this.initWinLinPosition();                                 //初始所有line會經過的點
         this.allWinLine = new Array<Map<number, cc.Node>>();                                //初始空陣列,保存該局所有要使用的贏線
     }
@@ -212,8 +213,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 執行單條贏線依序播放
      * @param {Array<Array<number>>} answers
-     * @param {() => void} callback
-     * @param self
      */
     public async play(answers: Array<Array<number>>): Promise<void> {
         await this.runLine(answers);

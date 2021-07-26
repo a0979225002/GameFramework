@@ -124,7 +124,6 @@ export default class HasLineFreeResult implements IHasLineFreeResultModule {
         this._FreeToFree = 0;
         this._BaseLevelWin = 0;
         this._FreeLevelWin = 0;
-        Object.preventExtensions(this);
     }
 
     get State(): number {

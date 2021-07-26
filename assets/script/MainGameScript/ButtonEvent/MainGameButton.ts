@@ -70,10 +70,11 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
     protected tableInfo: NoLineTableInfo;
     protected autoCount: number;
     private buttonSpriteFrame: { SPEED_OFF: cc.SpriteFrame; AUTO_OFF: cc.SpriteFrame; SPEED_ON: cc.SpriteFrame; AUTO_ON: cc.SpriteFrame; STANDBY: cc.SpriteFrame; PLAYING: cc.SpriteFrame }
-    private betButtonToArray: Array<cc.Node>;//所有押注按鈕
-    private color: { GRAY: any; WHITE: any; YELLOW: any };
+    private readonly betButtonToArray: Array<cc.Node>;//所有押注按鈕
+
     private userTotalBetChangeObserver: UserTotalBetChangeObserver;
     public static instance: MainGameButton;
+    private color: { GRAY: cc.Color; WHITE: cc.Color; YELLOW: cc.Color };
 
     constructor() {
         super();
@@ -84,7 +85,6 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             WHITE: cc.color().fromHEX("#FFFCFC"),
         }
     }
-//
     protected onCreate() {
         MainGameButton.instance = this;
 
@@ -380,7 +380,6 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
      */
     @Effect("BtnClick")
     private updateTotalBetEvent(beforeIndex: number, afterIndex: number) {
-        cc.log(beforeIndex,afterIndex,this.betButtonToArray)
         let beforeBetNode = this.betButtonToArray[beforeIndex].getComponent(cc.Button);
         let afterBetNode = this.betButtonToArray[afterIndex].getComponent(cc.Button);
 

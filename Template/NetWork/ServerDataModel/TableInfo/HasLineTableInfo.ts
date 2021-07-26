@@ -88,7 +88,6 @@ export default class HasLineTableInfo implements IHasLineTableInfoModule {
         this._EventMode = 0;
         this._EventRequire = 0;
         this._DefaultBetIndex = 0;
-        Object.preventExtensions(this);
     }
 
     get IsLines(): number {
