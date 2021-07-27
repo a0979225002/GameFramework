@@ -2,6 +2,7 @@
 /// <reference path="../../Error/ErrorManager.ts" />
 /// <reference path="../ILoad/ALoadType.ts" />
 /// <reference path="../LoadResManager.ts" />
+/// <reference path="../LoadResManager.ts" />
 namespace fcc {
 
     /**
@@ -29,8 +30,8 @@ namespace fcc {
                 //將鍵值轉小寫,如果有使用grid key 作為搜尋資源
                 //將無條件將 key 轉成 純數字 例如 : symbol0~10 = 0~10
                 let lowerCase = dataName.toLowerCase();
-                if (lowerCase.match("grid")) {
-                    let gridName = sprite.name.replace(/[a-z A-Z]/g, '');
+                if (lowerCase.indexOf("grid") != -1) {
+                    let gridName = sprite.name.replace(/[^0-9]/ig, '');
                     spriteMap.set(gridName, sprite);
                 } else {
                     let spriteName = sprite.name;

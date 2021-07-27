@@ -90,7 +90,7 @@ export default abstract class ASlotTemplate implements fcc.IF.ISlot {
     protected constructor(styleData: fcc.IF.ISlotSetting, configManager: fcc.IF.ISlotConfigManager) {
         this.isSpeedUp = configManager.isSpeedUp;                               //初始當前是否為加速
         this.styleData = styleData                                              //拿取老虎機樣式資料
-        this.speedRatio = this.isSpeedUp ? 1 : styleData.speedUpMultiple;            //初始當前速率
+        this.speedRatio = this.isSpeedUp ? styleData.speedUpMultiple : 1;       //初始當前速率
         this.isResultOK = false;                                                //初始server對該輪回傳的結果的狀態
         this.addNotification();                                                 //添加監聽事件
     }
@@ -150,7 +150,7 @@ export default abstract class ASlotTemplate implements fcc.IF.ISlot {
     private getResponseResultObserver(): ResponseResultObserver {
         if (!this.responseResultObserver) {
             this.responseResultObserver = new ResponseResultObserver((responseType) => {
-                if(responseType == fcc.type.ServerEventType.BET_RESULT || responseType == fcc.type.ServerEventType.FREE_SPIN_RESULT){
+                if (responseType == fcc.type.ServerEventType.BET_RESULT || responseType == fcc.type.ServerEventType.FREE_SPIN_RESULT) {
                     this.isResultOK = true;
                 }
             }, this);

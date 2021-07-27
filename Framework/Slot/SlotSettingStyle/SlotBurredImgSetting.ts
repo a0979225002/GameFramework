@@ -7,7 +7,7 @@ namespace fcc {
      * @Date 2021-06-28 下午 06:41
      * @Version 1.0
      */
-    export class SlotBurredImgSetting extends SlotImgSetting{
+    export class SlotBurredImgSetting extends SlotImgSetting {
 
         /**
          * slot 所有模糊圖片
@@ -15,6 +15,19 @@ namespace fcc {
          * @private
          */
         private _gridBurredImg: Map<string, cc.SpriteFrame>;
+
+
+        /**
+         * slot 所有模糊圖片
+         * @param {Array<cc.SpriteFrame>} img
+         * @return {this}
+         */
+        public setGridBurredImg(img: Map<string, cc.SpriteFrame>): this {
+
+            this._gridBurredImg = img;
+
+            return this;
+        }
 
         get gridBurredImg(): Map<string, cc.SpriteFrame> {
             return this._gridBurredImg;

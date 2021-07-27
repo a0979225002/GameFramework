@@ -3,7 +3,6 @@ import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 
 const LINE_CONTAINER: string = 'LINE_CONTAINER';
 
-
 /**
  * @Author 蕭立品
  * @Description 顯示 winLine
@@ -56,7 +55,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {Array<Map<number, number>>}
      * @private
      */
-    private winLinAllPosition: Array<Map<number, number>>;
+    protected winLinAllPosition: Array<Map<number, number>>;
 
     /**
      * 存放該局所有會使用到的線
@@ -123,7 +122,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * 贏分線條,Sprite組件
      * @protected
      */
-    protected abstract lineSprite: cc.Sprite;
+    protected abstract lineSprite;
 
     /**
      * slot所有列,計算點用
@@ -155,9 +154,10 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 顯示獲獎格子動畫
      * @param {number} gridNumber - 獲獎的格子
+     * @param {number} lineNumber - 正在執行哪條線
      * @protected
      */
-    protected abstract showWinGrid(gridNumber: number): void;
+    protected abstract showWinGrid(gridNumber: number,lineNumber:number): void;
 
     /**
      * 顯示獲獎分數
@@ -213,6 +213,8 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 執行單條贏線依序播放
      * @param {Array<Array<number>>} answers
+     * @param {() => void} callback
+     * @param self
      */
     public async play(answers: Array<Array<number>>): Promise<void> {
         await this.runLine(answers);
@@ -241,7 +243,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
 
             //抽象方法,隱藏該線條
             await this.hideNode(lineNumber);
-
             lineNumber++;
         } while (!this.isStop)
     }
@@ -288,9 +289,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @private
      */
     private initLinePosition(lineNumber: number, lineChildNumber: number, answer: number) {
-
         let x: number;
-
         if (lineChildNumber == 0) {
             //該線段為最初線段,到達第一個答案前的位置
             x = this.gridRow[0].x - this.gridRow[0].width / 2;
@@ -299,7 +298,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
         }
 
         let y: number = this.winLinAllPosition[answer].values().next().value;
-
         this.allWinLine[lineNumber].get(lineChildNumber).x = x;
         this.allWinLine[lineNumber].get(lineChildNumber).y = y;
 
@@ -375,8 +373,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
         cc.tween(this.allWinLine[lineNumber].get(lineChildNumber))
             .to(this.runLineSpeed, {height: distance})
             .call(() => {
-                //抽象方法,顯示贏分的gird動畫
-                this.showWinGrid(answer[lineChildNumber]);
                 if (this.isStop) {
                     resolve();
                     return;
@@ -384,6 +380,8 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
                 if (lineChildNumber == this.gridRow.length) {
                     resolve();
                 } else {
+                    //抽象方法,顯示贏分的gird動畫
+                    this.showWinGrid(answer[lineChildNumber],lineNumber);
                     lineChildNumber++;
                     this.lineAndGridAnimationLoop(lineNumber, answer, resolve, lineChildNumber);
                 }
@@ -399,7 +397,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      */
     public copyWinLinToContainer(quantity: number): this {
         const lineName = "LINE";
-        cc.log(this.lineSprite)
         for (let i = 0; i < quantity; i++) {
             let line: Map<number, cc.Node> = new Map<number, cc.Node>();
             //終點還會多一段,所以默認老虎機的列要+1

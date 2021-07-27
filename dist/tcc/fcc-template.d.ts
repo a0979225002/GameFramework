@@ -1757,7 +1757,7 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {Array<Map<number, number>>}
      * @private
      */
-    private winLinAllPosition;
+    protected winLinAllPosition: Array<Map<number, number>>;
     /**
      * 存放該局所有會使用到的線
      * ```
@@ -1813,7 +1813,7 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * 贏分線條,Sprite組件
      * @protected
      */
-    protected abstract lineSprite: cc.Sprite;
+    protected abstract lineSprite: any;
     /**
      * slot所有列,計算點用
      * @type {cc.Node[]}
@@ -1841,9 +1841,10 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 顯示獲獎格子動畫
      * @param {number} gridNumber - 獲獎的格子
+     * @param {number} lineNumber - 正在執行哪條線
      * @protected
      */
-    protected abstract showWinGrid(gridNumber: number): void;
+    protected abstract showWinGrid(gridNumber: number, lineNumber: number): void;
     /**
      * 顯示獲獎分數
      * @param {number} lineNumber - 有參數回傳為單一線條,無參數回傳為所有線條
@@ -1864,6 +1865,8 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 執行單條贏線依序播放
      * @param {Array<Array<number>>} answers
+     * @param {() => void} callback
+     * @param self
      */
     play(answers: Array<Array<number>>): Promise<void>;
     /**
@@ -2332,7 +2335,7 @@ declare class NormalSlotTemplate extends ASlotTemplate {
      * 確認當前答案是否有Free圖標,如果有將播放該數量的音效
      * @param index
      */
-    protected checkFreeIcon(index: any): void;
+    protected checkFreeIconToMusic(index: any): void;
     /**
      * 更新正確答案
      * 答案更新再每列最上面位置,等待掉下來,顯示正確答案給USER
@@ -2416,29 +2419,13 @@ declare abstract class ASlotInitializeTemplate extends AGenericTemplate {
      * @type {Map<number, Array<cc.Sprite>>}
      * @protected
      */
-    protected abstract girdSpriteToMap: Map<number, Array<cc.Sprite>>;
+    protected abstract gridSpriteToMap: Map<number, Array<cc.Sprite>>;
     /**
      * SlotStyle 初設定,如無符合的功能樣式 可繼承抽象類 ASlot 自定義使用
      */
     protected abstract slotStyleSetting(): void;
-    /**
-     * 更新所有grid初始圖案,TableInfo答案以外的格子使用隨機圖案
-     * @private
-     */
-    protected abstract slotInitialize(): void;
-    /**
-     * 拿取要跑grid輪播的所有Node
-     * @return {Map<number, Array<cc.Node>>}
-     * @protected
-     */
-    protected abstract getAllGridNode(): Map<number, Array<cc.Node>>;
-    /**
-     * 拿取要更換grid圖片的所有Node
-     * @return {Map<number, Array<cc.Sprite>>}
-     * @protected
-     */
-    protected abstract getAllGridSprite(): Map<number, Array<cc.Sprite>>;
     protected onLoad(): void;
+    protected start(): void;
 }
 /**
  * @Author XIAO-LI-PIN

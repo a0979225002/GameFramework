@@ -241,7 +241,6 @@ export default class NormalSlotTemplate extends ASlotTemplate {
                         if (this.checkLookAt(index)) {
                             this.notifyLookAtEvent(false, index);
                         }
-                        fcc.audioMgr.effectPlay("SlotStop");
                     } else {
                         //無達成上述條件,持續轉動
                         this.executeSlotAnimation(index, resolve, numberOfTimes);
@@ -392,14 +391,21 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @param resolve{()=>void} : 當所有列都顯示答案且回彈效果完畢時,通知可以進行下一步
      */
     protected sineOutAnimation(index: number, resolve: () => void) {
-        if ((this.isSpeedUp || this.isSlotImmediateStop) &&
-            index == this.slotColumnToTween.length - 1) {
+        if (this.isSpeedUp || this.isSlotImmediateStop) {
             //如果當前是瞇排或是即停狀態,將只對最後一軸結束時才播放停軸音效
-            fcc.audioMgr.effectPlay("SlotStop");
+            if(index == this.slotColumnToTween.length - 1){
+                fcc.audioMgr.effectPlay("SlotStop");
+            }
         } else {
             //各軸停止皆有音效
             fcc.audioMgr.effectPlay("SlotStop");
         }
+
+        /*關閉轉動音效*/
+        if (index === this.slotColumnToTween.length - 1) {
+            fcc.audioMgr.effectStop("SlotTurn");
+        }
+
         //獲取該Slot格子高度的一半
         let sineOutHeight = Math.floor(this.styleData.slotGridHeight / 2);
         let node = this.slotColumnToTween[index];
@@ -407,9 +413,8 @@ export default class NormalSlotTemplate extends ASlotTemplate {
             .to((this.slotGirdSpeed), {y: node.y - sineOutHeight})
             .by(this.slotGirdSpeed * 6, {y: +sineOutHeight}, {easing: 'bounceOut'})
             .call(() => {
-                this.checkFreeIcon(index);
+                this.checkFreeIconToMusic(index);
                 if (index === this.slotColumnToTween.length - 1) {
-                    fcc.audioMgr.effectStop("SlotTurn");
                     resolve();
                 }
             })
@@ -420,7 +425,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * 確認當前答案是否有Free圖標,如果有將播放該數量的音效
      * @param index
      */
-    protected checkFreeIcon(index) {
+    protected checkFreeIconToMusic(index) {
         let gridAnswer: Array<number>;
         if (fcc.processMgr.gameState === fcc.type.GameStateType.FREEING) {
             gridAnswer = this.freeResult.Grid;
