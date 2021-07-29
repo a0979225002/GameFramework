@@ -29,12 +29,18 @@ namespace fcc {
 
             private _speedUpMultiple: number;
 
+            private _lookAtCount: number;
+
             private readonly _slotStyleManager: IF.ISlotStyleManager
 
             constructor(slotStyleManager: IF.ISlotStyleManager) {
                 this._slotStyleManager = slotStyleManager;
             }
 
+            public setLookAtCount(count: number): this {
+                this._lookAtCount = count;
+                return this;
+            }
 
             /**
              * 老虎機顯示答案前的最少轉動次數
@@ -75,7 +81,7 @@ namespace fcc {
              * @param {number} multiple
              * @return {this}
              */
-            setSpeedUpMultiple(multiple: number): this {
+            public setSpeedUpMultiple(multiple: number): this {
 
                 this._speedUpMultiple = multiple;
 
@@ -192,12 +198,17 @@ namespace fcc {
             }
 
 
-            get freeResult(): ISlotFreeBaseResultModel  {
+            get freeResult(): ISlotFreeBaseResultModel {
                 return this._freeResult;
             }
 
-            get normalResult(): ISlotBaseResultModel{
+            get normalResult(): ISlotBaseResultModel {
                 return this._normalResult;
+            }
+
+
+            get lookAtCount(): number {
+                return this._lookAtCount;
             }
         }
     }

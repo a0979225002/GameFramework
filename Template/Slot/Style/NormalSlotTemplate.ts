@@ -121,6 +121,20 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      */
     protected freeResult: ISlotFreeBaseResultModel;
 
+    /**
+     * 瞇排轉動次數
+     * @type {number}
+     * @private
+     */
+    private readonly lookAtCount: number;
+
+    /**
+     * 記錄每輪轉動次數
+     * @type {Array<number>}
+     * @private
+     */
+    private rowTurnCount: Array<number>;
+
     constructor(styleData: fcc.SlotImgSetting, configManager: fcc.IF.ISlotConfigManager) {
         super(styleData, configManager);
         if (!styleData) return;
@@ -137,8 +151,10 @@ export default class NormalSlotTemplate extends ASlotTemplate {
         this.normalResult = styleData.normalResult;                                     //拿取一般獲獎 model
         this.freeResult = styleData.freeResult;                                         //拿取免費獲獎 model
         this.rowData = new Array<number>();                                             //初始化Slot每列的資料
+        this.lookAtCount = styleData.lookAtCount;                                             //初始化Slot每列的資料
         this.isSlotEnd = [];                                                            //遊戲每列是否已經結束
         this.rowData.push(this.slotRowGridCount, this.getCalculateSlotHeight());        //rowData [每列的格子數量,slot高度];
+        this.rowTurnCount = new Array<number>();
         this.initializeState();                                                         //初始化該輪所有狀態
     }
 
@@ -216,7 +232,9 @@ export default class NormalSlotTemplate extends ASlotTemplate {
             .call(() => {
                 //如果該列不是第一列,且有瞇排事件,當他的上一輪轉完,推撥打開瞇排的事件
                 if (index != 0 && this.checkLookAt(index) && this.isSlotEnd[index - 1]) {
-                    this.notifyLookAtEvent(true, index);
+                    if (!this.isSpeedUp) {
+                        this.notifyLookAtEvent(true, index);
+                    }
                 }
                 //更新被Mask的Grid,將之移動到原位子
                 this.updateGridPositionAndRandomImg(this.gridNodeToMap.get(index), index);
@@ -239,7 +257,9 @@ export default class NormalSlotTemplate extends ASlotTemplate {
                         this.isSlotEnd[index] = true;
                         //判斷該列是否有瞇排事件,如果有,將推播關閉瞇排事件
                         if (this.checkLookAt(index)) {
-                            this.notifyLookAtEvent(false, index);
+                            if (!this.isSpeedUp) {
+                                this.notifyLookAtEvent(false, index);
+                            }
                         }
                     } else {
                         //無達成上述條件,持續轉動
@@ -259,17 +279,24 @@ export default class NormalSlotTemplate extends ASlotTemplate {
      * @return {number} - 該列要Loop的數字
      * @private
      */
-    protected getSlotTurnCount(index): number {
+    protected getSlotTurnCount(index: number): number {
         let count: number;
         if (this.isSpeedUp) {
             //如果是加速狀態,全軸一起停止
             count = this.slotTurnCount;
         } else if (this.checkLookAt(index)) {
             //如果有瞇排事件,增加該軸的轉動次數
-            count = index * 4 + this.slotTurnCount;
+            let totalCount = 0;
+            if (index != 0) {
+                totalCount = this.rowTurnCount[index - 1]
+            }
+            count = this.lookAtCount + totalCount;
         } else {
             //如果是一般狀態,每列都多一輪的轉動時間
             count = this.slotTurnCount + index;
+        }
+        if (!this.rowTurnCount[index]) {
+            this.rowTurnCount[index] = count
         }
         return count;
     }
@@ -393,7 +420,7 @@ export default class NormalSlotTemplate extends ASlotTemplate {
     protected sineOutAnimation(index: number, resolve: () => void) {
         if (this.isSpeedUp || this.isSlotImmediateStop) {
             //如果當前是瞇排或是即停狀態,將只對最後一軸結束時才播放停軸音效
-            if(index == this.slotColumnToTween.length - 1){
+            if (index == this.slotColumnToTween.length - 1) {
                 fcc.audioMgr.effectPlay("SlotStop");
             }
         } else {
@@ -486,6 +513,8 @@ export default class NormalSlotTemplate extends ASlotTemplate {
         this.isSlotImmediateStop = false;
         this.isSpeedUp = this.speedRatio > 1;
         this.freeIconCount = 0;
+        this.isResultOK = false;
+        this.rowTurnCount.length = 0;
         if (!this.isSlotEnd) {
             for (let i = 0; i < this.slotColumnToTween.length; i++) {
                 this.isSlotEnd.push(false);

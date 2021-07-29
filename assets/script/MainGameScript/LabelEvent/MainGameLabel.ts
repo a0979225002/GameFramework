@@ -110,7 +110,7 @@ export default class MainGameLabel extends AGenericTemplate {
         //訂閱推播事件
         UserMoneyChangeNotification                                                     //更新user金額時 訂閱事件
             .instance.subscribe(this.getUserMoneyChangeObserver(), true);
-        UserTotalBetChangeNotification                                                  //更新user下注金額時 訂閱事件
+        UserTotalBetChangeNotification
             .instance.subscribe(this.getUserTotalBetChangeObserver(), true);
         UserWinPointStateNotification                                                   //獲獎時 訂閱事件
             .instance.subscribe(this.getUserWinPointStateObserver(), true);

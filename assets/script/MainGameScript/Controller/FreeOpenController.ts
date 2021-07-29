@@ -51,7 +51,6 @@ export default class FreeOpenController extends AGenericTemplate {
      */
     @Loading("prefab")
     public showFreeOpeningAnimation(freeCount: number): Promise<void> {
-        cc.log("showFreeOpeningAnimation")
         this.playFreeAnimation(freeCount);
         this.freeAnimation.once('finished', this.freeCountAnimation, this);
         return new Promise(resolve => {
@@ -115,7 +114,6 @@ export default class FreeOpenController extends AGenericTemplate {
     @Music("FBS")
     private removeFreeOpeningAnimation() {
         this.unschedule(this.removeFreeOpeningAnimation);
-        cc.log(this.getScheduleTag());
         this.freeAnimation.node.off(cc.Node.EventType.TOUCH_END, this.removeFreeOpeningAnimation, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardEvent, this);
         cc.tween(this.node)

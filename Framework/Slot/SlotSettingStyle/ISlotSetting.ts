@@ -145,6 +145,11 @@ namespace fcc {
             gridNodeToMap: Map<number, Array<cc.Node>>;
 
             /**
+             * 瞇排轉動次數
+             */
+            lookAtCount: number;
+
+            /**
              * server一般答案回傳結果
              */
             normalResult: ISlotBaseResultModel;
@@ -153,6 +158,11 @@ namespace fcc {
              * server免費答案回傳結果
              */
             freeResult: ISlotFreeBaseResultModel;
+
+            /**
+             * 瞇排轉動次數
+             */
+            setLookAtCount(count: number):this;
 
             /**
              * 老虎機顯示答案前的最少轉動次數

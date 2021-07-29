@@ -227,9 +227,8 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     protected async startButtonOnTouchEnd(): Promise<void> {
         this.unschedule(this.longTouchTimer);
-        if (fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY) {
-            await this.startButtonEvent();
-        }
+        if (this.isAutoState) return;
+        await this.startButtonEvent();
     }
 
     /**

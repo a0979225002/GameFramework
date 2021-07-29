@@ -2262,6 +2262,18 @@ declare class NormalSlotTemplate extends ASlotTemplate {
      * @private
      */
     protected freeResult: ISlotFreeBaseResultModel;
+    /**
+     * 瞇排轉動次數
+     * @type {number}
+     * @private
+     */
+    private readonly lookAtCount;
+    /**
+     * 記錄每輪轉動次數
+     * @type {Array<number>}
+     * @private
+     */
+    private rowTurnCount;
     constructor(styleData: fcc.SlotImgSetting, configManager: fcc.IF.ISlotConfigManager);
     /**
      * 計算當前格子高度
@@ -2292,7 +2304,7 @@ declare class NormalSlotTemplate extends ASlotTemplate {
      * @return {number} - 該列要Loop的數字
      * @private
      */
-    protected getSlotTurnCount(index: any): number;
+    protected getSlotTurnCount(index: number): number;
     /**
      * 推送瞇排事件
      * @param {boolean} isShow - 是否要打開該列的瞇排特效
