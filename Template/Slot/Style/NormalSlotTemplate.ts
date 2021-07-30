@@ -6,7 +6,7 @@ import ISlotFreeBaseResultModel from "../../NetWork/ISeverDataModel/IFreeResult/
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 無線一般版老虎機
+ * @Description 一般版老虎機,執行圖標圖案與答案圖案相同
  *  ```
  *      SLOT STYLE : fcc.SlotImgSetting;
  *
@@ -15,8 +15,8 @@ import ISlotFreeBaseResultModel from "../../NetWork/ISeverDataModel/IFreeResult/
  *          音效 {"SlotStop"}: 停軸聲音
  *          音效 {"getFreeIcon"+"index"}: 免費圖標音效
  *          推撥 {ScrollFocusStateNotification} : 瞇排的推播事件
- *          推撥 {StopNowStateNotification} : 即停的推播事件
- *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
+ *          接收 {StopNowStateNotification} : 即停的推播事件
+ *          接收 {SpeedStateChangeNotification} : 加速的推播事件
  *          model {ISlotBaseResultModel} : 一般獲獎model
  *          model {ISlotBaseResultModel} : 免費獲獎model
  *  ```
