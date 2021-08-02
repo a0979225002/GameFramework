@@ -44,20 +44,16 @@ export default class MainGameFreeProcess implements ISlotProcedureExecutionConta
         }
     }
 
-    public onCustomizeStart(): Promise<void> {
+    public async onCustomizeStart(): Promise<void> {
 
         this.onCreate();
-
-        return new Promise<void>(async (resolve) => {
-            this.slotStyle.initializeState();
-            SlotController.instance.closeWinGrid();
-            //-1 為這次剩餘次數,因為資料是上局資料
-            let count: number = this.freeResult.Count - 1;
-            count = await this.normalToFree(count);
-            count = await this.freeToFree(count);
-            MainGameLabel.instance.updateFreeTitle(count);
-            resolve();
-        });
+        this.slotStyle.initializeState();
+        SlotController.instance.closeWinGrid();
+        //-1 為這次剩餘次數,因為資料是上局資料
+        let count: number = this.freeResult.Count - 1;
+        count = await this.normalToFree(count);
+        count = await this.freeToFree(count);
+        MainGameLabel.instance.updateFreeTitle(count);
     }
 
     /**
