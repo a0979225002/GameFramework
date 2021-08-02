@@ -10,8 +10,8 @@ import NormalSlotTemplate from "./NormalSlotTemplate";
  *          音效 {"SlotStop"}: 停軸聲音
  *          音效 {"getFreeIcon"+"index"}: 免費圖標音效
  *          推撥 {ScrollFocusStateNotification} : 瞇排的推播事件
- *          推撥 {StopNowStateNotification} : 即停的推播事件
- *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
+ *          接收 {StopNowStateNotification} : 即停的推播事件
+ *          接收 {SpeedStateChangeNotification} : 加速的推播事件
  *          model {NoLineResult} : 一般獲獎model
  *          model {NoLineFreeResult} : 免費獲獎model
  *  ```
