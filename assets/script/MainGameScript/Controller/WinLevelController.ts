@@ -93,16 +93,11 @@ export default class WinLevelController extends cc.Component {
     }
 
     public totalPointSplit(point) {
-
         let totalPoint = point;
-
         let numberSplit = [];
-
         let count = 0;
-
         let beforePoint = 0;
         let afterPoint = 0;
-
         while (true) {
             if (count == 0) {
                 numberSplit.push(this.userNowBet * this.winLevelRange[count]);
@@ -110,17 +105,14 @@ export default class WinLevelController extends cc.Component {
             if (count == this.winLevelRange.length - 1) {
                 totalPoint - afterPoint > afterPoint ?
                     numberSplit.push(afterPoint - beforePoint, totalPoint - afterPoint) : numberSplit.push(totalPoint - beforePoint);
-
                 break;
             }
             if (count > 0) {
                 numberSplit.push(afterPoint - beforePoint);
             }
-
             if (totalPoint - afterPoint < 0) {
                 break;
             }
-
             if (count < this.winLevelRange.length) {
                 count++;
                 beforePoint = this.userNowBet * this.winLevelRange[count - 1];
@@ -128,7 +120,6 @@ export default class WinLevelController extends cc.Component {
             }
         }
         this.totalPoint = numberSplit;
-        cc.log(this.totalPoint)
     }
 
     @Effect("runPoint")
