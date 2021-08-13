@@ -221,6 +221,7 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
      */
     private listViewItemTouchEventV(event, callBack: number) {
         let historyKeys: string[];
+
         try {
             historyKeys = Object.keys(this.gameHistoryData.History);
             if (historyKeys.length < callBack) return;
@@ -235,11 +236,8 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
      * 顯示祥單頁面監聽器
      */
     showDetailEventListener() {
-
         EventManager.instance.serverEventListener(ServerEventType.GET_HISTORY_DETAIL_RESULT, (historyDetail) => {
-
             cc["plug"].Record.createPageDetail(historyDetail);
-
         }, false)
     }
 
@@ -259,7 +257,9 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
      * @private
      */
     private async checkSceneDirection(type: SceneDirectionType) {
+
         if (type == SceneDirectionType.LANDSCAPE) {
+
             this.recordNodeH.active = true;
             this.recordNodeV.active = false;
             this.getGameHistoryH.Page = 1;//如果有更換 螢幕方向,將把 頁數也初始
@@ -676,7 +676,9 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
      */
     protected runProgress(): Promise<void> {
         return new Promise<void>(resolve => {
+
             clearInterval(this.timer);
+
             if (this.recordNodeH.active) {
                 this.progressNodeH.active = true;
                 this.progressNodeV.active = false;
@@ -684,6 +686,7 @@ export default class RecordPageButton extends ARecordDoubleButtonTemplate {
                 this.progressNodeH.active = true;
                 this.progressNodeV.active = true;
             }
+
             this.delayTime = Math.floor(Math.random() * (8 - 4)) + 4;
             let progressText: string = "";
             let time: number = 0;

@@ -6,6 +6,11 @@
  */
 const VERSION = "0.04"//版本號
 
+/**
+ * 框架Module化
+ */
+export {fcc} from './System/FCCSystem';
+
 /*所有模板繼承之對象*/
 export {default as AGenericTemplate} from './BaseTemplate/AGenericTemplate';
 export {default as OverrideComponent} from './BaseTemplate/OverrideComponent';
@@ -36,6 +41,9 @@ export {
 export {
     default as ResponseResultNotification
 } from './Event/Notification/ResponseNotifivation/ResponseResultNotification';
+export {
+    default as SlotRowEndNotification
+} from './Event/Notification/GameNotification/SlotRowEndNotification';
 
 /*通用 Observer 事件*/
 export {default as AutoStateChangeObserver} from './Event/Observer/GameObserver/AutoStateChangeObserver';
@@ -46,6 +54,7 @@ export {default as UserMoneyChangeObserver} from './Event/Observer/GameObserver/
 export {default as UserTotalBetChangeObserver} from './Event/Observer/GameObserver/UserTotalBetChangeObserver';
 export {default as UserWinPointStateObserver} from './Event/Observer/GameObserver/UserWinPointStateObserver';
 export {default as ResponseResultObserver} from './Event/Observer/ResponseObserver/ResponseResultObserver';
+export {default as SlotRowEndObserver} from './Event/Observer/GameObserver/SlotRowEndObserver';
 
 /*主遊戲按鈕 controller 模板*/
 export {default as AMainGameButtonTemplate} from './Button/MainButton/AMainGameButtonTemplate';

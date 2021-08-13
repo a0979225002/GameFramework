@@ -42,6 +42,7 @@ namespace fcc {
              * @param any - 正確參數數量由子類實現
              */
             public pushNotification(...any): void {
+
                 this._callFun.call(this._self, ...any);
             }
 

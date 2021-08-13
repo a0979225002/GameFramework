@@ -59,6 +59,12 @@ namespace fcc {
             SCROLL_FOCUS_STATE = "SCROLL_FOCUS_STATE",
 
             /**
+             * 監聽SLOT所有列,當該列結束時,推播事件
+             * @type {fcc.type.NotificationType.AUTO_CHANGE}
+             */
+            SLOT_ROW_END = "SLOT_ROW_END",
+
+            /**
              * 即停事件
              */
             STOP_NOW = "STOP_NOW",

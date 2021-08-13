@@ -3,6 +3,7 @@ import ASlotTemplate from "./ASlotTemplate";
 import ScrollFocusStateNotification from "../../Event/Notification/GameNotification/ScrollFocusStateNotification";
 import ISlotBaseResultModel from "../../NetWork/ISeverDataModel/INormalResult/ISlotBaseResultModel";
 import ISlotFreeBaseResultModel from "../../NetWork/ISeverDataModel/IFreeResult/ISlotFreeBaseResultModel";
+import SlotRowEndNotification from "../../Event/Notification/GameNotification/SlotRowEndNotification";
 
 /**
  * @Author XIAO-LI-PIN
@@ -15,6 +16,7 @@ import ISlotFreeBaseResultModel from "../../NetWork/ISeverDataModel/IFreeResult/
  *          音效 {"SlotStop"}: 停軸聲音
  *          音效 {"getFreeIcon"+"index"}: 免費圖標音效
  *          推撥 {ScrollFocusStateNotification} : 瞇排的推播事件
+ *          推播 {SlotRowEndNotification} : 所有軸停止事件
  *          接收 {StopNowStateNotification} : 即停的推播事件
  *          接收 {SpeedStateChangeNotification} : 加速的推播事件
  *          model {ISlotBaseResultModel} : 一般獲獎model
@@ -432,15 +434,23 @@ export default class NormalSlotTemplate extends ASlotTemplate {
         if (index === this.slotColumnToTween.length - 1) {
             fcc.audioMgr.effectStop("SlotTurn");
         }
-
         //獲取該Slot格子高度的一半
         let sineOutHeight = Math.floor(this.styleData.slotGridHeight / 2);
         let node = this.slotColumnToTween[index];
+
+        let isAllRowEnd = false;
+        if(this.isSlotImmediateStop || this.isSpeedUp){
+            isAllRowEnd = true;
+        }
         cc.tween(node)
             .to((this.slotGirdSpeed), {y: node.y - sineOutHeight})
             .by(this.slotGirdSpeed * 6, {y: +sineOutHeight}, {easing: 'bounceOut'})
             .call(() => {
                 this.checkFreeIconToMusic(index);
+                /*推播該軸執行完事件*/
+                fcc.notificationMgr<SlotRowEndNotification>()
+                    .getNotification(fcc.type.NotificationType.SLOT_ROW_END)
+                    .notify(index,isAllRowEnd);
                 if (index === this.slotColumnToTween.length - 1) {
                     resolve();
                 }

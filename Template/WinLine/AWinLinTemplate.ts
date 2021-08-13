@@ -157,7 +157,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @param {number} lineNumber - 正在執行哪條線
      * @protected
      */
-    protected abstract showWinGrid(gridNumber: number,lineNumber:number): void;
+    protected abstract showWinGrid(gridNumber: number, lineNumber: number): void;
 
     /**
      * 顯示獲獎分數
@@ -213,8 +213,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 執行單條贏線依序播放
      * @param {Array<Array<number>>} answers
-     * @param {() => void} callback
-     * @param self
      */
     public async play(answers: Array<Array<number>>): Promise<void> {
         await this.runLine(answers);
@@ -381,7 +379,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
                     resolve();
                 } else {
                     //抽象方法,顯示贏分的gird動畫
-                    this.showWinGrid(answer[lineChildNumber],lineNumber);
+                    this.showWinGrid(answer[lineChildNumber], lineNumber);
                     lineChildNumber++;
                     this.lineAndGridAnimationLoop(lineNumber, answer, resolve, lineChildNumber);
                 }
@@ -417,7 +415,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      *      注意:如果點位不正常,請自行override實現
      * ```
      */
-    protected initWinLinPosition() {
+    protected initWinLinPosition(): Array<Map<number, number>> {
         let gridPositions: Array<Map<number, number>> = new Array<Map<number, number>>();
         for (let node of this.gridRow) {
             let nodeX = node.x;
@@ -448,13 +446,13 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * ```
      * @param {cc.Vec2} p1 - 起點
      * @param {cc.Vec2} p2 - 要到達的點
-     * @return {number} - 兩點間距離
+     * @return {number} - 兩點間距離(因兩條線間隙問題,無條件進位+1)
      * @private
      */
     private getDistanceBetweenTwoPoints(p1: cc.Vec2, p2: cc.Vec2): number {
         let dx = Math.pow((p2.x - p1.x), 2);
         let dy = Math.pow((p2.y - p1.y), 2);
-        return Math.sqrt(dx + dy)
+        return Math.sqrt(dx + dy)+1
     }
 
     /**

@@ -40,9 +40,9 @@ namespace fcc {
             ErrorManager.errorState = true;
             this.errorManager.errorNode.active = true;
             this.errorManager.errorLabel.string = message;
-            this.errorManager.errorButton.active = this.errorManager.isShowBackHomeButton;
 
-            if (this.errorManager.errorButton.active) {
+            if(permanentState && buttonText){
+                this.errorManager.errorButton.active = this.errorManager.isShowBackHomeButton;
                 this.errorManager.errorButtonLabel.string = buttonText;
             }
 

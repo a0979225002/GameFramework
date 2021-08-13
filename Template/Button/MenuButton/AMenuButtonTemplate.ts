@@ -12,8 +12,6 @@ import IBaseTableInfoModel from "../../NetWork/ISeverDataModel/ITableInfoResult/
  *      事件:
  *          推撥 {AutoStateChangeNotification} : 訂閱自動狀態改變時
  *          推撥 {UserTotalBetChangeNotification} : 用戶更換的押住金額事件
- *          接收 {AutoStateChangeNotification} : 訂閱自動狀態改變時
- *              callback: this.autoEvent(beforeAutoCount, afterAutoCount);
  *          接收 {UserTotalBetChangeNotification} : 用戶更換的押住金額事件
  *              callback: this.totalBetChangeEvent(beforeIndex, afterIndex);
  *
@@ -133,12 +131,6 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @private
      */
     private addNotification(): void {
-
-        /*訂閱自動狀態改變時*/
-        fcc.notificationMgr<AutoStateChangeNotification>()
-            .getNotification(fcc.type.NotificationType.AUTO_CHANGE)
-            .subscribe(this.getAutoStateChangeObserver(), true);
-
         /*用戶更換的押住金額事件*/
         fcc.notificationMgr<UserTotalBetChangeNotification>()
             .getNotification(fcc.type.NotificationType.USER_BET_CHANGE)
@@ -212,30 +204,16 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
     }
 
     /**
-     * 當前自動狀態事件推播接收者
-     * 注意:如果要解除推播,將無法在監聽推波事件派發
-     * @returns {UserTotalBetChangeObserver}
-     * @protected
-     */
-    protected getAutoStateChangeObserver(): AutoStateChangeObserver {
-        if (!this.autoStateChangeObserver) {
-            this.autoStateChangeObserver = new AutoStateChangeObserver((isAutomaticState, beforeAutoCount, afterAutoCount) => {
-                this.nowAutoType = afterAutoCount;
-                this.autoEvent(beforeAutoCount, afterAutoCount);
-            }, this);
-        }
-        return this.autoStateChangeObserver;
-    }
-
-    /**
      * 自動按鈕點擊事件
      * @param event
      * @param {AutoType} callbackType : 哪顆類型的按鈕點擊
      * @protected
      */
     protected autoButtonEventListener(event, callbackType: fcc.type.AutoType) {
+        this.autoEvent(this.nowAutoType,callbackType);
         fcc.notificationMgr<AutoStateChangeNotification>()
             .getNotification(fcc.type.NotificationType.AUTO_CHANGE)
             .notify(true,this.nowAutoType,callbackType);
+        this.nowAutoType = callbackType;
     }
 }

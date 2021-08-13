@@ -111,7 +111,6 @@ export default class DescriptionPageLabel extends AGenericTemplate {
     }
 
     private updatePage2GridImg() {
-
         let gridIndex = 0;
         let start = this.page2GridIconH.length - 1;
         for (let i = start; i >= 0; i--) {

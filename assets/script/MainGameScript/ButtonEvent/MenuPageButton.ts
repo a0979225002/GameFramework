@@ -188,7 +188,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
 
         this.initialize();                                                                  //初始設定頁按鈕
         this.setDescriptionButtonListener();                                                //說明頁按鈕監聽事件添加
-        this.nowPage = UserNowPage.DESCRIPTION_PAGE;                                        //隨機一個,都可
+        this.nowPage = UserNowPage.DESCRIPTION_PAGE;                                        //初始默認有直即可,隨機一個,都可
         this.closeMenu();                                                                   //初始關閉menu
     }
 
@@ -196,7 +196,6 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      * 說明頁按鈕監聽事件添加
      */
     setDescriptionButtonListener() {
-
         //上一頁按鈕
         ButtonMethod.addButtonEvent(
             this.gameInfoPreviousPageButtonH, "descriptionButtonEvent", this, "previous");
@@ -264,7 +263,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
         }
 
         //初始化自動模式按鈕樣式
-        this.checkAutoNode(SlotGameManager.instance.autoType,true);
+        this.checkAutoNode(SlotGameManager.instance.autoType, true);
 
         //拿取初始的押住index
         let betIndex = SlotGameManager.instance.userBetPoint.LineBet;
@@ -552,8 +551,7 @@ export default class MenuPageButton extends AMenuDoubleButtonTemplate {
      * @param isOpen
      * @private
      */
-    private makePageButtonToColorH(button: cc.Button, isOpen: boolean) {
-
+    private makePageButtonToColorH(button: cc.Button, isOpen: boolean): void {
         let bg: cc.Node = button.node.children[0];
         let icon = bg.children[0];
         if (isOpen) {

@@ -36,6 +36,7 @@ namespace fcc {
             this.linkElem.onerror = ()=>{
                 LoadResManager.instance.loadScriptEventCallback(this.scriptName, true);
             }
+            ABS.ALoadScriptType.head.appendChild(this.linkElem);
         }
     }
 }

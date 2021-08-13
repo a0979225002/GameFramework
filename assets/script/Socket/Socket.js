@@ -15,22 +15,22 @@ cc.Class({
         cc.game.addPersistRootNode(this.node);
         socketSetting.setboolean = true;
         obj_socket.self = this;
-        socketSetting.ClientSetObject.serverhost = "210.241.243.206";//serverIP //210.241.243.206
+        socketSetting.ClientSetObject.serverhost = "210.241.243.205";//serverIP //210.241.243.206
         // socketSetting.ClientSetObject.serverhost = "210.241.243.206";//serverIP //210.241.243.206
         socketSetting.ClientSetObject.serverport = 8080;
-        socketSetting.ClientSetObject.account = "";//ppg015~020
+        socketSetting.ClientSetObject.account = "ppg018";//ppg015~020
         // socketSetting.ClientSetObject.account                = "ppg018";//ppg015~020
         socketSetting.ClientSetObject.password = "123456";//123456
         socketSetting.ClientSetObject.CocosDebug = true;//--------!!!-------//
         socketSetting.ClientSetObject.CocosDebug2 = 1;//--------!!!-------//
-        socketSetting.ClientSetObject.LoginState = "2"; // 0註冊 1登入 2遊客 3 測試人員記錄測試
+        socketSetting.ClientSetObject.LoginState = "3"; // 0註冊 1登入 2遊客 3 測試人員記錄測試
         // socketSetting.ClientSetObject.LoginState             = "3"; // 0註冊 1登入 2遊客 3 測試人員記錄測試
         socketSetting.ClientSetObject.whereRoom = "lobby";
         socketSetting.ClientSetObject.serverZone = "H5Game";//server的樓
         socketSetting.ClientSetObject.usercode = "";
         socketSetting.ClientSetObject.userchannel_id = "0";
         socketSetting.ClientSetObject.usergame_id = "";
-        socketSetting.ClientSetObject.usertoken = "ef673226f18053130fa2bbe10f7aaf25fcb26297001309a15a76b3f2ef8cc076861815d15c0da724aca66c684ed96e46135c7e6cc1a7337f";
+        socketSetting.ClientSetObject.usertoken = "021387939f47ee31a94d8eefc400ccf12f13a198815be47555611a1b80bb61a25e576f367c71e76ac5fe40c11e84283ed579df648444f16b";
         // socketSetting.ClientSetObject.usertoken              = "69190146c53e471b0029411571d09dffbb04cdef508904c8d07ec504241372ea183003e4fb67461185f4ffe69affed098aeeca1097b239c7";
         socketSetting.ClientSetObject.userlang = "";
         socketSetting.ClientSetObject.usergameMaker = "";
@@ -260,6 +260,21 @@ cc.Class({
             socketSetting.ClientSetObject.LoginData.putUtfString("APIUserToken", socketSetting.ClientSetObject.usertoken);
             socketSetting.ClientSetObject.LoginData.putUtfString("APIUserLang", socketSetting.ClientSetObject.userlang);
             socketSetting.ClientSetObject.LoginData.putUtfString("APIUserGameMaker", socketSetting.ClientSetObject.usergameMaker);
+            cc.log(
+                socketSetting.ClientSetObject.password,
+                socketSetting.ClientSetObject.usercode,
+                socketSetting.ClientSetObject.userchannel_id,
+                socketSetting.ClientSetObject.usergame_id,
+                socketSetting.ClientSetObject.usertoken,
+                socketSetting.ClientSetObject.userlang,
+                socketSetting.ClientSetObject.usergameMaker
+                )
+            cc.log(
+                socketSetting.ClientSetObject.account,
+                socketSetting.ClientSetObject.password,
+                socketSetting.ClientSetObject.LoginData,
+                socketSetting.ClientSetObject.serverZone
+            )
             socketSetting.serverSfs.send(new SFS2X.LoginRequest(socketSetting.ClientSetObject.account, socketSetting.ClientSetObject.password, socketSetting.ClientSetObject.LoginData, socketSetting.ClientSetObject.serverZone));
         } else if (socketSetting.ClientSetObject.LoginState == "2") {
             socketSetting.ClientSetObject.LoginData.putUtfString("CheckPW", "");

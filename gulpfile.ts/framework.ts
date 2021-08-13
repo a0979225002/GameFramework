@@ -113,13 +113,7 @@ function buildPublishFramework(cb) {
             .pipe(jsobfuscator({
                 compact: true,
                 controlFlowFlattening: true,
-                stringArray: true,
-                debugProtectionInterval: true,
-                disableConsoleOutput: true,
-                selfDefending: true,
-                renameGlobals: true,
             }))
-            .pipe(uglify())
             .pipe(sourcemaps.write())
             .pipe(browserify({
                 insertGlobals: true,
