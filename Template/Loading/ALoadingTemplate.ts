@@ -1,7 +1,7 @@
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 import ResponseResultNotification from "../Event/Notification/ResponseNotifivation/ResponseResultNotification";
 import ResponseResultObserver from "../Event/Observer/ResponseObserver/ResponseResultObserver";
-
+import {fcc} from "../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

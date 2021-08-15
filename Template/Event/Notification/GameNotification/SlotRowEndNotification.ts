@@ -1,4 +1,5 @@
 import SlotRowEndObserver from "../../Observer/GameObserver/SlotRowEndObserver";
+import {fcc} from "../../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

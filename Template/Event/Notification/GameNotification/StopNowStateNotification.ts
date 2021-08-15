@@ -1,4 +1,5 @@
 import StopNowStateObserver from "../../Observer/GameObserver/StopNowStateObserver";
+import {fcc} from "../../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

@@ -1,4 +1,5 @@
 import UserWinPointStateObserver from "../../Observer/GameObserver/UserWinPointStateObserver";
+import {fcc} from "../../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

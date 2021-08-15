@@ -1,6 +1,5 @@
 import ccclass = cc._decorator.ccclass;
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
-
 const LINE_CONTAINER: string = 'LINE_CONTAINER';
 
 /**

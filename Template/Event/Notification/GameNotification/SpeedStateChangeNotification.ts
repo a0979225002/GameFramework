@@ -1,4 +1,5 @@
 import SpeedStateChangeObserver from "../../Observer/GameObserver/SpeedStateChangeObserver";
+import {fcc} from "../../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

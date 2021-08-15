@@ -1,3 +1,5 @@
+import {fcc} from "../../../System/FCCSystem";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description SLOT 某一列結束時,將會推播事件

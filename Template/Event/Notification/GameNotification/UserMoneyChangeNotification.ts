@@ -1,4 +1,5 @@
 import UserMoneyChangeObserver from "../../Observer/GameObserver/UserMoenyChangeObserver";
+import {fcc} from "../../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

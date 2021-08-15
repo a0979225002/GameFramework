@@ -1,3 +1,5 @@
+import {fcc} from "../../../System/FCCSystem";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 當出現需要瞇排事件,當有事件推送時,將會將該事件推播給綁定者

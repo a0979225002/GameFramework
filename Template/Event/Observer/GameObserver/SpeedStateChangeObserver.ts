@@ -1,3 +1,5 @@
+import {fcc} from "../../../System/FCCSystem";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 遊戲加速狀態改變時,當有事件推送時,將會將該事件推播給綁定者

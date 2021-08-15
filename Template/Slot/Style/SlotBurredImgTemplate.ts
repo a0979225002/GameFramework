@@ -1,4 +1,6 @@
 import NormalSlotTemplate from "./NormalSlotTemplate";
+import {fcc} from "../../System/FCCSystem";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 一般版老虎機,執行動畫為模糊圖標

@@ -5,6 +5,7 @@ import StopNowStateNotification from "../../Event/Notification/GameNotification/
 import UserMoneyChangeObserver from "../../Event/Observer/GameObserver/UserMoenyChangeObserver";
 import SpeedStateChangeNotification from "../../Event/Notification/GameNotification/SpeedStateChangeNotification";
 import UserMoneyChangeNotification from "../../Event/Notification/GameNotification/UserMoneyChangeNotification";
+import {fcc} from "../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN
@@ -132,8 +133,8 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
     /**
      * 當下是否(開啟或關閉)自動狀態事件
      * 此方法已經綁定推播事件
-     * @param {boolean} isAutomaticState :
-     * @param {AutoType} autoType
+     * @param {boolean} isAutomaticState
+     * @param {fcc.type.AutoType} autoType
      * @protected
      */
     protected abstract autoEvent(isAutomaticState: boolean, autoType: fcc.type.AutoType): void;

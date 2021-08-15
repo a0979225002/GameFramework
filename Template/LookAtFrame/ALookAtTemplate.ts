@@ -1,6 +1,7 @@
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 import ScrollFocusStateObserver from "../Event/Observer/GameObserver/ScrollFocusStateObserver";
 import ScrollFocusStateNotification from "../Event/Notification/GameNotification/ScrollFocusStateNotification";
+import {fcc} from "../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

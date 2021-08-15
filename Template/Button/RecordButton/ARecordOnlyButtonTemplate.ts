@@ -1,4 +1,5 @@
 import ARecordButtonTemplate, {DayType, PageChangeType} from "./ARecordButtonTemplate";
+import {fcc} from "../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

@@ -1,4 +1,5 @@
 import UserTotalBetChangeObserver from "../../Observer/GameObserver/UserTotalBetChangeObserver";
+import {fcc} from "../../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

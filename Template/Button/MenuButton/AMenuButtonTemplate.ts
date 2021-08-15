@@ -4,6 +4,7 @@ import AutoStateChangeObserver from "../../Event/Observer/GameObserver/AutoState
 import AutoStateChangeNotification from "../../Event/Notification/GameNotification/AutoStateChangeNotification";
 import UserTotalBetChangeNotification from "../../Event/Notification/GameNotification/UserTotalBetChangeNotification";
 import IBaseTableInfoModel from "../../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
+import {fcc} from "../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

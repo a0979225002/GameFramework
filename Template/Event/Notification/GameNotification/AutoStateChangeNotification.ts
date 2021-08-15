@@ -1,4 +1,5 @@
 import AutoStateChangeObserver from "../../Observer/GameObserver/AutoStateChangeObserver";
+import {fcc} from "../../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

@@ -1,3 +1,5 @@
+import {fcc} from "../../../System/FCCSystem";
+
 /**
  * @Author XIAO-LI-PIN
  * @Description 當有用戶金額變更,發送推波事件進來時,將會將該事件推播給綁定者

@@ -1,9 +1,9 @@
 import ASlotTemplate from "./ASlotTemplate";
-
 import ScrollFocusStateNotification from "../../Event/Notification/GameNotification/ScrollFocusStateNotification";
 import ISlotBaseResultModel from "../../NetWork/ISeverDataModel/INormalResult/ISlotBaseResultModel";
 import ISlotFreeBaseResultModel from "../../NetWork/ISeverDataModel/IFreeResult/ISlotFreeBaseResultModel";
 import SlotRowEndNotification from "../../Event/Notification/GameNotification/SlotRowEndNotification";
+import {fcc} from "../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN

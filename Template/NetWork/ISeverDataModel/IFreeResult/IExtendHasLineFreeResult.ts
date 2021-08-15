@@ -1,5 +1,6 @@
 import ISlotFreeBaseResultModel from "./ISlotFreeBaseResultModel";
 
+
 /**
  * @Author XIAO-LI-PIN
  * @Description (介面)擴展類有線免費狀態封包
