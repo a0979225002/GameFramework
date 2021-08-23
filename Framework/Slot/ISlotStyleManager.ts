@@ -5,13 +5,15 @@ namespace fcc {
 
         export interface ISlotStyleManager {
 
-            readonly slot: IF.ISlot;
+            readonly slot: Map<string, IF.ISlot>;
+
+            readonly slotStyle: Map<string, IF.ISlotSetting>;
 
             /**
              * 添加老虎機主流程 需繼承 ISlot
              * @return {this}
              */
-            setSlotTemplate<T extends new(styleData: IF.ISlotSetting,configManager:IF.IConfigManager) => IF.ISlot>(slotTemplate: T): this;
+            setSlotTemplate<T extends new(styleData: IF.ISlotSetting, configManager: IF.IConfigManager) => IF.ISlot>(slotTemplate: T): this;
 
             /**
              * 添加slot主事件樣式設定

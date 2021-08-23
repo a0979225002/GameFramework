@@ -35,7 +35,7 @@ namespace fcc {
             this._warningDelayTime = 1000;                                          //警告訊息顯示時間 : 1秒
             ErrorManager._errorState = false;                                       //當前是否正在顯示 Error
             ErrorManager._warningState = false;                                     //當前是否正在顯示警告
-            this._isShowBackHomeButton = !!this.configManager.backHomeURL;          //檢查當前是否回首頁URL,將之賦予true:false
+            this._isShowBackHomeButton = !!this.configManager.backHomeURL.trim();   //檢查當前是否回首頁URL,將之賦予true:false
         }
 
         /**
@@ -81,9 +81,10 @@ namespace fcc {
          * @param {boolean} permanentState - 是否常駐
          * @param {string} message  - 錯誤訊息
          * @param {string} buttonText - button文字
+         * @param {string} canShowButton : 是否強制顯示Button
          */
-        showErrorDialog(permanentState: boolean, message: string, buttonText?: string) {
-            this.handler.checkServerError(permanentState, message, buttonText);
+        showErrorDialog(permanentState: boolean, message: string, buttonText?: string,canShowButton?:boolean) {
+            this.handler.checkServerError(permanentState, message, buttonText,canShowButton);
         }
 
         /**

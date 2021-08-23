@@ -92,7 +92,9 @@ export {default as AMainInitTemplate} from './MainInit/AMainInitTemplate';
 /*SLOT樣式 模板*/
 export {default as ASlotTemplate} from './Slot/Style/ASlotTemplate';
 export {default as NormalSlotTemplate} from './Slot/Style/NormalSlotTemplate';
+export {default as NormalSlotSpecialTemplate} from './Slot/Style/NormalSlotSpecialTemplate';
 export {default as SlotBurredImgTemplate} from './Slot/Style/SlotBurredImgTemplate';
+export {default as SlotBurredImgSpecialTemplate} from './Slot/Style/SlotBurredImgSpecialTemplate';
 
 /*SLOT初始設定 模板*/
 export {default as ASlotInitializeTemplate} from './Slot/ASlotInitializeTemplate';

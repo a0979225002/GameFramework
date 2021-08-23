@@ -89,6 +89,11 @@ namespace fcc {
         export interface ISlotSetting {
 
             /**
+             * 該樣式標籤
+             */
+            tag: string;
+
+            /**
              * 老虎機顯示答案前的最少轉動次數
              * @param {number} count
              * @return {this}
@@ -150,19 +155,31 @@ namespace fcc {
             lookAtCount: number;
 
             /**
-             * server一般答案回傳結果
+             * 漸入時TWEEN動畫類型
              */
-            normalResult: ISlotBaseResultModel;
+            sineInEasing: string;
 
             /**
-             * server免費答案回傳結果
+             * 淡出時TWEEN 動畫類型
              */
-            freeResult: ISlotFreeBaseResultModel;
+            sineOutEasing: string;
+
+            /**
+             * 添加儲存SERVER答案的Model
+             */
+            resultModule: ISlotBaseResultModel | ISlotFreeBaseResultModel;
+
+            /**
+             * 該樣式標籤
+             * @param {string} tag
+             * @return {this}
+             */
+            setTag(tag: string): this;
 
             /**
              * 瞇排轉動次數
              */
-            setLookAtCount(count: number):this;
+            setLookAtCount(count: number): this;
 
             /**
              * 老虎機顯示答案前的最少轉動次數
@@ -221,14 +238,19 @@ namespace fcc {
             setGridNodeToMap(node: Map<number, Array<cc.Node>>): this;
 
             /**
-             * server一般答案回傳model
+             * 漸入時TWEEN動畫類型
              */
-            setNormalResult(normalResult: ISlotBaseResultModel): this;
+            setSineInEasing(easing: string): this;
 
             /**
-             * server免費答案回傳結果
+             * 淡出時TWEEN 動畫類型
              */
-            setFreeResult(freeResult:ISlotFreeBaseResultModel):this;
+            setSineOutEasing(easing: string): this;
+
+            /**
+             * 添加儲存SERVER答案的Model
+             */
+            setResultModel(resultModel: ISlotBaseResultModel | ISlotFreeBaseResultModel): this;
 
             /**
              * 設定結束

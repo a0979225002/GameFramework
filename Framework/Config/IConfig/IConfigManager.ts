@@ -20,11 +20,11 @@ namespace fcc {
 
             /**
              * 當前遊戲名稱
-             * @type {number}
+             * @type {string}
              * @default null
              * @private
              */
-            readonly gameNumber: number;
+            readonly gameNumber: string;
 
             /**
              * 初始背景音樂音量(該音量將會成為AudioManager內預設音量)
@@ -89,11 +89,11 @@ namespace fcc {
 
             /**
              * 添加遊戲名稱
-             * @param {number} name - 遊戲名稱
+             * @param {string} name - 遊戲名稱
              * @default null
              * @returns {this}
              */
-            setGameNumber(name: number): this;
+            setGameNumber(name: string): this;
 
             /**
              * 設置初始預設音量

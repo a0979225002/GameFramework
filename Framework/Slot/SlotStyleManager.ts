@@ -14,11 +14,14 @@ namespace fcc {
 
         private static _instance: IF.ISlotStyleManager;
         private readonly configManager: IF.IConfigManager;
-        private template: new(styleData: IF.ISlotSetting,configManager:IF.IConfigManager) => IF.ISlot
-        private _slot: IF.ISlot;
+        private template: new(styleData: IF.ISlotSetting, configManager: IF.IConfigManager) => IF.ISlot
+        private readonly _slot: Map<string, IF.ISlot>;
+        private readonly _slotStyle: Map<string, IF.ISlotSetting>;
 
         private constructor(configManager: IF.IConfigManager) {
             this.configManager = configManager;
+            this._slot = new Map<string, fcc.IF.ISlot>();
+            this._slotStyle = new Map<string, fcc.IF.ISlotSetting>();
         }
 
         /**
@@ -48,7 +51,7 @@ namespace fcc {
          * @param {ASlot} slotTemplate
          * @return {this}
          */
-        public setSlotTemplate<T extends new(styleData: IF.ISlotSetting,configManager:IF.IConfigManager) => IF.ISlot>(slotTemplate: T): this {
+        public setSlotTemplate<T extends new(styleData: IF.ISlotSetting, configManager: IF.IConfigManager) => IF.ISlot>(slotTemplate: T): this {
             this.template = slotTemplate;
             return this;
         }
@@ -70,13 +73,21 @@ namespace fcc {
                 ErrorManager
                     .instance
                     .executeError(type.ErrorType.UNDEFINED_FW,
-                        "Slot Template 未賦予,需幫定或實做一個SlotTemplate")
+                        "Slot Template 未賦予,需實做一個SlotTemplate")
             }
-            this._slot = new this.template(slotSetting,this.configManager);
+
+            const template = new this.template(slotSetting, this.configManager)
+            this._slot.set(slotSetting.tag, template)
+            this._slotStyle.set(slotSetting.tag, slotSetting);
         }
 
-        public get slot(): IF.ISlot {
+
+        get slot(): Map<string, fcc.IF.ISlot> {
             return this._slot;
+        }
+
+        get slotStyle(): Map<string, fcc.IF.ISlotSetting> {
+            return this._slotStyle;
         }
     }
 }

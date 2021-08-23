@@ -30,10 +30,10 @@ namespace fcc {
 
         /**
          * 當前遊戲名稱
-         * @type {number}
+         * @type {string}
          * @private
          */
-        private _gameNumber: number;
+        private _gameNumber: string;
 
         /**
          * 是否在遊戲進入後開啟auto狀態
@@ -120,7 +120,7 @@ namespace fcc {
             this._isMusicOnMute = false;                            //是否將音樂靜音
             this._isEffectOnMute = false;                           //是否將音效靜音
             this._language = type.LanguageType.CHINESE              //初始當前語系,將依據該語系,載入所有耦合圖檔
-            this._backHomeURL = null;                               //初始返回首頁URL
+            this._backHomeURL = "";                                 //初始返回首頁URL
             this._cocosDebugSetting = cc.debug.DebugMode.INFO       //設置cocos debug 模式
             this._isFrameworkDebug = true;                          //是否要開啟框架的Debug模式
         }
@@ -139,11 +139,11 @@ namespace fcc {
 
         /**
          * 添加遊戲名稱
-         * @param {number} name - 遊戲名稱
+         * @param {string} name - 遊戲名稱
          * @default null
          * @returns {this}
          */
-        setGameNumber(name: number): this {
+        setGameNumber(name: string): this {
 
             this._gameNumber = name;
 
@@ -311,7 +311,7 @@ namespace fcc {
             return this._externallyLoadURL;
         }
 
-        get gameNumber(): number {
+        get gameNumber(): string {
             return this._gameNumber;
         }
 

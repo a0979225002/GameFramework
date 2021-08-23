@@ -46,9 +46,10 @@ namespace fcc {
          * @param {boolean} permanentState - 是否持續顯示
          * @param {string} message - 顯示錯誤訊息文字
          * @param {string} buttonText - 按鈕文字
+         * @param {string} canShowButton : 是否強制顯示Button
          */
-        public checkServerError(permanentState: boolean, message: string, buttonText?: string) {
-            this.serverError.showError(permanentState, message, buttonText);
+        public checkServerError(permanentState: boolean, message: string, buttonText?: string,canShowButton?:boolean) {
+            this.serverError.showError(permanentState, message, buttonText,canShowButton);
         }
 
         /**

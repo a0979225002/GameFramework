@@ -9,9 +9,7 @@ namespace fcc {
          */
         export abstract class ASlotSetting implements IF.ISlotSetting {
 
-            private _normalResult: ISlotBaseResultModel;
-
-            private _freeResult: ISlotFreeBaseResultModel;
+            private _tag: string;
 
             private _columnIntervalTime: number;
 
@@ -30,6 +28,10 @@ namespace fcc {
             private _speedUpMultiple: number;
 
             private _lookAtCount: number;
+            sineInEasing: string;
+            sineOutEasing: string;
+
+            private _resultModule: ISlotBaseResultModel | ISlotFreeBaseResultModel;
 
             private readonly _slotStyleManager: IF.ISlotStyleManager
 
@@ -37,8 +39,23 @@ namespace fcc {
                 this._slotStyleManager = slotStyleManager;
             }
 
+            /**
+             * 瞇排轉動次數
+             * @param {number} count
+             * @return {this}
+             */
             public setLookAtCount(count: number): this {
                 this._lookAtCount = count;
+                return this;
+            }
+
+            /**
+             * 該樣式標籤
+             * @param {string} tag
+             * @return {this}
+             */
+            public setTag(tag: string): this {
+                this._tag = tag;
                 return this;
             }
 
@@ -137,20 +154,21 @@ namespace fcc {
                 return this;
             }
 
+            setSineInEasing(easing: string): this {
+                this.sineInEasing = easing;
+                return this;
+            }
 
-            /**
-             * server免費答案回傳結果
-             */
-            setNormalResult(normalResult: ISlotBaseResultModel): this {
-                this._normalResult = normalResult;
+            setSineOutEasing(easing: string): this {
+                this.sineOutEasing = easing;
                 return this;
             }
 
             /**
-             * server一般答案回傳model
+             * 添加儲存SERVER答案的Model
              */
-            setFreeResult(freeResult: ISlotFreeBaseResultModel): this {
-                this._freeResult = freeResult;
+            setResultModel(resultModel: ISlotBaseResultModel | ISlotFreeBaseResultModel): this {
+                this._resultModule = resultModel;
                 return this;
             }
 
@@ -197,19 +215,19 @@ namespace fcc {
                 return this._slotStyleManager;
             }
 
-
-            get freeResult(): ISlotFreeBaseResultModel {
-                return this._freeResult;
+            get tag(): string {
+                return this._tag;
             }
 
-            get normalResult(): ISlotBaseResultModel {
-                return this._normalResult;
-            }
 
+            get resultModule(): ISlotBaseResultModel | ISlotFreeBaseResultModel {
+                return this._resultModule;
+            }
 
             get lookAtCount(): number {
                 return this._lookAtCount;
             }
+
         }
     }
 }

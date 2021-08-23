@@ -11,7 +11,7 @@ const fs = require("fs");
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 
-const FCC_VERSION = "0.0.4";
+const FCC_VERSION = "0.0.5";
 
 /**
  * 清空資源框架

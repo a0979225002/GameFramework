@@ -74,8 +74,9 @@ namespace fcc {
              * @param {boolean} permanentState : 是否常駐
              * @param {string} message  : 錯誤訊息
              * @param {string} buttonText : button文字
+             * @param {string} canShowButton : 是否強制顯示Button
              */
-            showErrorDialog(permanentState: boolean, message: string, buttonText?: string): void;
+            showErrorDialog(permanentState: boolean, message: string, buttonText?: string,canShowButton?:boolean): void;
 
             /**
              * 顯示警告,將會調用已保存的警告Node
