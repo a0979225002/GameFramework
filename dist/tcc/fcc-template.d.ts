@@ -625,7 +625,7 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @returns {Promise<void>}
      * @private
      */
-    private longTouchTimer;
+    protected longTouchTimer(): Promise<void>;
     /**
      * 推播auto事件
      * @param {boolean} isAutoState - 當前自動狀態
@@ -1748,7 +1748,7 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {Array<Map<number, number>>}
      * @private
      */
-    protected winLinAllPosition: Array<Map<number, number>>;
+    protected allGridPosition: Array<Map<number, number>>;
     /**
      * 存放該局所有會使用到的線
      * ```
@@ -1758,6 +1758,15 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * @private
      */
     private allWinLine;
+    /**
+     * 存放該局所有會使用到的粒子
+     * ```
+     *   Map<線段編號,粒子 node>
+     * ```
+     * @type {Array<Map<number, cc.Node>>}
+     * @private
+     */
+    private allParticle;
     /**
      * 判斷是否持續執行單線播放
      * @type {boolean}
@@ -1769,7 +1778,13 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {cc.Vec2}
      * @private
      */
-    protected vector: cc.Vec2;
+    protected lineVector: cc.Vec2;
+    /**
+     * 向量 : 當前粒子執行方向
+     * @type {cc.Vec2}
+     * @private
+     */
+    protected particleVector: cc.Vec2;
     /**
      * 初始角度
      * @type {number}
@@ -1782,12 +1797,32 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      */
     protected runLineSpeed: number;
     /**
-     * 容器層級位置,因容器位置會改變線條層級顯示
-     * 注意:需要再最上層參數可以是 -1
+     * 執行粒子移動動畫時間(單位為S)
+     * 建議 : 0.5 以下
+     */
+    protected runParticleSpeed: number;
+    /**
+     * 執行各粒子動畫間格時間(單位為S)
+     * @type {number}
+     * @protected
+     */
+    protected runParticleIntervalTime: number;
+    /**
+     * 線條容器層級位置,因容器位置會改變線條層級顯示
+     * 注意:需要再最上層參數可以是 cc.macro.MAX_ZINDEX
+     * 默認為 cc.macro.MAX_ZINDEX -1;
      * @type {number}
      * @private
      */
-    protected containerIndex: number;
+    protected lineContainerIndex: number;
+    /**
+     * 粒子容器層級位置,因容器位置會改變線條層級顯示
+     * 注意:需要再最上層參數可以是 cc.macro.MAX_ZINDEX
+     * 默認為 cc.macro.MAX_ZINDEX;
+     * @type {number}
+     * @private
+     */
+    protected particleContainerIndex: number;
     /**
      * 每列格子數量
      * @type {number}
@@ -1804,7 +1839,12 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * 贏分線條,Sprite組件
      * @protected
      */
-    protected abstract lineSprite: any;
+    protected abstract lineSprite: cc.Sprite;
+    /**
+     * 贏分粒子,Prefab組件
+     * @protected
+     */
+    protected abstract particlePrefab: cc.Prefab;
     /**
      * slot所有列,計算點用
      * @type {cc.Node[]}
@@ -1816,7 +1856,13 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {cc.Node}
      * @private
      */
-    protected _container: cc.Node;
+    protected _lineContainer: cc.Node;
+    /**
+     * 存放所有粒子的容器
+     * @type {cc.Node}
+     * @private
+     */
+    private _particleContainer;
     /**
      * 隱藏物件,當贏線動畫跑完之後,需自行隱藏該線條,與贏分格子
      * ```
@@ -1846,13 +1892,17 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
     protected start(): void;
     /**
      * 還原使用過的贏線為初始狀態
-     * @param {number} lineNumber - 有傳參會只對該線條內的線段初始,無傳參會對所有線段初始
+     * @param {number} lineNumber - 有傳參會只對該線條內的物件初始,無傳參會對所有物件
      */
-    restoreLines(lineNumber?: number): void;
+    restoreNode(lineNumber?: number): void;
     /**
      * 建構該局贏線的Node容器
      */
     protected buildWinLineContainer(): void;
+    /**
+     * 建構該局贏線的Node容器
+     */
+    protected buildParticleContainer(): void;
     /**
      * 執行單條贏線依序播放
      * @param {Array<Array<number>>} answers
@@ -1866,8 +1916,6 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 執行全贏線動畫
      * @param {Array<Array<number>>} answer
-     * @param {() => void} callback
-     * @param self
      */
     playAll(answer: Array<Array<number>>): Promise<void>;
     /**
@@ -1883,6 +1931,13 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * @private
      */
     private initLinePosition;
+    /**
+     * 初始各線段粒子初始位置
+     * @param {number} lineNumber
+     * @param {number} answer
+     * @private
+     */
+    private initParticlePosition;
     /**
      * 拿取座標位置
      * @param {number} lineNumber - 哪一條線
@@ -1908,14 +1963,45 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * @param {(value: (void | PromiseLike<void>)) => void} resolve - 釋放異步
      * @param {number} lineChildNumber - 由遞迴增加,每遞迴一次更新下個線段
      */
-    private lineAndGridAnimationLoop;
+    private lineToGridAnimationLoop;
+    /**
+     * 執行粒子動畫
+     * @param {number} lineNumber - 哪一條線
+     * @param {Array<number>} answer - 該線條會經過的所有答案
+     * @return {Promise<void>}
+     * @private
+     */
+    private runParticleToAsync;
+    /**
+     * 依序執行粒子遞迴播放跑線動畫
+     * @NODE 對應A點 -> B點 -> C 點方式,依序使用遞迴方式將粒子跑完
+     * @param {number} lineNumber - 哪一條線
+     * @param {Array<number>} answer - 該線條會經過的所有答案
+     * @param {(value: (void | PromiseLike<void>)) => void} resolve - 釋放異步
+     * @param {number} lineChildNumber - 由遞迴增加,每遞迴一次更新下個線段
+     */
+    private particleToGridAnimationLoop;
+    /**
+     * 複製組件
+     * @param {number} quantity - 贏幾條線
+     * @return {this}
+     * @protected
+     */
+    copyWinLineNode(quantity: number): void;
+    /**
+     * 複製粒子
+     * @param {number} quantity - 贏幾條線
+     * @return {this}
+     * @protected
+     */
+    protected copyParticleToContainer(quantity: number): this;
     /**
      * 複製贏線
      * @param {number} quantity - 贏幾條線
      * @return {this}
      * @protected
      */
-    copyWinLinToContainer(quantity: number): this;
+    protected copyWinLineToContainer(quantity: number): this;
     /**
      * 初始所有line會經過的點
      * ```
@@ -1923,11 +2009,6 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * ```
      */
     protected initWinLinPosition(): Array<Map<number, number>>;
-    /**
-     * 計算平均速度
-     * @protected
-     */
-    protected calculationAverageSpeed(): void;
     /**
      * 獲取兩點間距離
      * ```
@@ -1951,6 +2032,7 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * ```
      * @param {cc.Vec2} p1 - 起始點
      * @param {cc.Vec2} p2 - 終點
+     * @param {cc.Vec2} vector - 向量角度
      * @return {number} - 兩點間角度
      */
     private getAngleBetweenTwoPoints;
@@ -1958,14 +2040,8 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
      * 清除所有該局使用完的贏線
      */
     clear(): void;
-    /**
-     * 數據測試,待刪除
-     * @param {number} quantity
-     * @return {Array<Array<number>>}
-     * @protected
-     */
-    test(quantity: number): Array<Array<number>>;
-    get container(): cc.Node;
+    get particleContainer(): cc.Node;
+    get lineContainer(): cc.Node;
 }
 /**
  * @Author XIAO-LI-PIN

@@ -82,6 +82,7 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
      * 打開開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
      */
     public startButtonOnEnable(): void {
+        this.unschedule(this.longTouchTimer);//清除計時器事件
         this.startButton.node.on(cc.Node.EventType.TOUCH_START, this.startButtonOnTouchStart, this);
         this.startButton.node.on(cc.Node.EventType.TOUCH_END, this.startButtonOnTouchEnd, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardSpaceTouchStart, this);
@@ -92,6 +93,7 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
      * 關閉開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
      */
     public startButtonDisable(): void {
+        this.unschedule(this.longTouchTimer);//清除計時器事件
         this.startButton.node.off(cc.Node.EventType.TOUCH_START, this.startButtonOnTouchStart, this);
         this.startButton.node.off(cc.Node.EventType.TOUCH_END, this.startButtonOnTouchEnd, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardSpaceTouchStart, this)

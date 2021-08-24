@@ -201,7 +201,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @returns {Promise<void>}
      * @private
      */
-    private async longTouchTimer(): Promise<void> {
+    protected async longTouchTimer(): Promise<void> {
         //推播auto事件
         this.autoNotify(true, this.nowAutoType);
         if (fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY) {
@@ -379,6 +379,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected menuButtonEventListener(): void {
+        this.unschedule(this.longTouchTimer);//清除計時器事件
         if (fcc.processMgr.gameState != fcc.type.GameStateType.STANDBY) {
             this.warningEvent();
             return;

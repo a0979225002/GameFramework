@@ -1,7 +1,8 @@
 import ccclass = cc._decorator.ccclass;
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
-const LINE_CONTAINER: string = 'LINE_CONTAINER';
 
+const LINE_CONTAINER: string = 'LINE_CONTAINER';
+const PARTICLE_CONTAINER: string = 'PARTICLE_CONTAINER';
 /**
  * @Author 蕭立品
  * @Description 顯示 winLine
@@ -54,7 +55,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {Array<Map<number, number>>}
      * @private
      */
-    protected winLinAllPosition: Array<Map<number, number>>;
+    protected allGridPosition: Array<Map<number, number>>;
 
     /**
      * 存放該局所有會使用到的線
@@ -65,6 +66,16 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @private
      */
     private allWinLine: Array<Map<number, cc.Node>>;
+
+    /**
+     * 存放該局所有會使用到的粒子
+     * ```
+     *   Map<線段編號,粒子 node>
+     * ```
+     * @type {Array<Map<number, cc.Node>>}
+     * @private
+     */
+    private allParticle: Map<number, cc.Node>;
 
     /**
      * 判斷是否持續執行單線播放
@@ -78,7 +89,14 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {cc.Vec2}
      * @private
      */
-    protected vector: cc.Vec2;
+    protected lineVector: cc.Vec2;
+
+    /**
+     * 向量 : 當前粒子執行方向
+     * @type {cc.Vec2}
+     * @private
+     */
+    protected particleVector: cc.Vec2;
 
     /**
      * 初始角度
@@ -94,13 +112,36 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     protected runLineSpeed: number;
 
     /**
-     * 容器層級位置,因容器位置會改變線條層級顯示
-     * 注意:需要再最上層參數可以是 -1
+     * 執行粒子移動動畫時間(單位為S)
+     * 建議 : 0.5 以下
+     */
+    protected runParticleSpeed: number;
+
+    /**
+     * 執行各粒子動畫間格時間(單位為S)
+     * @type {number}
+     * @protected
+     */
+    protected runParticleIntervalTime: number;
+
+    /**
+     * 線條容器層級位置,因容器位置會改變線條層級顯示
+     * 注意:需要再最上層參數可以是 cc.macro.MAX_ZINDEX
+     * 默認為 cc.macro.MAX_ZINDEX -1;
      * @type {number}
      * @private
      */
-    protected containerIndex: number;
+    protected lineContainerIndex: number;
 
+
+    /**
+     * 粒子容器層級位置,因容器位置會改變線條層級顯示
+     * 注意:需要再最上層參數可以是 cc.macro.MAX_ZINDEX
+     * 默認為 cc.macro.MAX_ZINDEX;
+     * @type {number}
+     * @private
+     */
+    protected particleContainerIndex: number;
 
     /**
      * 每列格子數量
@@ -121,7 +162,13 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * 贏分線條,Sprite組件
      * @protected
      */
-    protected abstract lineSprite;
+    protected abstract lineSprite: cc.Sprite;
+
+    /**
+     * 贏分粒子,Prefab組件
+     * @protected
+     */
+    protected abstract particlePrefab: cc.Prefab;
 
     /**
      * slot所有列,計算點用
@@ -135,7 +182,14 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {cc.Node}
      * @private
      */
-    protected _container: cc.Node;
+    protected _lineContainer: cc.Node;
+
+    /**
+     * 存放所有粒子的容器
+     * @type {cc.Node}
+     * @private
+     */
+    private _particleContainer: cc.Node;
 
     /**
      * 隱藏物件,當贏線動畫跑完之後,需自行隱藏該線條,與贏分格子
@@ -166,33 +220,48 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     protected abstract showWinPoint(lineNumber?: number): void;
 
     protected onCreate(): void {
-        this.containerIndex = -1;                                                           //線條層級
+        this.lineContainerIndex = cc.macro.MAX_ZINDEX - 1;                                  //線條層級
+        this.particleContainerIndex = cc.macro.MAX_ZINDEX;                                  //粒子層級
         this.runLineSpeed = 0.2;                                                            //執行線條動畫時間
+        this.runParticleSpeed = 0.2;                                                        //執行粒子移動時間
+        this.runParticleIntervalTime = 0.05;                                                //粒子動畫間格時間
         this.angle = -90;                                                                   //每條線初始角度
-        this.vector = cc.Vec2.UP;                                                           //當前方向向量
+        this.lineVector = cc.Vec2.UP;                                                       //當前line方向向量
+        this.particleVector = cc.Vec2.RIGHT                                                 //當前粒子方向向輛
         this.isStop = false;                                                                //初始判斷是否持續執行單線播放
     }
 
     protected start() {
         super.start();
-        this.buildWinLineContainer();                                                       //建構該局贏線的Node容器
-        this._container = this.lineSprite.node.parent.getChildByName(LINE_CONTAINER);       //拿取容器組件
-        this.winLinAllPosition = this.initWinLinPosition();                                 //初始所有line會經過的點
-        this.allWinLine = new Array<Map<number, cc.Node>>();                                //初始空陣列,保存該局所有要使用的贏線
+        this.buildWinLineContainer();                                                                       //建構該局贏線的Node容器
+        this.buildParticleContainer();                                                                      //建構該局營線粒子容器
+        this._lineContainer = this.lineSprite.node.parent.getChildByName(LINE_CONTAINER);             //拿取容器組件
+        this._particleContainer =  this.lineSprite.node.parent.getChildByName(PARTICLE_CONTAINER);    //拿取容器
+        this.allGridPosition = this.initWinLinPosition();                                                   //初始所有line會經過的點
+        this.allWinLine = new Array<Map<number, cc.Node>>();                                                //初始空陣列,保存該局所有要使用的贏線
+        this.allParticle = new Map<number, cc.Node>();                                                      //初始空陣列,保存該局所有要使用的粒子
     }
 
     /**
      * 還原使用過的贏線為初始狀態
-     * @param {number} lineNumber - 有傳參會只對該線條內的線段初始,無傳參會對所有線段初始
+     * @param {number} lineNumber - 有傳參會只對該線條內的物件初始,無傳參會對所有物件
      */
-    public restoreLines(lineNumber?: number) {
+    public restoreNode(lineNumber?: number) {
         if (lineNumber) {
+            //粒子初始
+            this.allParticle.get(lineNumber).active = false;
+            this.allParticle.get(lineNumber).x = this.allWinLine[lineNumber].get(0).x;
+            //線條初始
             for (let line of this.allWinLine[lineNumber].values()) {
                 line.active = false;
                 line.height = 0;
             }
         } else {
-            for (let line of this._container.children) {
+            for (let particle of this._particleContainer.children) {
+                particle.active = false;
+            }
+            //線條初始
+            for (let line of this._lineContainer.children) {
                 line.active = false;
                 line.height = 0;
             }
@@ -206,7 +275,17 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
         let parent = this.lineSprite.node.parent;
         const node = new cc.Node();
         node.name = LINE_CONTAINER;
-        parent.addChild(node, this.containerIndex, LINE_CONTAINER);
+        parent.addChild(node, this.lineContainerIndex, LINE_CONTAINER);
+    }
+
+    /**
+     * 建構該局贏線的Node容器
+     */
+    protected buildParticleContainer() {
+        let parent = this.lineSprite.node.parent;
+        const node = new cc.Node();
+        node.name = LINE_CONTAINER;
+        parent.addChild(node, this.particleContainerIndex, PARTICLE_CONTAINER);
     }
 
     /**
@@ -236,8 +315,10 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
                 let a = answer[j - 1] ?? answer[0];
                 this.initLinePosition(lineNumber, j, a);
             }
+            //初始該線條粒子Node的位置
+            this.initParticlePosition(lineNumber,answer[0]);
             await this.runLineToAsync(lineNumber, answer);
-
+            await this.runParticleToAsync(lineNumber,answer);
             //抽象方法,隱藏該線條
             await this.hideNode(lineNumber);
             lineNumber++;
@@ -247,8 +328,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     /**
      * 執行全贏線動畫
      * @param {Array<Array<number>>} answer
-     * @param {() => void} callback
-     * @param self
      */
     public async playAll(answer: Array<Array<number>>): Promise<void> {
         //抽象方法,顯示贏分
@@ -263,15 +342,21 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      */
     private async runAllLine(answer: Array<Array<number>>): Promise<void> {
         for (let i = 0; i < answer.length; i++) {
-            let onlyWInLine = answer[i];
-            for (let j = 0; j < onlyWInLine.length + 1; j++) {
-                let a = onlyWInLine[j - 1] ?? onlyWInLine[0];
+            let winLine = answer[i];
+            for (let j = 0; j < winLine.length + 1; j++) {
+                let a = winLine[j - 1] ?? winLine[0];
                 this.initLinePosition(i, j, a);
             }
+            //初始該線條粒子Node的位置
+            this.initParticlePosition(i,winLine[0]);
+
             if (i == answer.length - 1) {
-                await this.runLineToAsync(i, onlyWInLine);
+                await this.runLineToAsync(i, winLine).then();
+                await this.runParticleToAsync(i, winLine);
             } else {
-                this.runLineToAsync(i, onlyWInLine).then();
+                this.runLineToAsync(i, winLine).then(() => {
+                    this.runParticleToAsync(i, winLine);
+                });
             }
         }
         //抽象方法,隱藏該線條
@@ -289,15 +374,27 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
         let x: number;
         if (lineChildNumber == 0) {
             //該線段為最初線段,到達第一個答案前的位置
-            x = this.gridRow[0].x - this.gridRow[0].width / 2;
+            x = this.gridRow[0].x - this.gridRow[0].width;
         } else {
-            x = this.winLinAllPosition[answer].keys().next().value
+            x = this.allGridPosition[answer].keys().next().value
         }
-
-        let y: number = this.winLinAllPosition[answer].values().next().value;
+        let y: number = this.allGridPosition[answer].values().next().value;
         this.allWinLine[lineNumber].get(lineChildNumber).x = x;
         this.allWinLine[lineNumber].get(lineChildNumber).y = y;
+    }
 
+    /**
+     * 初始各線段粒子初始位置
+     * @param {number} lineNumber
+     * @param {number} answer
+     * @private
+     */
+    private initParticlePosition(lineNumber: number, answer: number) {
+        //該線段為最初線段,到達第一個答案前的位置
+        let x = this.gridRow[0].x - this.gridRow[0].width;
+        let y: number = this.allGridPosition[answer].values().next().value;
+        this.allParticle.get(lineNumber).x = x;
+        this.allParticle.get(lineNumber).y = y;
     }
 
     /**
@@ -311,19 +408,19 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     private getPosition(lineNumber: number, lineChildNumber: number, answer: number): cc.Vec2 {
 
         let p: cc.Vec2;
-        let y: number = this.winLinAllPosition[answer].values().next().value;
+        let y: number = this.allGridPosition[answer].values().next().value;
 
         if (lineChildNumber == 0) {
             //該線段為最初線段,到達第一個答案前的位置
-            const startingPoint = this.gridRow[0].x - this.gridRow[0].width / 2;
+            const startingPoint = this.gridRow[0].x - this.gridRow[0].width;
             p = cc.v2(startingPoint, y);
         } else if (lineChildNumber == this.gridRow.length + 1) {
             //該線段為最終線段,到達老虎機右側終點位置
-            const endPoint = this.gridRow[this.gridRow.length - 1].x + this.gridRow[this.gridRow.length - 1].width / 2;
+            const endPoint = this.gridRow[this.gridRow.length - 1].x + this.gridRow[this.gridRow.length - 1].width;
             p = cc.v2(endPoint, y);
         } else {
             //該線段為中間線段
-            p = cc.v2(this.winLinAllPosition[answer].keys().next().value, y);
+            p = cc.v2(this.allGridPosition[answer].keys().next().value, y);
         }
         return p;
     }
@@ -337,7 +434,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      */
     private async runLineToAsync(lineNumber: number, answer: Array<number>): Promise<void> {
         return new Promise<void>(resolve => {
-            this.lineAndGridAnimationLoop(lineNumber, answer, resolve)
+            this.lineToGridAnimationLoop(lineNumber, answer, resolve)
         })
     }
 
@@ -349,7 +446,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @param {(value: (void | PromiseLike<void>)) => void} resolve - 釋放異步
      * @param {number} lineChildNumber - 由遞迴增加,每遞迴一次更新下個線段
      */
-    private lineAndGridAnimationLoop(lineNumber: number, answer: Array<number>, resolve: (value: (void | PromiseLike<void>)) => void, lineChildNumber: number = 0): void {
+    private lineToGridAnimationLoop(lineNumber: number, answer: Array<number>, resolve: (value: (void | PromiseLike<void>)) => void, lineChildNumber: number = 0): void {
         let p1: cc.Vec2;
         let p2: cc.Vec2;
         //初始線段為Slot最旁邊到達第一個答案前的點,只需平移線條,所以只需給予y軸答案,x軸另外計算
@@ -361,7 +458,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
 
         //計算當前線條到達b點時需旋轉的角度
         this.allWinLine[lineNumber].get(lineChildNumber).angle
-            = this.getAngleBetweenTwoPoints(p1, p2);
+            = this.getAngleBetweenTwoPoints(p1, p2,this.lineVector);
         //計算當前到達b點所需的距離
         const distance = this.getDistanceBetweenTwoPoints(p1, p2);
         //將該線段打開
@@ -380,10 +477,94 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
                     //抽象方法,顯示贏分的gird動畫
                     this.showWinGrid(answer[lineChildNumber], lineNumber);
                     lineChildNumber++;
-                    this.lineAndGridAnimationLoop(lineNumber, answer, resolve, lineChildNumber);
+                    this.lineToGridAnimationLoop(lineNumber, answer, resolve, lineChildNumber);
                 }
             })
             .start();
+    }
+
+    /**
+     * 執行粒子動畫
+     * @param {number} lineNumber - 哪一條線
+     * @param {Array<number>} answer - 該線條會經過的所有答案
+     * @return {Promise<void>}
+     * @private
+     */
+    private async runParticleToAsync(lineNumber: number, answer: Array<number>): Promise<void> {
+        return new Promise<void>(resolve => {
+            this.particleToGridAnimationLoop(lineNumber, answer, resolve)
+        })
+    }
+
+    /**
+     * 依序執行粒子遞迴播放跑線動畫
+     * @NODE 對應A點 -> B點 -> C 點方式,依序使用遞迴方式將粒子跑完
+     * @param {number} lineNumber - 哪一條線
+     * @param {Array<number>} answer - 該線條會經過的所有答案
+     * @param {(value: (void | PromiseLike<void>)) => void} resolve - 釋放異步
+     * @param {number} lineChildNumber - 由遞迴增加,每遞迴一次更新下個線段
+     */
+    private particleToGridAnimationLoop(lineNumber: number, answer: Array<number>, resolve: (value: (void | PromiseLike<void>)) => void, lineChildNumber: number = 0): void {
+        let p1: cc.Vec2;
+        let p2: cc.Vec2;
+        //初始線段為Slot最旁邊到達第一個答案前的點,只需平移線條,所以只需給予y軸答案,x軸另外計算
+        let beforeAnswer: number = answer[lineChildNumber - 1] ?? answer[0];
+        //最終線段為最後一個答案到達Slot的最旁邊,只需平移線條,所以只需給予y軸答案,x軸另外計算
+        let afterAnswer: number = answer[lineChildNumber] ?? answer[answer.length - 1];
+        p1 = this.getPosition(lineNumber, lineChildNumber, beforeAnswer)
+        p2 = this.getPosition(lineNumber, lineChildNumber + 1, afterAnswer);
+
+        //計算當前線條到達b點時需旋轉的角度
+        this.allParticle.get(lineNumber).angle = this.getAngleBetweenTwoPoints(p1, p2,this.particleVector);
+        this.allParticle.get(lineNumber).active = true;
+        //由於初始長度 = 0,此時交由 cc.tween增加長度的方式顯示該線段動畫
+        cc.tween(this.allParticle.get(lineNumber))
+            .to(this.runParticleSpeed, {x:p2.x,y:p2.y})
+            .call(() => {
+                if (this.isStop) {
+                    resolve();
+                    return;
+                }
+                if (lineChildNumber == this.gridRow.length) {
+                    resolve();
+                } else {
+                    //抽象方法,顯示贏分的gird動畫
+                    this.showWinGrid(answer[lineChildNumber], lineNumber);
+                    lineChildNumber++;
+                    this.particleToGridAnimationLoop(lineNumber, answer, resolve, lineChildNumber);
+                }
+            })
+            .start();
+    }
+
+
+    /**
+     * 複製組件
+     * @param {number} quantity - 贏幾條線
+     * @return {this}
+     * @protected
+     */
+    public copyWinLineNode(quantity: number) {
+        this.copyParticleToContainer(quantity);
+        this.copyWinLineToContainer(quantity);
+    }
+
+    /**
+     * 複製粒子
+     * @param {number} quantity - 贏幾條線
+     * @return {this}
+     * @protected
+     */
+    protected copyParticleToContainer(quantity: number) {
+        const particleName = "PARTICLE";
+        for (let zIndex = 0; zIndex < quantity; zIndex++) {
+            const particleNode: cc.Node = cc.instantiate(this.particlePrefab);
+            particleNode.active = false;
+            this._particleContainer.addChild(particleNode, zIndex, `${particleName}${zIndex}`);
+            this.allParticle.set(zIndex, particleNode);
+        }
+        cc.log(this._particleContainer)
+        return this;
     }
 
     /**
@@ -392,7 +573,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @return {this}
      * @protected
      */
-    public copyWinLinToContainer(quantity: number): this {
+    protected copyWinLineToContainer(quantity: number): this {
         const lineName = "LINE";
         for (let i = 0; i < quantity; i++) {
             let line: Map<number, cc.Node> = new Map<number, cc.Node>();
@@ -400,7 +581,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
             for (let j = 0; j < this.gridRow.length + 1; j++) {
                 let lineNode = cc.instantiate(this.lineSprite.node);
                 lineNode.active = false;
-                this._container.addChild(lineNode, i, `${lineName}${i}_${j}`);
+                this._lineContainer.addChild(lineNode, i, `${lineName}${i}_${j}`);
                 line.set(j, lineNode);
             }
             this.allWinLine.push(line);
@@ -430,14 +611,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     }
 
     /**
-     * 計算平均速度
-     * @protected
-     */
-    protected calculationAverageSpeed() {
-
-    }
-
-    /**
      * 獲取兩點間距離
      * ```
      *      兩點間距離公式 :
@@ -451,7 +624,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     private getDistanceBetweenTwoPoints(p1: cc.Vec2, p2: cc.Vec2): number {
         let dx = Math.pow((p2.x - p1.x), 2);
         let dy = Math.pow((p2.y - p1.y), 2);
-        return Math.sqrt(dx + dy)+1
+        return Math.sqrt(dx + dy) + 1
     }
 
     /**
@@ -465,47 +638,35 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * ```
      * @param {cc.Vec2} p1 - 起始點
      * @param {cc.Vec2} p2 - 終點
+     * @param {cc.Vec2} vector - 向量角度
      * @return {number} - 兩點間角度
      */
-    private getAngleBetweenTwoPoints(p1: cc.Vec2, p2: cc.Vec2): number {
+    private getAngleBetweenTwoPoints(p1: cc.Vec2, p2: cc.Vec2,vector:cc.Vec2): number {
         let dx = p2.x - p1.x;
         let dy = p2.y - p1.y;
         const dir = cc.v2(dx, dy);
-        const radian = dir.signAngle(this.vector);        //拿取帶方向的夾角的弧度。
+        const radian = dir.signAngle(vector);        //拿取帶方向的夾角的弧度。
         return (radian * (180 / Math.PI)) * -1;
     }
-
 
     /**
      * 清除所有該局使用完的贏線
      */
     public clear() {
-        cc.Tween.stopAllByTarget(this._container);
+        cc.Tween.stopAllByTarget(this._lineContainer);
+        cc.Tween.stopAllByTarget(this._particleContainer);
         this.allWinLine.length = 0;
-        let lineContainer = this.lineSprite.node.parent.getChildByName(LINE_CONTAINER);
-        lineContainer.destroyAllChildren();
+        this.allParticle.clear();
+        this._lineContainer.destroyAllChildren();
+        this._particleContainer.destroyAllChildren();
     }
 
-    /**
-     * 數據測試,待刪除
-     * @param {number} quantity
-     * @return {Array<Array<number>>}
-     * @protected
-     */
-    test(quantity: number): Array<Array<number>> {
-        let json: Array<Array<number>> = new Array<Array<number>>();
-        for (let i = 0; i < quantity; i++) {
-            let array: Array<number> = [];
-            for (let j = 0; j < this.gridRow.length; j++) {
-                let random = Math.floor(Math.random() * (this.gridCont) + j * this.gridCont);
-                array.push(random);
-            }
-            json.push(array);
-        }
-        return json;
+
+    get particleContainer(): cc.Node {
+        return this._particleContainer;
     }
 
-    get container(): cc.Node {
-        return this._container;
+    get lineContainer(): cc.Node {
+        return this._lineContainer;
     }
 }
