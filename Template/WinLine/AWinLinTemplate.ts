@@ -528,8 +528,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
                 if (lineChildNumber == this.gridRow.length) {
                     resolve();
                 } else {
-                    //抽象方法,顯示贏分的gird動畫
-                    this.showWinGrid(answer[lineChildNumber], lineNumber);
                     lineChildNumber++;
                     this.particleToGridAnimationLoop(lineNumber, answer, resolve, lineChildNumber);
                 }
@@ -563,7 +561,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
             this._particleContainer.addChild(particleNode, zIndex, `${particleName}${zIndex}`);
             this.allParticle.set(zIndex, particleNode);
         }
-        cc.log(this._particleContainer)
         return this;
     }
 
