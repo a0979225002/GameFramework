@@ -69,7 +69,7 @@ namespace fcc {
             /**
              * 添加當前語系
              */
-            setLanguage():void;
+            setLanguage(languageObject:object):void;
 
             /**
              * 獲取當前語系數據,返回該key對應的文字

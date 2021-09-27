@@ -32,6 +32,7 @@
     "gulp-javascript-obfuscator": "^1.1.6",
     "gulp-notify": "^4.0.0",
     "gulp-rename": "^2.0.0",
+    "gulp-rollup": "^2.17.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-uglify": "^3.0.2",
@@ -55,8 +56,8 @@
     "rollup TCC-Template": "rollup -c",
     "gulp FCC-Framework": "gulp buildFramework",
     "gulp PublishFramework": "gulp buildFramework2",
-    "dpdm-Framework" : "dpdm Framework/**/*.ts",
-    "dpdm-Template" : "dpdm Template/**/*.ts"
+    "dpdm-Framework": "dpdm Framework/**/*.ts",
+    "dpdm-Template": "dpdm Template/**/*.ts"
   },
   "repository": {
     "type": "git",

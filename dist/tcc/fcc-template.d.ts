@@ -120,6 +120,10 @@ declare abstract class ACenterTemplate extends AGenericTemplate {
      * @protected
      */
     protected abstract notificationSetting(): void;
+    /**
+     * 當前scene模式,更新當前畫面是配寬高
+     */
+    protected abstract sceneStyle(): void;
     protected onLoad(): void;
 }
 /**
@@ -1596,10 +1600,6 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      */
     protected abstract loadExternalScript(): void;
     /**
-     * 當前scene模式,更新當前畫面是配寬高
-     */
-    protected abstract sceneStyle(): void;
-    /**
      * 更新讀取條文字動畫
      */
     protected abstract updateProgressTextAnimation(): void;
@@ -1665,11 +1665,11 @@ declare abstract class ALoadingFrameTemplate extends AGenericTemplate {
  */
 declare abstract class ALookAtTemplate extends AGenericTemplate {
     /**
-     * 當前所有列的瞇排特效animation
-     * @type {Array<cc.Animation>}
+     * 當前所有列的瞇排特效物件
+     * @type {Array<cc.Node>}
      * @protected
      */
-    protected abstract allLookAtEffect: Array<cc.Animation>;
+    protected abstract allLookAtEffect: Array<cc.Node>;
     /**
      * 瞇排事件通知
      * @type {ScrollFocusStateObserver}

@@ -16,11 +16,11 @@ import {fcc} from "../System/FCCSystem";
 export default abstract class ALookAtTemplate extends AGenericTemplate {
 
     /**
-     * 當前所有列的瞇排特效animation
-     * @type {Array<cc.Animation>}
+     * 當前所有列的瞇排特效物件
+     * @type {Array<cc.Node>}
      * @protected
      */
-    protected abstract allLookAtEffect: Array<cc.Animation>;
+    protected abstract allLookAtEffect: Array<cc.Node>;
 
     /**
      * 瞇排事件通知
@@ -68,10 +68,10 @@ export default abstract class ALookAtTemplate extends AGenericTemplate {
         if(!this._scrollFocusStateObserver){
             this._scrollFocusStateObserver = new ScrollFocusStateObserver((index, isShow) => {
                 if (isShow) {
-                    if (this.allLookAtEffect[index].node.active) return;
+                    if (this.allLookAtEffect[index].active) return;
                     this.showLookAtEffect(index);
                 } else {
-                    if (!this.allLookAtEffect[index].node.active) return;
+                    if (!this.allLookAtEffect[index].active) return;
                     this.removeLookAtEffect(index);
                 }
             }, this);

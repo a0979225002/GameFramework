@@ -24,7 +24,6 @@ namespace fcc {
          * @protected
          */
         setResToManager(dataName: string, asset: cc.SpriteAtlas): void {
-
             let spriteMap: Map<string, cc.SpriteFrame> = new Map<string, cc.SpriteFrame>();
             for (let sprite of asset[0].getSpriteFrames()) {
                 //將鍵值轉小寫,如果有使用grid key 作為搜尋資源
@@ -39,7 +38,6 @@ namespace fcc {
                 }
             }
             LoadResManager.instance.imgRes.set(dataName, spriteMap);
-
             //目的解決異步操作
             //當資源都載入到LoadManager時才回傳以載入完成的狀態
             this.updateProgressEnd();

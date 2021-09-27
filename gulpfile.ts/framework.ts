@@ -10,7 +10,7 @@ const through = require('through2');
 const fs = require("fs");
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
-
+const rollup = require('gulp-rollup');
 const FCC_VERSION = "0.0.5";
 
 /**
@@ -47,8 +47,8 @@ function buildAssetFramework(cb) {
                 .pipe(uglify())
                 .pipe(sourcemaps.write())
                 .pipe(browserify({
-                    insertGlobals: true,
-                    debug: true,
+                    insertGlobals: false,
+                    debug: false,
                 }))
                 .pipe(through.obj(function (chunk, enc, callback) {
                     let sdata = chunk.contents.toString();
@@ -116,14 +116,8 @@ function buildPublishFramework(cb) {
             }))
             .pipe(sourcemaps.write())
             .pipe(browserify({
-                insertGlobals: true,
-                debug: true,
-            }))
-            .pipe(through.obj(function (chunk, enc, callback) {
-                let sdata = chunk.contents.toString();
-                chunk.contents = Buffer.from(sdata);
-                this.push(chunk)
-                callback();
+                insertGlobals: false,
+                debug: false,
             }))
             .pipe(gulp.dest('dist/fcc'))
     } else {

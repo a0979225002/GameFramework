@@ -38,12 +38,18 @@ export default abstract class ACenterTemplate extends AGenericTemplate {
      */
     protected abstract notificationSetting(): void;
 
+    /**
+     * 當前scene模式,更新當前畫面是配寬高
+     */
+    protected abstract sceneStyle(): void;
+
     protected onLoad() {
         this.initClient();                  //初始Client參數
         this.configSetting();               //所有動作中需最先執行,遊戲初始設定
         this.audioSetting();                //音樂撥放樣式設定
         this.processCreate();               //遊戲流程創建
         this.notificationSetting();         //通知事件添加創建
+        this.sceneStyle();                  //遊戲是配度設定
         super.onLoad();
     }
 }

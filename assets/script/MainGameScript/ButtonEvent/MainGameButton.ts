@@ -201,11 +201,15 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
 
     }
 
-    //旋轉180度 下上方式持續跳動
+    /**
+     * 押注視窗打開時button動畫 旋轉180度 下上方式持續跳動
+     * @param {cc.Node} node
+     * @protected
+     */
     protected showBetFrameButtonAnimation(node: cc.Node) {
         cc.Tween.stopAllByTarget(node)
-        node.y = 0;
         cc.tween(node)
+            .set({y:0})
             .to(0.3, {angle: -180}, {easing: "smooth"})
             .repeatForever(
                 cc.tween()
@@ -214,11 +218,15 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
             ).start();
     }
 
-    //轉正0度 上下方式持續跳動
+    /**
+     * 押注視窗關閉時button動畫,轉正0度 上下方式持續跳動
+     * @param {cc.Node} node
+     * @protected
+     */
     protected offBetFrameButtonAnimation(node: cc.Node) {
         cc.Tween.stopAllByTarget(node);
-        node.y = 0;
         cc.tween(node)
+            .set({y:0})
             .to(0.3, {angle: 0}, {easing: "smooth"})
             .repeatForever(
                 cc.tween()
@@ -229,7 +237,6 @@ export default class MainGameButton extends AMainGameDoubleButtonTemplate {
 
     @Effect("BtnClick")
     protected speedUpEvent(isSpeedUp: boolean) {
-
         if (isSpeedUp) {
             this.speedUpButtonH.node.children[0]
                 .getComponent(cc.Sprite).spriteFrame = this.buttonSpriteFrame.SPEED_ON;

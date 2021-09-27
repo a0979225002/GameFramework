@@ -68,11 +68,6 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
     protected abstract loadExternalScript(): void;
 
     /**
-     * 當前scene模式,更新當前畫面是配寬高
-     */
-    protected abstract sceneStyle(): void;
-
-    /**
      * 更新讀取條文字動畫
      */
     protected abstract updateProgressTextAnimation(): void;
@@ -105,9 +100,8 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
 
     protected start() {
         super.start();
-        this.sceneStyle();                          //當前scene模式,更新當前畫面是配寬高
         this.loadExternalScript();                  //外部資源
-        this.loadResources();                     //載入資源方法
+        this.loadResources();                       //載入資源方法
         this.loadAssetBundle();                     //次資源
         this.updateProgressTextAnimation();         //更新讀取條文字
     }

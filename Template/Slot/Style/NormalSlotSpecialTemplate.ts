@@ -229,23 +229,25 @@ export default class NormalSlotSpecialTemplate extends ASlotTemplate {
         cc.tween(node)
             .to(duration, {y: node.y - this.slotGridHeight})
             .call(() => {
-                if (index != 0 && this.isSlotEnd[index - 1] && !this.isSpeedUp) {
-                    if (this.checkLookAt(index)) {
-                        //如果該列不是第一列,且有瞇排事件,當他的上一輪轉完,推撥打開瞇排的事件
-                        this.notifyLookAtEvent(true, index);
-                    }
-                } else if (index == 0 && this.checkLookAt(index) && !this.isSpeedUp) {
-                    //如果是第一列,且有瞇排事件,推撥打開瞇排的事件
-                    this.notifyLookAtEvent(true, index);
-                }
-
                 //更新被Mask的Grid,將之移動到原位子
                 this.updateOnlyGridPositionAndRandomImg(this.gridNodeToMap.get(index), index);
 
                 //如果server有回傳答案,將可進入停軸判斷
                 if (this.isResultOK) {
-                    //假如當前需要即停,將直接停止slot
+                    /*假如當前需要即停,將直接停止slot*/
                     if (this.checkImmediateStopState(index, resolve)) return;
+
+                    /*瞇排事件*/
+                    if (index != 0 && this.isSlotEnd[index - 1] && !this.isSpeedUp) {
+                        if (this.checkLookAt(index)) {
+                            //如果該列不是第一列,且有瞇排事件,當他的上一輪轉完,推撥打開瞇排的事件
+                            this.notifyLookAtEvent(true, index);
+                        }
+                    } else if (index == 0 && this.checkLookAt(index) && !this.isSpeedUp) {
+                        //如果是第一列,且有瞇排事件,推撥打開瞇排的事件
+                        this.notifyLookAtEvent(true, index);
+                    }
+
                     if (numberOfTimes < rowEndCount) {
                         //如果當前尚未達到需轉動的次數,持續計算
                         numberOfTimes++;
