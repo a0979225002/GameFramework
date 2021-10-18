@@ -1,12 +1,10 @@
-import INoLineResultModel from "../../ISeverDataModel/INormalResult/INoLineResultModel";
-
 /**
  * @Author XIAO-LI-PIN
  * @Description 無線一般狀態封包
  * @Date 2021-05-31 下午 01:41
  * @Version 1.0
  */
-export default class NoLineResult implements INoLineResultModel {
+export default class NoLineResult implements fcc.IF.INoLineResultModel {
 
     /**
      * 0: 押注成功 1:遊戲狀態不符 2:超過

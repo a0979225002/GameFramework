@@ -1,12 +1,10 @@
-import INoLineFreeResultModel from "../../ISeverDataModel/IFreeResult/INoLineFreeResultModel";
-
 /**
  * @Author XIAO-LI-PIN
  * @Description 無線免費狀態封包
  * @Date 2021-06-03 下午 12:04
  * @Version 1.0
  */
-export default class NoLineFreeResult implements INoLineFreeResultModel {
+export default class NoLineFreeResult implements fcc.IF.INoLineFreeResultModel {
 
     /**
      * 0: 押注成功 1: 非免費時間押注

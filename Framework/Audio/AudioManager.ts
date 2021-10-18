@@ -219,7 +219,7 @@ namespace fcc {
      * @returns {(target: any, key: string, descriptor: PropertyDescriptor) => void}
      * @constructor
      */
-    export function Music(name) {
+    export function Music(name:string) {
         return function (target: any, key: string, descriptor: PropertyDescriptor) {
             descriptor.enumerable = true;
             const method = descriptor.value;

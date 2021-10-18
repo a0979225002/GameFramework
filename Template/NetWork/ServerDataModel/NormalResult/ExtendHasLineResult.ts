@@ -1,12 +1,10 @@
-import IExtendHasLineResult from "../../ISeverDataModel/INormalResult/IExtendHasLineResult";
-
 /**
  * @Author XIAO-LI-PIN
  * @Description 擴展類有線一般狀態封包
  * @Date 2021-06-03 下午 04:50
  * @Version 1.0
  */
-export default class ExtendHasLineResult implements IExtendHasLineResult {
+export default class ExtendHasLineResult implements fcc.IF.IExtendHasLineResult {
 
     /**
      * 0: 押注成功 1:遊戲狀態不符 2:超過

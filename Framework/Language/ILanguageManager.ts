@@ -42,9 +42,10 @@ namespace fcc {
 
             /**
              * 重新獲取語系,並更新緩衝內
+             * @param {object} languageObject - 語系資源
              * @param {string | fcc.type.LanguageType} language - 有參數為強制更新該參數語系,無參為當前拿取當前語系更新緩衝
              */
-            reTakeLanguageBuffer(language?: string | type.LanguageType);
+            reTakeLanguageBuffer(languageObject:object,language?: string | type.LanguageType);
 
             /**
              * 更新文字該label文字

@@ -1,6 +1,6 @@
 /// <reference path="../Audio/AudioManager.ts" />
 /// <reference path="../Error/ErrorManager.ts" />
-/// <reference path="../Listener/EventManager.ts" />
+/// <reference path="../Event/EventManager.ts" />
 /// <reference path="../Load/LoadResManager.ts" />
 /// <reference path="../Process/ProcessManager.ts" />
 /// <reference path="../Scene/SceneManager.ts" />

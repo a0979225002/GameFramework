@@ -189,9 +189,9 @@ namespace fcc {
         /**
          * 添加當前語系,拿取 window.language_Mode 內物件,作保存
          */
-        setLanguage(): void {
+        setLanguage(languageObject:object): void {
             if (!this.languageCache) {
-                this.languageCache = window.language_Mode[this._nowLang];
+                this.languageCache = languageObject[this._nowLang];
             }
         }
 
@@ -221,15 +221,16 @@ namespace fcc {
         }
 
         /**
-         * 重新獲取語系,並更新緩衝內,
+         * 重新獲取語系,並更新緩衝內
+         * @param {object} languageObject - 語系資源
          * @param {string | fcc.type.LanguageType} language - 有參數為強制更新該參數語系,無參為當前拿取當前語系更新緩衝
          */
-        reTakeLanguageBuffer(language?: string | type.LanguageType) {
+        reTakeLanguageBuffer(languageObject:object,language?: string | type.LanguageType) {
             try {
                 if (language) {
-                    this.languageCache = window.language_Mode[language];
+                    this.languageCache = languageObject[language];
                 } else {
-                    this.languageCache = window.language_Mode[this._nowLang];
+                    this.languageCache = languageObject[this._nowLang];
                 }
             } catch (e) {
                 console.log("window.language_Mode 查找不到該語系", e);

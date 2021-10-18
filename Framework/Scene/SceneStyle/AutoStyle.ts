@@ -1,6 +1,6 @@
 /// <reference path="../Enum/SceneDirectionType.ts" />
 /// <reference path="../SceneManager.ts" />
-/// <reference path="../../Listener/NotificationType/SceneNotification/SceneDirectionChangeNotification.ts" />
+/// <reference path="../../Notification/NotificationType/SceneNotification/SceneDirectionChangeNotification.ts" />
 namespace fcc {
     /**
      * @Author XIAO-LI-PIN

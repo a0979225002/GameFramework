@@ -1,12 +1,10 @@
-import IHasLineFreeResultModule from "../../ISeverDataModel/IFreeResult/IHasLineFreeResultModule";
-
 /**
  * @Author XIAO-LI-PIN
  * @Description 有線免費狀態封包
  * @Date 2021-06-03 下午 12:04
  * @Version 1.0
  */
-export default class HasLineFreeResult implements IHasLineFreeResultModule {
+export default class HasLineFreeResult implements fcc.IF.IHasLineFreeResultModule {
 
     /**
      * 0: 押注成功 1: 非免費時間押注

@@ -1,12 +1,10 @@
-import IHasLineResultModule from "../../ISeverDataModel/INormalResult/IHasLineResultModule";
-
 /**
  * @Author XIAO-LI-PIN
  * @Description 有線一般狀態封包
  * @Date 2021-05-31 下午 01:41
  * @Version 1.0
  */
-export default class HasLineResult implements IHasLineResultModule {
+export default class HasLineResult implements fcc.IF.IHasLineResultModule {
 
     /**
      * 0: 押注成功 1:遊戲狀態不符 2:超過

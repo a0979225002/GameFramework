@@ -1,12 +1,10 @@
-import IExtendHasLineFreeResult from "../../ISeverDataModel/IFreeResult/IExtendHasLineFreeResult";
-
 /**
  * @Author XIAO-LI-PIN
  * @Description 擴展類有線免費狀態封包
  * @Date 2021-06-03 下午 04:51
  * @Version 1.0
  */
-export default class ExtendHasLineFreeResult implements IExtendHasLineFreeResult {
+export default class ExtendHasLineFreeResult implements fcc.IF.IExtendHasLineFreeResult {
     /**
      * 0: 押注成功 1: 非免費時間押注
      * @type {number}

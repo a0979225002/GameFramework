@@ -1,8 +1,8 @@
 /// <reference path="../Error/Enum/ErrorType.ts" />
 /// <reference path="../Error/ErrorManager.ts" />
 /// <reference path="./ISlotStyleManager.ts" />
-
 namespace fcc {
+
 
     /**
      * @Author XIAO-LI-PIN
@@ -14,14 +14,15 @@ namespace fcc {
 
         private static _instance: IF.ISlotStyleManager;
         private readonly configManager: IF.IConfigManager;
-        private template: new(styleData: IF.ISlotSetting, configManager: IF.IConfigManager) => IF.ISlot
-        private readonly _slot: Map<string, IF.ISlot>;
-        private readonly _slotStyle: Map<string, IF.ISlotSetting>;
+        private template: new(styleData: IF.IBaseSlotSetting, configManager: IF.IConfigManager) => ABaseSlotTemplate<IF.IBaseSlotSetting>
+        private readonly _slot: Map<string, fcc.IF.IBaseSlotTemplate<IF.IBaseSlotSetting>>;
+        private readonly _slotStyle: Map<string, IF.IBaseSlotSetting>;
+
 
         private constructor(configManager: IF.IConfigManager) {
             this.configManager = configManager;
-            this._slot = new Map<string, fcc.IF.ISlot>();
-            this._slotStyle = new Map<string, fcc.IF.ISlotSetting>();
+            this._slot = new Map<string, IF.IBaseSlotTemplate<IF.IBaseSlotSetting>>();
+            this._slotStyle = new Map<string, fcc.IF.IBaseSlotSetting>();
         }
 
         /**
@@ -47,11 +48,11 @@ namespace fcc {
         }
 
         /**
-         * 添加執行流程的class 需繼承 ISlot
-         * @param {ASlot} slotTemplate
+         * 添加執行流程的class 需繼承 ABaseSlotTemplate
+         * @param {{new(styleData: fcc.IF.IBaseSlotSetting, configManager: fcc.IF.IConfigManager): T}} slotTemplate
          * @return {this}
          */
-        public setSlotTemplate<T extends new(styleData: IF.ISlotSetting, configManager: IF.IConfigManager) => IF.ISlot>(slotTemplate: T): this {
+        setSlotTemplate<T extends ABaseSlotTemplate<fcc.IF.IBaseSlotSetting>>(slotTemplate: new (styleData: fcc.IF.IBaseSlotSetting, configManager: fcc.IF.IConfigManager) => T): this {
             this.template = slotTemplate;
             return this;
         }
@@ -61,14 +62,14 @@ namespace fcc {
          * @param {{new(slotStyleManager: fcc.IF.ISlotStyleManager): T}} slotSetting
          * @return {T}
          */
-        setSlotStyle<T extends IF.ISlotSetting>(slotSetting?: new(slotStyleManager: IF.ISlotStyleManager) => T): T {
+        setSlotStyle<T extends IF.IBaseSlotSetting>(slotSetting?: new(slotStyleManager: IF.ISlotStyleManager) => T): T {
             return new slotSetting(this);
         }
 
         /**
          * 初始化Slot : 將Slot設定參數給予Slot做初始處理
          */
-        build(slotSetting: IF.ISlotSetting) {
+        build(slotSetting: IF.IBaseSlotSetting) {
             if (!this.template) {
                 ErrorManager
                     .instance
@@ -82,11 +83,11 @@ namespace fcc {
         }
 
 
-        get slot(): Map<string, fcc.IF.ISlot> {
+        get slot(): Map<string, fcc.IF.IBaseSlotTemplate<IF.IBaseSlotSetting>> {
             return this._slot;
         }
 
-        get slotStyle(): Map<string, fcc.IF.ISlotSetting> {
+        get slotStyle(): Map<string, fcc.IF.IBaseSlotSetting> {
             return this._slotStyle;
         }
     }

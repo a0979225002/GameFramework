@@ -4,7 +4,7 @@
  * @Date 2021-07-06 下午 01:55
  * @Version 0.03
  */
-const VERSION = "0.04"//版本號
+const VERSION = "1.0.1"//版本號
 
 /**
  * 框架Module化
@@ -90,27 +90,12 @@ export {default as AWinLinTemplate} from './WinLine/AWinLinTemplate';
 export {default as AMainInitTemplate} from './MainInit/AMainInitTemplate';
 
 /*SLOT樣式 模板*/
-export {default as ASlotTemplate} from './Slot/Style/ASlotTemplate';
-export {default as NormalSlotTemplate} from './Slot/Style/NormalSlotTemplate';
-export {default as NormalSlotSpecialTemplate} from './Slot/Style/NormalSlotSpecialTemplate';
-export {default as SlotBurredImgTemplate} from './Slot/Style/SlotBurredImgTemplate';
-export {default as SlotBurredImgSpecialTemplate} from './Slot/Style/SlotBurredImgSpecialTemplate';
+export {default as ABaseSlotTemplate} from './Slot/Style/BaseSlot/ABaseSlotTemplate';
+export {default as NormalSlotSpecialTemplate} from './Slot/Style/NormalSlot/NormalTemplate';
+export {default as SlotBurredImgSpecialTemplate} from './Slot/Style/NormalSlot/NormalBurredImageTemplate';
 
 /*SLOT初始設定 模板*/
 export {default as ASlotInitializeTemplate} from './Slot/ASlotInitializeTemplate';
-
-
-/*遊戲 INTERFACE SERVER FREE MODEL*/
-export {default as IExtendHasLineFreeResult} from './NetWork/ISeverDataModel/IFreeResult/IExtendHasLineFreeResult';
-export {default as IHasLineFreeResultModule} from './NetWork/ISeverDataModel/IFreeResult/IHasLineFreeResultModule';
-export {default as INoLineFreeResultModel} from './NetWork/ISeverDataModel/IFreeResult/INoLineFreeResultModel';
-export {default as ISlotFreeBaseResultModel} from './NetWork/ISeverDataModel/IFreeResult/ISlotFreeBaseResultModel';
-
-/*遊戲 INTERFACE SERVER NORMAL MODEL*/
-export {default as IExtendHasLineResult} from './NetWork/ISeverDataModel/INormalResult/IExtendHasLineResult';
-export {default as IHasLineResultModule} from './NetWork/ISeverDataModel/INormalResult/IHasLineResultModule';
-export {default as INoLineResultModel} from './NetWork/ISeverDataModel/INormalResult/INoLineResultModel';
-export {default as ISlotBaseResultModel} from './NetWork/ISeverDataModel/INormalResult/ISlotBaseResultModel';
 
 /*遊戲 INTERFACE SERVER TABLE INFO MODEL*/
 export {default as IBaseTableInfoModel} from './NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel';

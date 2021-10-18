@@ -1,4 +1,5 @@
 import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
+import {fcc} from "../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN
@@ -14,14 +15,14 @@ export default abstract class ASlotInitializeTemplate extends AGenericTemplate {
      * @type {ISlotBaseResultModel}
      * @protected
      */
-    protected abstract normalResult: ISlotBaseResultModel;
+    protected abstract normalResult: fcc.IF.IBaseSlotResultModel;
 
     /**
      * Slot 免費答案回傳結果
      * @type {ISlotFreeBaseResultModel}
      * @protected
      */
-    protected abstract freeResult: ISlotFreeBaseResultModel;
+    protected abstract freeResult: fcc.IF.IBaseSlotResultModel;
 
     /**
      * 執行老虎機動畫的列 所有列
