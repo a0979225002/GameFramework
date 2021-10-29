@@ -91,8 +91,8 @@ export {default as AMainInitTemplate} from './MainInit/AMainInitTemplate';
 
 /*SLOT樣式 模板*/
 export {default as ABaseSlotTemplate} from './Slot/Style/BaseSlot/ABaseSlotTemplate';
-export {default as NormalSlotSpecialTemplate} from './Slot/Style/NormalSlot/NormalTemplate';
-export {default as SlotBurredImgSpecialTemplate} from './Slot/Style/NormalSlot/NormalBurredImageTemplate';
+export {default as NormalTemplate} from './Slot/Style/NormalSlot/NormalTemplate';
+export {default as NormalBurredImageTemplate} from './Slot/Style/NormalSlot/NormalBurredImageTemplate';
 
 /*SLOT初始設定 模板*/
 export {default as ASlotInitializeTemplate} from './Slot/ASlotInitializeTemplate';

@@ -18,53 +18,51 @@ namespace fcc {
      */
     export const configMgr: IF.ISlotConfigManager = SlotConfigManager.instance;
 
+
+    /**
+     * 物件池管理器
+     */
+    export let nodePoolMgr;
+
     /**
      * 音樂管理器,初始設定各音樂狀態,保存當前撥放音量
      * @return {fcc.IF.IAudioManager}
-     * @private
      */
     export let audioMgr: IF.IAudioManager;
 
     /**
      * 框架錯誤管理
      * @return {fcc.IF.IErrorManager}
-     * @private
      */
     export let errorMgr: IF.IErrorManager;
 
     /**
      * 語系管理器 : 保存當前語言本,語系樣式
      * @return {fcc.IF.ILanguageManager}
-     * @private
      */
     export let languageMgr: IF.ILanguageManager;
 
     /**
      * 事件管理器,當前綁定的事件,事件數量
      * @return {fcc.IF.IEventManager}
-     * @private
      */
     export let eventMgr: IF.IEventManager;
 
     /**
      * 資源管理者 : 加載資源,保存資源,獲取當前加載進度
      * @return {fcc.IF.ILoadResManager}
-     * @constructor
-     * @private
      */
     export let loadMgr: IF.ILoadResManager;
 
     /**
      * 遊戲流程管理器 : 管理當前流程,執行當前流程
      * @return {fcc.IF.IProcessManager}
-     * @private
      */
     export let processMgr: IF.IProcessManager;
 
     /**
      * 場景管理器 : 自動匹配遊戲寬高,監聽當前玩家遊玩模式(橫式or直式)
      * @return {fcc.IF.ISceneManager}
-     * @private
      */
     export let sceneMgr: IF.ISceneManager;
 

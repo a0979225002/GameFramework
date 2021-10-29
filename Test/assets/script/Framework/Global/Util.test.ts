@@ -1,11 +1,22 @@
-import Util from "../../../../../assets/script/Framework/Global/Util";
+import Util = fcc.global.Util;
 
-/**
- * @Author XIAO-LI-PIN
- * @Description TODO
- * @Date 2021-06-16 上午 10:34
- * @Version 1.0
- */
+
+class aa{
+
+
+    private index :number;
+    private indexs:number[];
+
+    fun(a:number){
+        this.indexs.forEach((e)=>{
+
+        })
+    }
+
+
+
+}
+
 test("數字轉KILO格式化測試",()=>{
     expect(Util.numberFormat(100)).toBe("100");
     expect(Util.numberFormat(999)).toBe( "999");

@@ -55,7 +55,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @type {Array<Map<number, number>>}
      * @private
      */
-    protected allGridPosition: Array<Map<number, number>>;
+    protected allGridPosition: Array<cc.Vec2>;
 
     /**
      * 存放該局所有會使用到的線
@@ -144,21 +144,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     protected particleContainerIndex: number;
 
     /**
-     * 每列格子數量
-     * @type {number}
-     * @private
-     */
-    protected abstract gridCont: number;
-
-    /**
-     * 每個格子高度
-     * @type {number}
-     * @private
-     */
-    protected abstract gridHeight: number;
-
-
-    /**
      * 贏分線條,Sprite組件
      * @protected
      */
@@ -171,11 +156,18 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
     protected abstract particlePrefab: cc.Prefab;
 
     /**
-     * slot所有列,計算點用
-     * @type {cc.Node[]}
+     * slot列寬
+     * @type {number}
      * @protected
      */
-    protected abstract gridRow: cc.Node[];
+    protected abstract gridRowWidth:number;
+
+    /**
+     * slot列數量
+     * @type {number}
+     * @protected
+     */
+    protected abstract gridColumnCount:number;
 
     /**
      * 存放所有贏線的容器
@@ -374,11 +366,11 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
         let x: number;
         if (lineChildNumber == 0) {
             //該線段為最初線段,到達第一個答案前的位置
-            x = this.gridRow[0].x - this.gridRow[0].width;
+            x =  this.allGridPosition[0].x - this.gridRowWidth;
         } else {
-            x = this.allGridPosition[answer].keys().next().value
+            x = this.allGridPosition[answer].x;
         }
-        let y: number = this.allGridPosition[answer].values().next().value;
+        let y: number = this.allGridPosition[answer].y;
         this.allWinLine[lineNumber].get(lineChildNumber).x = x;
         this.allWinLine[lineNumber].get(lineChildNumber).y = y;
     }
@@ -391,8 +383,8 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      */
     private initParticlePosition(lineNumber: number, answer: number) {
         //該線段為最初線段,到達第一個答案前的位置
-        let x = this.gridRow[0].x - this.gridRow[0].width;
-        let y: number = this.allGridPosition[answer].values().next().value;
+        let x =  this.allGridPosition[0].x - this.gridRowWidth;
+        let y: number = this.allGridPosition[answer].y;
         this.allParticle.get(lineNumber).x = x;
         this.allParticle.get(lineNumber).y = y;
     }
@@ -406,21 +398,19 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
      * @private
      */
     private getPosition(lineNumber: number, lineChildNumber: number, answer: number): cc.Vec2 {
-
         let p: cc.Vec2;
-        let y: number = this.allGridPosition[answer].values().next().value;
-
+        let y: number = this.allGridPosition[answer].y;
         if (lineChildNumber == 0) {
             //該線段為最初線段,到達第一個答案前的位置
-            const startingPoint = this.gridRow[0].x - this.gridRow[0].width;
+            const startingPoint = this.allGridPosition[0].x - this.gridRowWidth;
             p = cc.v2(startingPoint, y);
-        } else if (lineChildNumber == this.gridRow.length + 1) {
+        } else if (lineChildNumber == this.gridColumnCount + 1) {
             //該線段為最終線段,到達老虎機右側終點位置
-            const endPoint = this.gridRow[this.gridRow.length - 1].x + this.gridRow[this.gridRow.length - 1].width;
+            const endPoint =this.allGridPosition[answer].x + this.gridRowWidth;
             p = cc.v2(endPoint, y);
         } else {
             //該線段為中間線段
-            p = cc.v2(this.allGridPosition[answer].keys().next().value, y);
+            p = cc.v2(this.allGridPosition[answer].x, y);
         }
         return p;
     }
@@ -455,7 +445,6 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
         let afterAnswer: number = answer[lineChildNumber] ?? answer[answer.length - 1];
         p1 = this.getPosition(lineNumber, lineChildNumber, beforeAnswer)
         p2 = this.getPosition(lineNumber, lineChildNumber + 1, afterAnswer);
-
         //計算當前線條到達b點時需旋轉的角度
         this.allWinLine[lineNumber].get(lineChildNumber).angle
             = this.getAngleBetweenTwoPoints(p1, p2,this.lineVector);
@@ -471,7 +460,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
                     resolve();
                     return;
                 }
-                if (lineChildNumber == this.gridRow.length) {
+                if (lineChildNumber == this.gridColumnCount) {
                     resolve();
                 } else {
                     //抽象方法,顯示贏分的gird動畫
@@ -525,7 +514,7 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
                     resolve();
                     return;
                 }
-                if (lineChildNumber == this.gridRow.length) {
+                if (lineChildNumber == this.gridColumnCount) {
                     resolve();
                 } else {
                     lineChildNumber++;
@@ -575,8 +564,8 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
         for (let i = 0; i < quantity; i++) {
             let line: Map<number, cc.Node> = new Map<number, cc.Node>();
             //終點還會多一段,所以默認老虎機的列要+1
-            for (let j = 0; j < this.gridRow.length + 1; j++) {
-                let lineNode = cc.instantiate(this.lineSprite.node);
+            for (let j = 0; j < this.gridColumnCount + 1; j++) {
+                let lineNode = cc.instantiate<cc.Node>(this.lineSprite.node);
                 lineNode.active = false;
                 this._lineContainer.addChild(lineNode, i, `${lineName}${i}_${j}`);
                 line.set(j, lineNode);
@@ -588,24 +577,8 @@ export default abstract class AWinLinTemplate extends AGenericTemplate {
 
     /**
      * 初始所有line會經過的點
-     * ```
-     *      注意:如果點位不正常,請自行override實現
-     * ```
      */
-    protected initWinLinPosition(): Array<Map<number, number>> {
-        let gridPositions: Array<Map<number, number>> = new Array<Map<number, number>>();
-        for (let node of this.gridRow) {
-            let nodeX = node.x;
-            let nodeY = node.y + this.gridHeight;
-            for (let i = 0; i < this.gridCont; i++) {
-                let position: Map<number, number> = new Map<number, number>();
-                position.set(nodeX, nodeY);
-                gridPositions.push(position)
-                nodeY = nodeY - this.gridHeight;
-            }
-        }
-        return gridPositions;
-    }
+    protected abstract initWinLinPosition():Array<cc.Vec2>;
 
     /**
      * 獲取兩點間距離

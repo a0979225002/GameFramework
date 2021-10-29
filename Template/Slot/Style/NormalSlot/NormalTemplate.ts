@@ -95,7 +95,7 @@ export default class NormalTemplate<T extends fcc.NormalSetting> extends ABaseSl
 
     /**
      * 遊戲中所有靜態grid圖片
-     * @param {StyleData} styleData
+     * @param {Map<string, cc.SpriteFrame>} gridImg
      */
     protected readonly gridImg: Map<string, cc.SpriteFrame>;
 

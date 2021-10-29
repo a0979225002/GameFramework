@@ -12,7 +12,7 @@ export default abstract class ASlotInitializeTemplate extends AGenericTemplate {
 
     /**
      * Slot 一般答案回傳結果
-     * @type {ISlotBaseResultModel}
+     * @type {IBaseSlotResultModel}
      * @protected
      */
     protected abstract normalResult: fcc.IF.IBaseSlotResultModel;
