@@ -7,13 +7,13 @@ namespace fcc {
      * @Date 2021-10-29 下午 02:28
      * @Version 1.0
      */
-    export class CCPoolManager {
+    export class NodePoolManager {
 
-        private static _instance: CCPoolManager;
+        private static _instance: NodePoolManager;
 
-        static get instance(): CCPoolManager {
+        static get instance(): NodePoolManager {
             if (!this._instance) {
-                this._instance = new CCPoolManager();
+                this._instance = new NodePoolManager();
             }
             return this._instance;
         }
@@ -27,10 +27,10 @@ namespace fcc {
 
         /**
          * 保存node物件name名,使清除物件時,可透過該node物件的name名,查找對應的pool池的key
-         * @type {Map<string, string>}
+         * @type {Map<cc.Node, string>}
          * @private
          */
-        private nameMap: Map<string, string> = new Map<string, string>();
+        private nameMap: Map<cc.Node, string> = new Map<cc.Node, string>();
 
         /**
          * 初始該物件保存至緩存池中
@@ -61,8 +61,8 @@ namespace fcc {
         get(key: string): cc.Node {
             if (this.pools.has(key)) {
                 let node: cc.Node = this.pools.get(key).get();
-                if (!this.nameMap.has(node.name) && node.name != key) {
-                    this.nameMap.set(node.name, key);
+                if (!this.nameMap.has(node) && node.name != key) {
+                    this.nameMap.set(node, key);
                 }
                 return node;
             }
@@ -75,15 +75,13 @@ namespace fcc {
          * @param {boolean} nodePool - 是否要回收進對象池
          */
         put(node: cc.Node, nodePool: boolean = false): void {
-            let key = this.nameMap.get(node.name);
-            if (!key) {
-                key = node.name;
-            }
-            if (!this.pools.get(key)) {
+            let key = this.nameMap.get(node);
+            if (!this.pools.has(key)) {
                 cc.warn(" not have name ", key, ' ,go.name ', node.name);
                 return;
             }
             this.pools.get(key).put(node, nodePool);
+            this.nameMap.delete(node);
         }
 
         /**

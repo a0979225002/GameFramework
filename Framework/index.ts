@@ -8,7 +8,7 @@
 /// <reference path="./Scene/SceneManager.ts" />
 /// <reference path="./Slot/SlotStyleManager.ts" />
 /// <reference path="./Notification/NotificationManager.ts" />
-
+/// <reference path="./NodePool/NodePoolManager.ts" />
 namespace fcc {
 
     /**
@@ -18,11 +18,10 @@ namespace fcc {
      */
     export const configMgr: IF.ISlotConfigManager = SlotConfigManager.instance;
 
-
     /**
      * 物件池管理器
      */
-    export let nodePoolMgr;
+    export const nodePoolMgr:NodePoolManager = NodePoolManager.instance;
 
     /**
      * 音樂管理器,初始設定各音樂狀態,保存當前撥放音量

@@ -1830,6 +1830,7 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
     protected abstract lineSprite: cc.Sprite;
     /**
      * 贏分粒子,Prefab組件
+     * @type {cc.Prefab}
      * @protected
      */
     protected abstract particlePrefab: cc.Prefab;
@@ -1891,12 +1892,16 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
     restoreNode(lineNumber?: number): void;
     /**
      * 建構該局贏線的Node容器
+     * @return {cc.Node} - 返回建構的容器
+     * @protected
      */
-    protected buildWinLineContainer(): void;
+    protected buildWinLineContainer(): cc.Node;
     /**
      * 建構該局贏線的Node容器
+     * @return {cc.Node} - 返回建構的容器
+     * @protected
      */
-    protected buildParticleContainer(): void;
+    protected buildParticleContainer(): cc.Node;
     /**
      * 執行單條贏線依序播放
      * @param {Array<Array<number>>} answers
