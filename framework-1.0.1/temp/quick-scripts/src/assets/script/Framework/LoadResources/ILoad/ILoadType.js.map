@@ -1,1 +1,0 @@
-{"version":3,"sources":["assets\\script\\Framework\\LoadResources\\ILoad\\ILoadType.ts"],"names":[],"mappings":"","file":"","sourceRoot":"/","sourcesContent":["interface ILoadType {\r\n\r\n    /**\r\n     * 加載資源方法\r\n     */\r\n    loadResources():void;\r\n\r\n}"]}

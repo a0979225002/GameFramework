@@ -1,1 +1,0 @@
-{"version":3,"sources":["assets\\script\\Framework\\Animation\\IAnimationManager.ts"],"names":[],"mappings":"","file":"","sourceRoot":"/","sourcesContent":["interface IAnimationManager {\r\n    handler : IAnimationHandler;\r\n    spineName :Map<string,Map<string,string>>;\r\n\r\n    getSpineName(resName:string,key:string):string;\r\n\r\n}\r\n"]}
