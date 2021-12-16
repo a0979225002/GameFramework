@@ -1,0 +1,14 @@
+{
+  "__type__": "cc.SpriteAtlas",
+  "_name": "logo_btn.plist",
+  "_objFlags": 0,
+  "_native": "",
+  "_spriteFrames": {
+    "btn_start": {
+      "__uuid__": "1ffa5a87-1c0f-4e5c-afb6-a680961e4247"
+    },
+    "logo": {
+      "__uuid__": "2e7bbe02-6afd-4310-881f-23a2d602d5cf"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "BigWinEffect (15)",
+    "texture": "87b49373-8412-430e-88b6-bdc37db28060",
+    "atlas": "23cae605-6a2c-4d16-972c-b7881a95c0fa",
+    "rect": [
+      756,
+      374,
+      148,
+      142
+    ],
+    "offset": [
+      3,
+      -30
+    ],
+    "originalSize": [
+      300,
+      206
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

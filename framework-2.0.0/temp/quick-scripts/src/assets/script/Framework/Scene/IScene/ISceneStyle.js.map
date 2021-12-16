@@ -1,0 +1,1 @@
+{"version":3,"sources":["assets\\script\\Framework\\Scene\\IScene\\ISceneStyle.ts"],"names":[],"mappings":"","file":"","sourceRoot":"/","sourcesContent":["interface ISceneStyle {\r\n\r\n    executionStyle(width: number, height: number):void;\r\n\r\n}"]}

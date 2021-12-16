@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "Li-2",
+    "texture": "28a8ef17-bcae-4ccb-8170-421c76433c25",
+    "atlas": "60186952-d4de-4ec2-bc6a-e40da17d674d",
+    "rect": [
+      524,
+      416,
+      111,
+      138
+    ],
+    "offset": [
+      0,
+      1
+    ],
+    "originalSize": [
+      111,
+      140
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

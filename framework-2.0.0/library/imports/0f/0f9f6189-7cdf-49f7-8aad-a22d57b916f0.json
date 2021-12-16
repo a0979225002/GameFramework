@@ -1,0 +1,29 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "bigwinimg02",
+    "texture": "6e1f9acf-cde4-499d-8bff-460bf083e53b",
+    "atlas": "096f40ac-0152-4cdc-807f-49ae622d5aaf",
+    "rect": [
+      318,
+      400,
+      93,
+      49
+    ],
+    "offset": [
+      0,
+      -1
+    ],
+    "originalSize": [
+      95,
+      55
+    ],
+    "rotated": 1,
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

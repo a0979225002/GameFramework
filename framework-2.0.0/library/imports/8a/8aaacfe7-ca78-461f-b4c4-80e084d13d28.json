@@ -1,0 +1,29 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "megawinimg02",
+    "texture": "6e1f9acf-cde4-499d-8bff-460bf083e53b",
+    "atlas": "096f40ac-0152-4cdc-807f-49ae622d5aaf",
+    "rect": [
+      150,
+      304,
+      100,
+      96
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      100,
+      96
+    ],
+    "rotated": 1,
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

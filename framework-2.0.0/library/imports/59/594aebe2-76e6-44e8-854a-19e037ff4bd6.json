@@ -1,0 +1,35 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "freeOpenAnimation",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.2166666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "width": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 1.2166666666666666,
+          "value": 3000
+        }
+      ],
+      "height": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 1.2166666666666666,
+          "value": 3000
+        }
+      ]
+    }
+  },
+  "events": []
+}

@@ -1,0 +1,73 @@
+{
+  "name": "game84",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "babelify": "^10.0.0",
+    "browser-sync": "^2.26.14",
+    "browserify": "^17.0.0",
+    "event-stream": "^4.0.1",
+    "glob": "^7.1.7",
+    "gulp-load-plugins": "^2.0.7",
+    "gulp-plumber": "^1.2.1",
+    "gulp-uglify-es": "^2.0.0",
+    "madge": "^4.0.2",
+    "nosleep.js": "^0.12.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@types/gulp": "^4.0.8",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^15.12.4",
+    "dts-bundle-generator": "^5.9.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-debug": "^4.0.0",
+    "gulp-javascript-obfuscator": "^1.1.6",
+    "gulp-notify": "^4.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-rollup": "^2.17.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-util": "^3.0.8",
+    "jest": "^26.6.3",
+    "rollup-plugin-ts": "^1.4.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-uglify": "^6.0.4",
+    "tern": "^0.24.3",
+    "ts": "^0.2.2",
+    "ts-jest": "^26.5.4",
+    "ts-loader": "^8.2.0",
+    "ts-node": "^10.0.0",
+    "tsify": "^5.0.4",
+    "typescript": "^4.3.4",
+    "webpack": "^5.35.1",
+    "webpack-cli": "^4.6.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "rollup TCC-Template": "rollup -c",
+    "gulp FCC-Framework": "gulp buildFramework",
+    "gulp PublishFramework": "gulp buildFramework2",
+    "dpdm-Framework": "dpdm Framework/**/*.ts",
+    "dpdm-Template": "dpdm Template/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a0979225002/game84.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a0979225002/gameFramework/issues"
+  },
+  "homepage": "https://github.com/a0979225002/gameFramework#readme",
+  "description": ""
+}

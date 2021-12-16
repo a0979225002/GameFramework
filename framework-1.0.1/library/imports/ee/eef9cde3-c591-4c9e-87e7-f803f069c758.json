@@ -1,0 +1,29 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "FastOff",
+    "texture": "28a8ef17-bcae-4ccb-8170-421c76433c25",
+    "atlas": "60186952-d4de-4ec2-bc6a-e40da17d674d",
+    "rect": [
+      2,
+      484,
+      122,
+      124
+    ],
+    "offset": [
+      0,
+      -1
+    ],
+    "originalSize": [
+      130,
+      130
+    ],
+    "rotated": 1,
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

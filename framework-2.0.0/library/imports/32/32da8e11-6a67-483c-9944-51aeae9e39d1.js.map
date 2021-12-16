@@ -1,0 +1,1 @@
+{"version":3,"sources":["assets\\script\\Framework\\Slot\\ISlot.ts"],"names":[],"mappings":"","file":"","sourceRoot":"/","sourcesContent":["interface ISlot {\r\n\r\n    //開始轉動Slot\r\n    runSlotAnimation():void;\r\n\r\n    //漸進起始開始轉動前做開場動畫\r\n    sineInSlot():void;\r\n\r\n}"]}

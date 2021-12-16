@@ -1,0 +1,56 @@
+{
+  "__type__": "cc.SpriteAtlas",
+  "_name": "getLine.plist",
+  "_objFlags": 0,
+  "_native": "",
+  "_spriteFrames": {
+    "getline0": {
+      "__uuid__": "03a8ba9d-5515-415b-a35e-d78e452ad943"
+    },
+    "getline1": {
+      "__uuid__": "0479954b-bd1d-49fd-a0c1-4b1c99463bfe"
+    },
+    "getline10": {
+      "__uuid__": "bb8d3201-b2b5-4f55-8643-22c9aa874679"
+    },
+    "getline11": {
+      "__uuid__": "95938ed6-a4d3-4fc2-8585-79b7524598d9"
+    },
+    "getline12": {
+      "__uuid__": "52c9a966-be53-4dab-8290-7dfe697be83b"
+    },
+    "getline13": {
+      "__uuid__": "dced79ea-480b-4d50-a987-c1e3387be69c"
+    },
+    "getline14": {
+      "__uuid__": "cd741f2e-d537-444b-bacb-861393d6351c"
+    },
+    "getline15": {
+      "__uuid__": "e7836c9c-646b-40d8-8a0f-62fab5ee4d4f"
+    },
+    "getline2": {
+      "__uuid__": "a2af460e-dabd-438c-99d1-31670cfe7c65"
+    },
+    "getline3": {
+      "__uuid__": "9c41eaa3-cffd-4855-815c-e4e626664ee8"
+    },
+    "getline4": {
+      "__uuid__": "da482da9-9000-4beb-8c2f-c47be39e4770"
+    },
+    "getline5": {
+      "__uuid__": "dbdf9adf-1c4d-4c78-8eb6-2c2d25d482b9"
+    },
+    "getline6": {
+      "__uuid__": "1954ae7d-954c-4dd7-b022-aaa8de021445"
+    },
+    "getline7": {
+      "__uuid__": "30dfcee9-dea4-4a08-9514-4d68f44265df"
+    },
+    "getline8": {
+      "__uuid__": "60b4669b-27dd-491c-9edf-a806a4e59e42"
+    },
+    "getline9": {
+      "__uuid__": "fd7f0095-1fd6-4d6e-bab8-a0bd74644ec7"
+    }
+  }
+}

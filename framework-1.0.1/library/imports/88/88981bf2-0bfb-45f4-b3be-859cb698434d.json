@@ -1,0 +1,44 @@
+{
+  "__type__": "cc.SpriteAtlas",
+  "_name": "atlas_aniPig2.plist",
+  "_objFlags": 0,
+  "_native": "",
+  "_spriteFrames": {
+    "Armature_newAnimation_13": {
+      "__uuid__": "ddd62b7d-b12a-4b5b-9f77-3ebf17d736dc"
+    },
+    "Armature_newAnimation_14": {
+      "__uuid__": "5df91984-42db-4f25-b572-81dfda061ff3"
+    },
+    "Armature_newAnimation_15": {
+      "__uuid__": "d14eac1a-999b-4e27-a7a4-2bf901bb090d"
+    },
+    "Armature_newAnimation_16": {
+      "__uuid__": "6a084af2-d52a-45d9-ae72-f9fc264e57e9"
+    },
+    "Armature_newAnimation_17": {
+      "__uuid__": "1a70b486-fb24-4972-a3e7-0407dcd4dbbc"
+    },
+    "Armature_newAnimation_18": {
+      "__uuid__": "6f0d45cd-8ac6-430f-a55f-b2d14ed55fcf"
+    },
+    "Armature_newAnimation_19": {
+      "__uuid__": "7661f80f-e228-4033-a37b-288507fd69c3"
+    },
+    "Armature_newAnimation_20": {
+      "__uuid__": "6aae0fc6-0bd1-4473-802b-41cae3f7cf39"
+    },
+    "Armature_newAnimation_21": {
+      "__uuid__": "a2fd781a-852a-49d4-8585-53abfd5e3788"
+    },
+    "Armature_newAnimation_22": {
+      "__uuid__": "165705d8-8d0d-4b95-ae5b-c364fd6083cc"
+    },
+    "Armature_newAnimation_23": {
+      "__uuid__": "44a8b5b5-963c-40c5-b5b4-0c6ee6d9da26"
+    },
+    "Armature_newAnimation_24": {
+      "__uuid__": "9b5f3a2e-193b-422c-ac61-b7d801a370c7"
+    }
+  }
+}

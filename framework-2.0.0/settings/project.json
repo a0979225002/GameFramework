@@ -1,0 +1,58 @@
+{
+  "group-list": [
+    "default"
+  ],
+  "collision-matrix": [
+    [
+      true
+    ]
+  ],
+  "excluded-modules": [
+    "AudioSource",
+    "Collider",
+    "Dynamic Atlas",
+    "DragonBones",
+    "EditBox",
+    "Geom Utils",
+    "Intersection",
+    "Mesh",
+    "NodePool",
+    "Native Socket",
+    "Physics",
+    "RichText",
+    "Slider",
+    "Toggle",
+    "TiledMap",
+    "VideoPlayer",
+    "3D",
+    "3D Primitive",
+    "3D Physics/cannon.js",
+    "3D Physics/Builtin",
+    "3D Particle",
+    "SafeArea"
+  ],
+  "start-scene": "ad994da1-2b0e-40d0-8751-b8ad37cf1eec",
+  "preview-port": 7456,
+  "design-resolution-width": 960,
+  "design-resolution-height": 640,
+  "fit-width": false,
+  "fit-height": true,
+  "use-project-simulator-setting": false,
+  "simulator-orientation": false,
+  "use-customize-simulator": true,
+  "simulator-resolution": {
+    "height": 640,
+    "width": 960
+  },
+  "facebook": {
+    "appID": "",
+    "audience": {
+      "enable": false
+    },
+    "enable": false,
+    "live": {
+      "enable": false
+    }
+  },
+  "last-module-event-record-time": 1623754521244
+}
