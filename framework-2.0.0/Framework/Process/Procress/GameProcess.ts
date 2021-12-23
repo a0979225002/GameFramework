@@ -17,7 +17,7 @@ namespace fcc {
 
         /**
          * 流程容器
-         * @type {IGameProcedureExecutionContainer}
+         * @type {IF.IGameProcedureExecutionContent}
          * @private
          */
         private readonly _executionContent: IF.IGameProcedureExecutionContent;
@@ -32,9 +32,7 @@ namespace fcc {
          * @return {this}
          */
         onExecution(): this {
-
             this._process.add(this._executionContent.onExecution);
-
             return this;
         }
 

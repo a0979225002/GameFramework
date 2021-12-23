@@ -34,7 +34,6 @@ namespace fcc {
          */
         private gameProcessFactory: IF.IGameProcessFactory;
 
-
         private constructor(configManager: IF.IConfigManager) {
             this.configManager = configManager;                                      //獲取ConfigManger,雙向綁定
             this.gameProcessFactory = new GameProcessFactory(this);      //初始化流程工廠
@@ -49,7 +48,7 @@ namespace fcc {
         public static setInstance(configManager: IF.IConfigManager) {
             if (!this._instance) {
                 this._instance = new ProcessManager(configManager);
-                processMgr = this._instance;
+                // processMgr = this._instance;
             }
         }
 
@@ -90,6 +89,14 @@ namespace fcc {
          */
         setDefaultProcess(processName: type.ProcessType | string) {
             this.gameProcessFactory.changeProcess(processName);
+        }
+
+        /**
+         * 設置待機狀態
+         * @param {string} processName -
+         */
+        setIdleProcess(processName:string){
+
         }
 
         /**

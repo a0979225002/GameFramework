@@ -1,8 +1,8 @@
-/// <reference path="../Error/Enum/ErrorType.ts" />
 /// <reference path="./Enum/GameState.ts" />
 /// <reference path="./IProcessManager.ts" />
 /// <reference path="./IGameProcessFactory.ts" />
 namespace fcc {
+
     /**
      * @Author XIAO-LI-PIN
      * @Description 流程工廠 : 更新,獲取,加入,變更等.. 注意:此 class 由 manager 實例化,如果無特殊需求,請勿使用

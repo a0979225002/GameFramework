@@ -13,9 +13,10 @@ namespace fcc {
          * @private
          */
         private readonly _process: Set<() => Promise<void> | void>;
+
         /**
          * 流程容器
-         * @type {ISlotProcedureExecutionContainer}
+         * @type {IF.ISlotProcedureExecutionContent}
          * @private
          */
         private readonly _executionContainer: IF.ISlotProcedureExecutionContent;

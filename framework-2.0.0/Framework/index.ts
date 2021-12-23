@@ -21,7 +21,7 @@ namespace fcc {
     /**
      * 物件池管理器
      */
-    export const nodePoolMgr:NodePoolManager = NodePoolManager.instance;
+    export const nodePoolMgr: NodePoolManager = NodePoolManager.instance;
 
     /**
      * 音樂管理器,初始設定各音樂狀態,保存當前撥放音量
@@ -52,6 +52,12 @@ namespace fcc {
      * @return {fcc.IF.ILoadResManager}
      */
     export let loadMgr: IF.ILoadResManager;
+
+    /**
+     * 狀態機管理器 : 遊戲狀態機
+     * @return {IF.IBaseFSM}
+     */
+    export let FSMMgr: IF.IBaseFSM;
 
     /**
      * 遊戲流程管理器 : 管理當前流程,執行當前流程

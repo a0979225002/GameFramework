@@ -1,6 +1,5 @@
 /// <reference path="./Enum/AutoType.ts" />
 /// <reference path="./Enum/GameState.ts" />
-
 namespace fcc {
 
     export namespace IF {
