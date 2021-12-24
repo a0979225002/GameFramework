@@ -18,7 +18,7 @@ namespace fcc {
          *
          * @param {string} name
          * @param {cc.Prefab | cc.Node} nodeOrPrefab - 要建立的物件
-         * @param {number} count 初始化个数
+         * @param {number} count 初始化個數
          */
         constructor(name: string, nodeOrPrefab: cc.Prefab | cc.Node, count: number) {
             this.name = name
@@ -42,7 +42,7 @@ namespace fcc {
             if (this.prefab) {
                 return cc.instantiate<cc.Node | cc.Prefab>(this.prefab);
             } else {
-                console.error(' 预制体没有赋值 ')
+                console.error(' 預製體沒有賦值 ')
                 return null;
             }
         }

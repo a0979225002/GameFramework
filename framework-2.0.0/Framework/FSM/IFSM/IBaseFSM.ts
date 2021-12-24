@@ -11,19 +11,6 @@ namespace fcc {
         export interface IBaseFSM {
 
             /**
-             * 設置最大保存的狀態記錄
-             * @param {number} count - 最大保存數量
-             */
-            setMaxStateRecordCount(count: number): void;
-
-            /**
-             * 添加狀態
-             * @param {string} stateName - 自訂義狀態名稱
-             * @param {IF.IStateAction} state - 執行的狀態內容 class
-             */
-            setState(stateName: string, state: IF.IStateAction): this;
-
-            /**
              * 添加初始狀態
              * @param {string} stateName - 狀態
              */
@@ -55,13 +42,13 @@ namespace fcc {
             getCurrentStateContent(): IF.IStateAction;
 
             /**
-             * 拿取當前所有流程
-             * @return {Map<string, Process>}
+             * 拿取所有流程
+             * @return {Map<string, IF.IBaseProcessTransition>}
              */
             getAllProcess(): Map<string, IF.IBaseProcessTransition>;
 
             /**
-             * 獲取當前流程
+             * 獲取當前狀態
              * @return {string}
              */
             getCurrentState(): string;
@@ -91,10 +78,11 @@ namespace fcc {
             exit():void;
 
             /**
-             * 建構狀態流程
-             * @param {IF.IBaseProcessTransition} process
+             * 創建狀態與流程
+             * @return {fcc.IF.IBaseStateBuilder}
              */
-            build(...process:IF.IBaseProcessTransition[]): void;
+            builder():IF.IBaseStateBuilder;
+
         }
     }
 }

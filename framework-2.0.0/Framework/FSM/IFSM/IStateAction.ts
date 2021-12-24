@@ -12,22 +12,22 @@ namespace fcc {
             /**
              * 初始化
              */
-            onCreate();
+            onCreate():void;
 
             /**
              * 離開狀態時
              */
-            onExit();
+            onExit():void;
 
             /**
              * 開始執行
              */
-            onExecution();
+            onExecution():void;
 
             /**
              * 強制結束
              */
-            onForcedEnd();
+            onForcedEnd():void;
         }
     }
 }

@@ -71,16 +71,17 @@ namespace fcc {
          * @return {boolean} - 是否還能返回上個動作
          */
         updatePreviousState(): boolean {
-            if (this.statePointer == 0 || !this.previousState) {
+            if (this.statePointer <= 1 || !this.previousState) {
                 cc.warn("已經無法在返回上一個狀態");
                 return false;
             } else {
+                this.currentState = this.record[this.statePointer - 2];
+                this.record[this.statePointer - 1] = null;
                 this.statePointer--;
-                this.currentState = this.record[this.statePointer];
-                if (this.statePointer == 0) {
+                if (this.statePointer < 3) {
                     this.previousState = null;
                 } else {
-                    this.previousState = this.record[this.statePointer - 1];
+                    this.previousState = this.record[this.statePointer - 3];
                 }
                 return true;
             }

@@ -50,24 +50,6 @@ namespace fcc {
         }
 
         /**
-         * 設置最大保存的狀態記錄
-         * @param {number} count - 最大保存數量
-         */
-        setMaxStateRecordCount(count: number): void {
-            this.stateHandler.setMaxStateRecordCount(count);
-        }
-
-        /**
-         * 添加狀態
-         * @param {string} stateName - 自訂義狀態名稱
-         * @param {IF.IStateAction} state - 執行的狀態內容 class
-         */
-        setState(stateName: string, state: fcc.IF.IStateAction): this {
-            this.stateHandler.setState(stateName, state);
-            return this;
-        }
-
-        /**
          * 添加初始狀態
          * @param {string} stateName - 狀態
          */
@@ -108,15 +90,15 @@ namespace fcc {
         }
 
         /**
-         * 拿取當前所有流程
-         * @return {Map<string, Process>}
+         * 拿取所有流程
+         * @return {Map<string, IF.IBaseProcessTransition>}
          */
         getAllProcess(): Map<string, fcc.IF.IBaseProcessTransition> {
             return this.stateHandler.getAllProcess();
         }
 
         /**
-         * 獲取當前流程
+         * 獲取當前狀態
          * @return {string}
          */
         getCurrentState(): string {
@@ -156,11 +138,11 @@ namespace fcc {
         }
 
         /**
-         * 建構狀態流程
-         * @param {IF.IBaseProcessTransition} process
+         * 創建狀態與流程
+         * @return {fcc.IF.IBaseStateBuilder}
          */
-        build(...process: fcc.IF.IBaseProcessTransition[]): void {
-            this.stateHandler.build(...process);
+        builder(): fcc.IF.IBaseStateBuilder {
+            return this.stateHandler.builder();
         }
     }
 }

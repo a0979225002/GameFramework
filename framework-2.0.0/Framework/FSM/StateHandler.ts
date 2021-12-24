@@ -13,29 +13,21 @@ namespace fcc {
          * @type {Map<string, null>}
          * @private
          */
-        private stateActionContainer: Map<string, IF.IStateAction>;
+        public stateActionContainer: Map<string, IF.IStateAction>;
 
         /**
          * 當前流程容器
          * @type {Map<string, fcc.IF.IStateAction>}
          * @private
          */
-        private readonly processContainer: Map<string, IF.IBaseProcessTransition>;
-
-        /**
-         * 最大保存的狀態記錄數量
-         * @type {number}
-         * @default - 5
-         * @private
-         */
-        private maxStateRecordCount: number = 5;
+        public readonly processContainer: Map<string, IF.IBaseProcessTransition>;
 
         /**
          * 狀態紀錄器
          * @type {IF.IBaseStatusRecorder}
          * @private
          */
-        private stateRecorder: IF.IBaseStatusRecorder;
+        public stateRecorder: IF.IBaseStatusRecorder;
 
         /**
          * 流程開始
@@ -47,29 +39,6 @@ namespace fcc {
         constructor() {
             this.stateActionContainer = new Map<string, fcc.IF.IStateAction>();
             this.processContainer = new Map<string, IF.IBaseProcessTransition>();
-        }
-
-        /**
-         * 設置最大保存的狀態記錄
-         * @param {number} count - 最大保存數量
-         * @default : 5
-         */
-        setMaxStateRecordCount(count: number): void {
-            this.maxStateRecordCount = count;
-        }
-
-        /**
-         * 添加狀態
-         * @param {string} stateName - 自訂義狀態名稱
-         * @param {IF.IStateAction} state - 執行的狀態內容 class
-         */
-        setState(stateName: string, state: fcc.IF.IStateAction): this {
-            if (this.stateActionContainer.has(stateName)) {
-                errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `添加的狀態名稱重複,請更換狀態名稱 : ${stateName}`)
-                return;
-            }
-            this.stateActionContainer.set(stateName, state);
-            return this;
         }
 
         /**
@@ -104,6 +73,11 @@ namespace fcc {
          * @param {string} nextState - 下一個狀態
          */
         changeState(nextState: string): void {
+            if(!this.stateRecorder.getCurrentState()){
+                errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `你尚未初始預設狀態 : 請先執行 initialState()`);
+                return;
+            }
+
             if (this.processContainer.get(this.stateRecorder.getCurrentState()).canReachNext(nextState)) {
                 this.stateRecorder.updateStateRecord(nextState);
                 this.stateActionContainer.get(this.stateRecorder.getCurrentState()).onExecution();
@@ -133,15 +107,15 @@ namespace fcc {
         }
 
         /**
-         * 拿取當前所有流程
-         * @return {Map<string, Process>}
+         * 拿取所有流程
+         * @return {Map<string, IF.IBaseProcessTransition>}
          */
         getAllProcess(): Map<string, IF.IBaseProcessTransition> {
             return this.processContainer;
         }
 
         /**
-         * 獲取當前流程
+         * 獲取當前狀態
          * @return {string}
          */
         getCurrentState(): string {
@@ -189,20 +163,8 @@ namespace fcc {
             this.resolve = null;
         }
 
-        /**
-         * 建構狀態流程
-         * @param {IF.IBaseProcessTransition} process
-         */
-        build(...process: IF.IBaseProcessTransition[]): void {
-            for (let p of process) {
-                if (this.processContainer.has(p.currentState)) {
-                    errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `添加重複流程 : ${p.currentState}`)
-                    continue;
-                }
-                this.processContainer.set(p.currentState, p);
-            }
-            if (this.stateRecorder) return;
-            this.stateRecorder = new StatusRecorder(this.maxStateRecordCount);
+        builder(): fcc.IF.IBaseStateBuilder {
+            return new StateBuilder(this);
         }
     }
 }
