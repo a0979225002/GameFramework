@@ -34,7 +34,7 @@ namespace fcc {
             if (this._nextState.has(nextState)) {
                 return true;
             } else {
-                errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `無法跳轉至該流程 ${nextState}`);
+                errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `無法跳轉至該流程 : ${nextState} 當前狀態能跳轉的流程 : ${this._nextState} `);
                 return false;
             }
         }

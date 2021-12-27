@@ -54,6 +54,12 @@ namespace fcc {
             getCurrentState(): string;
 
             /**
+             * 獲取上個狀態
+             * @return {string}
+             */
+            getPreviousState():string;
+
+            /**
              * 獲取當前狀態紀錄
              * @return {Array<string>}
              */

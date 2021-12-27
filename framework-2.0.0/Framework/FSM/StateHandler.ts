@@ -73,7 +73,7 @@ namespace fcc {
          * @param {string} nextState - 下一個狀態
          */
         changeState(nextState: string): void {
-            if(!this.stateRecorder.getCurrentState()){
+            if (!this.stateRecorder.getCurrentState()) {
                 errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `你尚未初始預設狀態 : 請先執行 initialState()`);
                 return;
             }
@@ -81,8 +81,6 @@ namespace fcc {
             if (this.processContainer.get(this.stateRecorder.getCurrentState()).canReachNext(nextState)) {
                 this.stateRecorder.updateStateRecord(nextState);
                 this.stateActionContainer.get(this.stateRecorder.getCurrentState()).onExecution();
-            } else {
-                errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `下一個狀態無法跳轉 - 當前狀態 : ${this.stateRecorder.getCurrentState()} ,要跳轉的狀態 ${nextState}`)
             }
         }
 
@@ -120,6 +118,14 @@ namespace fcc {
          */
         getCurrentState(): string {
             return this.stateRecorder.getCurrentState();
+        }
+
+        /**
+         * 獲取上個狀態
+         * @return {string}
+         */
+        getPreviousState(): string {
+            return this.stateRecorder.getPreviousState();
         }
 
         /**
