@@ -61,7 +61,7 @@ namespace fcc {
         get(key: string): cc.Node {
             if (this.pools.has(key)) {
                 let node: cc.Node = this.pools.get(key).get();
-                if (!this.nameMap.has(node) && node.name != key) {
+                if (!this.nameMap.has(node)) {
                     this.nameMap.set(node, key);
                 }
                 return node;

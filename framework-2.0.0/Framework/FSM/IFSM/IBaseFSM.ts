@@ -72,6 +72,12 @@ namespace fcc {
             clearStateRecord():Array<string>;
 
             /**
+             * 當前是否正在執行中
+             * @return {boolean}
+             */
+            isExecution():boolean;
+
+            /**
              * 流程狀態開始
              * @param {string} startName - 要開始的狀態
              * @return {Promise<void>}

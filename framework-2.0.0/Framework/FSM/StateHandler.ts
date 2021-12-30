@@ -117,6 +117,7 @@ namespace fcc {
          * @return {string}
          */
         getCurrentState(): string {
+            if (!this.stateRecorder) return null;
             return this.stateRecorder.getCurrentState();
         }
 
@@ -125,6 +126,7 @@ namespace fcc {
          * @return {string}
          */
         getPreviousState(): string {
+            if (!this.stateRecorder) return null;
             return this.stateRecorder.getPreviousState();
         }
 
@@ -133,6 +135,7 @@ namespace fcc {
          * @return {Array<string>}
          */
         getStateRecord(): Array<string> {
+            if (!this.stateRecorder) return null;
             return this.stateRecorder.getNowStateRecords();
         }
 
@@ -141,7 +144,16 @@ namespace fcc {
          * @return {Array<string>} - 清除的紀錄
          */
         clearStateRecord(): Array<string> {
+            if (!this.stateRecorder) return null;
             return this.stateRecorder.clearRecord();
+        }
+
+        /**
+         * 當前是否正在執行中
+         * @return {boolean}
+         */
+        isExecution(): boolean {
+            return !!this.resolve;
         }
 
         /**

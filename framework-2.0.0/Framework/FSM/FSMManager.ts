@@ -130,6 +130,14 @@ namespace fcc {
         }
 
         /**
+         * 當前是否正在執行中
+         * @return {boolean}
+         */
+        isExecution(): boolean {
+            return this.stateHandler.isExecution();
+        }
+
+        /**
          * 流程狀態開始
          * @param {string} startName - 要開始的狀態
          * @return {Promise<void>}
