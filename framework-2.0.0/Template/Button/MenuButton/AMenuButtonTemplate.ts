@@ -3,7 +3,6 @@ import UserTotalBetChangeObserver from "../../Event/Observer/GameObserver/UserTo
 import AutoStateChangeObserver from "../../Event/Observer/GameObserver/AutoStateChangeObserver";
 import AutoStateChangeNotification from "../../Event/Notification/GameNotification/AutoStateChangeNotification";
 import UserTotalBetChangeNotification from "../../Event/Notification/GameNotification/UserTotalBetChangeNotification";
-import IBaseTableInfoModel from "../../NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel";
 import {fcc} from "../../System/FCCSystem";
 
 /**
@@ -102,11 +101,10 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
     protected abstract goHomeTouchEvent();
 
     /**
-     * tableInfo model
-     * @type {IBaseTableInfoModel}
+     * 當前遊戲的可押住的總數量
      * @protected
      */
-    protected abstract tableInfo: IBaseTableInfoModel;
+    protected abstract lineBet: Array<string|number>;
 
     /**
      * 當前玩家auto的類型
@@ -119,7 +117,7 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * 當前玩家押住
      * @protected
      */
-    protected abstract nowBetIndex:number;
+    protected abstract nowBetIndex: number;
 
     protected onLoad() {
         this.nowAutoType = fcc.configMgr.autoCount;
@@ -165,12 +163,12 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      */
     protected betUpEventListener() {
         let afterBetIndex = this.nowBetIndex + 1;
-        if (afterBetIndex > this.tableInfo.LineBet.length - 1) {
+        if (afterBetIndex > this.lineBet.length - 1) {
             afterBetIndex = 0;
         }
         fcc.notificationMgr<UserTotalBetChangeNotification>()
             .getNotification(fcc.type.NotificationType.USER_BET_CHANGE)
-            .notify(this.nowBetIndex,afterBetIndex);
+            .notify(this.nowBetIndex, afterBetIndex);
     }
 
     /**
@@ -181,11 +179,11 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
     protected betDownEventListener() {
         let afterBetIndex = this.nowBetIndex - 1;
         if (afterBetIndex < 0) {
-            afterBetIndex = this.tableInfo.LineBet.length - 1;
+            afterBetIndex = this.lineBet.length - 1;
         }
         fcc.notificationMgr<UserTotalBetChangeNotification>()
             .getNotification(fcc.type.NotificationType.USER_BET_CHANGE)
-            .notify(this.nowBetIndex,afterBetIndex);
+            .notify(this.nowBetIndex, afterBetIndex);
     }
 
     /**
@@ -211,10 +209,10 @@ export default abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected autoButtonEventListener(event, callbackType: fcc.type.AutoType) {
-        this.autoEvent(this.nowAutoType,callbackType);
+        this.autoEvent(this.nowAutoType, callbackType);
         fcc.notificationMgr<AutoStateChangeNotification>()
             .getNotification(fcc.type.NotificationType.AUTO_CHANGE)
-            .notify(true,this.nowAutoType,callbackType);
+            .notify(true, this.nowAutoType, callbackType);
         this.nowAutoType = callbackType;
     }
 }

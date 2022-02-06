@@ -11,7 +11,7 @@ declare const fcc: typeof globalThis.fcc;
  * @Date 2021-05-28 上午 10:11
  * @Version 1.0
  */
-declare class OverrideComponent extends cc.Component {
+declare class BaseComponent extends cc.Component {
     /**
      * 保存當前使用中的計時器方法,如果該計時器執行完,會自動清空該方法
      * @type {Array<Function>}
@@ -78,7 +78,7 @@ declare class OverrideComponent extends cc.Component {
  * @Date 2021-04-14 下午 20:24
  * @Version 1.1
  */
-declare abstract class AGenericTemplate extends OverrideComponent {
+declare abstract class AGenericTemplate extends BaseComponent {
     /**
      * 自訂義初始狀態
      */
@@ -89,6 +89,16 @@ declare abstract class AGenericTemplate extends OverrideComponent {
     protected languageSetting(): void;
     protected onLoad(): void;
     protected start(): void;
+    /**
+     * 初始UI物件
+     * @protected
+     */
+    protected initialUIView(): void;
+    /**
+     * 初始推播監聽
+     * @protected
+     */
+    protected initialNotification(): void;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -96,7 +106,7 @@ declare abstract class AGenericTemplate extends OverrideComponent {
  * @Date 2021-06-01 下午 04:49
  * @Version 1.0
  */
-declare abstract class ACenterTemplate extends AGenericTemplate {
+declare abstract class AFrameworkCenterTemplate extends AGenericTemplate {
     /**
      * 初始化當前遊戲
      */
@@ -110,11 +120,6 @@ declare abstract class ACenterTemplate extends AGenericTemplate {
      * 音樂撥放樣式設定
      */
     protected abstract audioSetting(): void;
-    /**
-     * 遊戲流程創建
-     * @protected
-     */
-    protected abstract processCreate(): void;
     /**
      * notification 此遊戲會用到的 所有通知事件添加
      * @protected
@@ -490,9 +495,6 @@ declare class SlotRowEndNotification extends fcc.ABS.ABaseNotification {
  * @Description (抽象類)遊戲主頁面按鈕事件
  * ```
  *      事件:
- *          推撥 {StopNowStateNotification} : 即停的推播事件
- *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          推撥 {AutoStateChangeNotification} : 自動狀態更動推播事件
  *          接收 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
  *              callback : this.userMoney = money;
  *          接收 {AutoStateChangeNotification} : 自動狀態更動推播事件
@@ -505,12 +507,6 @@ declare class SlotRowEndNotification extends fcc.ABS.ABaseNotification {
  * @Version 1.0
  */
 declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
-    /**
-     * 當前是否開啟總押注視窗
-     * @type {boolean}
-     * @protected
-     */
-    protected isShowTotalBetFrame: boolean;
     /**
      * 當前是否常壓空白建
      * @type {boolean}
@@ -558,27 +554,21 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @private
      */
     private _userMoneyChangeObserver;
+    protected onLoad(): void;
     /**
      * 確認當前user分數是否可以玩下輪遊戲
      * @return {boolean}
      * @protected
      */
     protected abstract checkUserPointCanPlayGame(): boolean;
-    protected onLoad(): void;
     /**
-     * 打開開始遊戲事件監聽
+     * 打開 game spin 按鈕監聽事件
      */
     abstract startButtonOnEnable(): void;
     /**
-     * 關閉開始遊戲事件監聽
+     * 關閉 game spin 按鈕監聽事件
      */
     abstract startButtonDisable(): void;
-    /**
-     * 點擊 (打開或關閉) 總押注視窗按鈕
-     * @param {boolean} isShowTotalBetFrame : 打開或關閉
-     * @protected
-     */
-    protected abstract totalBetFrameTouchEvent(isShowTotalBetFrame: boolean): void;
     /**
      * 當下是否(開啟或關閉)加速狀態事件
      * 此方法已經綁定推播事件
@@ -594,6 +584,12 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected abstract autoEvent(isAutomaticState: boolean, autoType: fcc.type.AutoType): void;
+    /**
+     * 開始遊戲監聽事件
+     * @returns {Promise<void>}
+     * @protected
+     */
+    protected abstract startButtonEvent(): Promise<void>;
     /**
      * 遊戲開始執行流程前事件
      * @protected
@@ -615,6 +611,12 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     protected abstract warningEvent(): void;
     /**
+     * 打開或開關閉押注金額選擇框
+     * 如果當前在遊戲中,將方法更改為顯示警告視窗
+     * @protected
+     */
+    protected abstract totalBetFrameTouchEventListener(): void;
+    /**
      * 添加Notification接收事件
      * @private
      */
@@ -630,13 +632,6 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      * @private
      */
     protected longTouchTimer(): Promise<void>;
-    /**
-     * 推播auto事件
-     * @param {boolean} isAutoState - 當前自動狀態
-     * @param {AutoType} autoType - 當前 auto類型
-     * @private
-     */
-    private autoNotify;
     /**
      * start監聽抬起時狀態
      * 取消長壓計時器事件,並進入開始遊戲事件
@@ -667,12 +662,6 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     protected getUserMoneyChangeObserver(): UserMoneyChangeObserver;
     /**
-     * 開始遊戲監聽事件
-     * @returns {Promise<void>}
-     * @protected
-     */
-    protected startButtonEvent(): Promise<void>;
-    /**
      * 自動按鈕監聽事件
      * 如果當前押注視窗開啟中,將更換為關閉視窗方法
      * 正常情況,推播當前auto狀態事件
@@ -685,12 +674,6 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     protected speedUpButtonEventListener(): void;
     /**
-     * 打開或開關閉押注金額選擇框
-     * 如果當前在遊戲中,將方法更改為顯示警告視窗
-     * @protected
-     */
-    protected totalBetFrameTouchEventListener(): void;
-    /**
      * menu按鈕監聽事件
      * 如果當前在遊戲中,將方法更改為顯示警告視窗
      * @protected
@@ -699,13 +682,9 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
 }
 /**
  * @Author XIAO-LI-PIN
- * @Description 主遊戲單一按鈕配置
- * @Example 單一方向遊戲
+ * @Description (抽象類)遊戲主頁面按鈕事件
  * ```
  *      事件:
- *          推撥 {StopNowStateNotification} : 即停的推播事件
- *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          推撥 {AutoStateChangeNotification} : 自動狀態更動推播事件
  *          接收 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
  *              callback : this.userMoney = money;
  *          接收 {AutoStateChangeNotification} : 自動狀態更動推播事件
@@ -714,36 +693,36 @@ declare abstract class AMainGameButtonTemplate extends AGenericTemplate {
  *                              await this.startButtonEvent();
  *                          }
  * ```
- * @Date 2021-07-06 下午 16:24
- * @Version 1.1
+ * @Date 2021-05-26 上午 11:29
+ * @Version 2.0.1
  */
 declare abstract class AMainGameOnlyButtonTemplate extends AMainGameButtonTemplate {
     /**
      * 開始遊戲按鈕
      * @type {cc.Button}
      */
-    protected abstract startButton: cc.Button;
+    abstract startGameButton: cc.Button;
     /**
      * 自動按鈕
      * @type {cc.Button}
      */
-    protected abstract autoButton: cc.Button;
+    abstract autoButton: cc.Button;
     /**
      * 加速按鈕
      * @type {cc.Button}
      */
-    protected abstract speedUpButton: cc.Button;
+    abstract speedButton: cc.Button;
     /**
      * 押注金額選擇按鈕
      * @type {cc.Button}
      */
-    protected abstract betSelectionButton: cc.Button;
+    abstract totalBetButton: cc.Button;
     /**
      * 設定頁按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract menuButton: cc.Button;
+    abstract menuButton: cc.Button;
     protected onLoad(): void;
     /**
      * 打開開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
@@ -753,133 +732,6 @@ declare abstract class AMainGameOnlyButtonTemplate extends AMainGameButtonTempla
      * 關閉開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
      */
     startButtonDisable(): void;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 主遊戲雙按鈕配置
- * @Example 同時擁有直橫向方向遊戲
- * ```
- *      事件:
- *          推撥 {StopNowStateNotification} : 即停的推播事件
- *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          推撥 {AutoStateChangeNotification} : 自動狀態更動推播事件
- *          接收 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
- *              callback : this.userMoney = money;
- *          接收 {AutoStateChangeNotification} : 自動狀態更動推播事件
- *              callback :  this.autoEvent(isAutomaticState, afterAutoCount);
- *                          if (isAutomaticState) {
- *                              await this.startButtonEvent();
- *                          }
- * ```
- * @Date 2021-07-06 下午 16:24
- * @Version 1.0.2
- */
-declare abstract class AMainGameDoubleButtonTemplate extends AMainGameButtonTemplate {
-    /**
-     * 開始遊戲按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract startButtonH: cc.Button;
-    /**
-     * 開始遊戲按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract startButtonV: cc.Button;
-    /**
-     * 自動按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract autoButtonH: cc.Button;
-    /**
-     * 自動按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract autoButtonV: cc.Button;
-    /**
-     * 加速按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract speedUpButtonH: cc.Button;
-    /**
-     * 加速按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract speedUpButtonV: cc.Button;
-    /**
-     * 押注金額選擇按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract betSelectionButtonH: cc.Button;
-    /**
-     * 押注金額選擇按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract betSelectionButtonV: cc.Button;
-    /**
-     * 設定頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract menuButtonH: cc.Button;
-    /**
-     * 設定頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract menuButtonV: cc.Button;
-    protected onLoad(): void;
-    /**
-     * 打開開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
-     */
-    startButtonOnEnable(): void;
-    /**
-     * 關閉開始遊戲事件監聽(開始遊戲按鈕與space鍵盤監聽)
-     */
-    startButtonDisable(): void;
-}
-interface IBaseTableInfoModel {
-    /**
-     * 押注 乘以的倍數(有線版本為自己的線數 無限版本為固定倍數)
-     */
-    BetTimes: number;
-    /**
-     * 每線押注[0.1、0.2、0.3、0.4、0.5、1、2、3、4、5]
-     */
-    LineBet: Array<number>;
-    /**
-     * 總押注[2.5、5、7.5、10、12.5、25、50、75、100、125]
-     */
-    LineTotalBet: Array<number>;
-    /**
-     * 賠率表
-     */
-    PayTable: object;
-    /**
-     * 玩家現有金額
-     */
-    UserPoint: number;
-    /**
-     * 預設押住倍率
-     */
-    DefaultBetIndex: number;
-    /**
-     * 活動模式 0 沒有 11 轉盤
-     * @type {number}
-     */
-    EventMode: number;
-    /**
-     * 活動轉數需求
-     * @type {number}
-     */
-    EventRequire: number;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -966,11 +818,10 @@ declare abstract class AMenuButtonTemplate extends AGenericTemplate {
      */
     protected abstract goHomeTouchEvent(): any;
     /**
-     * tableInfo model
-     * @type {IBaseTableInfoModel}
+     * 當前遊戲的可押住的總數量
      * @protected
      */
-    protected abstract tableInfo: IBaseTableInfoModel;
+    protected abstract lineBet: Array<string | number>;
     /**
      * 當前玩家auto的類型
      * @type {fcc.type.AutoType}
@@ -1026,195 +877,6 @@ declare abstract class AMenuButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected autoButtonEventListener(event: any, callbackType: fcc.type.AutoType): void;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description (抽象類)MENU主頁面,主遊戲雙按鈕配置
- * @Date 2021-05-26 上午 15:59
- * @Version 1.1
- */
-declare abstract class AMenuDoubleButtonTemplate extends AMenuButtonTemplate {
-    /**
-     * 背景音樂按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract musicButtonH: cc.Button;
-    /**
-     * 背景音樂按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract musicButtonV: cc.Button;
-    /**
-     * 效果音樂按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract effectButtonH: cc.Button;
-    /**
-     * 效果音樂按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract effectButtonV: cc.Button;
-    /**
-     * 押住籌碼提高按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract betUpButtonH: cc.Button;
-    /**
-     * 押住籌碼提高按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract betUpButtonV: cc.Button;
-    /**
-     * 押住籌碼降低按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract betDownButtonH: cc.Button;
-    /**
-     * 押住籌碼降低按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract betDownButtonV: cc.Button;
-    /**
-     * 自動按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract autoButtonH: cc.Button;
-    /**
-     * 自動按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract autoButtonV: cc.Button;
-    /**
-     * 自動50次按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto50ButtonH: cc.Button;
-    /**
-     * 自動50次按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto50ButtonV: cc.Button;
-    /**
-     * 自動100次按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto100ButtonH: cc.Button;
-    /**
-     * 自動100次按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto100ButtonV: cc.Button;
-    /**
-     * 自動500次按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto500ButtonH: cc.Button;
-    /**
-     * 自動500次按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto500ButtonV: cc.Button;
-    /**
-     * 自動1000次按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto1000ButtonH: cc.Button;
-    /**
-     * 自動1000次按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract auto1000ButtonV: cc.Button;
-    /**
-     * 自動直到免費後停止按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract autoFreeEndButtonH: cc.Button;
-    /**
-     * 自動直到免費後停止按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract autoFreeEndButtonV: cc.Button;
-    /**
-     * 離開菜單頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goBackButtonH: cc.Button;
-    /**
-     * 離開菜單頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goBackButtonV: cc.Button;
-    /**
-     * 離開遊戲按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goHomeButtonH: cc.Button;
-    /**
-     * 離開遊戲按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goHomeButtonV: cc.Button;
-    /**
-     * 進入紀錄頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract recordButtonH: cc.Button;
-    /**
-     * 進入紀錄頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract recordButtonV: cc.Button;
-    /**
-     * 進入設定頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract settingButtonH: cc.Button;
-    /**
-     * 進入設定頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract settingButtonV: cc.Button;
-    /**
-     * 進入說明頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract descriptionPageButtonH: cc.Button;
-    /**
-     * 進入說明頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract descriptionPageButtonV: cc.Button;
-    protected onLoad(): void;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -1357,103 +1019,6 @@ declare abstract class ARecordButtonTemplate extends AGenericTemplate {
      * @protected
      */
     protected abstract nextAndLastButtonTouchEvent(event: any, callBack: PageChangeType): void;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 紀錄頁面雙按鈕配置
- *  * @Example 同時擁有直橫向方向遊戲
- * ```
- *      使用事件:
- *          fcc.type.ServerEventType.GET_GAME_HISTORY_RESULT
- *          callback :  abstract gameHistoryResultEvent(gameHistoryData: GameHistoryData);
- * ```
- * @Date 2021-04-14 下午 20:24
- * @Version 1.1
- */
-declare abstract class ARecordDoubleButtonTemplate extends ARecordButtonTemplate {
-    /**
-     * 離開記錄頁按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goBackButtonH: cc.Button;
-    /**
-     * 離開記錄頁按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract goBackButtonV: cc.Button;
-    /**
-     * 查看一日內紀錄按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract oneDayRecordButtonH: cc.Button;
-    /**
-     * 查看一日內紀錄按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract oneDayRecordButtonV: cc.Button;
-    /**
-     * 查看五日內紀錄按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract fiveDayRecordButtonH: cc.Button;
-    /**
-     * 查看五日內紀錄按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract fiveDayRecordButtonV: cc.Button;
-    /**
-     * 查看十日內紀錄按鈕H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract tenDayRecordButtonH: cc.Button;
-    /**
-     * 查看十日內紀錄按鈕V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract tenDayRecordButtonV: cc.Button;
-    /**
-     * 查看下一頁紀錄H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract nextRecordButtonH: cc.Button;
-    /**
-     * 查看下一頁紀錄V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract nextRecordButtonV: cc.Button;
-    /**
-     * 查看上一頁紀錄H
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract previousRecordButtonH: cc.Button;
-    /**
-     * 查看上一頁紀錄V
-     * @type {cc.Button}
-     * @protected
-     */
-    protected abstract previousRecordButtonV: cc.Button;
-    protected onLoad(): void;
-    /**
-     * 所有橫式天數按鈕統一監聽
-     * @protected
-     */
-    protected abstract daysRecordTouchEventH(event: any, callBack: DayType): any;
-    /**
-     * 所有直式天數按鈕統一監聽
-     * @protected
-     */
-    protected abstract daysRecordTouchEventV(event: any, callBack: DayType): any;
 }
 /**
  * @Author XIAO-LI-PIN
@@ -1619,85 +1184,6 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      * @private
      */
     get isGetTableInfoResponse(): boolean;
-}
-/**
- * @Author XIAO-LI-PIN
- * @FIXME: 程式碼須修復
- * @Description 進度讀取diaLog模板
- * @Date 2021-05-11 下午 05:41
- * @Version 1.0
- */
-declare abstract class ALoadingFrameTemplate extends AGenericTemplate {
-    protected abstract loadingDialogNode: cc.Node;
-    protected abstract progressBar: cc.ProgressBar;
-    protected abstract progressText: cc.Label;
-    protected progressValue: number;
-    protected timeOut: number;
-    protected addProgressValue: any;
-    private timer;
-    protected onLoad(): void;
-    /**
-     * 初始化讀取條
-     * @private
-     */
-    private loadingInitialize;
-    runProgress(resName: string): Promise<void>;
-    private progressTimer;
-    private closeLoadingDiaLog;
-    /**
-     * 確認當下該資源是否正在加載
-     * @param {string} resName
-     * @param {(value: (PromiseLike<void> | void)) => void} resolve
-     * @returns {boolean}
-     * @private
-     */
-    private checkHasRes;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 瞇排模板
- * ```
- *      事件:
- *         接收{ScrollFocusStateNotification} : 瞇排事件觸發時
- * ```
- * @Date 2021-05-26 下午 17:24
- * @Version 1.1
- */
-declare abstract class ALookAtTemplate extends AGenericTemplate {
-    /**
-     * 當前所有列的瞇排特效物件
-     * @type {Array<cc.Node>}
-     * @protected
-     */
-    protected abstract allLookAtEffect: Array<cc.Node>;
-    /**
-     * 瞇排事件通知
-     * @type {ScrollFocusStateObserver}
-     * @private
-     */
-    private _scrollFocusStateObserver;
-    /**
-     * 顯示瞇排特效
-     * @param {number} index:第幾列
-     * @protected
-     */
-    protected abstract showLookAtEffect(index: number): any;
-    /**
-     * 關閉瞇排特效
-     * @param {number} index : 第幾列
-     * @protected
-     */
-    protected abstract removeLookAtEffect(index: number): any;
-    protected onLoad(): void;
-    /**
-     * 添加推撥的接收事件
-     */
-    addNotification(): void;
-    /**
-     * 瞇排事件訂閱者
-     * @private
-     */
-    private getScrollFocusStateObserver;
 }
 /**
  * @Author 蕭立品
@@ -2048,1386 +1534,11 @@ declare abstract class AWinLinTemplate extends AGenericTemplate {
 declare abstract class AMainInitTemplate extends AGenericTemplate {
     protected onLoad(): void;
     /**
-     * 建立詳單頁面
-     */
-    protected abstract setHistoryDetail(): any;
-    /**
      * 實例化所有動態加載的prefab
      */
     protected abstract prefabInstantiate(): any;
 }
 /**
- * @Author XIAO-LI-PIN
- * @Description slot 模板
- * @NOTE 需事先綁定 StopNowStateNotification 和 SpeedStateChangeNotification
- * @Date 2021-04-14 下午 20:24
- * @Version 1.1
- */
-declare abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSetting> extends fcc.ABaseSlotTemplate<T> {
-    /**
-     * 由 fcc.slotStyleMgr build 實現
-     * @type {fcc.IF.ISlotSetting}
-     * @protected
-     */
-    protected styleData: fcc.IF.IBaseSlotSetting;
-    /**
-     * 使否需要即停
-     * @type {boolean}
-     * @protected
-     */
-    protected isSlotImmediateStop: boolean;
-    /**
-     * 當前的加速狀態
-     * @type {boolean}
-     * @protected
-     */
-    protected isSpeedUp: boolean;
-    /**
-     * 當前加速速率 : 無加速狀態 = 1
-     * @type {number}
-     * @protected
-     */
-    protected speedRatio: number;
-    /**
-     * 即停狀態通知時,該事件推播給綁定者
-     * @type {StopNowStateObserver}
-     * @protected
-     */
-    protected stopNowStateObserver: StopNowStateObserver;
-    /**
-     * 遊戲加速狀態改變時,當有事件推送時,將會將該事件推播給綁定者
-     * @type {SpeedStateChangeObserver}
-     * @protected
-     */
-    protected speedStateChangeObserver: SpeedStateChangeObserver;
-    /**
-     * 當server回傳該局答案時,當有事件推送時,將會將該事件推播給綁定者
-     * @type {ResponseResultObserver}
-     * @private
-     */
-    private responseResultObserver;
-    /**
-     * Loop 老虎機方法
-     * @return {Promise<void>}
-     */
-    abstract runSlotAnimation(): Promise<void>;
-    /**
-     * 啟動老虎機時過場動畫方法
-     * @return {Promise<void>}
-     */
-    abstract sineInSlot(): Promise<void>;
-    /**
-     * 初始化該輪所有狀態
-     */
-    abstract initializeState(): void;
-    /**
-     * 是否server已經回傳結果
-     * @type {boolean}
-     * @protected
-     */
-    protected isResultOK: boolean;
-    protected constructor(styleData: T, configManager: fcc.IF.ISlotConfigManager);
-    /**
-     * 添加推播事件
-     */
-    protected addNotification(): void;
-    /**
-     * 即停監聽事件
-     * @returns {StopNowStateObserver}
-     * @private
-     */
-    protected getStopNowStateObserver(): StopNowStateObserver;
-    /**
-     * 加速按鈕監聽事件
-     * @private
-     */
-    protected getSpeedStateChangeObserver(): SpeedStateChangeObserver;
-    /**
-     * Server是否回傳答案事件
-     * @return {ResponseResultObserver}
-     * @private
-     */
-    private getResponseResultObserver;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 一般版老虎機,可更改各軸停止時間
- *  ```
- *      SLOT STYLE : fcc.NormalSetting;
- *
- *      需擁有物件
- *          音效 {"SlotTurn"}: 轉動聲音
- *          音效 {"SlotStop"}: 停軸聲音
- *          音效 {"getFreeIcon"+"index"}: 免費圖標音效
- *          推撥 {ScrollFocusStateNotification} : 瞇排的推播事件
- *          推播 {SlotRowEndNotification} : 所有軸停止事件
- *          接收 {StopNowStateNotification} : 即停的推播事件
- *          接收 {SpeedStateChangeNotification} : 加速的推播事件
- *          model {ISlotBaseResultModel} : 一般獲獎model
- *          model {ISlotBaseResultModel} : 免費獲獎model
- *  ```
- * @Date 2021-04-14 下午 20:24
- * @Version 1.1
- */
-declare class NormalTemplate<T extends fcc.NormalSetting> extends ABaseSlotTemplate<T> {
-    /**
-     * 一般停止最少轉動次數
-     * @type {number}
-     * @private
-     */
-    protected readonly slotTurnCount: number;
-    /**
-     * 各軸間停止時間
-     * @type {number}
-     * @protected
-     */
-    protected readonly slotRowTime: number;
-    /**
-     * 遊戲每格格子間的速度
-     * @type {number}
-     * @private
-     */
-    protected readonly slotGirdSpeed: number;
-    /**
-     * 遊戲每列的格子數量
-     * @type {number}
-     * @private
-     */
-    protected readonly slotRowGridCount: number;
-    /**
-     * 老虎機格子高度
-     * @type {number}
-     * @private
-     */
-    protected readonly slotGridHeight: number;
-    /**
-     * 加速倍率
-     * @type {number}
-     * @private
-     */
-    protected readonly speedUpMultiple: number;
-    /**
-     * 執行老虎機動畫的列
-     * @type {Array<cc.Node>}
-     * @private
-     */
-    protected readonly slotColumnToTween: Array<cc.Node>;
-    /**
-     * 瞇排停止時間
-     */
-    protected readonly lookAtTime: number;
-    /**
-     * 跑遊戲更換位置的grid 節點
-     * @type {Map<number, Array<cc.Node>>}
-     * @private
-     */
-    protected readonly gridNodeToMap: Map<number, Array<cc.Node>>;
-    /**
-     * 跑遊戲更換答案的grid 節點
-     * @type {Map<number, Array<cc.Sprite>>}
-     * @private
-     */
-    protected readonly gridSpriteToMap: Map<number, Array<cc.Sprite>>;
-    /**
-     * 遊戲中所有靜態grid圖片
-     * @param {Map<string, cc.SpriteFrame>} gridImg
-     */
-    protected readonly gridImg: Map<string, cc.SpriteFrame>;
-    /**
-     * 漸入時TWEEN動畫類型
-     */
-    protected readonly sineInEasing: string;
-    /**
-     * 淡出時TWEEN 動畫類型
-     */
-    protected readonly sineOutEasing: string;
-    /**
-     * 瞇排轉動速度
-     * ```
-     *  公式
-     *      如果要加快轉動速度
-     *          = 每格格子移動速度 例如 : 0.08 秒一格
-     *      如果要降低轉動速度
-     *          = 每格格子移動度 + 1 例如 : 1 + 0.08 秒一格
-     * ```
-     * @type {number}
-     * @protected
-     */
-    protected readonly lookAtSpeed: number;
-    /**
-     * 遊戲每列是否已經結束
-     * @type {Array<boolean>}
-     * @private
-     */
-    protected readonly isSlotEnd: Array<boolean>;
-    /**
-     * 遊戲各列是否開始監聽停止時間
-     */
-    protected readonly isTimeEndListener: Array<boolean>;
-    /**
-     * 遊戲即停時加速倍率
-     * @type {number}
-     * @private
-     */
-    protected readonly stopNowSpeedMultiple: number;
-    /**
-     * 遊戲瞇排是否已經確認過
-     */
-    protected readonly isRowCheckLookAt: Map<number, boolean>;
-    /**
-     * 儲存SERVER答案的Model
-     * @type {ISlotBaseResultModel}
-     * @private
-     */
-    protected resultModel: fcc.IF.INoLineResultModel | fcc.IF.IHasLineResultModule | fcc.IF.INoLineFreeResultModel | fcc.IF.IHasLineFreeResultModule | fcc.IF.IExtendHasLineResult | fcc.IF.IExtendHasLineFreeResult;
-    /**
-     * 當前停軸監聽
-     * @type {number}
-     * @private
-     */
-    private nowTimer;
-    constructor(styleData: T, configManager: fcc.IF.ISlotConfigManager);
-    /**
-     * 轉動前動畫,先往上,在往下1/2格
-     * @return {Promise<void>}
-     */
-    sineInSlot(): Promise<void>;
-    /**
-     * Loop 老虎機方法
-     * @return {Promise<void>}
-     */
-    runSlotAnimation(): Promise<void>;
-    /**
-     * 開始執行格子輪播動畫
-     * 如果server未回傳正確答案,將持續隨機圖片無限跑
-     * @param index{number} 當前跑的是哪一列
-     * @param resolve 當跑完時回傳Promise 讓Api執行下一段方法
-     * @param numberOfTimes 監聽第一列跑了幾輪,sever回傳答案後才開始計算圈數
-     */
-    protected executeSlotAnimation(index: number, resolve?: () => void, numberOfTimes?: number): void;
-    /**
-     * 開啟時間監聽,當符合該時間時會改變 結束狀態為TRUE;
-     * @protected
-     */
-    protected startRowTimeListener(index: number): void;
-    /**
-     * 更新單個GRID格子位置,並給予隨機圖片
-     * @param rowNodes - 要更換圖片的該列物件
-     * @param rowIndex - 當前是第幾列
-     */
-    protected updateOnlyGridPositionAndRandomImg(rowNodes: Array<cc.Node>, rowIndex: number): void;
-    /**
-     * 推送瞇排事件
-     * @param {boolean} isShow - 是否要打開該列的瞇排特效
-     * @param {number} index - 第幾列
-     */
-    protected notifyLookAtEvent(isShow: boolean, index: number): void;
-    /**
-     * 檢查是否可以即停
-     * @param {number} index - 當前第幾列觸發即停事件
-     * @param {() => void} resolve - 異步阻塞
-     * @return {boolean}
-     */
-    protected checkImmediateStopState(index: number, resolve: () => void): boolean;
-    /**
-     * 對該列正確結果顯示在頂部,透過動畫,並將結果顯示給user
-     * @param {boolean} isImmediateStopState - 是否為即停
-     * @param {number} index - 哪一列
-     * @param resolve
-     */
-    protected showAnswerAnimation(isImmediateStopState: boolean, index: number, resolve?: any): void;
-    /**
-     * 檢查是否需要瞇牌
-     * @param index{number}:檢查該列是否需要瞇牌
-     * @return {boolean} : 如果需要瞇牌,返回true
-     * @private
-     */
-    protected checkLookAt(index: number): boolean;
-    /**
-     * 在答案顯示後,馬上給予回彈效果
-     * @param index{number} : 哪一列已經顯示答案完畢
-     * @param resolve{()=>void} : 當所有列都顯示答案且回彈效果完畢時,通知可以進行下一步
-     */
-    protected sineOutAnimation(index: number, resolve: () => void): void;
-    /**
-     * 更新正確答案
-     * 答案更新再每列最上面位置,等待掉下來,顯示正確答案給USER
-     * @param {number} index : 要更新哪一列最上面三個grid 為正確答案
-     * @private
-     */
-    protected updateGridAnswer(index: number): void;
-    /**
-     * 初始化該輪所有狀態
-     */
-    initializeState(): void;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 一般版老虎機,執行動畫為模糊圖標
- *  ```
- *      SLOT STYLE : fcc.NormalBurredImageSetting;
- *
- *      需擁有物件
- *          音效 {"SlotTurn"}: 轉動聲音
- *          音效 {"SlotStop"}: 停軸聲音
- *          音效 {"getFreeIcon"+"index"}: 免費圖標音效
- *          推撥 {ScrollFocusStateNotification} : 瞇排的推播事件
- *          接收 {StopNowStateNotification} : 即停的推播事件
- *          接收 {SpeedStateChangeNotification} : 加速的推播事件
- *          model {NoLineResult} : 一般獲獎model
- *          model {NoLineFreeResult} : 免費獲獎model
- *  ```
- * @Date 2021-04-14 下午 20:24
- * @Version 1.1
- */
-declare class NormalBlurImageTemplate<T extends fcc.NormalBlurImageSetting> extends NormalTemplate<T> {
-    /**
-     * 所有模糊圖標
-     * @type {Map<string, cc.SpriteFrame>}
-     * @private
-     */
-    private symbolBlurImg;
-    constructor(styleData: T, configManager: fcc.IF.ISlotConfigManager);
-    /**
-     * 更新單個GRID格子位置,並給予隨機圖片
-     * @param rowNodes - 要更換圖片的該列物件
-     * @param rowIndex - 當前是第幾列
-     */
-    protected updateOnlyGridPositionAndRandomImg(rowNodes: Array<cc.Node>, rowIndex: number): void;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 各種類型資源
- * @NOTE: 需事前綁定 ResponseResultNotification
- * @Date 2021-04-14 下午 20:24
- * @Version 1.1
- */
-declare abstract class ASlotInitializeTemplate extends AGenericTemplate {
-    /**
-     * Slot 一般答案回傳結果
-     * @type {IBaseSlotResultModel}
-     * @protected
-     */
-    protected abstract normalResult: fcc.IF.IBaseSlotResultModel;
-    /**
-     * Slot 免費答案回傳結果
-     * @type {ISlotFreeBaseResultModel}
-     * @protected
-     */
-    protected abstract freeResult: fcc.IF.IBaseSlotResultModel;
-    /**
-     * 執行老虎機動畫的列 所有列
-     * @type {Array<cc.Node>}
-     * @protected
-     */
-    protected abstract slotRow: Array<cc.Node>;
-    /**
-     * 執行動畫的所有格子
-     * @type {Map<number, Array<cc.Node>>}
-     * @protected
-     */
-    protected abstract gridNodeToMap: Map<number, Array<cc.Node>>;
-    /**
-     * 更換圖片的所有格子
-     * @type {Map<number, Array<cc.Sprite>>}
-     * @protected
-     */
-    protected abstract gridSpriteToMap: Map<number, Array<cc.Sprite>>;
-    /**
-     * SlotStyle 初設定,如無符合的功能樣式 可繼承抽象類 ASlot 自定義使用
-     */
-    protected abstract slotStyleSetting(): void;
-    protected onLoad(): void;
-    protected start(): void;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description TODO
- * @Date 2021-05-31 下午 03:47
- * @Version 1.0
- */
-interface IHasLineTableInfoModule extends IBaseTableInfoModel {
-    /**
-     * 是否為線遊戲(0:無線 1:有線)
-     */
-    IsLines: number;
-    /**
-     * 幾線遊戲
-     */
-    Line: string;
-    /**
-     * 線位置
-     */
-    LineGridPos: Object;
-    /**
-     * 15格的資料 顯示用
-     */
-    Grid: Array<number>;
-    /**
-     * 0:大獎 總押注倍數 1:巨獎 總押注倍數 2:超級巨獎 總押注倍數
-     */
-    LevelWinPoint: Array<number>;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description TODO
- * @Date 2021-05-31 下午 03:47
- * @Version 1.0
- */
-interface INoLineTableInfoModule extends IBaseTableInfoModel {
-    /**
-     * 是否為線遊戲(0:無線 1:有線)
-     */
-    IsLines: number;
-    /**
-     * 15格的資料 顯示用
-     */
-    Grid: Array<number>;
-    /**
-     * 0:大獎 總押注倍數 1:巨獎 總押注倍數 2:超級巨獎 總押注倍數
-     */
-    LevelWinPoint: Array<number>;
-    /**
-     * 幾線遊戲
-     */
-    Line: string;
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 擴展類有線免費狀態封包
- * @Date 2021-06-03 下午 04:51
- * @Version 1.0
- */
-declare class ExtendHasLineFreeResult implements fcc.IF.IExtendHasLineFreeResult {
-    /**
-     * 0: 押注成功 1: 非免費時間押注
-     * @type {number}
-     * @private
-     */
-    private _State;
-    /**
-     * 15格的資料
-     * @type {Array<number>}
-     * @private
-     */
-    private _Grid;
-    /**
-     * 黏性圖標編號
-     * @type {number}
-     */
-    private _StickySymbol;
-    /**
-     * 黏性圖標位置
-     * @type {Array<number>}
-     */
-    private _StickyChange;
-    /**
-     * 每條線贏分
-     * @type {Array<number>}
-     */
-    private _LineWin;
-    /**
-     * 每條線贏幾格
-     * @type {Array<number>}
-     */
-    private _LineGrid;
-    /**
-     * 總贏得金額 (0:輸了 大於0:贏了 )
-     * @type {number}
-     * @private
-     */
-    private _TotalWinPoint;
-    /**
-     * 玩家現有金額(贏分後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointAfter;
-    /**
-     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-     * @type {number}
-     * @private
-     */
-    private _GameState;
-    /**
-     * 剩餘免費遊戲次數 (0:沒有 1~99次)
-     * @type {number}
-     * @private
-     */
-    private _Count;
-    /**
-     * 免費遊戲累計贏分
-     * @type {number}
-     * @private
-     */
-    private _FreeSpinWin;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     * @type {Array<number>}
-     * @private
-     */
-    private _LookAt;
-    /**
-     * 再中免費遊戲次數 0:無 1~99:次
-     * @type {number}
-     * @private
-     */
-    private _FreeToFree;
-    /**
-     * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _BaseLevelWin;
-    /**
-     * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _FreeLevelWin;
-    constructor();
-    get State(): number;
-    set State(value: number);
-    get Grid(): Array<number>;
-    set Grid(value: Array<number>);
-    get StickySymbol(): number;
-    set StickySymbol(value: number);
-    get StickyChange(): Array<number>;
-    set StickyChange(value: Array<number>);
-    get LineWin(): Array<number>;
-    set LineWin(value: Array<number>);
-    get LineGrid(): Array<number>;
-    set LineGrid(value: Array<number>);
-    get TotalWinPoint(): number;
-    set TotalWinPoint(value: number);
-    get UserPointAfter(): number;
-    set UserPointAfter(value: number);
-    get GameState(): number;
-    set GameState(value: number);
-    get Count(): number;
-    set Count(value: number);
-    get FreeSpinWin(): number;
-    set FreeSpinWin(value: number);
-    get LookAt(): Array<number>;
-    set LookAt(value: Array<number>);
-    get FreeToFree(): number;
-    set FreeToFree(value: number);
-    get BaseLevelWin(): number;
-    set BaseLevelWin(value: number);
-    get FreeLevelWin(): number;
-    set FreeLevelWin(value: number);
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 有線免費狀態封包
- * @Date 2021-06-03 下午 12:04
- * @Version 1.0
- */
-declare class HasLineFreeResult implements fcc.IF.IHasLineFreeResultModule {
-    /**
-     * 0: 押注成功 1: 非免費時間押注
-     * @type {number}
-     * @private
-     */
-    private _State;
-    /**
-     * 15格的資料
-     * @type {Array<number>}
-     * @private
-     */
-    private _Grid;
-    /**
-     * 是否有鬼牌 0:沒有 1:有
-     * @type {number}
-     * @private
-     */
-    private _ChangeState;
-    /**
-     * 15格的資料 換圖 0:不換 1:換
-     * @type {Array<number>}
-     * @private
-     */
-    private _Change;
-    /**
-     * 每條線贏分
-     * @type {Array<number>}
-     */
-    private _LineWin;
-    /**
-     * 每條線贏幾格
-     * @type {Array<number>}
-     */
-    private _LineGrid;
-    /**
-     * 總贏得金額 (0:輸了 大於0:贏了 )
-     * @type {number}
-     * @private
-     */
-    private _TotalWinPoint;
-    /**
-     * 玩家現有金額(贏分後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointAfter;
-    /**
-     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-     * @type {number}
-     * @private
-     */
-    private _GameState;
-    /**
-     * 剩餘免費遊戲次數 (0:沒有 1~99次)
-     * @type {number}
-     * @private
-     */
-    private _Count;
-    /**
-     * 免費遊戲累計贏分
-     * @type {number}
-     * @private
-     */
-    private _FreeSpinWin;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     * @type {Array<number>}
-     * @private
-     */
-    private _LookAt;
-    /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _LevelWin;
-    /**
-     * 再中免費遊戲次數 0:無 1~99:次
-     * @type {number}
-     * @private
-     */
-    private _FreeToFree;
-    /**
-     * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _BaseLevelWin;
-    /**
-     * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _FreeLevelWin;
-    constructor();
-    get State(): number;
-    set State(value: number);
-    get Grid(): Array<number>;
-    set Grid(value: Array<number>);
-    get ChangeState(): number;
-    set ChangeState(value: number);
-    get Change(): Array<number>;
-    set Change(value: Array<number>);
-    get LineWin(): Array<number>;
-    set LineWin(value: Array<number>);
-    get LineGrid(): Array<number>;
-    set LineGrid(value: Array<number>);
-    get TotalWinPoint(): number;
-    set TotalWinPoint(value: number);
-    get UserPointAfter(): number;
-    set UserPointAfter(value: number);
-    get GameState(): number;
-    set GameState(value: number);
-    get Count(): number;
-    set Count(value: number);
-    get FreeSpinWin(): number;
-    set FreeSpinWin(value: number);
-    get LookAt(): Array<number>;
-    set LookAt(value: Array<number>);
-    get LevelWin(): number;
-    set LevelWin(value: number);
-    get FreeToFree(): number;
-    set FreeToFree(value: number);
-    get BaseLevelWin(): number;
-    set BaseLevelWin(value: number);
-    get FreeLevelWin(): number;
-    set FreeLevelWin(value: number);
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 無線免費狀態封包
- * @Date 2021-06-03 下午 12:04
- * @Version 1.0
- */
-declare class NoLineFreeResult implements fcc.IF.INoLineFreeResultModel {
-    /**
-     * 0: 押注成功 1: 非免費時間押注
-     * @type {number}
-     * @private
-     */
-    private _State;
-    /**
-     * 15格的資料
-     * @type {Array<number>}
-     * @private
-     */
-    private _Grid;
-    /**
-     * 是否有鬼牌 0:沒有 1:有
-     * @type {number}
-     * @private
-     */
-    private _ChangeState;
-    /**
-     * 15格的資料 換圖 0:不換 1:換
-     * @type {Array<number>}
-     * @private
-     */
-    private _Change;
-    /**
-     * 哪幾格贏 0:沒贏 1:贏
-     * @type {Array<number>}
-     * @private
-     */
-    private _GridWin;
-    /**
-     * 總贏得金額 (0:輸了 大於0:贏了 )
-     * @type {number}
-     * @private
-     */
-    private _TotalWinPoint;
-    /**
-     * 玩家現有金額(贏分後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointAfter;
-    /**
-     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-     * @type {number}
-     * @private
-     */
-    private _GameState;
-    /**
-     * 剩餘免費遊戲次數 (0:沒有 1~99次)
-     * @type {number}
-     * @private
-     */
-    private _Count;
-    /**
-     * 免費遊戲累計贏分
-     * @type {number}
-     * @private
-     */
-    private _FreeSpinWin;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     * @type {Array<number>}
-     * @private
-     */
-    private _LookAt;
-    /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _LevelWin;
-    /**
-     * 再中免費遊戲次數 0:無 1~99:次
-     * @type {number}
-     * @private
-     */
-    private _FreeToFree;
-    /**
-     * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _BaseLevelWin;
-    /**
-     * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _FreeLevelWin;
-    constructor();
-    get State(): number;
-    set State(value: number);
-    get Grid(): Array<number>;
-    set Grid(value: Array<number>);
-    get ChangeState(): number;
-    set ChangeState(value: number);
-    get Change(): Array<number>;
-    set Change(value: Array<number>);
-    get GridWin(): Array<number>;
-    set GridWin(value: Array<number>);
-    get TotalWinPoint(): number;
-    set TotalWinPoint(value: number);
-    get UserPointAfter(): number;
-    set UserPointAfter(value: number);
-    get GameState(): number;
-    set GameState(value: number);
-    get Count(): number;
-    set Count(value: number);
-    get FreeSpinWin(): number;
-    set FreeSpinWin(value: number);
-    get LookAt(): Array<number>;
-    set LookAt(value: Array<number>);
-    get LevelWin(): number;
-    set LevelWin(value: number);
-    get FreeToFree(): number;
-    set FreeToFree(value: number);
-    get BaseLevelWin(): number;
-    set BaseLevelWin(value: number);
-    get FreeLevelWin(): number;
-    set FreeLevelWin(value: number);
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 擴展類有線一般狀態封包
- * @Date 2021-06-03 下午 04:50
- * @Version 1.0
- */
-declare class ExtendHasLineResult implements fcc.IF.IExtendHasLineResult {
-    /**
-     * 0: 押注成功 1:遊戲狀態不符 2:超過
-     * @type {number}
-     * @private
-     */
-    private _State;
-    /**
-     * 15格的資料
-     * @type {Array<number>}
-     * @private
-     */
-    private _Grid;
-    /**
-     * 是否有神秘寶箱 0:沒有 1:有
-     * @type {number}
-     */
-    private _SecretState;
-    /**
-     * 神秘寶箱位置 0:沒有 1:有神秘寶箱位置 0:沒有 1:有
-     * @type {Array<number>}
-     */
-    private _SecretChange;
-    /**
-     * 神秘寶箱格子圖案
-     */
-    private _SecretSymbol;
-    /**
-     * 每條線贏分
-     * @type {Array<number>}
-     * @private
-     */
-    private _LineWin;
-    /**
-     * 每條線贏幾格
-     * @type {Array<number>}
-     * @private
-     */
-    private _LineGrid;
-    /**
-     * 總贏得金額 (0:輸了 大於0:贏了 )
-     * @type {number}
-     * @private
-     */
-    private _TotalWinPoint;
-    /**
-     * 玩家現有金額(贏分後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointAfter;
-    /**
-     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-     * @type {number}
-     * @private
-     */
-    private _GameState;
-    /**
-     * 免費遊戲次數 (0:沒有 1~99次)
-     * @type {number}
-     * @private
-     */
-    private _FreeSpinCount;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     * @type {Array<number>}
-     * @private
-     */
-    private _LookAt;
-    /**
-     * 玩家現有金額(押注後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointBefore;
-    /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _BaseLevelWin;
-    /**
-     * 活動轉數
-     */
-    private _BonusEventCount;
-    constructor();
-    get State(): number;
-    set State(value: number);
-    get Grid(): Array<number>;
-    set Grid(value: Array<number>);
-    get SecretState(): number;
-    set SecretState(value: number);
-    get SecretChange(): Array<number>;
-    set SecretChange(value: Array<number>);
-    get SecretSymbol(): number;
-    set SecretSymbol(value: number);
-    get LineWin(): Array<number>;
-    set LineWin(value: Array<number>);
-    get LineGrid(): Array<number>;
-    set LineGrid(value: Array<number>);
-    get TotalWinPoint(): number;
-    set TotalWinPoint(value: number);
-    get UserPointAfter(): number;
-    set UserPointAfter(value: number);
-    get GameState(): number;
-    set GameState(value: number);
-    get FreeSpinCount(): number;
-    set FreeSpinCount(value: number);
-    get LookAt(): Array<number>;
-    set LookAt(value: Array<number>);
-    get UserPointBefore(): number;
-    set UserPointBefore(value: number);
-    get BaseLevelWin(): number;
-    set BaseLevelWin(value: number);
-    get BonusEventCount(): number;
-    set BonusEventCount(value: number);
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 有線一般狀態封包
- * @Date 2021-05-31 下午 01:41
- * @Version 1.0
- */
-declare class HasLineResult implements fcc.IF.IHasLineResultModule {
-    /**
-     * 0: 押注成功 1:遊戲狀態不符 2:超過
-     * @type {number}
-     * @private
-     */
-    private _State;
-    /**
-     * 15格的資料
-     * @type {Array<number>}
-     * @private
-     */
-    private _Grid;
-    /**
-     * 是否有鬼牌擴展 0:沒有 1:有
-     * @type {Array<number>}
-     * @private
-     */
-    private _Change;
-    /**
-     * 15格的資料 換圖 0:不換 1:換
-     * @type {number}
-     * @private
-     */
-    private _ChangeState;
-    /**
-     * 每條線贏分
-     * @type {Array<number>}
-     * @private
-     */
-    private _LineWin;
-    /**
-     * 每條線贏幾格
-     * @type {Array<number>}
-     * @private
-     */
-    private _LineGrid;
-    /**
-     * 總贏得金額 (0:輸了 大於0:贏了 )
-     * @type {number}
-     * @private
-     */
-    private _TotalWinPoint;
-    /**
-     * 玩家現有金額(贏分後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointAfter;
-    /**
-     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-     * @type {number}
-     * @private
-     */
-    private _GameState;
-    /**
-     * 免費遊戲次數 (0:沒有 1~99次)
-     * @type {number}
-     * @private
-     */
-    private _FreeSpinCount;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     * @type {Array<number>}
-     * @private
-     */
-    private _LookAt;
-    /**
-     * 玩家現有金額(押注後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointBefore;
-    /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _BaseLevelWin;
-    constructor();
-    get State(): number;
-    set State(value: number);
-    get Grid(): Array<number>;
-    set Grid(value: Array<number>);
-    get Change(): Array<number>;
-    set Change(value: Array<number>);
-    get ChangeState(): number;
-    set ChangeState(value: number);
-    get LineWin(): Array<number>;
-    set LineWin(value: Array<number>);
-    get LineGrid(): Array<number>;
-    set LineGrid(value: Array<number>);
-    get TotalWinPoint(): number;
-    set TotalWinPoint(value: number);
-    get UserPointAfter(): number;
-    set UserPointAfter(value: number);
-    get GameState(): number;
-    set GameState(value: number);
-    get FreeSpinCount(): number;
-    set FreeSpinCount(value: number);
-    get LookAt(): Array<number>;
-    set LookAt(value: Array<number>);
-    get UserPointBefore(): number;
-    set UserPointBefore(value: number);
-    get BaseLevelWin(): number;
-    set BaseLevelWin(value: number);
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 無線一般狀態封包
- * @Date 2021-05-31 下午 01:41
- * @Version 1.0
- */
-declare class NoLineResult implements fcc.IF.INoLineResultModel {
-    /**
-     * 0: 押注成功 1:遊戲狀態不符 2:超過
-     * @type {number}
-     * @private
-     */
-    private _State;
-    /**
-     * 15格的資料
-     * @type {Array<number>}
-     * @private
-     */
-    private _Grid;
-    /**
-     * 是否有鬼牌擴展 0:沒有 1:有
-     * @type {number}
-     * @private
-     */
-    private _ChangeState;
-    /**
-     * 15格的資料 換圖 0:不換 1:換
-     * @type {Array<number>}
-     * @private
-     */
-    private _Change;
-    /**
-     * 哪幾格贏 0:沒贏 1:贏
-     * @type {Array<number>}
-     * @private
-     */
-    private _GridWin;
-    /**
-     * 總贏得金額 (0:輸了 大於0:贏了 )
-     * @type {number}
-     * @private
-     */
-    private _TotalWinPoint;
-    /**
-     * 玩家現有金額(贏分後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointAfter;
-    /**
-     * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-     * @type {number}
-     * @private
-     */
-    private _GameState;
-    /**
-     * 免費遊戲次數 (0:沒有 1~99次)
-     * @type {number}
-     * @private
-     */
-    private _FreeSpinCount;
-    /**
-     * 瞇牌0:不用 1:瞇牌效果
-     * @type {Array<number>}
-     * @private
-     */
-    private _LookAt;
-    /**
-     * 玩家現有金額(押注後)
-     * @type {number}
-     * @private
-     */
-    private _UserPointBefore;
-    /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _LevelWin;
-    /**
-     * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-     * @type {number}
-     * @private
-     */
-    private _BaseLevelWin;
-    /**
-     * 活動轉數
-     * @type {number}
-     * @private
-     */
-    private _BonusEventCount;
-    constructor();
-    get State(): number;
-    set State(value: number);
-    get Grid(): Array<number>;
-    set Grid(value: Array<number>);
-    get ChangeState(): number;
-    set ChangeState(value: number);
-    get Change(): Array<number>;
-    set Change(value: Array<number>);
-    get GridWin(): Array<number>;
-    set GridWin(value: Array<number>);
-    get TotalWinPoint(): number;
-    set TotalWinPoint(value: number);
-    get UserPointAfter(): number;
-    set UserPointAfter(value: number);
-    get GameState(): number;
-    set GameState(value: number);
-    get FreeSpinCount(): number;
-    set FreeSpinCount(value: number);
-    get LookAt(): Array<number>;
-    set LookAt(value: Array<number>);
-    get UserPointBefore(): number;
-    set UserPointBefore(value: number);
-    get LevelWin(): number;
-    set LevelWin(value: number);
-    get BaseLevelWin(): number;
-    set BaseLevelWin(value: number);
-    get BonusEventCount(): number;
-    set BonusEventCount(value: number);
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 有線類遊戲資訊
- * @Date 2021-06-03 下午 12:01
- * @Version 1.0
- */
-declare class HasLineTableInfo implements IHasLineTableInfoModule {
-    /**
-     * 是否為線遊戲(0:無線 1:有線)
-     * @type {number}
-     */
-    private _IsLines;
-    /**
-     * 押注 乘以的倍數(有線版本為自己的線數 無限版本為固定倍數)
-     * @type {number}
-     */
-    private _BetTimes;
-    /**
-     * 幾線遊戲
-     * @type {string}
-     */
-    private _Line;
-    /**
-     * 賠率表
-     * @type {object}
-     */
-    private _PayTable;
-    /**
-     * 賠率表
-     * @type {Object}
-     */
-    private _LineGridPos;
-    /**
-     * 每線押注[0.1、0.2、0.3、0.4、0.5、1、2、3、4、5]
-     * @type {Array<number>}
-     */
-    private _LineBet;
-    /**
-     * 總押注[2.5、5、7.5、10、12.5、25、50、75、100、125]
-     * @type {Array<number>}
-     */
-    private _LineTotalBet;
-    /**
-     * 是否為線遊戲(0:無線 1:有線)
-     * @type {Array<number>}
-     */
-    private _Grid;
-    /**
-     * 玩家現有金額
-     * @type {number}
-     */
-    private _UserPoint;
-    /**
-     * 0:大獎 總押注倍數 1:巨獎 總押注倍數 2:超級巨獎 總押注倍數
-     * @type {Array<number>}
-     */
-    private _LevelWinPoint;
-    /**
-     * 活動模式 0 沒有 11 轉盤
-     * @type {number}
-     */
-    private _EventMode;
-    /**
-     * 活動轉數需求
-     * @type {number}
-     */
-    private _EventRequire;
-    /**
-     * 預設押住倍率
-     */
-    private _DefaultBetIndex;
-    constructor();
-    get IsLines(): number;
-    set IsLines(value: number);
-    get BetTimes(): number;
-    set BetTimes(value: number);
-    get Line(): string;
-    set Line(value: string);
-    get PayTable(): object;
-    set PayTable(value: object);
-    get LineGridPos(): Object;
-    set LineGridPos(value: Object);
-    get LineBet(): Array<number>;
-    set LineBet(value: Array<number>);
-    get LineTotalBet(): Array<number>;
-    set LineTotalBet(value: Array<number>);
-    get Grid(): Array<number>;
-    set Grid(value: Array<number>);
-    get UserPoint(): number;
-    set UserPoint(value: number);
-    get LevelWinPoint(): Array<number>;
-    set LevelWinPoint(value: Array<number>);
-    get DefaultBetIndex(): number;
-    set DefaultBetIndex(value: number);
-    get EventMode(): number;
-    set EventMode(value: number);
-    get EventRequire(): number;
-    set EventRequire(value: number);
-}
-/**
- * @Author XIAO-LI-PIN
- * @Description 無線類遊戲資訊
- * @Date 2021-06-03 下午 12:01
- * @Version 1.0
- */
-declare class NoLineTableInfo implements INoLineTableInfoModule {
-    /**
-     * 是否為線遊戲(0:無線 1:有線)
-     * @type {number}
-     */
-    private _IsLines;
-    /**
-     * 押注 乘以的倍數(有線版本為自己的線數 無限版本為固定倍數)
-     * @type {number}
-     */
-    private _BetTimes;
-    /**
-     * 幾線遊戲
-     * @type {string}
-     */
-    private _Line;
-    /**
-     * 賠率表
-     * @type {object}
-     */
-    private _PayTable;
-    /**
-     * 每線押注[0.1、0.2、0.3、0.4、0.5、1、2、3、4、5]
-     * @type {Array<number>}
-     */
-    private _LineBet;
-    /**
-     * 總押注[2.5、5、7.5、10、12.5、25、50、75、100、125]
-     * @type {Array<number>}
-     */
-    private _LineTotalBet;
-    /**
-     * 15格的資料 顯示用
-     * @type {Array<number>}
-     */
-    private _Grid;
-    /**
-     * 玩家現有金額
-     * @type {number}
-     */
-    private _UserPoint;
-    /**
-     * 0:大獎 總押注倍數 1:巨獎 總押注倍數 2:超級巨獎 總押注倍數
-     * @type {Array<number>}
-     */
-    private _LevelWinPoint;
-    /**
-     * 活動模式 0 沒有 11 轉盤
-     * @type {number}
-     */
-    private _EventMode;
-    /**
-     * 活動轉數需求
-     * @type {number}
-     */
-    private _EventRequire;
-    /**
-     * 預設押住倍率
-     */
-    DefaultBetIndex: number;
-    constructor();
-    get IsLines(): number;
-    set IsLines(value: number);
-    get BetTimes(): number;
-    set BetTimes(value: number);
-    get Line(): string;
-    set Line(value: string);
-    get PayTable(): object;
-    set PayTable(value: object);
-    get LineBet(): Array<number>;
-    set LineBet(value: Array<number>);
-    get LineTotalBet(): Array<number>;
-    set LineTotalBet(value: Array<number>);
-    get Grid(): Array<number>;
-    set Grid(value: Array<number>);
-    get UserPoint(): number;
-    set UserPoint(value: number);
-    get LevelWinPoint(): Array<number>;
-    set LevelWinPoint(value: Array<number>);
-    get EventMode(): number;
-    set EventMode(value: number);
-    get EventRequire(): number;
-    set EventRequire(value: number);
-}
-/**
  * 框架Module化
  */
-export { fcc, AGenericTemplate, OverrideComponent, ACenterTemplate, AutoStateChangeNotification, ScrollFocusStateNotification, SpeedStateChangeNotification, StopNowStateNotification, UserMoneyChangeNotification, UserTotalBetChangeNotification, UserWinPointStateNotification, ResponseResultNotification, SlotRowEndNotification, AutoStateChangeObserver, ScrollFocusStateObserver, SpeedStateChangeObserver, StopNowStateObserver, UserMoneyChangeObserver, UserTotalBetChangeObserver, UserWinPointStateObserver, ResponseResultObserver, SlotRowEndObserver, AMainGameButtonTemplate, AMainGameOnlyButtonTemplate, AMainGameDoubleButtonTemplate, AMenuButtonTemplate, AMenuDoubleButtonTemplate, AMenuOnlyButtonTemplate, ARecordButtonTemplate, ARecordDoubleButtonTemplate, ARecordOnlyButtonTemplate, AErrorFrameTemplate, ALoadingTemplate, ALoadingFrameTemplate, ALookAtTemplate, AWinLinTemplate, AMainInitTemplate, ABaseSlotTemplate, NormalTemplate, NormalBlurImageTemplate, ASlotInitializeTemplate, IBaseTableInfoModel, IHasLineTableInfoModule, INoLineTableInfoModule, ExtendHasLineFreeResult, HasLineFreeResult, NoLineFreeResult, ExtendHasLineResult, HasLineResult, NoLineResult, HasLineTableInfo, NoLineTableInfo };
+export { fcc, AGenericTemplate, BaseComponent, AFrameworkCenterTemplate, AutoStateChangeNotification, ScrollFocusStateNotification, SpeedStateChangeNotification, StopNowStateNotification, UserMoneyChangeNotification, UserTotalBetChangeNotification, UserWinPointStateNotification, ResponseResultNotification, SlotRowEndNotification, AutoStateChangeObserver, ScrollFocusStateObserver, SpeedStateChangeObserver, StopNowStateObserver, UserMoneyChangeObserver, UserTotalBetChangeObserver, UserWinPointStateObserver, ResponseResultObserver, SlotRowEndObserver, AMainGameButtonTemplate, AMainGameOnlyButtonTemplate, AMenuButtonTemplate, AMenuOnlyButtonTemplate, ARecordButtonTemplate, ARecordOnlyButtonTemplate, AErrorFrameTemplate, ALoadingTemplate, AWinLinTemplate, AMainInitTemplate };

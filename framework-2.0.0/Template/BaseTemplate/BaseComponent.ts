@@ -4,7 +4,7 @@
  * @Date 2021-05-28 上午 10:11
  * @Version 1.0
  */
-export default class OverrideComponent extends cc.Component {
+export default class BaseComponent extends cc.Component {
 
     /**
      * 保存當前使用中的計時器方法,如果該計時器執行完,會自動清空該方法

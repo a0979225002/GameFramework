@@ -9,15 +9,9 @@ import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 export default abstract class AMainInitTemplate extends AGenericTemplate {
 
     protected onLoad() {
-        this.setHistoryDetail();        //建立詳單頁面
         this.prefabInstantiate();       //實例化所有動態加載的prefab
         super.onLoad();
     }
-
-    /**
-     * 建立詳單頁面
-     */
-    protected abstract setHistoryDetail();
 
     /**
      * 實例化所有動態加載的prefab

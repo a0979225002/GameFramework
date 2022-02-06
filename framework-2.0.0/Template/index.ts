@@ -4,7 +4,7 @@
  * @Date 2021-07-06 下午 01:55
  * @Version 0.03
  */
-const VERSION = "1.0.1"//版本號
+const VERSION = "2.0.1"//版本號
 
 /**
  * 框架Module化
@@ -13,10 +13,10 @@ export {fcc} from './System/FCCSystem';
 
 /*所有模板繼承之對象*/
 export {default as AGenericTemplate} from './BaseTemplate/AGenericTemplate';
-export {default as OverrideComponent} from './BaseTemplate/OverrideComponent';
+export {default as BaseComponent} from './BaseTemplate/BaseComponent';
 
 /*遊戲初始設定模板*/
-export {default as ACenterTemplate} from './Center/ACenterTemplate';
+export {default as AFrameworkCenterTemplate} from './Center/AFrameworkCenterTemplate';
 
 /*通用 Notification 管理器*/
 export {
@@ -59,16 +59,13 @@ export {default as SlotRowEndObserver} from './Event/Observer/GameObserver/SlotR
 /*主遊戲按鈕 controller 模板*/
 export {default as AMainGameButtonTemplate} from './Button/MainButton/AMainGameButtonTemplate';
 export {default as AMainGameOnlyButtonTemplate} from './Button/MainButton/AMainGameOnlyButtonTemplate';
-export {default as AMainGameDoubleButtonTemplate} from './Button/MainButton/AMainGameDoubleButtonTemplate';
 
 /*菜單頁按鈕 controller 模板*/
 export {default as AMenuButtonTemplate} from './Button/MenuButton/AMenuButtonTemplate';
-export {default as AMenuDoubleButtonTemplate} from './Button/MenuButton/AMenuDoubleButtonTemplate';
 export {default as AMenuOnlyButtonTemplate} from './Button/MenuButton/AMenuOnlyButtonTemplate';
 
 /*紀錄頁按鈕 controller 模板*/
 export {default as ARecordButtonTemplate} from './Button/RecordButton/ARecordButtonTemplate';
-export {default as ARecordDoubleButtonTemplate} from './Button/RecordButton/ARecordDoubleButtonTemplate';
 export {default as ARecordOnlyButtonTemplate} from './Button/RecordButton/ARecordOnlyButtonTemplate';
 
 /*錯誤提示視窗 模板*/
@@ -77,45 +74,11 @@ export {default as AErrorFrameTemplate} from './ErrorFrame/AErrorFrameTemplate';
 /*載入SCENE 模板*/
 export {default as ALoadingTemplate} from './Loading/ALoadingTemplate';
 
-/*載入DIALOG框 模板*/
-export {default as ALoadingFrameTemplate} from './LoadingFrame/ALoadingFrameTemplate';
-
-/*瞇排效果 模板*/
-export {default as ALookAtTemplate} from './LookAtFrame/ALookAtTemplate';
-
 /*贏分線效果 模板*/
 export {default as AWinLinTemplate} from './WinLine/AWinLinTemplate';
 
 /*主遊戲進入初始化動作 模板*/
 export {default as AMainInitTemplate} from './MainInit/AMainInitTemplate';
-
-/*SLOT樣式 模板*/
-export {default as ABaseSlotTemplate} from './Slot/Style/BaseSlot/ABaseSlotTemplate';
-export {default as NormalTemplate} from './Slot/Style/NormalSlot/NormalTemplate';
-export {default as NormalBlurImageTemplate} from './Slot/Style/NormalSlot/NormalBlurImageTemplate';
-
-/*SLOT初始設定 模板*/
-export {default as ASlotInitializeTemplate} from './Slot/ASlotInitializeTemplate';
-
-/*遊戲 INTERFACE SERVER TABLE INFO MODEL*/
-export {default as IBaseTableInfoModel} from './NetWork/ISeverDataModel/ITableInfoResult/IBaseTableInfoModel';
-export {default as IHasLineTableInfoModule} from './NetWork/ISeverDataModel/ITableInfoResult/IHasLineTableInfoModule';
-export {default as INoLineTableInfoModule} from './NetWork/ISeverDataModel/ITableInfoResult/INoLineTableInfoModule';
-
-
-/*遊戲 SERVER FREE MODEL*/
-export {default as ExtendHasLineFreeResult} from './NetWork/ServerDataModel/FreeResult/ExtendHasLineFreeResult';
-export {default as HasLineFreeResult} from './NetWork/ServerDataModel/FreeResult/HasLineFreeResult';
-export {default as NoLineFreeResult} from './NetWork/ServerDataModel/FreeResult/NoLineFreeResult';
-
-/*遊戲 SERVER NORMAL MODEL*/
-export {default as ExtendHasLineResult} from './NetWork/ServerDataModel/NormalResult/ExtendHasLineResult';
-export {default as HasLineResult} from './NetWork/ServerDataModel/NormalResult/HasLineResult';
-export {default as NoLineResult} from './NetWork/ServerDataModel/NormalResult/NoLineResult';
-
-/*遊戲 SERVER TABLE INFO MODEL*/
-export {default as HasLineTableInfo} from './NetWork/ServerDataModel/TableInfo/HasLineTableInfo';
-export {default as NoLineTableInfo} from './NetWork/ServerDataModel/TableInfo/NoLineTableInfo';
 
 /*當前版本號*/
 globalThis.TCC_VERSION = VERSION;

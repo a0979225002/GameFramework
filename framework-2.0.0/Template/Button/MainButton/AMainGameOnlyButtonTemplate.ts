@@ -3,13 +3,9 @@ import {fcc} from "../../System/FCCSystem";
 
 /**
  * @Author XIAO-LI-PIN
- * @Description 主遊戲單一按鈕配置
- * @Example 單一方向遊戲
+ * @Description (抽象類)遊戲主頁面按鈕事件
  * ```
  *      事件:
- *          推撥 {StopNowStateNotification} : 即停的推播事件
- *          推撥 {SpeedStateChangeNotification} : 加速的推播事件
- *          推撥 {AutoStateChangeNotification} : 自動狀態更動推播事件
  *          接收 {UserMoneyChangeObserver} : 玩家金額變更時推播事件
  *              callback : this.userMoney = money;
  *          接收 {AutoStateChangeNotification} : 自動狀態更動推播事件
@@ -18,8 +14,8 @@ import {fcc} from "../../System/FCCSystem";
  *                              await this.startButtonEvent();
  *                          }
  * ```
- * @Date 2021-07-06 下午 16:24
- * @Version 1.1
+ * @Date 2021-05-26 上午 11:29
+ * @Version 2.0.1
  */
 export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButtonTemplate {
 
@@ -27,32 +23,32 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
      * 開始遊戲按鈕
      * @type {cc.Button}
      */
-    protected abstract startButton: cc.Button;
+    public abstract startGameButton: cc.Button;
 
     /**
      * 自動按鈕
      * @type {cc.Button}
      */
-    protected abstract autoButton: cc.Button;
+    public abstract autoButton: cc.Button;
 
     /**
      * 加速按鈕
      * @type {cc.Button}
      */
-    protected abstract speedUpButton: cc.Button;
+    public abstract speedButton: cc.Button;
 
     /**
      * 押注金額選擇按鈕
      * @type {cc.Button}
      */
-    protected abstract betSelectionButton: cc.Button;
+    public abstract totalBetButton: cc.Button;
 
     /**
      * 設定頁按鈕
      * @type {cc.Button}
      * @protected
      */
-    protected abstract menuButton: cc.Button
+    public abstract menuButton: cc.Button
 
     protected onLoad() {
         fcc.global.Button.addButtonEvent(                        //自動按鈕監聽添加
@@ -61,12 +57,12 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
             this
         );
         fcc.global.Button.addButtonEvent(                         //加速按鈕監聽添加
-            this.speedUpButton,
+            this.speedButton,
             "speedUpButtonEventListener",
             this
         );
         fcc.global.Button.addButtonEvent(                         //押注金額選擇按鈕監聽添加
-            this.betSelectionButton,
+            this.totalBetButton,
             "totalBetFrameTouchEventListener",
             this
         );
@@ -83,8 +79,8 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
      */
     public startButtonOnEnable(): void {
         this.unschedule(this.longTouchTimer);//清除計時器事件
-        this.startButton.node.on(cc.Node.EventType.TOUCH_START, this.startButtonOnTouchStart, this);
-        this.startButton.node.on(cc.Node.EventType.TOUCH_END, this.startButtonOnTouchEnd, this);
+        this.startGameButton.node.on(cc.Node.EventType.TOUCH_START, this.startButtonOnTouchStart, this);
+        this.startGameButton.node.on(cc.Node.EventType.TOUCH_END, this.startButtonOnTouchEnd, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardSpaceTouchStart, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.keyboardSpaceTouchEnd, this);
     }
@@ -94,8 +90,8 @@ export default abstract class AMainGameOnlyButtonTemplate extends AMainGameButto
      */
     public startButtonDisable(): void {
         this.unschedule(this.longTouchTimer);//清除計時器事件
-        this.startButton.node.off(cc.Node.EventType.TOUCH_START, this.startButtonOnTouchStart, this);
-        this.startButton.node.off(cc.Node.EventType.TOUCH_END, this.startButtonOnTouchEnd, this);
+        this.startGameButton.node.off(cc.Node.EventType.TOUCH_START, this.startButtonOnTouchStart, this);
+        this.startGameButton.node.off(cc.Node.EventType.TOUCH_END, this.startButtonOnTouchEnd, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.keyboardSpaceTouchStart, this)
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.keyboardSpaceTouchEnd, this);
     }
