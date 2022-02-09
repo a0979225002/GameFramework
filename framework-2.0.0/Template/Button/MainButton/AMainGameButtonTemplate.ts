@@ -245,8 +245,7 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
             this._autoStateChangeObserver =
                 new AutoStateChangeObserver(async (isAutomaticState, beforeAutoCount, afterAutoCount) => {
                     this.nowAutoType = afterAutoCount;
-                    this.isAutoState = isAutomaticState;
-                    this.autoEvent(isAutomaticState, afterAutoCount);
+                    this.autoButtonEventListener();
                 }, this);
         }
         return this._autoStateChangeObserver;
@@ -267,7 +266,6 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
 
     /**
      * 自動按鈕監聽事件
-     * 如果當前押注視窗開啟中,將更換為關閉視窗方法
      * 正常情況,推播當前auto狀態事件
      * @private
      */
