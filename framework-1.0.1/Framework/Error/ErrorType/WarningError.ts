@@ -54,41 +54,5 @@ namespace fcc {
 
             }, this.errorManager.warningDelayTime);
         }
-
-        /**
-         * XXX :
-         * 當前暫時無使用,一樣保留
-         * 顯示金額不足無法下注
-         * @param obj 顯示在label的文字
-         */
-        showErrorBet(obj: string) {
-
-            //確認當前有無該物件,如無該物件,將會throw中斷
-            if (!this.errorManager.errorNode)
-                this.errorManager.executeError(type.ErrorType.UNDEFINED_FW, "ErrorManager errorNode為空");
-
-            if (!this.errorManager.errorLabel)
-                this.errorManager.executeError(type.ErrorType.UNDEFINED_FW, "ErrorManager errorLabel為空");
-
-            if (!this.errorManager.errorButton)
-                this.errorManager.executeError(type.ErrorType.UNDEFINED_FW, "ErrorManager errorButton為空");
-
-            if (this.errorManager.errorDelayTime == 0) {
-                this.errorManager.executeError(type.ErrorType.UNDEFINED_FW, "ErrorManager errorDelayTime為空 無法顯示");
-            }
-
-            if (ErrorManager.errorState) return;
-
-            ErrorManager.errorState = true;
-            this.errorManager.errorNode.active = true;
-            this.errorManager.errorLabel.string = obj;
-
-            window.setTimeout(() => {
-
-                ErrorManager.errorState = false;
-                this.errorManager.errorNode.active = false;
-
-            }, this.errorManager.errorDelayTime)
-        }
     }
 }

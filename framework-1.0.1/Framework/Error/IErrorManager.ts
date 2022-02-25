@@ -25,6 +25,11 @@ namespace fcc {
             errorButton: cc.Node;
 
             /**
+             * 關閉視窗的 Button
+             */
+            closeButton:cc.Node;
+
+            /**
              * 綁定警告要顯示的錯誤訊息
              */
             warningLabel: cc.Label;
@@ -91,6 +96,13 @@ namespace fcc {
              * @param node
              */
             setErrorNode(node: cc.Node): this;
+
+            /**
+             * 添加要綁定的關閉視窗的按鈕
+             * @param {cc.Node} node
+             * @return {this}
+             */
+            setCloseButtonNode(node:cc.Node):this;
 
             /**
              * 添加要顯示Error訊息的Label

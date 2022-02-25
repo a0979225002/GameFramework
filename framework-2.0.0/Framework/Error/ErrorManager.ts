@@ -24,6 +24,7 @@ namespace fcc {
         private readonly _isShowBackHomeButton: boolean;
         private _errorButton: cc.Node;
         private _errorButtonLabel: cc.Label
+        private _closeButton: cc.Node;
         private _warningDelayTime: number;
 
         private constructor(configManager: IF.IConfigManager) {
@@ -83,8 +84,8 @@ namespace fcc {
          * @param {string} buttonText - button文字
          * @param {string} canShowButton : 是否強制顯示Button
          */
-        showErrorDialog(permanentState: boolean, message: string, buttonText?: string,canShowButton?:boolean) {
-            this.handler.checkServerError(permanentState, message, buttonText,canShowButton);
+        showErrorDialog(permanentState: boolean, message: string, buttonText?: string, canShowButton?: boolean) {
+            this.handler.checkServerError(permanentState, message, buttonText, canShowButton);
         }
 
         /**
@@ -96,6 +97,7 @@ namespace fcc {
         showWarningDialog(permanentState: boolean, message: string, buttonText?: string) {
             this.handler.checkWarning(permanentState, message, buttonText);
         }
+
 
         /**
          * 添加要綁定的Error組件
@@ -129,6 +131,19 @@ namespace fcc {
 
             return this;
         }
+
+        /**
+         * 添加要綁定的關閉視窗的按鈕
+         * @param {cc.Node} node
+         * @return {this}
+         */
+        setCloseButtonNode(node: cc.Node): this {
+
+            this._closeButton = node;
+
+            return this;
+        }
+
 
         /**
          * 添加要顯示的時間,目前只對(ErrorType.bet)生效
@@ -250,6 +265,10 @@ namespace fcc {
 
         get errorButtonLabel(): cc.Label {
             return this._errorButtonLabel;
+        }
+
+        get closeButton(): cc.Node {
+            return this._closeButton;
         }
     }
 }

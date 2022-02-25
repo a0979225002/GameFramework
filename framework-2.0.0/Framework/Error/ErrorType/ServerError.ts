@@ -25,8 +25,12 @@ namespace fcc {
          * @param {string} canShowButton : 是否強制顯示Button
          */
         showError(permanentState: boolean, message: string, buttonText: string, canShowButton?: boolean) {
-
             if (this.timeOut != null) clearTimeout(this.timeOut);
+            cc.Tween.stopAllByTarget(this.errorManager.errorNode);
+            this.errorManager.errorButton.getComponent(cc.Button)
+                .interactable = false;
+            this.errorManager.errorNode.active = false;
+            this.errorManager.closeButton.active = false;
 
             //確認當前有無該物件,如無該物件,將會throw中斷
             if (!this.errorManager.errorNode)
@@ -39,7 +43,18 @@ namespace fcc {
                 this.errorManager.executeError(type.ErrorType.UNDEFINED_FW, "ErrorManager errorButton為空");
 
             ErrorManager.errorState = true;
-            this.errorManager.errorNode.active = true;
+            cc.tween(this.errorManager.errorNode)
+                .set({opacity: 0, scale: 1.3})
+                .call(() => {
+                    this.errorManager.errorNode.active = true;
+                })
+                .to(0.3, {opacity: 255, scale: 1}, {easing: "sineIn"})
+                .call(() => {
+                    this.errorManager.errorButton.getComponent(cc.Button)
+                        .interactable = true;
+                })
+                .start();
+
             this.errorManager.errorLabel.string = message;
 
             if (!permanentState) {

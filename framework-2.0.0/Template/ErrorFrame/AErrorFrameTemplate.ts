@@ -35,13 +35,13 @@ export default abstract class AErrorFrameTemplate extends AGenericTemplate {
      * @default 已經從errorButton組件中綁定事件
      * @protected
      */
-    protected abstract errorButtonTouchEvent():void;
+    protected abstract messageButtonTouchEvent():void;
 
     protected onLoad() {
         fcc.global.Button
             .addButtonEvent(
                 this.errorButton,
-                "errorButtonTouchEvent",
+                "messageButtonTouchEvent",
                 this
             );
         super.onLoad();
