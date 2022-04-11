@@ -74,7 +74,7 @@ namespace fcc {
          * @param {cc.Node} node - 要回收的物件
          * @param {boolean} nodePool - 是否要回收進對象池
          */
-        put(node: cc.Node, nodePool: boolean = false): void {
+        put(node: cc.Node, nodePool: boolean): void {
             let key = this.nameMap.get(node);
             if (!this.pools.has(key)) {
                 cc.warn(" not have name ", key, ' ,go.name ', node.name);

@@ -2105,7 +2105,7 @@ declare abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSetting> exte
      * @type {ResponseResultObserver}
      * @private
      */
-    private responseResultObserver;
+    protected responseResultObserver: ResponseResultObserver;
     /**
      * Loop 老虎機方法
      * @return {Promise<void>}
@@ -2147,7 +2147,7 @@ declare abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSetting> exte
      * @return {ResponseResultObserver}
      * @private
      */
-    private getResponseResultObserver;
+    protected getResponseResultObserver(): ResponseResultObserver;
 }
 /**
  * @Author XIAO-LI-PIN

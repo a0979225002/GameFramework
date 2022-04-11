@@ -12,15 +12,13 @@ namespace fcc {
         private curDR: any;
 
         public executionStyle(width: number, height: number) {
-
             let cvs = cc.find('Canvas').getComponent(cc.Canvas);
-
             //保存原始設計分辨率，供屏幕大小變化時使用
             if (!this.curDR) {
                 this.curDR = cc.size(width, height);
             }
             let dr = this.curDR;
-            let s = cc.view.getFrameSize();
+            let s = cc.size(window.innerWidth,window.innerHeight);
             let rw = s.width;
             let rh = s.height;
             let finalW = rw;

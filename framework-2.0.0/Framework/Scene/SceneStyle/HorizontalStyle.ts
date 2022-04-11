@@ -20,6 +20,7 @@ namespace fcc {
                 this.curDR = cc.size(width, height);
             }
             let dr = this.curDR;
+            // let s = cc.size(window.innerWidth,window.innerHeight);
             let s = cc.view.getFrameSize();
             let rw = s.width;
             let rh = s.height;

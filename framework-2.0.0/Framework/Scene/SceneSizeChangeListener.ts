@@ -11,10 +11,10 @@ namespace fcc {
 
         //是否可以更新畫面
         private _isCanUpdateScene: boolean = true;
-        private configManager : IF.IConfigManager;
+        private configManager: IF.IConfigManager;
         private sceneManager: IF.ISceneManager;
 
-        constructor(configManager :IF.IConfigManager,sceneManager:IF.ISceneManager) {
+        constructor(configManager: IF.IConfigManager, sceneManager: IF.ISceneManager) {
             this.configManager = configManager;
             this.sceneManager = sceneManager;
         }
@@ -24,7 +24,11 @@ namespace fcc {
          * @param {number} delayTime - 更新頻率
          */
         designSceneEventListener(delayTime: number) {
-            cc.view.on("canvas-resize", async () => {
+            window.addEventListener("resize", async () => {
+                // if (cc.game.frame && !this.configManager.isFrameworkDebug) {
+                //     cc.game.frame.style.height = window.innerHeight + 'px';
+                // }
+                // cc.game.frame.style.height = window.innerHeight + 'px';
                 await this.makeDesignScene(delayTime);
                 cc.log("更新畫面完畢......");
             })

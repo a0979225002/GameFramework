@@ -62,7 +62,7 @@ export default abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSettin
      * @type {ResponseResultObserver}
      * @private
      */
-    private responseResultObserver: ResponseResultObserver;
+    protected responseResultObserver: ResponseResultObserver;
 
     /**
      * Loop 老虎機方法
@@ -151,7 +151,7 @@ export default abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSettin
      * @return {ResponseResultObserver}
      * @private
      */
-    private getResponseResultObserver(): ResponseResultObserver {
+    protected getResponseResultObserver(): ResponseResultObserver {
         if (!this.responseResultObserver) {
             this.responseResultObserver = new ResponseResultObserver((responseType) => {
                 if (responseType == fcc.type.ServerEventType.BET_RESULT || responseType == fcc.type.ServerEventType.FREE_SPIN_RESULT) {

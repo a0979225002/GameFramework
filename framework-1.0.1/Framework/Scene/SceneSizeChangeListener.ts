@@ -25,6 +25,9 @@ namespace fcc {
          */
         designSceneEventListener(delayTime: number) {
             cc.view.on("canvas-resize", async () => {
+                if(cc.game.frame){
+                    cc.game.frame.style.height = window.innerHeight + 'px';
+                }
                 await this.makeDesignScene(delayTime);
                 cc.log("更新畫面完畢......");
             })
