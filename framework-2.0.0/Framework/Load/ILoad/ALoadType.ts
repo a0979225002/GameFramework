@@ -21,7 +21,6 @@ namespace fcc {
             private assetBundle: cc.AssetManager.Bundle
 
             protected constructor(dataName: string, type: cc.Asset, url: string, folder: string,) {
-
                 this.type = type;               //當前要獲取的資源類型
                 this.url = url;                 //獲取的地址
                 this.dataName = dataName;       //要拿取資源的key

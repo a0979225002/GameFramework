@@ -21,7 +21,6 @@ namespace fcc {
 
         private isLoadBundle: boolean;
         private assetBundle: cc.AssetManager.Bundle
-        private promise: Promise<unknown>
         private readonly assetMethod: Array<Function>;
         private configManager: IF.IConfigManager;
         private loadResManager: IF.ILoadResManager;
@@ -40,11 +39,7 @@ namespace fcc {
          * @return {Promise<void>}
          */
         loadBundle(dataName: string, type: type.LoadType, url: string): Promise<void> {
-
             if (this.assetBundle) return;
-            this.promise = new Promise<void>(() => {
-            });
-
             //加載Bundle資源時須先加載Bundle清單
             return new Promise<void>((resolve) => {
                 if (!this.isLoadBundle) {

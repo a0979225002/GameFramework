@@ -274,15 +274,10 @@ namespace fcc {
          * @param isMainResources
          */
         getLoadState(name: string, isMainResources: boolean): boolean {
-
             if (isMainResources) {
-
                 return this._initialLoadState.get(name) == 1;
-
             } else {
-
-                return this._initialLoadState.get(name) == 1;
-
+                return this._secondaryLoadState.get(name) == 1;
             }
         }
 
