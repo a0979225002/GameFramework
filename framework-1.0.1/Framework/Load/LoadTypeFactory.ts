@@ -9,6 +9,8 @@
 /// <reference path="./LoadType/SceneLoad.ts" />
 /// <reference path="./LoadType/SpineLoad.ts" />
 /// <reference path="./LoadType/TextLoad.ts" />
+
+
 namespace fcc {
 
     /**
@@ -19,17 +21,35 @@ namespace fcc {
      */
     export class LoadTypeFactory implements IF.ILoadFactory {
 
-        private isLoadBundle: boolean;
-        private assetBundle: cc.AssetManager.Bundle
-        private promise: Promise<unknown>
-        private readonly assetMethod: Array<Function>;
+        private assetBundles: Map<string, cc.AssetManager.Bundle>;
         private configManager: IF.IConfigManager;
         private loadResManager: IF.ILoadResManager;
 
         constructor(loadResManager: IF.ILoadResManager, configManager: IF.IConfigManager) {
-            this.assetMethod = new Array<Function>();
             this.configManager = configManager;
             this.loadResManager = loadResManager;
+            this.assetBundles = new Map<string, cc.AssetManager.Bundle>();
+        }
+
+        /**
+         * 載入外部Bundle
+         */
+        loadOutSideBundle(outSideData: IF.IOutSideData) {
+            //加載Bundle資源時須先加載Bundle清單
+            return new Promise<void>((resolve) => {
+                if (this.assetBundles.has(outSideData.bundleName)) return resolve();
+                const version = {
+                    version: outSideData.version,
+                }
+
+                cc.assetManager.loadBundle(outSideData.bundleURL, version, (error, bundle) => {
+                    if (error) {
+                        ErrorManager.instance.executeError(fcc.type.ErrorType.LOAD_FW, error)
+                    }
+                    this.assetBundles.set(outSideData.bundleName, bundle);
+                    resolve();
+                })
+            });
         }
 
         /**
@@ -39,26 +59,17 @@ namespace fcc {
          * @param {string} url - 檔案位置
          * @return {Promise<void>}
          */
-        loadBundle(dataName: string, type: type.LoadType, url: string): Promise<void> {
-
-            if (this.assetBundle) return;
-            this.promise = new Promise<void>(() => {
-            });
-
+        loadInSideBundle(dataName: string, type: type.LoadType, url: string): Promise<void> {
             //加載Bundle資源時須先加載Bundle清單
             return new Promise<void>((resolve) => {
-                if (!this.isLoadBundle) {
-                    this.isLoadBundle = true;
-                    cc.assetManager.loadBundle("secondaryRes", (error, bundle) => {
-                        if (error) {
-                            ErrorManager.instance.executeError(fcc.type.ErrorType.LOAD_FW, error)
-                        }
-                        this.assetBundle = bundle;
-                        resolve();
-                    })
-                } else if (!this.assetBundle && this.isLoadBundle) {
-                    this.assetMethod.push(this.checkLoadType.bind(this, dataName, type, url, "secondaryRes"));
-                }
+                if (this.assetBundles.has("secondaryRes")) return resolve();
+                cc.assetManager.loadBundle("secondaryRes", (error, bundle) => {
+                    if (error) {
+                        ErrorManager.instance.executeError(fcc.type.ErrorType.LOAD_FW, error)
+                    }
+                    this.assetBundles.set("secondaryRes", bundle);
+                    resolve();
+                })
             });
         }
 
@@ -78,15 +89,19 @@ namespace fcc {
          * @param type - 資源類型
          * @param url - 資源位置
          */
-        async executeLoadBundle(dataName: string, type: type.LoadType, url: string) {
-            await this.loadBundle(dataName, type, url);
+        public async executeLoadBundle(dataName: string, type: type.LoadType, url: string) {
+            await this.loadInSideBundle(dataName, type, url);
             this.checkLoadType(dataName, type, url, "secondaryRes");
-            if (this.assetMethod.length != 0) {
-                while (this.assetMethod.length) {
-                    this.assetMethod[0]();
-                    this.assetMethod.shift();
-                }
-            }
+        }
+
+        /**
+         * 載入外部資源
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {Promise<void>}
+         */
+        public async executeLoadOutSideBundle(outSideData: IF.IOutSideData) {
+            await this.loadOutSideBundle(outSideData);
+            this.checkLoadType(outSideData.name, outSideData.loadType, outSideData.url, outSideData.bundleName);
         }
 
         /**
@@ -135,10 +150,10 @@ namespace fcc {
         executeLoadExternalScript(name: string, type: type.LoadType, url: string, parameter: string) {
             switch (type) {
                 case fcc.type.LoadType.CSS:
-                    new CSSLoad(name, "text/css", url,parameter).loadScript();
+                    new CSSLoad(name, "text/css", url, parameter).loadScript();
                     break
                 case fcc.type.LoadType.SCRIPT:
-                    new ScriptLoad(name, "text/javascript", url,parameter).loadScript();
+                    new ScriptLoad(name, "text/javascript", url, parameter).loadScript();
                     break
                 default:
                     ErrorManager.instance.executeError(fcc.type.ErrorType.TYPE_FW, "LoadType 無法偵測");

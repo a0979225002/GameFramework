@@ -23,7 +23,7 @@ namespace fcc {
             /**
              * 外部資料加載資源狀態
              */
-            scriptLoadState:Map<string,number>;
+            scriptLoadState: Map<string, number>;
 
             /**
              * img物件保存
@@ -54,6 +54,11 @@ namespace fcc {
              * 場景保存位置
              */
             sceneRes: Map<string, cc.SceneAsset>;
+
+            /**
+             * 載入順序
+             */
+            currentLoadOrder: Array<IAssetData | IF.IOutSideData>
 
 
             /**
@@ -105,7 +110,20 @@ namespace fcc {
              * @param {string} url - 要獲取的資源位置
              * @param {boolean} isLanguageUsed - 是否要使用語系位置
              */
-            loadBundle(name: string, type: type.LoadType, url: string,isLanguageUsed?: boolean): this;
+            loadBundle(name: string, type: type.LoadType, url: string, isLanguageUsed?: boolean): this;
+
+            /**
+             * 載入遠程外部Bundle
+             * @param {fcc.IF.IOutSideData} outSideData
+             * @returns {this}
+             */
+            loadOutSideAsset(outSideData: IF.IOutSideData);
+
+            /**
+             * 執行載入,不判斷載入資源資源進度
+             * @param {fcc.IF.IAssetData} assetData - 需載入的資源資料
+             */
+            executeLoad(assetData: IF.IAssetData);
 
             /**
              * 保存使用者要callback的方法,當有回傳進度時將透過 loadEventCallback方法回傳進度
@@ -113,7 +131,7 @@ namespace fcc {
              * @param {string} methodName- 自訂義拿取資源時的名稱
              * @returns {this}: methodName 未使用情況,回傳 void
              */
-            callback(callFun: (progress: number,isError?:boolean) => void, methodName?: string): this;
+            callback(callFun: (progress: number, isError?: boolean) => void, methodName?: string): this;
 
             /**
              * 加載外部腳本
@@ -123,7 +141,7 @@ namespace fcc {
              * @param parameter - GET 參數
              * @returns {this}
              */
-            loadExternalScript(name: string, type: type.LoadType, url: string,parameter?:string): this;
+            loadExternalScript(name: string, type: type.LoadType, url: string, parameter?: string): this;
 
             /**
              * 查看該資源是否已加載完畢
@@ -136,7 +154,7 @@ namespace fcc {
              * 清除資源
              * @param {string} type - 資源類型
              */
-            remove(type:string): void;
+            remove(type: string): void;
 
         }
     }

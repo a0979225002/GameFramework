@@ -2,8 +2,38 @@
 /// <reference path="../Error/ErrorManager.ts" />
 /// <reference path="../Global/Util.ts" />
 /// <reference path="./Enum/LoadType.ts" />
+/// <reference path="./Enum/ASSET_MODE.ts" />
 /// <reference path="./ILoad/ILoadResManager.ts" />
 /// <reference path="./LoadTypeHandler.ts" />
+
+
+namespace fcc {
+    export namespace IF {
+        export interface IAssetData {
+            /**
+             * 資源自訂義名稱
+             */
+            name: string,
+
+            /**
+             * 資源類型
+             */
+            loadType: fcc.type.LoadType,
+
+            /**
+             * 資源位置
+             */
+            url: string,
+
+            /**
+             * 當前是否為外部資源
+             */
+            assetMode: type.ASSET_MODE,
+        }
+    }
+}
+
+
 namespace fcc {
 
     /**
@@ -13,7 +43,9 @@ namespace fcc {
      * @Version 1.1
      */
     export class LoadResManager implements IF.ILoadResManager {
+
         private configManager: IF.IConfigManager;
+
         private static _instance: IF.ILoadResManager;
 
         /**
@@ -63,6 +95,11 @@ namespace fcc {
          */
         private _sceneRes: Map<string, cc.SceneAsset>
 
+        /**
+         * 載入順序
+         */
+        currentLoadOrder: Array<IF.IAssetData | IF.IOutSideData>
+
         private readonly loadTypeHandler: LoadTypeHandler;
         private callFun: Map<string, (progress: number, isError?: boolean) => void>;
         private count: number;
@@ -88,6 +125,7 @@ namespace fcc {
             this.allProgress = 0;                                                               //初始加載進度
             this.beforeProgress = 0;                                                            //初始上次加載的進度
             this.allProgressEndCount = 0;                                                       //因精準度問題,額外判斷是否所有資源都加載完畢
+            this.currentLoadOrder = new Array<IF.IAssetData | IF.IOutSideData>();               //保存當前載入順序
         }
 
 
@@ -137,7 +175,6 @@ namespace fcc {
 
             //當前所有加載的總進度
             if (this.callFun.has(null)) {
-
                 //預防多個重複進度回傳
                 //判斷與上一個進度是一樣的話,將不執行回傳,等待有新進度近來
                 let checkProgress: boolean =
@@ -188,7 +225,6 @@ namespace fcc {
          */
         private onlyResEventCallback(name: string, state: number, isError?: boolean) {
 
-
             //如果有綁訂的回傳方法時,將回傳該資源當前的加載進度
             if (this.callFun.has(name)) {
 
@@ -211,17 +247,26 @@ namespace fcc {
         /**
          * 加載該資料夾底下所有資源 注意: 需存放於 resources中
          * @param {string} name - 自訂義拿取資源時的名稱
-         * @param {LoadType} type - 要獲取的資源類型
+         * @param {LoadType} loadType - 要獲取的資源類型
          * @param {string} url - 要獲取的資源位置
          * @param {boolean} isLanguageUsed - 是否要使用語系位置
          * @return {this}
          */
-        loadAsset(name: string, type: type.LoadType, url: string, isLanguageUsed?: boolean): this {
+        loadAsset(name: string, loadType: type.LoadType, url: string, isLanguageUsed?: boolean): this {
             this.count += 1;
             if (isLanguageUsed) {
                 url = `${url}/${this.configManager.language}`;
             }
-            this.loadTypeHandler.executeLoad(name, type, url);
+            if (this.currentLoadOrder.length == 0) {
+                this.loadTypeHandler.executeLoad(name, loadType, url);
+            }
+            this.currentLoadOrder.push({
+                name: name,
+                loadType: loadType,
+                url: url,
+                assetMode: type.ASSET_MODE.RESOURCES
+            });
+
             return this;
         }
 
@@ -230,19 +275,58 @@ namespace fcc {
          * 使用此方法者,加載狀態存放次加載中 secondaryLoadState
          * 注意:須於UI勾選配置為Bundle資料夾
          * @param {string} name - 自訂義拿取資源時的名稱
-         * @param {LoadType} type - 要獲取的資源類型
+         * @param {LoadType} loadType - 要獲取的資源類型
          * @param {string} url - 要獲取的資源位置
          * @param {boolean} isLanguageUsed - 是否要使用語系位置
          */
-        loadBundle(name: string, type: type.LoadType, url: string, isLanguageUsed?: boolean): this {
-
+        loadBundle(name: string, loadType: type.LoadType, url: string, isLanguageUsed?: boolean): this {
             if (isLanguageUsed) {
                 url = `${url}/${this.configManager.language}`
             }
-
-            this.loadTypeHandler.executeLoadBundle(name, type, url).then();
-
+            if (this.currentLoadOrder.length == 0) {
+                this.loadTypeHandler.executeLoadBundle(name, loadType, url).then();
+            }
+            this.currentLoadOrder.push({
+                name: name,
+                loadType: loadType,
+                url: url,
+                assetMode: type.ASSET_MODE.IN_SIDE_BUNDLE
+            });
             return this;
+        }
+
+        /**
+         * 載入遠程外部Bundle
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {this}
+         */
+        loadOutSideAsset(outSideData: IF.IOutSideData) {
+            if (outSideData.isLanguageUsed) {
+                outSideData.url = `${outSideData.url}/${this.configManager.language}`
+            }
+            if (this.currentLoadOrder.length == 0) {
+                this.loadTypeHandler.executeLoadOutSideBundle(outSideData).then();
+            }
+            this.currentLoadOrder.push(outSideData);
+            return this;
+        }
+
+        /**
+         * 執行載入,不判斷載入資源資源進度
+         * @param {fcc.IF.IAssetData | IF.IOutSideData} assetData - 需載入的資源資料
+         */
+        executeLoad(assetData: IF.IAssetData | IF.IOutSideData) {
+            switch (assetData.assetMode) {
+                case fcc.type.ASSET_MODE.RESOURCES:
+                    this.loadTypeHandler.executeLoad(assetData.name, assetData.loadType, assetData.url);
+                    break;
+                case fcc.type.ASSET_MODE.IN_SIDE_BUNDLE:
+                    this.loadTypeHandler.executeLoadBundle(assetData.name, assetData.loadType, assetData.url).then();
+                    break;
+                case fcc.type.ASSET_MODE.OUT_SIDE_ASSET:
+                    this.loadTypeHandler.executeLoadOutSideBundle(<IF.IOutSideData>assetData).then();
+                    break;
+            }
         }
 
         /**
@@ -274,10 +358,14 @@ namespace fcc {
          * @param isMainResources
          */
         getLoadState(name: string, isMainResources: boolean): boolean {
+
             if (isMainResources) {
                 return this._initialLoadState.get(name) == 1;
+
             } else {
+
                 return this._secondaryLoadState.get(name) == 1;
+
             }
         }
 
@@ -397,6 +485,5 @@ namespace fcc {
         get sceneRes(): Map<string, cc.SceneAsset> {
             return this._sceneRes
         }
-
     }
 }

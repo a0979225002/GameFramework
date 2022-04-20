@@ -20,8 +20,7 @@ namespace fcc {
             private beforeProgress: number;
             private assetBundle: cc.AssetManager.Bundle
 
-            protected constructor(dataName: string, type: cc.Asset, url: string, folder: string,) {
-
+            protected constructor(dataName: string, type: cc.Asset, url: string, folder: string) {
                 this.type = type;               //當前要獲取的資源類型
                 this.url = url;                 //獲取的地址
                 this.dataName = dataName;       //要拿取資源的key
@@ -106,6 +105,19 @@ namespace fcc {
                 } else {
                     LoadResManager.instance.secondaryLoadState.set(this.dataName, 1);
                     LoadResManager.instance.loadSecondaryEventCallback(this.dataName, 1);
+                }
+                this.continueLoad();
+            }
+
+            /**
+             * 繼續加載
+             */
+            private continueLoad() {
+                if(!LoadResManager.instance.currentLoadOrder.length)return;
+                LoadResManager.instance.currentLoadOrder.shift();   //清除載入完成的Data
+                if (LoadResManager.instance.currentLoadOrder.length > 0) {
+                    const assetData = LoadResManager.instance.currentLoadOrder[0];
+                    LoadResManager.instance.executeLoad(assetData);
                 }
             }
 

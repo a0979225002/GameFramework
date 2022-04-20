@@ -17,9 +17,9 @@ namespace fcc {
         private factory: LoadTypeFactory;
         private loadResManager: IF.ILoadResManager;
 
-        constructor(loadResManager: IF.ILoadResManager,configManager: IF.IConfigManager) {
+        constructor(loadResManager: IF.ILoadResManager, configManager: IF.IConfigManager) {
             this.loadResManager = loadResManager;
-            this.factory = new LoadTypeFactory(loadResManager,configManager);
+            this.factory = new LoadTypeFactory(loadResManager, configManager);
         }
 
         /**
@@ -47,6 +47,17 @@ namespace fcc {
         }
 
         /**
+         * 外部加載資源
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {Promise<void>}
+         */
+        public async executeLoadOutSideBundle(outSideData: IF.IOutSideData) {
+            this.checkRepeatTheName(outSideData.name);
+            this.loadResManager.secondaryLoadState.set(outSideData.name, null);
+            await this.factory.executeLoadOutSideBundle(outSideData);
+        }
+
+        /**
          * 檢查重複命名
          * @param {string} name
          * @private
@@ -68,8 +79,8 @@ namespace fcc {
          * @param url - 檔案url,不含外部 url
          * @param parameter - get 參數
          */
-        executeLoadExternalScript(name: string, type: type.LoadType, url: string,parameter:string) {
-            this.factory.executeLoadExternalScript(name, type, url,parameter);
+        executeLoadExternalScript(name: string, type: type.LoadType, url: string, parameter: string) {
+            this.factory.executeLoadExternalScript(name, type, url, parameter);
         }
     }
 }
