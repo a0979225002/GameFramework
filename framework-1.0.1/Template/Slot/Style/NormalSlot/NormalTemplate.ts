@@ -426,7 +426,7 @@ export default class NormalTemplate<T extends fcc.NormalSetting> extends ABaseSl
         let duration = this.slotGirdSpeed * this.slotRowGridCount / this.speedRatio;
 
         //判斷該列是否有瞇排事件,如果有,將給予瞇排倍率
-        if (this.resultModel.LookAt[index] == 1) {
+        if (this.resultModel.LookAt[index] == 1 && !this.isSpeedUp) {
             duration = this.slotGirdSpeed * this.slotRowGridCount * this.lookAtSpeed;
         }
 
@@ -434,7 +434,6 @@ export default class NormalTemplate<T extends fcc.NormalSetting> extends ABaseSl
         if (isImmediateStopState) {
             duration = this.slotGirdSpeed * this.slotRowGridCount / this.stopNowSpeedMultiple;
         }
-
         const node = this.slotColumnToTween[index];
         const rowHeight = this.slotRowGridCount * this.slotGridHeight;
         //跑老虎機的每列

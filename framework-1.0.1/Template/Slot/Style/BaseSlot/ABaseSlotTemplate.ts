@@ -13,7 +13,7 @@ import {fcc} from "../../../System/FCCSystem";
  * @Date 2021-04-14 下午 20:24
  * @Version 1.1
  */
-export default abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSetting> extends fcc.ABaseSlotTemplate<T>{
+export default abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSetting> extends fcc.ABaseSlotTemplate<T> {
 
     /**
      * 由 fcc.slotStyleMgr build 實現
@@ -89,7 +89,7 @@ export default abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSettin
     protected isResultOK: boolean;
 
     protected constructor(styleData: T, configManager: fcc.IF.ISlotConfigManager) {
-        super(styleData,configManager);
+        super(styleData, configManager);
         this.isSpeedUp = configManager.isSpeedUp;                               //初始當前是否為加速
         this.styleData = styleData                                              //拿取老虎機樣式資料
         this.speedRatio = this.isSpeedUp ? styleData.speedUpMultiple : 1;       //初始當前速率
@@ -138,9 +138,10 @@ export default abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSettin
     protected getSpeedStateChangeObserver(): SpeedStateChangeObserver {
         if (!this.speedStateChangeObserver) {
             this.speedStateChangeObserver = new SpeedStateChangeObserver((isSpeedUp) => {
-                if(this.isResultOK){
-                    isSpeedUp ? this.speedRatio = this.styleData.speedUpMultiple : this.speedRatio = 1;
+                if(fcc.processMgr.gameState == fcc.type.GameStateType.STANDBY){
+                    this.isSpeedUp = isSpeedUp;
                 }
+                isSpeedUp ? this.speedRatio = this.styleData.speedUpMultiple : this.speedRatio = 1;
             }, this);
         }
         return this.speedStateChangeObserver;
