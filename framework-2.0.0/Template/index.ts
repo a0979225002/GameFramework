@@ -74,9 +74,6 @@ export {default as AErrorFrameTemplate} from './ErrorFrame/AErrorFrameTemplate';
 /*載入SCENE 模板*/
 export {default as ALoadingTemplate} from './Loading/ALoadingTemplate';
 
-/*贏分線效果 模板*/
-export {default as AWinLinTemplate} from './WinLine/AWinLinTemplate';
-
 /*主遊戲進入初始化動作 模板*/
 export {default as AMainInitTemplate} from './MainInit/AMainInitTemplate';
 

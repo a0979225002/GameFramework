@@ -2,13 +2,11 @@
 /// <reference path="../Error/ErrorManager.ts" />
 /// <reference path="../Event/EventManager.ts" />
 /// <reference path="../Load/LoadResManager.ts" />
-/// <reference path="../Process/ProcessManager.ts" />
 /// <reference path="../Scene/SceneManager.ts" />
 /// <reference path="../Slot/SlotStyleManager.ts" />
-/// <reference path="../Process/Enum/AutoType.ts" />
 /// <reference path="./IConfig/ISlotConfigManager.ts" />
 /// <reference path="../Language/Enum/LanguageType.ts" />
-/// <reference path="../Process/Enum/AutoType.ts" />
+/// <reference path="Enum/AutoType.ts" />
 namespace fcc {
 
     /**
@@ -300,7 +298,6 @@ namespace fcc {
             LanguageManager.setInstance(this);
             EventManager.setInstance(this);
             LoadResManager.setInstance(this);
-            ProcessManager.setInstance(this);
             FSMManager.setInstance(this);
             SceneManager.setInstance(this);
             SlotStyleManager.setInstance(this);

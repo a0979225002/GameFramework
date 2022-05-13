@@ -4,7 +4,6 @@
 /// <reference path="./Language/LanguageManager.ts" />
 /// <reference path="./Event/EventManager.ts" />
 /// <reference path="./Load/LoadResManager.ts" />
-/// <reference path="./Process/ProcessManager.ts" />
 /// <reference path="./Scene/SceneManager.ts" />
 /// <reference path="./Slot/SlotStyleManager.ts" />
 /// <reference path="./Notification/NotificationManager.ts" />
@@ -58,12 +57,6 @@ namespace fcc {
      * @return {IF.IBaseFSM}
      */
     export let FSMMgr: IF.IBaseFSM;
-
-    /**
-     * 遊戲流程管理器 : 管理當前流程,執行當前流程
-     * @return {fcc.IF.IProcessManager}
-     */
-    export let processMgr: IF.IProcessManager;
 
     /**
      * 場景管理器 : 自動匹配遊戲寬高,監聽當前玩家遊玩模式(橫式or直式)

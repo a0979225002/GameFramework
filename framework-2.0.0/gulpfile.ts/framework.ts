@@ -1,7 +1,6 @@
 const gulp = require("gulp");
 const ts = require("gulp-typescript");
 const sourcemaps = require('gulp-sourcemaps');
-const rename = require("gulp-rename");
 const clean = require('gulp-clean');
 const jsobfuscator = require('gulp-javascript-obfuscator');
 const browserify = require('gulp-browserify');
@@ -9,8 +8,7 @@ const merge = require('merge2');
 const through = require('through2');
 const fs = require("fs");
 const uglify = require('gulp-uglify');
-const concat = require('gulp-concat');
-const rollup = require('gulp-rollup');
+
 /*預設版本*/
 const DEFAULT = "1.0.0";
 

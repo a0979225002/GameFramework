@@ -190,7 +190,6 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
      */
     protected async longTouchTimer(): Promise<void> {
         this.autoButtonEventListener();
-        await this.startButtonEvent();
     }
 
     /**
