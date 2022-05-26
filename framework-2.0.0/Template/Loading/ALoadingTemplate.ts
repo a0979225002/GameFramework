@@ -62,10 +62,6 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
      */
     protected abstract loadAssetBundle(): void;
 
-    /**
-     * 載入外部資源
-     */
-    protected abstract loadExternalScript(): void;
 
     /**
      * 更新讀取條文字動畫
@@ -125,4 +121,10 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
     get isGetTableInfoResponse(): boolean {
         return this._isGetTableInfoResponse
     }
+
+    /**
+     * 載入外部資源
+     */
+    protected loadExternalScript(): void {
+    };
 }

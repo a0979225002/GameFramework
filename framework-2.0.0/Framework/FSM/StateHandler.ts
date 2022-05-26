@@ -73,7 +73,7 @@ namespace fcc {
          * @param {string} nextState - 下一個狀態
          */
         changeState(nextState: string): void {
-            if (!this.stateRecorder.getCurrentState()) {
+            if (!this.stateRecorder) {
                 errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `你尚未初始預設狀態 : 請先執行 initialState()`);
                 return;
             }
@@ -101,6 +101,10 @@ namespace fcc {
          * @returns {IProcess}
          */
         getCurrentStateContent(): fcc.IF.IStateAction {
+            if (!this.stateRecorder) {
+                errorMgr.executeError(fcc.type.ErrorType.PROCESS_FW, `當前無使用任何狀態,回傳為NULL`);
+                return;
+            }
             return this.stateActionContainer.get(this.stateRecorder.getCurrentState());
         }
 

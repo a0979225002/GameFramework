@@ -1160,10 +1160,6 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      */
     protected abstract loadAssetBundle(): void;
     /**
-     * 載入外部資源
-     */
-    protected abstract loadExternalScript(): void;
-    /**
      * 更新讀取條文字動畫
      */
     protected abstract updateProgressTextAnimation(): void;
@@ -1183,6 +1179,10 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      * @private
      */
     get isGetTableInfoResponse(): boolean;
+    /**
+     * 載入外部資源
+     */
+    protected loadExternalScript(): void;
 }
 /**
  * @Author XIAO-LI-PIN
