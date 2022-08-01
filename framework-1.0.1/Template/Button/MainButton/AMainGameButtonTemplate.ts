@@ -352,7 +352,6 @@ export default abstract class AMainGameButtonTemplate extends AGenericTemplate {
         fcc.notificationMgr<SpeedStateChangeNotification>()
             .getNotification(fcc.type.NotificationType.SPEED_CHANGE)
             .notify(this.nowSpeed);
-
         this.speedUpEvent(this.nowSpeed);
     }
 

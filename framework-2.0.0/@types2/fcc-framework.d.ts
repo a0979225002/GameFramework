@@ -4,8 +4,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 各種錯誤類型
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum ErrorType {
             /**
@@ -79,8 +79,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 無從判斷該錯誤類型
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class UnknownError {
         private configManager;
@@ -92,8 +92,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 檢測該錯誤是否為框架錯誤
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class FrameWorkError {
         private unknownError;
@@ -106,8 +106,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 檢測該錯誤是否為物件錯誤
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class ObjectError {
         private frameWorkError;
@@ -120,8 +120,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 顯示server回傳的錯誤
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class ServerError implements IF.IShowErrorDialog {
         private timeOut;
@@ -141,8 +141,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 顯示警告錯誤
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class WarningError implements IF.IShowErrorDialog {
         private timeout;
@@ -162,8 +162,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)Error管理器 錯誤事件中介者
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IErrorHandler {
             /**
@@ -202,8 +202,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description Error管理器 錯誤事件中介者
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class ErrorHandler implements IF.IErrorHandler {
         private objectError;
@@ -246,8 +246,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面) 錯誤訊息管理器
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IErrorManager {
             /**
@@ -372,8 +372,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 錯誤管理器 : 框架錯誤管理
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class ErrorManager implements IF.IErrorManager {
         private static _instance;
@@ -505,8 +505,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 音樂撥放疊加時,各種狀態設定
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum AudioStateType {
             /**
@@ -532,8 +532,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)音樂工廠類,派發音樂事件
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IAudioFactory {
             /**
@@ -600,8 +600,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)音樂管理類
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IAudioManager {
             /**
@@ -710,8 +710,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 共用:操作數字{number}類方法
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         class Util {
             private static formatting;
@@ -765,8 +765,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 各種類型資源
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum LoadType {
             /**
@@ -825,8 +825,8 @@ declare namespace fcc {
         /**
          * @Author 蕭立品
          * @Description 加載類型
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum ASSET_MODE {
             /**
@@ -840,10 +840,15 @@ declare namespace fcc {
              */
             IN_SIDE_BUNDLE = 1,
             /**
+             * 外部資源,主要加載
+             * @type {ASSET_MODE.OUT_SIDE_ASSET}
+             */
+            OUT_SIDE_MAIN_ASSET = 2,
+            /**
              * 外部資源
              * @type {ASSET_MODE.OUT_SIDE_ASSET}
              */
-            OUT_SIDE_ASSET = 2
+            OUT_SIDE_ASSET = 3
         }
     }
 }
@@ -852,8 +857,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)資源管理者
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface ILoadResManager {
             /**
@@ -931,6 +936,12 @@ declare namespace fcc {
              */
             loadAsset(name: string, type: type.LoadType, url: string, isLanguageUsed?: boolean): this;
             /**
+             * 載入主要遠程外部Bundle
+             * @param {fcc.IF.IOutSideData} outSideData
+             * @returns {this}
+             */
+            loadMainOutSideAsset(outSideData: IF.IOutSideData): this;
+            /**
              * 加載 該 assetBundle 底下資源
              * 使用此方法者,加載狀態存放次加載中 secondaryLoadState
              * 注意:須於UI勾選配置為Bundle資料夾
@@ -945,7 +956,7 @@ declare namespace fcc {
              * @param {fcc.IF.IOutSideData} outSideData
              * @returns {this}
              */
-            loadOutSideAsset(outSideData: IF.IOutSideData): any;
+            loadOutSideAsset(outSideData: IF.IOutSideData): this;
             /**
              * 執行載入,不判斷載入資源資源進度
              * @param {fcc.IF.IAssetData} assetData - 需載入的資源資料
@@ -986,8 +997,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面) 載入各類資源工廠
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface ILoadFactory {
             /**
@@ -1012,6 +1023,18 @@ declare namespace fcc {
              * @param parameter - get 參數
              */
             executeLoadExternalScript(name: string, type: type.LoadType, url: string, parameter: string): void;
+            /**
+             * 加載主要外部資源
+             * @param {fcc.IF.IOutSideData} outSideData
+             * @returns {Promise<void>}
+             */
+            executeMainLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void>;
+            /**
+             * 外部加載資源
+             * @param {fcc.IF.IOutSideData} outSideData
+             * @returns {Promise<void>}
+             */
+            executeLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void>;
         }
     }
 }
@@ -1020,8 +1043,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)EventTarget 事件
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IEventManager {
             /**
@@ -1065,8 +1088,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 事件管理器,當前綁定的事件,事件數量
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class EventManager implements IF.IEventManager {
         private static _instance;
@@ -1128,8 +1151,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 遊戲場景樣式
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum SceneStyleType {
             /**
@@ -1155,8 +1178,8 @@ declare namespace fcc {
         /**
          * @Author 蕭立品
          * @Description 當前方向
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum SceneDirectionType {
             /**
@@ -1177,8 +1200,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面) 場景管理器
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface ISceneManager {
             /**
@@ -1229,8 +1252,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 監聽當前遊戲,玩家是否有更動寬高
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SceneSizeChangeListener {
         private _isCanUpdateScene;
@@ -1256,8 +1279,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description TODO
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         abstract class ABaseNotification implements IF.IBaseNotification {
             /**
@@ -1308,8 +1331,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 推播事件
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum NotificationType {
             /**
@@ -1368,8 +1391,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 場景方向改變觀察者,當有事件推送時,將會將該事件推播給綁定者
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SceneDirectionChangeObserver implements IF.IBaseObserver {
         private _isPermanent;
@@ -1385,8 +1408,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 場景方向改變通知管理器
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SceneDirectionChangeNotification extends ABS.ABaseNotification {
         /**
@@ -1412,8 +1435,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 自動模式 : 依照玩家當前的使用方式,自動更新為橫式 or 直式
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class AutoStyle implements IF.ISceneStyle {
         private sceneManager;
@@ -1433,8 +1456,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 橫式樣式更新
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class HorizontalStyle implements IF.ISceneStyle {
         private curDR;
@@ -1445,8 +1468,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 直式樣式更新
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class VerticalStyle implements IF.ISceneStyle {
         executionStyle(width: number, height: number): void;
@@ -1456,8 +1479,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 依照初始設定對應的更新模式,更新當前遊戲場景
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SceneStyleHandler {
         private autoStyle;
@@ -1478,8 +1501,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 場景管理器 : 自動匹配遊戲寬高,監聽當前玩家遊玩模式(橫式or直式)
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SceneManager implements IF.ISceneManager {
         private configManager;
@@ -1569,8 +1592,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 老虎機管理器 : 管理老虎機樣式,執行速度,效果
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SlotStyleManager implements IF.ISlotStyleManager {
         private static _instance;
@@ -1613,8 +1636,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面) 老虎機類遊戲初期設定
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface ISlotConfigManager extends IConfigManager {
             /**
@@ -1667,8 +1690,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description TODO
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum LanguageType {
             /**
@@ -1712,8 +1735,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 遊戲自動狀態種類
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum AutoType {
             /**
@@ -1753,8 +1776,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 遊戲初始設定,並透過builder加載所有Manager
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SlotConfigManager implements IF.ISlotConfigManager {
         private static _instance;
@@ -1957,8 +1980,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (抽象類)載入外部腳本
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         abstract class ALoadScriptType {
             protected scriptName: string;
@@ -1975,8 +1998,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 加載外部css資源
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class CSSLoad extends ABS.ALoadScriptType {
         private readonly linkElem;
@@ -1989,8 +2012,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 載入外部 js 腳本
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         private readonly linkElem;
         constructor(scriptName: string, type: string, url: string, parameter: string);
@@ -2002,17 +2025,18 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (抽象類)載入各類cocos資源
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         abstract class ALoadType implements IF.ILoadType {
             protected type: any;
             protected url: string;
             protected dataName: string;
             protected folder: string;
+            protected isMainLoad: boolean;
             private beforeProgress;
             private assetBundle;
-            protected constructor(dataName: string, type: cc.Asset, url: string, folder: string);
+            constructor(loadConfig: IF.ILoadConfig);
             /**
              * 加載資源方法
              */
@@ -2062,11 +2086,10 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 載入圖片資源
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class ImgLoad extends ABS.ALoadType {
-        constructor(dataName: string, type: any, url: string, folder: string);
         /**
          * 將資源保存在管理器中
          * @param {string} dataName - 自訂義該資源名稱
@@ -2080,11 +2103,10 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 載入音樂資源
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class MusicLoad extends ABS.ALoadType {
-        constructor(dataName: string, type: any, url: string, folder: string);
         /**
          * 將資源保存在管理器中
          * @param {string} dataName - 自訂義該資源名稱
@@ -2098,11 +2120,10 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 載入圖片資源
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class PrefabLoad extends ABS.ALoadType {
-        constructor(dataName: string, type: any, url: string, folder: string);
         /**
          * 將資源保存在管理器中
          * @param {string} dataName - 自訂義該資源名稱
@@ -2116,11 +2137,10 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 載入場景資源
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SceneLoad extends ABS.ALoadType {
-        constructor(dataName: string, type: any, url: string, folder: string);
         /**
          * 將資源保存在管理器中
          * @param {string} dataName - 自訂義該資源名稱
@@ -2134,15 +2154,14 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 載入骨骼动画資源
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SpineLoad extends ABS.ALoadType {
-        constructor(dataName: string, type: any, url: string, folder: string);
         /**
          * 將資源保存在管理器中
          * @param {string} dataName - 自訂義該資源名稱
-         * @param {cc.SkeletonData} asset - 資源
+         * @param {sp.SkeletonData} asset - 資源
          * @protected
          */
         setResToManager(dataName: string, asset: Array<sp.SkeletonData>): void;
@@ -2152,16 +2171,15 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 載入文本資源,目前只能載入.CSV 檔案
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class TextLoad extends ABS.ALoadType {
-        constructor(dataName: string, type: any, url: string, folder: string);
         /**
          *  目前只能傳入 .CSV 檔案,目前無從判斷該檔案副檔名
          *  因此需自行檢查回傳資料是否正確
          * @param {string} dataName - 自訂義該資源名稱
-         * @param {cc.SkeletonData} asset - 資源
+         * @param {cc.TextAsset} asset - 資源
          * @protected
          */
         setResToManager(dataName: string, asset: cc.TextAsset): void;
@@ -2171,8 +2189,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 載入各類資源工廠
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class LoadTypeFactory implements IF.ILoadFactory {
         private assetBundles;
@@ -2212,11 +2230,14 @@ declare namespace fcc {
          */
         executeLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void>;
         /**
+         * 加載主要外部資源
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {Promise<void>}
+         */
+        executeMainLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void>;
+        /**
          * 確認當前資源類型,給相對應class 處理
-         * @param {string} dataName - 自訂義資源名稱
-         * @param {fcc.type.LoadType} type - 資源類型
-         * @param {string} url - 資源位置
-         * @param {string} folder - 資源父類資料夾,默認 resource
+         * @param {fcc.IF.ILoadConfig} loadConfig
          * @private
          */
         private checkLoadType;
@@ -2234,8 +2255,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 處理個別類型資源載入
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class LoadTypeHandler implements IF.ILoadFactory {
         private factory;
@@ -2255,6 +2276,12 @@ declare namespace fcc {
          * @param url
          */
         executeLoadBundle(name: string, type: type.LoadType, url: string): Promise<void>;
+        /**
+         * 加載主要外部資源
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {Promise<void>}
+         */
+        executeMainLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void>;
         /**
          * 外部加載資源
          * @param {fcc.IF.IOutSideData} outSideData
@@ -2303,8 +2330,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 資源管理者 : 加載資源,保存資源,或取當前加載進度
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class LoadResManager implements IF.ILoadResManager {
         private configManager;
@@ -2424,6 +2451,12 @@ declare namespace fcc {
          * @param {fcc.IF.IOutSideData} outSideData
          * @returns {this}
          */
+        loadMainOutSideAsset(outSideData: IF.IOutSideData): this;
+        /**
+         * 載入遠程外部Bundle
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {this}
+         */
         loadOutSideAsset(outSideData: IF.IOutSideData): this;
         /**
          * 執行載入,不判斷載入資源資源進度
@@ -2482,8 +2515,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 音樂撥放|暫停控制器,跟音效類稍微不同,只保存當下一個MusicID
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class MusicController implements IF.IAudioType {
         private musicID;
@@ -2508,8 +2541,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 效果音效撥放|暫停控制器
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class EffectController implements IF.IAudioType {
         private effectID;
@@ -2535,8 +2568,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 音樂工廠類,派發音樂事件
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class AudioFactory implements IF.IAudioFactory {
         private readonly musicVolume;
@@ -2620,8 +2653,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 音樂管理器,初始設定各音樂狀態,保存當前撥放音量
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class AudioManager implements IF.IAudioManager {
         private configManager;
@@ -2776,8 +2809,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description 語系管理器 : 保存當前語言本,語系樣式
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class LanguageManager implements IF.ILanguageManager {
         /**
@@ -2884,8 +2917,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 綁定自己需要的所有推撥者
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class NotificationManager<T extends IF.IBaseNotification> implements IF.INotificationManager<T> {
         /**
@@ -2936,8 +2969,8 @@ declare namespace fcc {
         /**
          * @Author 蕭立品
          * @Description TODO
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IPool {
             /**
@@ -2964,8 +2997,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description TODO
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class CCNodePool implements IF.IPool {
         private pool;
@@ -2990,8 +3023,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description TODO
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class SelfPool implements IF.IPool {
         private list;
@@ -3013,8 +3046,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description 緩存池管理器
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class NodePoolManager {
         private static _instance;
@@ -3126,8 +3159,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description 狀態機管理器
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     class FSMManager implements IF.IBaseFSM {
@@ -3225,8 +3258,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description 狀態流程跳轉class,設定當前狀態與下一個可移動的狀態
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     class ProcessTransition implements IF.IBaseProcessTransition {
@@ -3254,8 +3287,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description 狀態建構封裝
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     class StateBuilder {
@@ -3295,8 +3328,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description 狀態確認處理
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     class StateHandler implements IF.IBaseFSM {
@@ -3396,8 +3429,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description 狀態紀錄器
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     class StatusRecorder implements IF.IBaseStatusRecorder {
@@ -3469,8 +3502,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 共用:按鈕類方法
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         class Button {
             /**
@@ -3515,8 +3548,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 共用:Prefab方法
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         class Prefab {
             /**
@@ -3539,8 +3572,8 @@ declare namespace fcc {
         /**
          * @Author 蕭立品
          * @Description (介面) 語言樣是樣式表
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface ILanguageStyle {
             fontSize: number;
@@ -3555,8 +3588,8 @@ declare namespace fcc {
         /**
          * @Author 蕭立品
          * @Description (介面)語系管理
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface ILanguageManager {
             /**
@@ -3621,8 +3654,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description 通用對象池
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class ObjectPool<T> {
         private buffList;
@@ -3638,8 +3671,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description 對象池管理器
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class PoolManager {
         private static _instance;
@@ -3655,8 +3688,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description TODO
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class TSObjectPool<T> {
         private pool;
@@ -3676,8 +3709,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description TODO
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class TSPoolManager {
         private pools;
@@ -3701,8 +3734,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)綁定自己需要的所有推撥者
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface INotificationManager<T extends IBaseNotification> {
             /**
@@ -3734,8 +3767,8 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 執行老虎機主要方法(基礎類)
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     abstract class ABaseSlotTemplate<T extends fcc.IF.IBaseSlotSetting> implements fcc.IF.IBaseSlotTemplate<T> {
         protected constructor(styleData: T, configManager: fcc.IF.IConfigManager);
@@ -3760,8 +3793,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)執行老虎機主要方法
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IBaseSlotTemplate<T extends fcc.IF.IBaseSlotSetting> {
             /**
@@ -3785,32 +3818,9 @@ declare namespace fcc {
     namespace IF {
         /**
          * @Author XIAO-LI-PIN
-         * @Description (介面)音樂控制器,由音樂工廠做相對應呼叫對應的控制器
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
-         */
-        interface IAudioType {
-            /**
-             * 撥放音樂
-             * @param {string} name : 資源名稱
-             * @param {Map<string, any>} data : 該音樂撥放數據
-             */
-            play(name: string, data: Map<string, any>): void;
-            /**
-             * 停止該音樂
-             * @param {string} name
-             */
-            stop(name?: string): void;
-        }
-    }
-}
-declare namespace fcc {
-    namespace IF {
-        /**
-         * @Author XIAO-LI-PIN
          * @Description (介面)一般遊戲初期設定
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IConfigManager {
             /**
@@ -3961,10 +3971,33 @@ declare namespace fcc {
 declare namespace fcc {
     namespace IF {
         /**
+         * @Author XIAO-LI-PIN
+         * @Description (介面)音樂控制器,由音樂工廠做相對應呼叫對應的控制器
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
+         */
+        interface IAudioType {
+            /**
+             * 撥放音樂
+             * @param {string} name : 資源名稱
+             * @param {Map<string, any>} data : 該音樂撥放數據
+             */
+            play(name: string, data: Map<string, any>): void;
+            /**
+             * 停止該音樂
+             * @param {string} name
+             */
+            stop(name?: string): void;
+        }
+    }
+}
+declare namespace fcc {
+    namespace IF {
+        /**
          * @Author 蕭立品
          * @Description TODO
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IShowErrorDialog {
             /**
@@ -3982,8 +4015,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description server 回傳事件 型
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         enum ServerEventType {
             /**
@@ -4024,8 +4057,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description (介面) 狀態機管理器
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     namespace IF {
@@ -4106,8 +4139,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description (介面) 狀態流程跳轉class,設定當前狀態與下一個可移動的狀態
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     namespace IF {
@@ -4129,8 +4162,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description TODO
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     namespace IF {
@@ -4157,8 +4190,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description (介面) 狀態紀錄器
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     namespace IF {
@@ -4199,8 +4232,8 @@ declare namespace fcc {
 /**
  * @Author 蕭立品
  * @Description 狀態內容
- * @Date 2022/4/26 下午4:14:41
- * @Version framework-2.0.0 : 1.2.2
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
  */
 declare namespace fcc {
     namespace IF {
@@ -4224,6 +4257,39 @@ declare namespace fcc {
         }
     }
 }
+/**
+ * @Author 蕭立品
+ * @Description TODO
+ * @Date 2022/6/16 下午4:09:23
+ * @Version framework-2.0.0 : 1.2.9
+ */
+declare namespace fcc {
+    namespace IF {
+        interface ILoadConfig {
+            type: type.LoadType;
+            /**
+             * 要拿取資源的key
+             */
+            dataName: string;
+            /**
+             * 當前要獲取的資源類型
+             */
+            ccType: any;
+            /**
+             * 獲取的地址
+             */
+            url: string;
+            /**
+             * 父資料夾名稱
+             */
+            folder: string;
+            /**
+             * 是否是主資源,判斷用
+             */
+            isMainLoad: boolean;
+        }
+    }
+}
 declare namespace fcc {
     namespace IF {
         interface ILoadType {
@@ -4239,8 +4305,8 @@ declare namespace fcc {
         /**
          * @Author 蕭立品
          * @Description 外部讀取資訊
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IOutSideData {
             /**
@@ -4282,11 +4348,10 @@ declare namespace fcc {
     /**
      * @Author XIAO-LI-PIN
      * @Description 載入圖片資源
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class ImgAtlasLoad extends ABS.ALoadType {
-        constructor(dataName: string, type: any, url: string, folder: string);
         /**
          * 將資源保存在管理器中
          * @param {string} dataName - 自訂義該資源名稱
@@ -4301,8 +4366,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)通知事件管理器
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IBaseNotification {
             /**
@@ -4345,8 +4410,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 推撥持有者,可綁定於該推播者底下,當有事件推播時,將會推播給該class
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         abstract class ABaseObserver implements IF.IBaseObserver {
             /**
@@ -4391,8 +4456,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 所有的通知推波實作接繼承這個介面
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IBaseObserver {
             isPermanent: boolean;
@@ -4408,27 +4473,11 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面) 對應該樣式,更新當前場景
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface ISceneStyle {
             executionStyle(width: number, height: number): void;
-        }
-    }
-}
-declare namespace fcc {
-    namespace IF {
-        /**
-         * @Author XIAO-LI-PIN
-         * @Description (介面)所有類型Slot接收封包的父類
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
-         */
-        interface IBaseSlotResultModel {
-            /**
-             * 0: 押注成功 1: 非免費時間押注
-             */
-            State: number;
         }
     }
 }
@@ -4437,8 +4486,8 @@ declare namespace fcc {
         /**
          * @Author 蕭立品
          * @Description 所有SLOT設定檔的父類
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         abstract class ABaseSlotSetting implements IF.IBaseSlotSetting {
             /**
@@ -4743,8 +4792,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description (介面)Slot參數設定
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IBaseSlotSetting {
             /**
@@ -4925,8 +4974,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description 老虎機轉動時與顯示答案時的圖片一致,且可對各列分別給予停軸時間
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class NormalSetting extends ABS.ABaseSlotSetting {
         /**
@@ -4986,8 +5035,8 @@ declare namespace fcc {
     /**
      * @Author 蕭立品
      * @Description 老虎機轉動時使用模糊圖片,且可對各列分別給予停軸時間
-     * @Date 2022/4/26 下午4:14:41
-     * @Version framework-2.0.0 : 1.2.2
+     * @Date 2022/6/16 下午4:09:23
+     * @Version framework-2.0.0 : 1.2.9
      */
     class NormalBlurImageSetting extends NormalSetting {
         /**
@@ -5009,249 +5058,15 @@ declare namespace fcc {
     namespace IF {
         /**
          * @Author XIAO-LI-PIN
-         * @Description (介面)擴展類有線免費狀態封包
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Description (介面)所有類型Slot接收封包的父類
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
-        interface IExtendHasLineFreeResult extends IBaseSlotResultModel {
+        interface IBaseSlotResultModel {
             /**
-             * 玩家現有金額(贏分後)
+             * 0: 押注成功 1: 非免費時間押注
              */
-            UserPointAfter: number;
-            /**
-             * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-             */
-            GameState: number;
-            /**
-             * 剩餘免費遊戲次數 (0:沒有 1~99次)
-             */
-            Count: number;
-            /**
-             * 免費遊戲累計贏分
-             */
-            FreeSpinWin: number;
-            /**
-             * 總贏得金額 (0:輸了 大於0:贏了 )
-             */
-            TotalWinPoint: number;
-            /**
-             * 15格的資料
-             */
-            Grid: Array<number>;
-            /**
-             * 瞇牌0:不用 1:瞇牌效果
-             */
-            LookAt: Array<number>;
-            /**
-             * 黏性圖標編號
-             */
-            StickySymbol: number;
-            /**
-             * 黏性圖標位置
-             */
-            StickyChange: Array<number>;
-            /**
-             * 每條線贏分
-             */
-            LineWin: Array<number>;
-            /**
-             * 每條線贏幾格
-             */
-            LineGrid: Array<number>;
-            /**
-             * 再中免費遊戲次數 0:無 1~99:次
-             */
-            FreeToFree: number;
-            /**
-             * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-             */
-            BaseLevelWin: number;
-            /**
-             * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-             */
-            FreeLevelWin: number;
-        }
-    }
-}
-declare namespace fcc {
-    namespace IF {
-        /**
-         * 台灣黑熊玩法免費模式RoundDetail內部資料
-         */
-        type IFormosanBearStyleFreeRoundDetailData = {
-            FreeSpinCount: number;
-            GameMode: number;
-            GridAfter: Array<number>;
-            GridBefore: Array<number>;
-            LineGrid: Array<number>;
-            LineWin: Array<number>;
-            LookAt: Array<number>;
-            RoundLevelWin: number;
-            RoundWin: string;
-            ScatterPos: Array<number>;
-            TotalWin: string;
-            ScatterWin: number;
-            StickyReels: Array<number>;
-        };
-        /**
-         * 台灣黑熊玩法免費模式RoundDetailObject物件
-         */
-        interface IFormosanBearStyleFreeRoundDetailObject {
-            [name: string]: IFormosanBearStyleFreeRoundDetailData;
-        }
-        /**
-         * @Author 蕭立品
-         * @Description 台灣黑熊樣式,免費模式回傳參數
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
-         */
-        interface IFormosanBearStyleFreeResult extends IBaseSlotResultModel {
-            TotalWinPoint: number;
-            UserPointBefore: number;
-            UserPointAfter: number;
-            GameState: number;
-            LevelWin: number;
-            RoundDetail: IFormosanBearStyleFreeRoundDetailObject;
-        }
-    }
-}
-declare namespace fcc {
-    namespace IF {
-        /**
-         * @Author XIAO-LI-PIN
-         * @Description (介面)有線類免費狀態封包
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
-         */
-        interface IHasLineFreeResultModule extends IBaseSlotResultModel {
-            /**
-             * 玩家現有金額(贏分後)
-             */
-            UserPointAfter: number;
-            /**
-             * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-             */
-            GameState: number;
-            /**
-             * 剩餘免費遊戲次數 (0:沒有 1~99次)
-             */
-            Count: number;
-            /**
-             * 免費遊戲累計贏分
-             */
-            FreeSpinWin: number;
-            /**
-             * 總贏得金額 (0:輸了 大於0:贏了 )
-             */
-            TotalWinPoint: number;
-            /**
-             * 15格的資料
-             */
-            Grid: Array<number>;
-            /**
-             * 瞇牌0:不用 1:瞇牌效果
-             */
-            LookAt: Array<number>;
-            /**
-             * 是否有鬼牌 0:沒有 1:有
-             */
-            ChangeState: number;
-            /**
-             * 15格的資料 換圖 0:不換 1:換
-             */
-            Change: Array<number>;
-            /**
-             * 每條線贏分
-             */
-            LineWin: Array<number>;
-            /**
-             * 每條線贏幾格
-             */
-            LineGrid: Array<number>;
-            /**
-             * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
-             */
-            LevelWin: number;
-            /**
-             * 再中免費遊戲次數 0:無 1~99:次
-             */
-            FreeToFree: number;
-            /**
-             * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-             */
-            BaseLevelWin: number;
-            /**
-             * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-             */
-            FreeLevelWin: number;
-        }
-    }
-}
-declare namespace fcc {
-    namespace IF {
-        /**
-         * @Author XIAO-LI-PIN
-         * @Description (介面)無線類免費狀態封包
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
-         */
-        interface INoLineFreeResultModel extends IBaseSlotResultModel {
-            /**
-             * 玩家現有金額(贏分後)
-             */
-            UserPointAfter: number;
-            /**
-             * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
-             */
-            GameState: number;
-            /**
-             * 剩餘免費遊戲次數 (0:沒有 1~99次)
-             */
-            Count: number;
-            /**
-             * 免費遊戲累計贏分
-             */
-            FreeSpinWin: number;
-            /**
-             * 總贏得金額 (0:輸了 大於0:贏了 )
-             */
-            TotalWinPoint: number;
-            /**
-             * 15格的資料
-             */
-            Grid: Array<number>;
-            /**
-             * 瞇牌0:不用 1:瞇牌效果
-             */
-            LookAt: Array<number>;
-            /**
-             * 是否有鬼牌 0:沒有 1:有
-             */
-            ChangeState: number;
-            /**
-             * 15格的資料 換圖 0:不換 1:換
-             */
-            Change: Array<number>;
-            /**
-             * 哪幾格贏 0:沒贏 1:贏
-             */
-            GridWin: Array<number>;
-            /**
-             * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
-             */
-            LevelWin: number;
-            /**
-             * 再中免費遊戲次數 0:無 1~99:次
-             */
-            FreeToFree: number;
-            /**
-             * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-             */
-            BaseLevelWin: number;
-            /**
-             * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
-             */
-            FreeLevelWin: number;
+            State: number;
         }
     }
 }
@@ -5260,8 +5075,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 擴展有線Slot遊戲狀態封包
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IExtendHasLineResult extends IBaseSlotResultModel {
             /**
@@ -5353,8 +5168,8 @@ declare namespace fcc {
         /**
          * @Author 蕭立品
          * @Description 台灣黑熊樣式,一般模式,回傳參數
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IFormosanBearStyleResult extends IBaseSlotResultModel {
             TotalWinPoint: number;
@@ -5371,8 +5186,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 有線Slot遊戲狀態封包
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
          */
         interface IHasLineResultModule extends IBaseSlotResultModel {
             /**
@@ -5431,8 +5246,8 @@ declare namespace fcc {
         /**
          * @Author XIAO-LI-PIN
          * @Description 無線Slot遊戲狀態封包
-         * @Date 2022/4/26 下午4:14:41
-         * @Version framework-2.0.0 : 1.2.2.3
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9.3
          */
         interface INoLineResultModel extends IBaseSlotResultModel {
             /**
@@ -5483,6 +5298,256 @@ declare namespace fcc {
              * 活動轉數
              */
             BonusEventCount: number;
+        }
+    }
+}
+declare namespace fcc {
+    namespace IF {
+        /**
+         * @Author XIAO-LI-PIN
+         * @Description (介面)擴展類有線免費狀態封包
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
+         */
+        interface IExtendHasLineFreeResult extends IBaseSlotResultModel {
+            /**
+             * 玩家現有金額(贏分後)
+             */
+            UserPointAfter: number;
+            /**
+             * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
+             */
+            GameState: number;
+            /**
+             * 剩餘免費遊戲次數 (0:沒有 1~99次)
+             */
+            Count: number;
+            /**
+             * 免費遊戲累計贏分
+             */
+            FreeSpinWin: number;
+            /**
+             * 總贏得金額 (0:輸了 大於0:贏了 )
+             */
+            TotalWinPoint: number;
+            /**
+             * 15格的資料
+             */
+            Grid: Array<number>;
+            /**
+             * 瞇牌0:不用 1:瞇牌效果
+             */
+            LookAt: Array<number>;
+            /**
+             * 黏性圖標編號
+             */
+            StickySymbol: number;
+            /**
+             * 黏性圖標位置
+             */
+            StickyChange: Array<number>;
+            /**
+             * 每條線贏分
+             */
+            LineWin: Array<number>;
+            /**
+             * 每條線贏幾格
+             */
+            LineGrid: Array<number>;
+            /**
+             * 再中免費遊戲次數 0:無 1~99:次
+             */
+            FreeToFree: number;
+            /**
+             * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+             */
+            BaseLevelWin: number;
+            /**
+             * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+             */
+            FreeLevelWin: number;
+        }
+    }
+}
+declare namespace fcc {
+    namespace IF {
+        /**
+         * 台灣黑熊玩法免費模式RoundDetail內部資料
+         */
+        type IFormosanBearStyleFreeRoundDetailData = {
+            FreeSpinCount: number;
+            GameMode: number;
+            GridAfter: Array<number>;
+            GridBefore: Array<number>;
+            LineGrid: Array<number>;
+            LineWin: Array<number>;
+            LookAt: Array<number>;
+            RoundLevelWin: number;
+            RoundWin: string;
+            ScatterPos: Array<number>;
+            TotalWin: string;
+            ScatterWin: number;
+            StickyReels: Array<number>;
+        };
+        /**
+         * 台灣黑熊玩法免費模式RoundDetailObject物件
+         */
+        interface IFormosanBearStyleFreeRoundDetailObject {
+            [name: string]: IFormosanBearStyleFreeRoundDetailData;
+        }
+        /**
+         * @Author 蕭立品
+         * @Description 台灣黑熊樣式,免費模式回傳參數
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
+         */
+        interface IFormosanBearStyleFreeResult extends IBaseSlotResultModel {
+            TotalWinPoint: number;
+            UserPointBefore: number;
+            UserPointAfter: number;
+            GameState: number;
+            LevelWin: number;
+            RoundDetail: IFormosanBearStyleFreeRoundDetailObject;
+        }
+    }
+}
+declare namespace fcc {
+    namespace IF {
+        /**
+         * @Author XIAO-LI-PIN
+         * @Description (介面)有線類免費狀態封包
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
+         */
+        interface IHasLineFreeResultModule extends IBaseSlotResultModel {
+            /**
+             * 玩家現有金額(贏分後)
+             */
+            UserPointAfter: number;
+            /**
+             * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
+             */
+            GameState: number;
+            /**
+             * 剩餘免費遊戲次數 (0:沒有 1~99次)
+             */
+            Count: number;
+            /**
+             * 免費遊戲累計贏分
+             */
+            FreeSpinWin: number;
+            /**
+             * 總贏得金額 (0:輸了 大於0:贏了 )
+             */
+            TotalWinPoint: number;
+            /**
+             * 15格的資料
+             */
+            Grid: Array<number>;
+            /**
+             * 瞇牌0:不用 1:瞇牌效果
+             */
+            LookAt: Array<number>;
+            /**
+             * 是否有鬼牌 0:沒有 1:有
+             */
+            ChangeState: number;
+            /**
+             * 15格的資料 換圖 0:不換 1:換
+             */
+            Change: Array<number>;
+            /**
+             * 每條線贏分
+             */
+            LineWin: Array<number>;
+            /**
+             * 每條線贏幾格
+             */
+            LineGrid: Array<number>;
+            /**
+             * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
+             */
+            LevelWin: number;
+            /**
+             * 再中免費遊戲次數 0:無 1~99:次
+             */
+            FreeToFree: number;
+            /**
+             * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+             */
+            BaseLevelWin: number;
+            /**
+             * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+             */
+            FreeLevelWin: number;
+        }
+    }
+}
+declare namespace fcc {
+    namespace IF {
+        /**
+         * @Author XIAO-LI-PIN
+         * @Description (介面)無線類免費狀態封包
+         * @Date 2022/6/16 下午4:09:23
+         * @Version framework-2.0.0 : 1.2.9
+         */
+        interface INoLineFreeResultModel extends IBaseSlotResultModel {
+            /**
+             * 玩家現有金額(贏分後)
+             */
+            UserPointAfter: number;
+            /**
+             * 接下來遊戲狀態(0:一般 1:免費遊戲 2:小遊戲)
+             */
+            GameState: number;
+            /**
+             * 剩餘免費遊戲次數 (0:沒有 1~99次)
+             */
+            Count: number;
+            /**
+             * 免費遊戲累計贏分
+             */
+            FreeSpinWin: number;
+            /**
+             * 總贏得金額 (0:輸了 大於0:贏了 )
+             */
+            TotalWinPoint: number;
+            /**
+             * 15格的資料
+             */
+            Grid: Array<number>;
+            /**
+             * 瞇牌0:不用 1:瞇牌效果
+             */
+            LookAt: Array<number>;
+            /**
+             * 是否有鬼牌 0:沒有 1:有
+             */
+            ChangeState: number;
+            /**
+             * 15格的資料 換圖 0:不換 1:換
+             */
+            Change: Array<number>;
+            /**
+             * 哪幾格贏 0:沒贏 1:贏
+             */
+            GridWin: Array<number>;
+            /**
+             * 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎  10:免費-無 11:免費-大獎 12:免費-巨獎 13:免費-超級巨獎 20:小遊戲-無 21:小遊戲-大獎 22:小遊戲-巨獎 23:小遊戲-超級巨獎
+             */
+            LevelWin: number;
+            /**
+             * 再中免費遊戲次數 0:無 1~99:次
+             */
+            FreeToFree: number;
+            /**
+             * 各局主遊戲 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+             */
+            BaseLevelWin: number;
+            /**
+             * 免費遊戲結果 噴錢效果 0:無 1:一般-大獎 2:一般-巨獎 3:一般-超級巨獎
+             */
+            FreeLevelWin: number;
         }
     }
 }

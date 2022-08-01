@@ -25,12 +25,8 @@ namespace fcc {
          */
         designSceneEventListener(delayTime: number) {
             window.addEventListener("resize", async () => {
-                // if (cc.game.frame && !this.configManager.isFrameworkDebug) {
-                //     cc.game.frame.style.height = window.innerHeight + 'px';
-                // }
-                // cc.game.frame.style.height = window.innerHeight + 'px';
                 await this.makeDesignScene(delayTime);
-                cc.log("更新畫面完畢......");
+
             })
         }
 

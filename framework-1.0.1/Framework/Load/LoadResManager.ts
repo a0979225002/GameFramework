@@ -159,8 +159,8 @@ namespace fcc {
          * @param state - 該物件加載百分比
          */
         loadMainEventCallback(name: string, progress: number, state: number) {
-
             this.onlyResEventCallback(name, state);
+
             //當前總加載進度
             this.allProgress += progress / this.count;
             if (this.allProgress >= 1) this.allProgress = 0.99;//精度問題,不回傳1
@@ -180,7 +180,6 @@ namespace fcc {
                 let checkProgress: boolean =
                     (global.Util.roundDown(this.beforeProgress, 2) ==
                         global.Util.roundDown(this.allProgress, 2));
-
                 if (checkProgress) {
                     return
                 } else {
@@ -266,7 +265,6 @@ namespace fcc {
                 url: url,
                 assetMode: type.ASSET_MODE.RESOURCES
             });
-
             return this;
         }
 
@@ -300,6 +298,23 @@ namespace fcc {
          * @param {fcc.IF.IOutSideData} outSideData
          * @returns {this}
          */
+        loadMainOutSideAsset(outSideData: IF.IOutSideData) {
+            this.count += 1;
+            if (outSideData.isLanguageUsed) {
+                outSideData.url = `${outSideData.url}/${this.configManager.language}`
+            }
+            if (this.currentLoadOrder.length == 0) {
+                this.loadTypeHandler.executeMainLoadOutSideBundle(outSideData).then();
+            }
+            this.currentLoadOrder.push(outSideData);
+            return this;
+        }
+
+        /**
+         * 載入遠程外部Bundle
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {this}
+         */
         loadOutSideAsset(outSideData: IF.IOutSideData) {
             if (outSideData.isLanguageUsed) {
                 outSideData.url = `${outSideData.url}/${this.configManager.language}`
@@ -322,6 +337,9 @@ namespace fcc {
                     break;
                 case fcc.type.ASSET_MODE.IN_SIDE_BUNDLE:
                     this.loadTypeHandler.executeLoadBundle(assetData.name, assetData.loadType, assetData.url).then();
+                    break;
+                case fcc.type.ASSET_MODE.OUT_SIDE_MAIN_ASSET:
+                    this.loadTypeHandler.executeMainLoadOutSideBundle(<IF.IOutSideData>assetData).then();
                     break;
                 case fcc.type.ASSET_MODE.OUT_SIDE_ASSET:
                     this.loadTypeHandler.executeLoadOutSideBundle(<IF.IOutSideData>assetData).then();

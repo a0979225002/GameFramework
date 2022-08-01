@@ -47,11 +47,22 @@ namespace fcc {
         }
 
         /**
+         * 加載主要外部資源
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {Promise<void>}
+         */
+        public async executeMainLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void> {
+            this.checkRepeatTheName(outSideData.name);
+            this.loadResManager.initialLoadState.set(outSideData.name, null);
+            await this.factory.executeMainLoadOutSideBundle(outSideData);
+        }
+
+        /**
          * 外部加載資源
          * @param {fcc.IF.IOutSideData} outSideData
          * @returns {Promise<void>}
          */
-        public async executeLoadOutSideBundle(outSideData: IF.IOutSideData) {
+        public async executeLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void> {
             this.checkRepeatTheName(outSideData.name);
             this.loadResManager.secondaryLoadState.set(outSideData.name, null);
             await this.factory.executeLoadOutSideBundle(outSideData);
@@ -62,7 +73,7 @@ namespace fcc {
          * @param {string} name
          * @private
          */
-        private checkRepeatTheName(name: string) {
+        private checkRepeatTheName(name: string): void {
 
             if (this.loadResManager.initialLoadState.has(name)) {
                 ErrorManager.instance.executeError(type.ErrorType.LOAD_FW, `${name} 此(主資源)已載入過了,或名稱重複,請檢察`);

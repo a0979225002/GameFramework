@@ -20,11 +20,21 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
 
     /**
      * 是否Server已經回傳TableInfo信息
+     *
+     *
+     *
      * @type {boolean}
      * @default false
      * @private
      */
     private _isGetTableInfoResponse: boolean;
+
+    /**
+     * 當前是否已經連線了
+     * @type {boolean}
+     * @private
+     */
+    private _hasConnect: boolean;
 
     /**
      * 進度條組件
@@ -68,21 +78,26 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
      */
     protected abstract updateProgressTextAnimation(): void;
 
+
     /**
-     * 進入主遊戲按鈕事件
-     * @protected
+     * 當前綁定server回傳的關注者
+     * @type {ResponseResultObserver}
+     * @private
      */
-    protected abstract intoMainGameButtonEvent(): void;
+    protected responseResultObserver: ResponseResultObserver;
 
     protected constructor() {
         super();
         this._isGetTableInfoResponse = false;          //是否Server已經回傳TableInfo信息
+        this._hasConnect = false;
     }
 
     protected onLoad() {
 
+        this.responseResultObserver = this.buildResponseResultObserver();
+
         /*response 回傳監聽*/
-        this.responseNotification();
+        this.responseNotification(this.responseResultObserver);
 
         /*進入主遊戲按鈕事件*/
         fcc.global.Button.addButtonEvent(
@@ -102,14 +117,21 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
         this.updateProgressTextAnimation();         //更新讀取條文字
     }
 
-    protected responseNotification() {
+    private buildResponseResultObserver(): ResponseResultObserver {
+        return new ResponseResultObserver((responseType: string) => {
+            if (responseType == fcc.type.ServerEventType.CAN_PLAY_GAME) {
+                this._hasConnect = true;
+            }
+            if (responseType == fcc.type.ServerEventType.TABLE_INFO) {
+                this._isGetTableInfoResponse = true;
+            }
+        }, this)
+    }
+
+    protected responseNotification(responseResultObserver: ResponseResultObserver) {
         fcc.notificationMgr<ResponseResultNotification>()
             .getNotification(fcc.type.NotificationType.RESPONSE_RESULT)
-            .subscribe(new ResponseResultObserver((responseType) => {
-                if (responseType == fcc.type.ServerEventType.TABLE_INFO) {
-                    this._isGetTableInfoResponse = true;
-                }
-            }, this), false);
+            .subscribe(responseResultObserver, true);
     }
 
     /**
@@ -120,6 +142,14 @@ export default abstract class ALoadingTemplate extends AGenericTemplate {
      */
     get isGetTableInfoResponse(): boolean {
         return this._isGetTableInfoResponse
+    }
+
+    /**
+     * 當前是否已經連線了
+     * @returns {boolean}
+     */
+    get hasConnect(): boolean {
+        return this._hasConnect;
     }
 
     /**

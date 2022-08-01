@@ -102,6 +102,13 @@ namespace fcc {
 
 
             /**
+             * 載入主要遠程外部Bundle
+             * @param {fcc.IF.IOutSideData} outSideData
+             * @returns {this}
+             */
+            loadMainOutSideAsset(outSideData: IF.IOutSideData): this;
+
+            /**
              * 加載 該 assetBundle 底下資源
              * 使用此方法者,加載狀態存放次加載中 secondaryLoadState
              * 注意:須於UI勾選配置為Bundle資料夾
@@ -117,7 +124,7 @@ namespace fcc {
              * @param {fcc.IF.IOutSideData} outSideData
              * @returns {this}
              */
-            loadOutSideAsset(outSideData: IF.IOutSideData);
+            loadOutSideAsset(outSideData: IF.IOutSideData):this;
 
             /**
              * 執行載入,不判斷載入資源資源進度

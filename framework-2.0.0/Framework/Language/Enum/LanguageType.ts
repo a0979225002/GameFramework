@@ -7,7 +7,6 @@ namespace fcc {
          * @Date 2021-06-15 下午 06:00
          * @Version 1.0
          */
-
         export enum LanguageType {
             /**
              * 台灣

@@ -11,15 +11,12 @@ namespace fcc {
      */
     export class TextLoad extends ABS.ALoadType {
 
-        constructor(dataName: string, type: any, url: string, folder: string) {
-            super(dataName, type, url, folder);
-        }
 
         /**
          *  目前只能傳入 .CSV 檔案,目前無從判斷該檔案副檔名
          *  因此需自行檢查回傳資料是否正確
          * @param {string} dataName - 自訂義該資源名稱
-         * @param {cc.SkeletonData} asset - 資源
+         * @param {cc.TextAsset} asset - 資源
          * @protected
          */
         setResToManager(dataName: string, asset: cc.TextAsset) {
@@ -40,8 +37,8 @@ namespace fcc {
                     continue;
                 }
                 //清除所有包含的 "" '' 等特殊符號
-                let processingvalue = value.replace(/['"]/g, '');
-                textMap.set(key, processingvalue);
+                let data = value.replace(/['"]/g, '');
+                textMap.set(key, data);
             }
 
             LoadResManager.instance.readFileRes.set(dataName, textMap);

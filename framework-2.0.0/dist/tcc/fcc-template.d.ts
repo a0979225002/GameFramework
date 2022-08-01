@@ -1130,6 +1130,12 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      */
     private _isGetTableInfoResponse;
     /**
+     * 當前是否已經連線了
+     * @type {boolean}
+     * @private
+     */
+    private _hasConnect;
+    /**
      * 進度條組件
      * @type {cc.ProgressBar}
      * @private
@@ -1164,14 +1170,16 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      */
     protected abstract updateProgressTextAnimation(): void;
     /**
-     * 進入主遊戲按鈕事件
-     * @protected
+     * 當前綁定server回傳的關注者
+     * @type {ResponseResultObserver}
+     * @private
      */
-    protected abstract intoMainGameButtonEvent(): void;
+    protected responseResultObserver: ResponseResultObserver;
     protected constructor();
     protected onLoad(): void;
     protected start(): void;
-    protected responseNotification(): void;
+    private buildResponseResultObserver;
+    protected responseNotification(responseResultObserver: ResponseResultObserver): void;
     /**
      * 是否可以進入主遊戲,由server回傳tableInfo後此class改變狀態
      * @type {boolean}
@@ -1179,6 +1187,11 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
      * @private
      */
     get isGetTableInfoResponse(): boolean;
+    /**
+     * 當前是否已經連線了
+     * @returns {boolean}
+     */
+    get hasConnect(): boolean;
     /**
      * 載入外部資源
      */

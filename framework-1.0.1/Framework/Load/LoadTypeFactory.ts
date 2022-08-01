@@ -80,7 +80,15 @@ namespace fcc {
          * @param url - 資源位置
          */
         public executeLoad(dataName: string, type: type.LoadType, url: string) {
-            this.checkLoadType(dataName, type, url, "resources");
+            const config: IF.ILoadConfig = {
+                dataName: dataName,
+                type: type,
+                url: url,
+                folder: "resources",
+                isMainLoad: true,
+                ccType: undefined,
+            }
+            this.checkLoadType(config);
         }
 
         /**
@@ -91,7 +99,15 @@ namespace fcc {
          */
         public async executeLoadBundle(dataName: string, type: type.LoadType, url: string) {
             await this.loadInSideBundle(dataName, type, url);
-            this.checkLoadType(dataName, type, url, "secondaryRes");
+            const config: IF.ILoadConfig = {
+                dataName: dataName,
+                type: type,
+                url: url,
+                folder: "secondaryRes",
+                isMainLoad: false,
+                ccType: undefined,
+            }
+            this.checkLoadType(config);
         }
 
         /**
@@ -101,39 +117,69 @@ namespace fcc {
          */
         public async executeLoadOutSideBundle(outSideData: IF.IOutSideData) {
             await this.loadOutSideBundle(outSideData);
-            this.checkLoadType(outSideData.name, outSideData.loadType, outSideData.url, outSideData.bundleName);
+            const config: IF.ILoadConfig = {
+                dataName: outSideData.name,
+                type: outSideData.loadType,
+                url: outSideData.url,
+                folder: outSideData.bundleName,
+                isMainLoad: false,
+                ccType: undefined,
+            }
+            this.checkLoadType(config);
+        }
+
+        /**
+         * 加載主要外部資源
+         * @param {fcc.IF.IOutSideData} outSideData
+         * @returns {Promise<void>}
+         */
+        public async executeMainLoadOutSideBundle(outSideData: IF.IOutSideData) {
+            await this.loadOutSideBundle(outSideData);
+            const config: IF.ILoadConfig = {
+                dataName: outSideData.name,
+                type: outSideData.loadType,
+                url: outSideData.url,
+                folder: outSideData.bundleName,
+                isMainLoad: true,
+                ccType: undefined,
+            }
+            this.checkLoadType(config);
         }
 
         /**
          * 確認當前資源類型,給相對應class 處理
-         * @param {string} dataName - 自訂義資源名稱
-         * @param {fcc.type.LoadType} type - 資源類型
-         * @param {string} url - 資源位置
-         * @param {string} folder - 資源父類資料夾,默認 resource
+         * @param {fcc.IF.ILoadConfig} loadConfig
          * @private
          */
-        private checkLoadType(dataName: string, type: type.LoadType, url: string, folder: string) {
-            switch (type) {
+        private checkLoadType(loadConfig: IF.ILoadConfig) {
+            switch (loadConfig.type) {
                 case fcc.type.LoadType.IMG:
-                    new ImgLoad(dataName, cc.SpriteFrame, url, folder).loadResources();
+                    loadConfig.ccType = cc.SpriteFrame;
+                    new ImgLoad(loadConfig).loadResources();
                     break;
                 case fcc.type.LoadType.IMG_ATLAS:
-                    new ImgAtlasLoad(dataName, cc.SpriteAtlas, url, folder).loadResources();
+                    loadConfig.ccType = cc.SpriteAtlas;
+                    new ImgAtlasLoad(loadConfig).loadResources();
                     break;
                 case fcc.type.LoadType.MUSIC:
-                    new MusicLoad(dataName, cc.AudioClip, url, folder).loadResources();
+                    loadConfig.ccType = cc.AudioClip;
+                    new MusicLoad(loadConfig).loadResources();
                     break;
                 case fcc.type.LoadType.PREFAB:
-                    new PrefabLoad(dataName, cc.Prefab, url, folder).loadResources();
+                    loadConfig.ccType = cc.Prefab;
+                    new PrefabLoad(loadConfig).loadResources();
                     break;
                 case fcc.type.LoadType.SPINE:
-                    new SpineLoad(dataName, sp.SkeletonData, url, folder).loadResources();
+                    loadConfig.ccType = sp.SkeletonData;
+                    new SpineLoad(loadConfig).loadResources();
                     break;
                 case fcc.type.LoadType.SCENE:
-                    new SceneLoad(dataName, cc.SceneAsset, null, folder).loadResources();
+                    loadConfig.ccType = cc.SceneAsset;
+                    new SceneLoad(loadConfig).loadResources();
                     break;
                 case fcc.type.LoadType.TEXT:
-                    new TextLoad(dataName, cc.TextAsset, url, folder).loadResources();
+                    loadConfig.ccType = cc.TextAsset;
+                    new TextLoad(loadConfig).loadResources();
                     break;
                 default :
                     ErrorManager.instance.executeError(fcc.type.ErrorType.TYPE_FW, "資源類型錯誤,尚無此類型載入方法");

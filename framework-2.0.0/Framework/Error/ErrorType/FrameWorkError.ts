@@ -33,7 +33,8 @@ namespace fcc {
                     case type.ErrorType.WEB_REQUEST_FW:
                         throw new Error(`${type.ErrorType.WEB_REQUEST_FW} ${obj}`);
                     case type.ErrorType.AUDIO_FW:
-                        throw new Error(`${type.ErrorType.AUDIO_FW} ${obj}`);
+                        cc.warn(`${type.ErrorType.AUDIO_FW} ${obj}`);
+                        break;
                     case type.ErrorType.WEB_RESPONSE_FW:
                         throw new Error(`${type.ErrorType.WEB_RESPONSE_FW} ${obj}`);
                     case type.ErrorType.SCENE_FW:

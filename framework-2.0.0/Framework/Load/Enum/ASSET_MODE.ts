@@ -23,6 +23,12 @@ namespace fcc {
             IN_SIDE_BUNDLE,
 
             /**
+             * 外部資源,主要加載
+             * @type {ASSET_MODE.OUT_SIDE_ASSET}
+             */
+            OUT_SIDE_MAIN_ASSET,
+
+            /**
              * 外部資源
              * @type {ASSET_MODE.OUT_SIDE_ASSET}
              */

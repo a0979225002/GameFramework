@@ -9,8 +9,12 @@ import AGenericTemplate from "../BaseTemplate/AGenericTemplate";
 export default abstract class AMainInitTemplate extends AGenericTemplate {
 
     protected onLoad() {
-        this.prefabInstantiate();       //實例化所有動態加載的prefab
         super.onLoad();
+    }
+
+    protected start() {
+        super.start();
+        this.prefabInstantiate();       //實例化所有動態加載的prefab
     }
 
     /**

@@ -100,9 +100,7 @@ namespace fcc {
          * @return {string}
          */
         getPreviousState(): string {
-            if (!this.previousState) {
-                cc.warn("當前無上個狀態");
-            }
+            if (!this.previousState) return null;
             return this.previousState;
         }
 

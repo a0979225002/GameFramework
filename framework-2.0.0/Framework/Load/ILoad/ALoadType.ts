@@ -16,16 +16,19 @@ namespace fcc {
             protected type: any;
             protected url: string;
             protected dataName: string;
-            protected folder: string
+            protected folder: string;
+            protected isMainLoad: boolean;
             private beforeProgress: number;
-            private assetBundle: cc.AssetManager.Bundle
+            private assetBundle: cc.AssetManager.Bundle;
 
-            protected constructor(dataName: string, type: cc.Asset, url: string, folder: string) {
-                this.type = type;               //當前要獲取的資源類型
-                this.url = url;                 //獲取的地址
-                this.dataName = dataName;       //要拿取資源的key
-                this.folder = folder            //父資料夾名稱,默認 resources
-                this.beforeProgress = 0;        //當前上次的載入進度
+
+            public constructor(loadConfig: IF.ILoadConfig) {
+                this.type = loadConfig.ccType;                //當前要獲取的資源類型
+                this.url = loadConfig.url;                  //獲取的地址
+                this.dataName = loadConfig.dataName;        //要拿取資源的key
+                this.folder = loadConfig.folder             //父資料夾名稱
+                this.isMainLoad = loadConfig.isMainLoad     //是否是主資源,判斷用
+                this.beforeProgress = 0;                    //當前上次的載入進度
                 this.assetBundle = cc.assetManager.getBundle(this.folder);
             }
 
@@ -99,7 +102,7 @@ namespace fcc {
             protected updateProgressEnd() {
                 //目的解決異步操作
                 //當資源都載入到LoadManager時才回傳以載入完成的狀態
-                if (this.folder === "resources") {
+                if (this.isMainLoad) {
                     LoadResManager.instance.initialLoadState.set(this.dataName, 1);
                     LoadResManager.instance.loadMainEventCallback(this.dataName, 0.01, 1);
                 } else {
@@ -113,7 +116,7 @@ namespace fcc {
              * 繼續加載
              */
             private continueLoad() {
-                if(!LoadResManager.instance.currentLoadOrder.length)return;
+                if (!LoadResManager.instance.currentLoadOrder.length) return;
                 LoadResManager.instance.currentLoadOrder.shift();   //清除載入完成的Data
                 if (LoadResManager.instance.currentLoadOrder.length > 0) {
                     const assetData = LoadResManager.instance.currentLoadOrder[0];
@@ -129,7 +132,7 @@ namespace fcc {
              * @protected
              */
             protected updateManagerState(key: string, state: number, update: number) {
-                if (this.folder === "resources") {
+                if (this.isMainLoad) {
                     LoadResManager.instance.initialLoadState.set(key, state);
                     LoadResManager.instance.loadMainEventCallback(key, update, state);
                 } else {

@@ -12,10 +12,6 @@ namespace fcc {
      */
     export class MusicLoad extends ABS.ALoadType {
 
-        constructor(dataName: string, type: any, url: string, folder: string) {
-            super(dataName, type, url, folder);
-        }
-
         /**
          * 將資源保存在管理器中
          * @param {string} dataName - 自訂義該資源名稱

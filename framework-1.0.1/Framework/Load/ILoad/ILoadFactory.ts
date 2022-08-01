@@ -35,7 +35,21 @@ namespace fcc {
              * @param url - 檔案url,不含外部 url
              * @param parameter - get 參數
              */
-            executeLoadExternalScript(name: string, type: type.LoadType, url: string,parameter:string): void;
+            executeLoadExternalScript(name: string, type: type.LoadType, url: string, parameter: string): void;
+
+            /**
+             * 加載主要外部資源
+             * @param {fcc.IF.IOutSideData} outSideData
+             * @returns {Promise<void>}
+             */
+            executeMainLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void>;
+
+            /**
+             * 外部加載資源
+             * @param {fcc.IF.IOutSideData} outSideData
+             * @returns {Promise<void>}
+             */
+            executeLoadOutSideBundle(outSideData: IF.IOutSideData): Promise<void>
         }
     }
 }

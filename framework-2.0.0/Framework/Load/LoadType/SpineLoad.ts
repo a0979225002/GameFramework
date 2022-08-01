@@ -12,15 +12,11 @@ namespace fcc {
      */
     export class SpineLoad extends ABS.ALoadType {
 
-        constructor(dataName: string, type: any, url: string, folder: string) {
-            super(dataName, type, url, folder);
-
-        }
 
         /**
          * 將資源保存在管理器中
          * @param {string} dataName - 自訂義該資源名稱
-         * @param {cc.SkeletonData} asset - 資源
+         * @param {sp.SkeletonData} asset - 資源
          * @protected
          */
         setResToManager(dataName: string, asset: Array<sp.SkeletonData>) {
