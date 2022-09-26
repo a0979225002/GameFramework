@@ -60,6 +60,16 @@ namespace fcc {
         },
         fontFamily: "Arial Unicode MS,Arial"
     }
+    const INR: IF.ILanguageStyle = {
+        fontSize: 30,
+        lineHeight: 40,
+        textScale: {
+            default: 1,
+            title: 1.2,
+            text: 0.8
+        },
+        fontFamily: "Arial,Arial Unicode MS"
+    }
     const MYR: IF.ILanguageStyle = {
         fontSize: 30,
         lineHeight: 40,
@@ -155,9 +165,11 @@ namespace fcc {
             this._style.set(type.LanguageType.CHINESE, CNY);
             this._style.set(type.LanguageType.AMERICA, USD);
             this._style.set(type.LanguageType.INDONESIA, IDR);
+            this._style.set(type.LanguageType.INDIA,INR);
             this._style.set(type.LanguageType.THAILAND, THB);
             this._style.set(type.LanguageType.MALAYSIA, MYR);
             this._style.set(type.LanguageType.VIETNAM, VND);
+
         }
 
         /**

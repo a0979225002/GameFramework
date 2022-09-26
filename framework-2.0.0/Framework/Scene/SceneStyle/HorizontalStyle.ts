@@ -9,7 +9,7 @@ namespace fcc {
     export class HorizontalStyle implements IF.ISceneStyle {
 
         //當前cavers寬高
-        private curDR: any;
+        private curDR: cc.Size;
 
         public executionStyle(width: number, height: number) {
 

@@ -26,7 +26,10 @@ namespace fcc {
                 //將無條件將 key 轉成 純數字 例如 : symbol0~10 = 0~10
                 let lowerCase = dataName.toLowerCase();
                 if (lowerCase.indexOf("grid") != -1) {
-                    let gridName = sprite.name.replace(/[^0-9]/ig, '');
+                    let gridName: string = sprite.name.replace(/[^0-9]/ig, '');
+                    if (gridName.trim().length == 0) {
+                        gridName = sprite.name;
+                    }
                     spriteMap.set(gridName, sprite);
                 } else {
                     let spriteName = sprite.name;

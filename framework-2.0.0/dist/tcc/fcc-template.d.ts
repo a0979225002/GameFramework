@@ -1124,6 +1124,9 @@ declare abstract class AErrorFrameTemplate extends AGenericTemplate {
 declare abstract class ALoadingTemplate extends AGenericTemplate {
     /**
      * 是否Server已經回傳TableInfo信息
+     *
+     *
+     *
      * @type {boolean}
      * @default false
      * @private
@@ -1205,6 +1208,7 @@ declare abstract class ALoadingTemplate extends AGenericTemplate {
  */
 declare abstract class AMainInitTemplate extends AGenericTemplate {
     protected onLoad(): void;
+    protected start(): void;
     /**
      * 實例化所有動態加載的prefab
      */

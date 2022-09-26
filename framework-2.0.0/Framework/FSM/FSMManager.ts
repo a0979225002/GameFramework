@@ -24,8 +24,7 @@ namespace fcc {
          */
         stateHandler: StateHandler;
 
-        private constructor(configManager: IF.IConfigManager) {
-            this.configManager = configManager;                                      //獲取ConfigManger,雙向綁定
+        private constructor() {
             this.isExecutingState = false;                                           //初始當前執行流程狀態
             this.stateHandler = new StateHandler();
         }
@@ -34,17 +33,17 @@ namespace fcc {
          *  懶漢加載
          *  初始化,只讓一個專案只有一次產生此class
          */
-        public static setInstance(configManager: IF.IConfigManager) {
+        public static setInstance() {
             if (!this._instance) {
-                this._instance = new FSMManager(configManager);
+                this._instance = new FSMManager();
                 FSMMgr = this._instance;
             }
         }
 
         static get instance(): fcc.IF.IBaseFSM {
             if (!this._instance) {
-                ErrorManager.instance.executeError(type.ErrorType.PROCESS_FW, "該類尚未實例化");
-                return;
+                this._instance = new FSMManager();
+                FSMMgr = this._instance;
             }
             return this._instance;
         }
@@ -161,4 +160,17 @@ namespace fcc {
             return this.stateHandler.builder();
         }
     }
+
+    /**
+     * 裝飾器註冊FSM狀態
+     * @param {string} state
+     * @returns {Function}
+     * @constructor
+     */
+    export function FSMState(state: string): Function {
+        return function (target: any) {
+            fcc.FSMManager.instance.builder().setState(state, new target());
+        }
+    }
+
 }

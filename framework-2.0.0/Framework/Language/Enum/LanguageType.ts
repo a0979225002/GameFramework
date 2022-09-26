@@ -7,6 +7,7 @@ namespace fcc {
          * @Date 2021-06-15 下午 06:00
          * @Version 1.0
          */
+
         export enum LanguageType {
             /**
              * 台灣
@@ -42,6 +43,23 @@ namespace fcc {
              * 印尼
              */
             INDONESIA = "IDR",
+
+            /**
+             * 印度
+             */
+            INDIA = "INR",
+
+            /**
+             * 日本
+             * @type {fcc.type.LanguageType.JAPAN}
+             */
+            JAPAN = "JPY",
+
+            /**
+             * 韓國
+             * @type {fcc.type.LanguageType.KOREA}
+             */
+            KOREA = "KWR",
 
             /**
              * 馬來西亞

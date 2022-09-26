@@ -298,7 +298,7 @@ namespace fcc {
             LanguageManager.setInstance(this);
             EventManager.setInstance(this);
             LoadResManager.setInstance(this);
-            FSMManager.setInstance(this);
+            FSMManager.setInstance();
             SceneManager.setInstance(this);
             SlotStyleManager.setInstance(this);
         }

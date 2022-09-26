@@ -45,6 +45,23 @@ namespace fcc {
             INDONESIA = "IDR",
 
             /**
+             * 印度
+             */
+            INDIA = "INR",
+
+            /**
+             * 日本
+             * @type {fcc.type.LanguageType.JAPAN}
+             */
+            JAPAN = "JPY",
+
+            /**
+             * 韓國
+             * @type {fcc.type.LanguageType.KOREA}
+             */
+            KOREA = "KWR",
+
+            /**
              * 馬來西亞
              */
             MALAYSIA = "MYR",

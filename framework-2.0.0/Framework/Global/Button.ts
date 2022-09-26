@@ -12,12 +12,12 @@ namespace fcc {
 
             /**
              * 對該button添加監聽事件
-             * @param {cc.Button} buttonNode - 按鈕組件
+             * @param {cc.Button} button - 按鈕組件
              * @param {string} methodName - 該按鈕綁定的方法名稱
              * @param self - 該方法存在的位置
              * @param customEventData - 回傳值
              */
-            static addButtonEvent(buttonNode: cc.Button, methodName: string, self: any, customEventData?: any) {
+            static addButtonEvent(button: cc.Button, methodName: string, self: any, customEventData?: any) {
                 //手動添加監聽事件
                 let thisNode = self.node;
                 let scriptName = cc.js.getClassName(self);
@@ -29,7 +29,7 @@ namespace fcc {
                     click_event.customEventData = customEventData; //添加回調參數
                 }
                 // this.node.clickEvents = [click_event];//一次添加多個監聽事件
-                buttonNode.clickEvents.push(click_event); //當點擊後觸發事件
+                button.clickEvents.push(click_event); //當點擊後觸發事件
             }
 
             /**
