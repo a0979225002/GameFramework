@@ -98,6 +98,7 @@ namespace fcc {
         /**
          * 撥放音樂,將會依照當初設定的參數進行播放
          * 若無發現可用參數設定,依照默認參數撥放
+         * 如果當前偵測為暫停中的音樂,且無更換音樂,將會自動回覆暫停中的音樂
          * @param {string} name - 音樂檔名
          */
         public musicPlay(name: string) {
@@ -214,7 +215,7 @@ namespace fcc {
 
     /**
      * 裝飾器
-     * 撥放背景音樂
+     * 撥放背景音樂,如果當前偵測為暫停中的音樂,且無更換音樂,將會自動回覆暫停中的音樂
      * @param name {string} : 音樂檔名
      * @returns {(target: any, key: string, descriptor: PropertyDescriptor) => void}
      * @constructor

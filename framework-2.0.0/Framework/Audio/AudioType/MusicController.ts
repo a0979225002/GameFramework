@@ -16,20 +16,24 @@ namespace fcc {
      * @Date 2021-04-14 下午 20:24
      * @Version 1.1
      */
-    export  class MusicController implements IF.IAudioType {
+    export class MusicController implements IF.IAudioType {
 
         private musicID: number;
 
+        private nowMusicName: string;
+
         constructor() {
             this.musicID = null;
+            this.nowMusicName = null;
         }
 
         /**
          * 撥放背景音樂,並配合享元資料,作相對應的撥放模式處理
+         * 如果當前偵測為暫停中的音樂,且無更換音樂,將會自動回覆暫停中的音樂
          * @param {string} name
          * @param {Map<string, any>} data
          */
-        public play(name: string, data: Map<string, any>):void {
+        public play(name: string, data: Map<string, any>): void {
 
             let volume: number = data.get("volume");            //音量
             let loop: boolean = data.get("loop");               //是否循環
@@ -42,11 +46,13 @@ namespace fcc {
                 return;
             }
 
-            //如果該音樂是暫停模式,回復撥放
-            if (state == MusicStateType.PAUSE) {
+            //如果該音樂是暫停模式,且在來需要撥放的背景音樂為同一首時,回復撥放
+            if (state == MusicStateType.PAUSE && this.nowMusicName == name) {
                 cc.audioEngine.resume(this.musicID);
                 return;
             }
+
+            this.nowMusicName = name;                                       //存放當前播放中的背景音樂
 
             //如果上一首背景音樂正在撥放,先暫停
             if (state == MusicStateType.PLAYING) {
@@ -62,7 +68,7 @@ namespace fcc {
         /**
          *停止背景音樂
          */
-        public stop():void {
+        public stop(): void {
 
             cc.audioEngine.setVolume(this.musicID, 0);
             cc.audioEngine.stop(this.musicID);
@@ -72,7 +78,7 @@ namespace fcc {
         /**
          * 暫停背景音樂
          */
-        public pause():void {
+        public pause(): void {
             if (cc.audioEngine.getState(this.musicID) != cc.audioEngine.AudioState.PLAYING) return;
             cc.audioEngine.pause(this.musicID);
         }
